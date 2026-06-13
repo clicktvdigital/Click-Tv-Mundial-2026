@@ -1,6 +1,3 @@
-// ==========================================
-// CONFIGURACIÓN GLOBAL
-// ==========================================
 const WPP_NUMBER = "593939166222";
 let cart = [];
 let discountPercent = 0;
@@ -14,92 +11,216 @@ const currencyMap = {
     'BO':'BOB','VE':'VES'
 };
 
-// ==========================================
-// PARTIDOS MUNDIAL 2026 (JSON editable)
-// Basado en cronograma oficial FIFA
-// ==========================================
-const WORLD_CUP_MATCHES = {
-    hoy: [
-        {
-            teamA: { name: 'México', flag: '🇲🇽' },
-            teamB: { name: 'Canadá', flag: '🇨🇦' },
-            scoreA: '-', scoreB: '-',
-            status: 'upcoming', time: '16:00',
-            stadium: 'Estadio Azteca', city: 'Ciudad de México',
-            platform: 'DIRECTV GO / Paramount+'
-        },
-        {
-            teamA: { name: 'USA', flag: '🇺🇸' },
-            teamB: { name: 'Ecuador', flag: '🇪🇨' },
-            scoreA: '-', scoreB: '-',
-            status: 'upcoming', time: '19:00',
-            stadium: 'SoFi Stadium', city: 'Los Ángeles',
-            platform: 'FOX / DIRECTV GO'
-        }
-    ],
-    manana: [
-        {
-            teamA: { name: 'Argentina', flag: '🇦🇷' },
-            teamB: { name: 'Brasil', flag: '🇧🇷' },
-            scoreA: '-', scoreB: '-',
-            status: 'upcoming', time: '16:00',
-            stadium: 'MetLife Stadium', city: 'Nueva Jersey',
-            platform: 'DIRECTV GO / TyC Sports'
-        },
-        {
-            teamA: { name: 'España', flag: '🇪🇸' },
-            teamB: { name: 'Colombia', flag: '🇨🇴' },
-            scoreA: '-', scoreB: '-',
-            status: 'upcoming', time: '19:00',
-            stadium: 'AT&T Stadium', city: 'Dallas',
-            platform: 'DAZN / Disney+'
-        }
-    ],
-    proximos: [
-        {
-            teamA: { name: 'Perú', flag: '🇵🇪' },
-            teamB: { name: 'Chile', flag: '🇨🇱' },
-            scoreA: '-', scoreB: '-',
-            status: 'upcoming', time: '15 Jun 17:00',
-            stadium: 'BC Place', city: 'Vancouver',
-            platform: 'Paramount+'
-        },
-        {
-            teamA: { name: 'Francia', flag: '🇫🇷' },
-            teamB: { name: 'Alemania', flag: '🇩🇪' },
-            scoreA: '-', scoreB: '-',
-            status: 'upcoming', time: '16 Jun 20:00',
-            stadium: 'Hard Rock Stadium', city: 'Miami',
-            platform: 'DAZN / DIRECTV GO'
-        }
-    ],
-    grupos: [
-        { group: 'A', teams: ['🇲🇽 México','🇨🇦 Canadá','🇯🇲 Jamaica','🇿🇦 Sudáfrica'] },
-        { group: 'B', teams: ['🇦🇷 Argentina','🇦🇺 Australia','🇩🇰 Dinamarca','🇵🇈 Filipinas'] },
-        { group: 'C', teams: ['🇲🇽 México B','🇪🇨 Ecuador','🇧🇴 Bolivia','🇨🇦 Canadá B'] },
-        { group: 'D', teams: ['🇺🇸 USA','🇵🇾 Paraguay','🇦🇺 Australia B','🇭🇹 Haití'] }
-    ]
-};
+const ACTIVITY_MESSAGES = [
+    { icon: 'fa-check-circle', text: '🟢 Activación completada' },
+    { icon: 'fa-user-plus', text: '🟢 Nuevo cliente conectado' },
+    { icon: 'fa-crown', text: '🟢 Servicio Premium disponible' },
+    { icon: 'fa-futbol', text: '🟢 Mundial 2026 activo' },
+    { icon: 'fa-satellite', text: '🟢 IPTV Premium disponible' },
+    { icon: 'fa-headset', text: '🟢 Soporte técnico conectado' }
+];
 
-// ==========================================
-// INICIALIZACIÓN
-// ==========================================
-async function initApp() {
-    await fetchExchangeRates();
-    await detectUserCountry();
-    calculateSavings();
-    renderWorldCupMatches('hoy');
-    startLiveSalesNotifications();
-    setupTabs();
-    setupMusicPlayer();
-    animateStats();
-    loadReviewsFromFirebase();
-    loadActivityFromFirebase();
+// ─── TheSportsDB ─────────────────────────────────────────────────────────────
+// API gratuita, sin API key, sin límite diario conocido.
+// Liga FIFA World Cup 2026: leagueId=4429  (The Sports DB)
+const TSDB_BASE = 'https://www.thesportsdb.com/api/v1/json/3';
+const WORLD_CUP_LEAGUE = '4429';   // FIFA World Cup
+const WORLD_CUP_SEASON = '2025-2026';
+
+// Plataformas por país (para mostrar en el fallback y en tarjetas sin dato de API)
+const LATAM_PLATFORMS = 'DIRECTV GO / Paramount+ / DAZN / Disney+';
+
+// ─── Helpers de fecha ─────────────────────────────────────────────────────────
+function toLocalDateStr(utcDateStr, utcTimeStr) {
+    // TheSportsDB entrega fecha "2026-06-15" y hora "20:00:00" en UTC
+    if (!utcDateStr) return null;
+    const iso = utcTimeStr ? `${utcDateStr}T${utcTimeStr}Z` : `${utcDateStr}T00:00:00Z`;
+    return new Date(iso);
 }
 
-// ==========================================
-// TIPOS DE CAMBIO
-// ==========================================
+function isSameLocalDay(date, referenceDate) {
+    return date.getFullYear() === referenceDate.getFullYear() &&
+           date.getMonth()    === referenceDate.getMonth()    &&
+           date.getDate()     === referenceDate.getDate();
+}
+
+function formatLocalTime(date) {
+    return date.toLocaleTimeString('es-LA', { hour: '2-digit', minute: '2-digit' });
+}
+
+function formatLocalDate(date) {
+    return date.toLocaleDateString('es-LA', { day: 'numeric', month: 'short' });
+}
+
+// ─── Fetch partidos desde TheSportsDB ────────────────────────────────────────
+async function fetchWorldCupMatches() {
+    // Intenta obtener los eventos de la temporada del Mundial 2026
+    const url = `${TSDB_BASE}/eventsseason.php?id=${WORLD_CUP_LEAGUE}&s=${WORLD_CUP_SEASON}`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    return data.events || [];          // array de partidos o vacío
+}
+
+// Clasifica los partidos en categorías por fecha local
+function classifyMatches(events) {
+    const now   = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const yesterday = new Date(today); yesterday.setDate(today.getDate() - 1);
+    const tomorrow  = new Date(today); tomorrow.setDate(today.getDate() + 1);
+
+    const result = { ayer: [], hoy: [], manana: [], proximos: [] };
+
+    events.forEach(ev => {
+        const dt = toLocalDateStr(ev.dateEvent, ev.strTime);
+        if (!dt || isNaN(dt)) return;
+
+        if (isSameLocalDay(dt, yesterday)) result.ayer.push(ev);
+        else if (isSameLocalDay(dt, today))    result.hoy.push(ev);
+        else if (isSameLocalDay(dt, tomorrow)) result.manana.push(ev);
+        else if (dt > tomorrow) result.proximos.push(ev);
+    });
+
+    // Próximos: solo los 8 siguientes
+    result.proximos = result.proximos.slice(0, 8);
+
+    return result;
+}
+
+// ─── Render partidos ──────────────────────────────────────────────────────────
+function renderMatchCard(ev, tab) {
+    const dt = toLocalDateStr(ev.dateEvent, ev.strTime);
+    const isFinished = ev.intHomeScore !== null && ev.intHomeScore !== '';
+    const isLive = false; // TheSportsDB gratuito no da estado live en tiempo real
+
+    const statusClass = isFinished ? 'status-finished' : 'status-upcoming';
+    let timeLabel;
+
+    if (isFinished) {
+        timeLabel = 'FINALIZADO';
+    } else if (dt && !isNaN(dt)) {
+        if (tab === 'proximos') {
+            timeLabel = `${formatLocalDate(dt)} ${formatLocalTime(dt)}`;
+        } else {
+            timeLabel = formatLocalTime(dt);
+        }
+    } else {
+        timeLabel = ev.strTime || '—';
+    }
+
+    const scoreA = isFinished ? (ev.intHomeScore ?? '-') : '-';
+    const scoreB = isFinished ? (ev.intAwayScore ?? '-') : '-';
+
+    const stadium = ev.strVenue   || ev.strStadium || '—';
+    const city    = ev.strCity    || ev.strCountry || '—';
+    const round   = ev.strRound   || ev.intRound   || '';
+
+    return `
+        <div class="match-card">
+            <div class="match-header">
+                <span class="match-status ${statusClass}">${timeLabel}</span>
+                ${round ? `<span class="match-round">${round}</span>` : ''}
+            </div>
+            <div class="match-teams">
+                <div class="team">
+                    ${ev.strHomeTeamBadge ? `<img src="${ev.strHomeTeamBadge}" class="team-badge" alt="${ev.strHomeTeam}" loading="lazy">` : ''}
+                    <span>${ev.strHomeTeam || '—'}</span>
+                </div>
+                <div class="match-score">${scoreA} - ${scoreB}</div>
+                <div class="team">
+                    ${ev.strAwayTeamBadge ? `<img src="${ev.strAwayTeamBadge}" class="team-badge" alt="${ev.strAwayTeam}" loading="lazy">` : ''}
+                    <span>${ev.strAwayTeam || '—'}</span>
+                </div>
+            </div>
+            <div class="match-info">
+                <span><i class="fas fa-map-marker-alt"></i> ${stadium}</span>
+                <span><i class="fas fa-city"></i> ${city}</span>
+            </div>
+            <div class="match-platform">
+                Transmite: <b>${LATAM_PLATFORMS}</b>
+            </div>
+        </div>`;
+}
+
+function renderMatches(tab, classifiedMatches) {
+    const container = document.getElementById('matches-container');
+    const matches = classifiedMatches[tab] || [];
+
+    if (matches.length === 0) {
+        container.innerHTML = `
+            <p style="text-align:center;color:#888;grid-column:1/-1;padding:30px 0;">
+                Sin partidos para este período.<br>
+                <a href="https://www.fifa.com/fifaplus/es/tournaments/mens/worldcup/canadamexicousa2026/articles/world-cup-2026-schedule-fixtures-results" 
+                   target="_blank" rel="noopener" class="btn btn-primary btn-sm" style="margin-top:16px;display:inline-flex;">
+                    <i class="fas fa-calendar-alt"></i>&nbsp; Ver Calendario Oficial FIFA
+                </a>
+            </p>`;
+        return;
+    }
+
+    container.innerHTML = matches.map(ev => renderMatchCard(ev, tab)).join('');
+}
+
+// ─── Setup tabs ───────────────────────────────────────────────────────────────
+let classifiedMatches = { ayer: [], hoy: [], manana: [], proximos: [] };
+
+function setupTabs() {
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderMatches(btn.dataset.tab, classifiedMatches);
+        });
+    });
+}
+
+// ─── Fallback cuando la API falla ─────────────────────────────────────────────
+function renderApiFallback() {
+    const container = document.getElementById('matches-container');
+    container.innerHTML = `
+        <div style="text-align:center;grid-column:1/-1;padding:40px 20px;">
+            <p style="color:#aaa;margin-bottom:20px;">
+                <i class="fas fa-exclamation-circle" style="color:#f90;font-size:2rem;"></i><br><br>
+                No pudimos cargar los partidos en este momento.
+            </p>
+            <a href="https://www.fifa.com/fifaplus/es/tournaments/mens/worldcup/canadamexicousa2026/articles/world-cup-2026-schedule-fixtures-results"
+               target="_blank" rel="noopener" class="btn btn-primary">
+                <i class="fas fa-calendar-alt"></i>&nbsp; Ver Calendario Oficial FIFA
+            </a>
+        </div>`;
+}
+
+// ─── Init Mundial ─────────────────────────────────────────────────────────────
+async function initWorldCup() {
+    const container = document.getElementById('matches-container');
+    container.innerHTML = `<p style="text-align:center;color:#aaa;grid-column:1/-1;padding:30px 0;">
+        <i class="fas fa-spinner fa-spin"></i>&nbsp; Cargando partidos…</p>`;
+
+    try {
+        const events = await fetchWorldCupMatches();
+
+        if (!events || events.length === 0) {
+            // Si la liga aún no tiene eventos, mostrar fallback amigable
+            renderApiFallback();
+            return;
+        }
+
+        classifiedMatches = classifyMatches(events);
+
+        // Renderizar la tab activa por defecto (hoy; si no hay, proximos)
+        const defaultTab = classifiedMatches.hoy.length > 0 ? 'hoy' : 'proximos';
+        document.querySelectorAll('.tab-btn').forEach(b => {
+            b.classList.toggle('active', b.dataset.tab === defaultTab);
+        });
+        renderMatches(defaultTab, classifiedMatches);
+
+    } catch (err) {
+        console.warn('TheSportsDB error:', err);
+        renderApiFallback();
+    }
+}
+
+// ─── Resto de funciones (sin cambios) ─────────────────────────────────────────
 async function fetchExchangeRates() {
     try {
         const res = await fetch('https://open.er-api.com/v6/latest/USD');
@@ -120,7 +241,7 @@ async function detectUserCountry() {
             document.getElementById('currency-selector').value = currentCurrency;
         }
     } catch (e) {
-        document.getElementById('user-location').innerText = `Global`;
+        document.getElementById('user-location').innerText = 'Global';
     }
     applyCurrencyUpdate();
 }
@@ -131,7 +252,7 @@ document.getElementById('currency-selector').addEventListener('change', (e) => {
 });
 
 function formatMoney(amount, currency) {
-    if(['PYG','COP','CLP'].includes(currency)) {
+    if (['PYG','COP','CLP'].includes(currency)) {
         return new Intl.NumberFormat('es-LA', { style:'currency', currency, minimumFractionDigits:0 }).format(amount);
     }
     return new Intl.NumberFormat('es-LA', { style:'currency', currency }).format(amount);
@@ -170,9 +291,6 @@ function updateDropdownPrice(selectElement) {
     }
 }
 
-// ==========================================
-// CALCULADORA DE AHORRO
-// ==========================================
 function calculateSavings() {
     const select = document.getElementById('calc-service');
     const option = select.options[select.selectedIndex];
@@ -180,101 +298,21 @@ function calculateSavings() {
     const usdOfficial = parseFloat(option.getAttribute('data-official'));
     const savingsLocal = (usdOfficial * currentRate) - (usdClick * currentRate);
     const percent = Math.round(((usdOfficial - usdClick) / usdOfficial) * 100);
-    
+
     document.getElementById('calc-official').innerText = formatMoney(usdOfficial * currentRate, currentCurrency);
-    document.getElementById('calc-click').innerText = formatMoney(usdClick * currentRate, currentCurrency);
-    document.getElementById('calc-savings').innerHTML = `${formatMoney(savingsLocal, currentCurrency)} <br><small>(${percent}% OFF)</small>`;
+    document.getElementById('calc-click').innerText    = formatMoney(usdClick    * currentRate, currentCurrency);
+    document.getElementById('calc-savings').innerHTML  = `${formatMoney(savingsLocal, currentCurrency)} <br><small>(${percent}% OFF)</small>`;
 }
 
-// ==========================================
-// MUNDIAL 2026
-// ==========================================
-function setupTabs() {
-    document.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            renderWorldCupMatches(btn.dataset.tab);
-        });
-    });
-}
-
-function renderWorldCupMatches(tab) {
-    const container = document.getElementById('matches-container');
-    
-    if (tab === 'grupos') {
-        container.innerHTML = WORLD_CUP_MATCHES.grupos.map(g => `
-            <div class="match-card">
-                <div class="match-header">
-                    <span class="match-status status-upcoming">GRUPO ${g.group}</span>
-                </div>
-                <div style="padding:10px 0;">
-                    ${g.teams.map(t => `<div style="padding:8px;border-bottom:1px dashed #333;font-weight:600;">${t}</div>`).join('')}
-                </div>
-            </div>
-        `).join('');
-        return;
-    }
-    
-    const matches = WORLD_CUP_MATCHES[tab] || [];
-    if (matches.length === 0) {
-        container.innerHTML = '<p style="text-align:center;color:#888;grid-column:1/-1;">No hay partidos programados.</p>';
-        return;
-    }
-    
-    container.innerHTML = matches.map(m => {
-        const isLive = m.status === 'live';
-        const statusClass = isLive ? 'status-live' : (m.status === 'finished' ? 'status-finished' : 'status-upcoming');
-        const statusText = isLive ? `EN VIVO ${m.time || ''}` : (m.status === 'finished' ? 'FINALIZADO' : m.time);
-        
-        return `
-            <div class="match-card ${isLive ? 'live' : ''}">
-                <div class="match-header">
-                    <span class="match-status ${statusClass}">
-                        ${isLive ? '<span class="live-dot"></span>' : ''}
-                        ${statusText}
-                    </span>
-                </div>
-                <div class="match-teams">
-                    <div class="team">
-                        <span class="team-flag">${m.teamA.flag}</span>
-                        ${m.teamA.name}
-                    </div>
-                    <div class="match-score">${m.scoreA} - ${m.scoreB}</div>
-                    <div class="team">
-                        <span class="team-flag">${m.teamB.flag}</span>
-                        ${m.teamB.name}
-                    </div>
-                </div>
-                <div class="match-info">
-                    <span><i class="fas fa-map-marker-alt"></i>${m.stadium}</span>
-                    <span><i class="fas fa-city"></i>${m.city}</span>
-                </div>
-                <div class="match-platform">
-                    Transmite: <b>${m.platform}</b>
-                </div>
-            </div>
-        `;
-    }).join('');
-}
-
-// ==========================================
-// CARRITO
-// ==========================================
-function toggleCart() {
-    document.getElementById('cart-sidebar').classList.toggle('active');
-}
-
-function toggleMenu() {
-    document.getElementById('nav-links').classList.toggle('active');
-}
+function toggleCart() { document.getElementById('cart-sidebar').classList.toggle('active'); }
+function toggleMenu() { document.getElementById('nav-links').classList.toggle('active'); }
 
 function addToCart(name, priceUSD) {
     const existing = cart.find(i => i.name === name);
     if (existing) existing.qty++;
     else cart.push({ name, priceUSD, qty: 1 });
     updateCartUI();
-    showToast(`🛒 Agregado: ${name}`);
+    showToast(` Agregado: ${name}`);
     document.getElementById('cart-sidebar').classList.add('active');
 }
 
@@ -305,7 +343,7 @@ function updateCartUI() {
     const itemsContainer = document.getElementById('cart-items');
     itemsContainer.innerHTML = '';
     let subtotalUSD = 0, qtyTotal = 0;
-    
+
     cart.forEach(item => {
         subtotalUSD += item.priceUSD * item.qty;
         qtyTotal += item.qty;
@@ -316,18 +354,17 @@ function updateCartUI() {
                     <small>${formatMoney(item.priceUSD * currentRate, currentCurrency)} x ${item.qty}</small>
                 </div>
                 <i class="fas fa-trash" onclick="removeFromCart('${item.name.replace(/'/g,"\\'")}')"></i>
-            </div>
-        `;
+            </div>`;
     });
-    
+
     const discountUSD = subtotalUSD * discountPercent;
-    const totalUSD = subtotalUSD - discountUSD;
-    
-    document.getElementById('cart-count').innerText = qtyTotal;
-    document.getElementById('cart-subtotal').innerText = formatMoney(subtotalUSD * currentRate, currentCurrency);
-    document.getElementById('cart-discount').innerText = formatMoney(discountUSD * currentRate, currentCurrency);
-    document.getElementById('cart-total-local').innerText = formatMoney(totalUSD * currentRate, currentCurrency);
-    document.getElementById('cart-total-usd').innerText = `$${totalUSD.toFixed(2)} USD`;
+    const totalUSD    = subtotalUSD - discountUSD;
+
+    document.getElementById('cart-count').innerText       = qtyTotal;
+    document.getElementById('cart-subtotal').innerText    = formatMoney(subtotalUSD * currentRate, currentCurrency);
+    document.getElementById('cart-discount').innerText    = formatMoney(discountUSD * currentRate, currentCurrency);
+    document.getElementById('cart-total-local').innerText = formatMoney(totalUSD    * currentRate, currentCurrency);
+    document.getElementById('cart-total-usd').innerText   = `$${totalUSD.toFixed(2)} USD`;
 }
 
 function toggleCheckoutInfo() {
@@ -343,7 +380,7 @@ function processCheckout() {
     if (cart.length === 0) return alert('El carrito está vacío.');
     const location = document.getElementById('user-location').innerText;
     let text = `🚀 *NUEVO PEDIDO - MUNDIAL 2026*%0A%0A`;
-    text += `📍 *Ubicación:* ${location}%0A`;
+    text += ` *Ubicación:* ${location}%0A`;
     text += `💱 *Moneda:* ${currentCurrency}%0A%0A`;
     text += `🛒 *Resumen:*%0A`;
     cart.forEach(i => {
@@ -357,21 +394,18 @@ function processCheckout() {
 }
 
 function sendCartReceipt() {
-    if (cart.length === 0) return alert("Tu carrito está vacío.");
+    if (cart.length === 0) return alert('Tu carrito está vacío.');
     const total = document.getElementById('cart-total-local').innerText;
     let text = `💳 *COMPROBANTE DE PAGO*%0A%0AHola, acabo de realizar el pago por *${total}*.%0A%0A*(Adjunto aquí la imagen de mi comprobante)*.`;
     window.open(`https://wa.me/${WPP_NUMBER}?text=${text}`, '_blank');
 }
 
-// ==========================================
-// FORMULARIO
-// ==========================================
 function submitContactForm(e) {
     e.preventDefault();
     const f = e.target;
-    let text = `🌎 *CONTACTO INTERNACIONAL*%0A%0A`;
+    let text = ` *CONTACTO INTERNACIONAL*%0A%0A`;
     text += `👤 *Nombre:* ${f.nombre.value} ${f.apellido.value}%0A`;
-    text += `🌐 *País:* ${f.pais.value}%0A`;
+    text += ` *País:* ${f.pais.value}%0A`;
     text += `📱 *Celular:* ${f.celular.value}%0A`;
     text += `📧 *Correo:* ${f.correo.value}%0A`;
     text += `📺 *Servicio:* ${f.servicio.value}%0A`;
@@ -379,9 +413,6 @@ function submitContactForm(e) {
     window.open(`https://wa.me/${WPP_NUMBER}?text=${text}`, '_blank');
 }
 
-// ==========================================
-// TOAST
-// ==========================================
 function showToast(msg) {
     const c = document.getElementById('toast-container');
     const t = document.createElement('div');
@@ -391,29 +422,15 @@ function showToast(msg) {
     setTimeout(() => t.remove(), 4000);
 }
 
-// ==========================================
-// NOTIFICACIONES EN VIVO
-// ==========================================
 function startLiveSalesNotifications() {
-    const names = ['Carlos','Andrés','María','Lucía','Juan','Diego','Camila','Sofía','Luis','Pedro','Ana'];
-    const lastInitials = ['M.','Z.','G.','V.','C.','P.','R.','S.','F.'];
-    const locations = ['Quito','Guayaquil','Cuenca','Bogotá','Lima','Santiago','CDMX','Buenos Aires','Montevideo','Asunción'];
-    const products = ['DIRECTV GO','Paramount+','DAZN','IBO Player','IPTV Premium','Flujo TV','Disney+'];
-    
     setInterval(() => {
-        const n = names[Math.floor(Math.random()*names.length)];
-        const l = lastInitials[Math.floor(Math.random()*lastInitials.length)];
-        const loc = locations[Math.floor(Math.random()*locations.length)];
-        const p = products[Math.floor(Math.random()*products.length)];
-        showToast(`<i class="fas fa-check-circle"></i> <b>${n} ${l}</b> de ${loc} adquirió <b>${p}</b>`);
+        const msg = ACTIVITY_MESSAGES[Math.floor(Math.random() * ACTIVITY_MESSAGES.length)];
+        showToast(`<i class="fas ${msg.icon}"></i> ${msg.text}`);
     }, 20000);
 }
 
-// ==========================================
-// ESTADÍSTICAS ANIMADAS
-// ==========================================
 function animateStats() {
-    const targets = { 'stat-clients': 15420, 'stat-activations': 28900 };
+    const targets = { 'stat-clients': 5000, 'stat-activations': 12000 };
     Object.entries(targets).forEach(([id, target]) => {
         const el = document.getElementById(id);
         let current = 0;
@@ -421,87 +438,32 @@ function animateStats() {
         const interval = setInterval(() => {
             current += step;
             if (current >= target) { current = target; clearInterval(interval); }
-            el.innerText = Math.floor(current).toLocaleString();
+            el.innerText = '+' + Math.floor(current).toLocaleString();
         }, 20);
     });
-    // Online count
     setInterval(() => {
-        document.getElementById('online-count').innerText = (180 + Math.floor(Math.random()*50)).toLocaleString();
+        document.getElementById('online-count').innerText = (180 + Math.floor(Math.random() * 50)).toLocaleString();
     }, 5000);
 }
 
-// ==========================================
-// MÚSICA
-// ==========================================
-function setupMusicPlayer() {
-    const audio = document.getElementById('bg-audio');
-    if (audio) audio.volume = 0.3;
+function loadActivityFeed() {
+    const feed = document.getElementById('activity-feed');
+    feed.innerHTML = ACTIVITY_MESSAGES.map(a => `
+        <div class="activity-item">
+            <i class="fas ${a.icon}"></i>
+            <span>${a.text}</span>
+        </div>`).join('');
 }
 
-function toggleMusic() {
-    const audio = document.getElementById('bg-audio');
-    const btn = document.getElementById('music-btn');
-    const muteBtn = document.getElementById('mute-btn');
-    if (audio.paused) {
-        audio.play().then(() => {
-            btn.innerHTML = '<i class="fas fa-pause"></i>';
-            muteBtn.style.display = 'block';
-        }).catch(() => showToast('⚠️ Archivo de audio no disponible'));
-    } else {
-        audio.pause();
-        btn.innerHTML = '<i class="fas fa-play"></i>';
-    }
+async function initApp() {
+    await fetchExchangeRates();
+    await detectUserCountry();
+    calculateSavings();
+    setupTabs();
+    await initWorldCup();        // ← carga real desde TheSportsDB
+    startLiveSalesNotifications();
+    animateStats();
+    loadActivityFeed();
 }
 
-function toggleMute() {
-    const audio = document.getElementById('bg-audio');
-    const btn = document.getElementById('mute-btn');
-    audio.muted = !audio.muted;
-    btn.innerHTML = audio.muted ? '<i class="fas fa-volume-mute"></i>' : '<i class="fas fa-volume-up"></i>';
-}
-
-// ==========================================
-// RESEÑAS
-// ==========================================
-function openReviewForm() {
-    document.getElementById('review-modal').classList.add('active');
-}
-function closeReviewForm() {
-    document.getElementById('review-modal').classList.remove('active');
-}
-
-async function submitReview(e) {
-    e.preventDefault();
-    const review = {
-        name: document.getElementById('review-name').value,
-        location: document.getElementById('review-location').value,
-        rating: parseInt(document.getElementById('review-rating').value),
-        text: document.getElementById('review-text').value,
-        date: new Date().toISOString()
-    };
-    
-    if (window.saveReviewToFirebase) {
-        await window.saveReviewToFirebase(review);
-        showToast('✅ Reseña enviada. ¡Gracias!');
-    } else {
-        // Fallback local
-        const reviews = JSON.parse(localStorage.getItem('reviews') || '[]');
-        reviews.push(review);
-        localStorage.setItem('reviews', JSON.stringify(reviews));
-        showToast('✅ Reseña enviada. ¡Gracias!');
-    }
-    closeReviewForm();
-    loadReviewsFromFirebase();
-    e.target.reset();
-}
-
-function loadReviewsFromFirebase() {
-    const defaultReviews = [
-        { name:'Carlos M.', location:'🇪🇨 Guayaquil', rating:5, text:'Compré DirecTV Go para el mundial. Activación rápida y sin cortes.' },
-        { name:'Lucía F.', location:'🇵🇪 Lima', rating:5, text:'Excelente servicio, el plan anual de IBO Player me funciona perfecto en mi LG.' },
-        { name:'Juan P.', location:'🇨🇴 Bogotá', rating:5, text:'Dudé al principio, pero me enviaron la cuenta de Paramount a los 5 minutos.' },
-        { name:'Andrea V.', location:'🇦🇷 Buenos Aires', rating:5, text:'Pude pagar en mi moneda sin problema. Disney+ funcionando perfecto.' }
-    ];
-    
-    if (window.loadReviewsFromFirebase)
-
+document.addEventListener('DOMContentLoaded', initApp);

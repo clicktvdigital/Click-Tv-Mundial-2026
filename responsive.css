@@ -88,17 +88,3 @@
 @media (prefers-reduced-motion: reduce) {
     * { animation: none !important; transition: none !important; }
 }
-/* ── TheSportsDB badges ─────────────────────────────── */
-.team-badge {
-    width: 36px;
-    height: 36px;
-    object-fit: contain;
-    display: block;
-    margin: 0 auto 4px;
-}
-.match-round {
-    font-size: 10px;
-    color: #aaa;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
