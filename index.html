@@ -19,6 +19,7 @@
     <meta property="og:image:height" content="630">
     <meta property="og:description" content="Disfruta del Mundial 2026 en DIRECTV GO, Paramount+, DAZN, Disney+ e IPTV Premium. Activación inmediata.">
     <meta property="og:url" content="https://click-tv-mundial.vercel.app/">
+<meta property="og:image" content="https://click-tv-mundial.vercel.app/assets/img/banner-mundial.jpg">
     
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="CLICK TV MUNDIAL 2026">
@@ -51,6 +52,10 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="responsive.css">
 </head>
+<script
+type="module"
+src="https://widgets.api-sports.io/football/1.1.8/widget.js">
+</script>
 <body>
 
 <div class="top-bar">
@@ -140,9 +145,19 @@
         <button class="tab-btn" data-filter="proximos">📅 Próximos</button>
     </div>
     
-    <div class="matches-container" id="matches-container">
-        <!-- Generado por JS o Fallback -->
+    <div class="matches-container">
+
+    <div id="wg-api-football-games"
+         data-host="v3.football.api-sports.io"
+         data-key="7e284e79d45dced6ed3dd58cadca697c"
+         data-league="1"
+         data-season="2026"
+         data-theme="dark"
+         data-refresh="15"
+         data-language="es">
     </div>
+
+</div>
 </section>
 
 <section class="savings-calculator" id="ahorro">
@@ -903,8 +918,17 @@
 <div id="disqus_thread"></div>
 </div>
 <script>
-var disqus_config=function(){this.page.url='https://click-tv-mundial.vercel.app/';this.page.identifier='clicktv-mundial-2026';};
-(function(){var d=document,s=d.createElement('script');s.src='https://click-tv-mundial-2026.disqus.com/embed.js';s.setAttribute('data-timestamp',+new Date());(d.head||d.body).appendChild(s);})();
+var disqus_config = function () {
+    this.page.url = 'https://click-tv-mundial.vercel.app/';
+    this.page.identifier = 'clicktv-mundial-2026';
+};
+
+(function () {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://click-tv-mundial-2026.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+})();
 </script>
 </body>
 </html>
