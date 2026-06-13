@@ -81,28 +81,11 @@ document.getElementById('currency-selector').addEventListener('change', (e) => {
     applyCurrencyUpdate();
 });
 
-
-    function formatMoney(amount, currency) {
-
-    const symbols = {
-        USD: '$',
-        PEN: 'S/',
-        COP: '$',
-        ARS: '$',
-        CLP: '$',
-        MXN: '$'
-    };
-
-    const formatted = Number(amount).toLocaleString('es-ES', {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 2
-    });
-
-    if(currency === 'USD'){
-        return `$${formatted} USD`;
+function formatMoney(amount, currency) {
+    if(currency === 'COP' || currency === 'CLP' || currency === 'ARS') {
+        return new Intl.NumberFormat('es-LA', { style: 'currency', currency: currency, minimumFractionDigits: 0 }).format(amount);
     }
-
-    return `${symbols[currency]}${formatted} ${currency}`;
+    return new Intl.NumberFormat('es-LA', { style: 'currency', currency: currency }).format(amount);
 }
 
 function applyCurrencyUpdate() {
@@ -193,7 +176,7 @@ function changeQty(name, delta) {
 
 function applyCoupon() {
     const code = document.getElementById('coupon-code').value.toUpperCase();
-    if (code === 'CLICK TV MUNDIAL') { 
+    if (code === 'CLICKTVMUNDIAL') { 
         discountPercent = 0.05; 
         showToast('🎁 Cupón aplicado: 5% OFF'); 
     } else { 

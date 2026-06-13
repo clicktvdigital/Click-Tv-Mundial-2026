@@ -55,20 +55,3 @@
     .hero h1 { font-size: 1.8rem; }
     .badge { font-size: 10px; padding: 4px 10px; }
 }
-.card{
-    width:100%;
-    overflow:hidden;
-}
-
-.plan-select{
-    width:100%;
-    max-width:100%;
-}
-
-.calc-box{
-    width:100%;
-}
-
-.price-container{
-    word-break:break-word;
-}
