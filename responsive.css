@@ -1,90 +1,561 @@
-@media (max-width: 1024px) {
-    .hero h1 { font-size: 3.5rem; }
-    .calc-results { grid-template-columns: 1fr; }
-}
+/* Click TV Streaming 2026 - Responsive Styles */
+/* Mobile First Approach with Breakpoints */
 
-@media (max-width: 768px) {
-    .top-bar { font-size: 11px; padding: 8px 4%; flex-direction: column; text-align: center; }
-    .top-info { gap: 8px; justify-content: center; }
-    .separator { display: none; }
-    
-    header { padding: 12px 4%; }
-    .logo { font-size: 22px; }
-    .nav-links {
-        display: none; position: absolute; top: 100%; left: 0; right: 0;
-        background: #0a0a0a; flex-direction: column; padding: 20px;
-        gap: 15px; border-bottom: 1px solid #333;
+/* ============ BREAKPOINTS ============ */
+/* Mobile: < 480px (default) */
+/* Tablet: 480px - 768px */
+/* Laptop: 768px - 1024px */
+/* Desktop: > 1024px */
+
+/* ============ EXTRAS SMALL PHONES (< 375px) ============ */
+@media screen and (max-width: 374px) {
+    .hero-title {
+        font-size: 28px;
     }
-    .nav-links.active { display: flex; }
-    .menu-toggle { display: block; }
-    
-    .hero { min-height: 75vh; padding: 40px 5%; }
-    .hero h1 { font-size: 2.5rem; }
-    .hero p { font-size: 1rem; }
-    .hero-buttons { flex-direction: column; }
-    .hero-buttons .btn { width: 100%; justify-content: center; }
-    .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 15px; }
-    .hero-stats b { font-size: 1.5rem; }
-    
-    section { padding: 40px 4%; }
-    .section-header h2 { font-size: 2rem; }
-    
-    .mundial-tabs { gap: 5px; }
-    .tab-btn { padding: 8px 12px; font-size: 11px; }
-    .matches-container { grid-template-columns: 1fr; }
-    .match-teams { flex-direction: row; }
-    .team-flag { font-size: 1.5rem; }
-    .match-score { font-size: 1.5rem; padding: 6px 10px; }
-    .platforms-logos { gap: 10px; }
-    .platforms-logos span { font-size: 11px; padding: 8px 10px; }
-    
-    .calc-box { padding: 20px; }
-    .calc-results { grid-template-columns: 1fr; }
-    .res-item h3 { font-size: 1.5rem; }
-    
-    .grid { grid-template-columns: 1fr; gap: 15px; }
-    .card { padding: 25px 15px; }
-    .card h3 { font-size: 1.3rem; }
-    .local-price { font-size: 2rem; }
-    .promo-banner { padding: 25px 15px; }
-    .promo-content h3 { font-size: 1.5rem; }
-    .promo-items { flex-direction: column; gap: 10px; }
-    
-    .features-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-    .feature { padding: 20px 10px; }
-    .feature i { font-size: 2rem; }
-    .feature h4 { font-size: 0.9rem; }
-    .feature p { font-size: 11px; }
-    
-    .payments-grid { grid-template-columns: 1fr; }
-    .reviews-grid { grid-template-columns: 1fr; }
-    .form-row { grid-template-columns: 1fr; }
-    .contact-form { padding: 20px; }
-    .footer-content { grid-template-columns: 1fr; gap: 25px; text-align: center; }
-    
-    .cart-sidebar { width: 100%; right: -100%; }
-    
-    .support-float { bottom: 20px; right: 20px; padding: 10px 15px; }
-    .support-float span { display: none; }
-    .support-float i { font-size: 28px; }
-    .telegram-float { bottom: 90px; right: 20px; width: 48px; height: 48px; font-size: 1.5rem; }
+
+    .title-worldcup {
+        font-size: 16px;
+    }
+
+    .quick-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .products-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-btns {
+        gap: 8px;
+    }
+
+    .btn {
+        padding: 12px 20px;
+        font-size: 13px;
+    }
 }
 
-@media (max-width: 480px) {
-    .hero h1 { font-size: 2rem; }
-    .badge { font-size: 10px; padding: 6px 14px; }
-    .section-header h2 { font-size: 1.7rem; }
-    .features-grid { grid-template-columns: 1fr; }
-    .match-card { padding: 15px; }
-    .team { font-size: 12px; }
+/* ============ SMALL PHONES (375px - 479px) ============ */
+@media screen and (min-width: 375px) {
+    .hero-title {
+        font-size: 40px;
+    }
+
+    .title-worldcup {
+        font-size: 22px;
+    }
+
+    .section-title {
+        font-size: 26px;
+    }
 }
 
-@media (min-width: 1600px) {
-    .hero h1 { font-size: 5rem; }
-    .grid { grid-template-columns: repeat(4, 1fr); }
-    .matches-container { grid-template-columns: repeat(3, 1fr); }
+/* ============ TABLETS (480px - 767px) ============ */
+@media screen and (min-width: 480px) {
+    .container {
+        padding: 0 24px;
+    }
+
+    .hero {
+        padding: 80px 24px 100px;
+    }
+
+    .hero-title {
+        font-size: 48px;
+    }
+
+    .title-worldcup {
+        font-size: 26px;
+    }
+
+    .trophy-icon {
+        width: 40px;
+        height: 40px;
+    }
+
+    .hero-badge {
+        font-size: 13px;
+        padding: 10px 20px;
+    }
+
+    .hero-btns {
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    .quick-grid {
+        grid-template-columns: repeat(6, 1fr);
+    }
+
+    .quick-item span {
+        font-size: 12px;
+    }
+
+    .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
+
+    .payments-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .promos-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .reviews-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .form-row {
+        gap: 12px;
+    }
+
+    .support-btn {
+        bottom: 24px;
+        right: 24px;
+    }
 }
 
+/* ============ LAPTOPS & SMALL DESKTOPS (768px - 1023px) ============ */
+@media screen and (min-width: 768px) {
+    :root {
+        --radius-md: 14px;
+        --radius-lg: 20px;
+    }
+
+    .top-bar {
+        padding: 10px 32px;
+    }
+
+    .main-header {
+        padding: 16px 32px;
+    }
+
+    .menu-btn {
+        display: none;
+    }
+
+    .nav-desktop {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .logo {
+        font-size: 22px;
+    }
+
+    .logo-icon {
+        width: 32px;
+        height: 32px;
+    }
+
+    .hero {
+        min-height: 90vh;
+        padding: 120px 32px 100px;
+    }
+
+    .hero-title {
+        font-size: 56px;
+    }
+
+    .title-worldcup {
+        font-size: 32px;
+    }
+
+    .hero-desc {
+        font-size: 18px;
+    }
+
+    .btn {
+        padding: 16px 32px;
+        font-size: 15px;
+    }
+
+    .section {
+        padding: 80px 32px;
+    }
+
+    .section-title {
+        font-size: 32px;
+    }
+
+    .section-desc {
+        font-size: 16px;
+    }
+
+    .quick-access {
+        padding: 24px 32px;
+    }
+
+    .quick-item {
+        padding: 20px 12px;
+    }
+
+    .quick-item svg {
+        width: 28px;
+        height: 28px;
+    }
+
+    .matches-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
+
+    .match-card {
+        padding: 16px;
+    }
+
+    .team-flag {
+        font-size: 36px;
+    }
+
+    .team-name {
+        font-size: 14px;
+    }
+
+    .score {
+        font-size: 22px;
+    }
+
+    .products-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+    }
+
+    .products-5 {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .product-brand {
+        height: 120px;
+    }
+
+    .product-logo {
+        font-size: 18px;
+    }
+
+    .product-name {
+        font-size: 15px;
+    }
+
+    .product-price {
+        font-size: 24px;
+    }
+
+    .calc-box {
+        padding: 32px;
+    }
+
+    .calculator-section {
+        padding: 60px 32px;
+    }
+
+    .payment-card {
+        padding: 32px 24px;
+    }
+
+    .telegram-card {
+        padding: 40px;
+    }
+
+    .community-btns {
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    .cart-sidebar {
+        max-width: 420px;
+    }
+
+    .support-btn {
+        bottom: 30px;
+        right: 30px;
+    }
+}
+
+/* ============ DESKTOPS (1024px+) ============ */
+@media screen and (min-width: 1024px) {
+    .top-bar {
+        padding: 12px 48px;
+        font-size: 13px;
+    }
+
+    .top-bar-left {
+        gap: 20px;
+    }
+
+    .main-header {
+        padding: 20px 48px;
+    }
+
+    .nav-desktop {
+        gap: 16px;
+    }
+
+    .nav-desktop a {
+        font-size: 15px;
+        padding: 10px 16px;
+    }
+
+    .hero {
+        min-height: 100vh;
+        padding: 140px 48px 120px;
+    }
+
+    .hero-title {
+        font-size: 72px;
+    }
+
+    .title-worldcup {
+        font-size: 36px;
+    }
+
+    .trophy-icon {
+        width: 48px;
+        height: 48px;
+    }
+
+    .hero-desc {
+        font-size: 20px;
+        max-width: 500px;
+        margin: 0 auto 40px;
+    }
+
+    .hero-btns {
+        gap: 16px;
+    }
+
+    .section {
+        padding: 100px 48px;
+    }
+
+    .section-header {
+        margin-bottom: 48px;
+    }
+
+    .section-title {
+        font-size: 38px;
+    }
+
+    .quick-access {
+        padding: 32px 48px;
+    }
+
+    .matches-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .products-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .products-5 {
+        grid-template-columns: repeat(5, 1fr);
+    }
+
+    .footer {
+        padding: 40px 48px;
+    }
+
+    .footer-brand {
+        margin-bottom: 24px;
+    }
+
+    .footer-links {
+        gap: 32px;
+        margin-bottom: 24px;
+    }
+
+    .footer-links a {
+        font-size: 14px;
+    }
+}
+
+/* ============ LARGE DESKTOPS (1280px+) ============ */
+@media screen and (min-width: 1280px) {
+    .hero-title {
+        font-size: 80px;
+    }
+
+    .hero-content {
+        max-width: 800px;
+    }
+
+    .matches-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .reviews-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* ============ ULTRA WIDE (1600px+) ============ */
+@media screen and (min-width: 1600px) {
+    .container {
+        max-width: 1400px;
+    }
+
+    .hero-title {
+        font-size: 96px;
+    }
+
+    .section {
+        padding: 120px 64px;
+    }
+
+    .products-grid {
+        grid-template-columns: repeat(5, 1fr);
+    }
+
+    .products-5 {
+        grid-template-columns: repeat(6, 1fr);
+    }
+}
+
+/* ============ LANDSCAPE PHONE ============ */
+@media screen and (max-height: 500px) and (orientation: landscape) {
+    .hero {
+        min-height: auto;
+        padding: 40px 16px;
+    }
+
+    .hero-title {
+        font-size: 32px;
+    }
+
+    .hero-desc {
+        margin-bottom: 16px;
+    }
+
+    .hero-btns {
+        flex-direction: row;
+    }
+
+    .hero-scroll {
+        display: none;
+    }
+}
+
+/* ============ SAFETY AREAS (iOS) ============ */
+@supports (padding-top: env(safe-area-inset-top)) {
+    .top-bar {
+        padding-top: calc(8px + env(safe-area-inset-top));
+    }
+
+    .main-header {
+        top: calc(32px + env(safe-area-inset-top));
+    }
+
+    .support-btn {
+        bottom: calc(20px + env(safe-area-inset-bottom));
+    }
+
+    .cart-sidebar {
+        padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    .mobile-menu .menu-panel {
+        padding-top: env(safe-area-inset-top);
+    }
+}
+
+/* ============ PRINT STYLES ============ */
+@media print {
+    .top-bar,
+    .main-header,
+    .hero,
+    .support-btn,
+    .cart-sidebar,
+    .cart-overlay {
+        display: none;
+    }
+
+    body {
+        background: white;
+        color: black;
+    }
+
+    .section {
+        padding: 20px;
+        page-break-inside: avoid;
+    }
+}
+
+/* ============ REDUCED MOTION ============ */
 @media (prefers-reduced-motion: reduce) {
-    * { animation: none !important; transition: none !important; }
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    .hero-bg .particle {
+        animation: none;
+    }
+
+    .pulse {
+        animation: none;
+    }
+
+    html {
+        scroll-behavior: auto;
+    }
+}
+
+/* ============ HIGH CONTRAST ============ */
+@media (prefers-contrast: high) {
+    :root {
+        --gray-500: #a0a0a0;
+        --gray-600: #808080;
+    }
+
+    .btn-outline {
+        border-width: 3px;
+    }
+
+    .product-card,
+    .match-card,
+    .payment-card {
+        border-width: 2px;
+    }
+}
+
+/* ============ DARK MODE (Explicit) ============ */
+@media (prefers-color-scheme: dark) {
+    /* Already dark theme - no changes needed */
+}
+
+/* ============ HOVER MEDIA (Touch devices) ============ */
+@media (hover: none) {
+    .product-card:hover,
+    .payment-card:hover,
+    .quick-item:hover {
+        transform: none;
+    }
+
+    .btn-gold:hover {
+        transform: none;
+    }
+}
+
+/* ============ POINTER: COARSE (Touch screens) ============ */
+@media (pointer: coarse) {
+    .btn,
+    .quick-item,
+    .product-btn,
+    .copy-btn {
+        min-height: 44px;
+    }
+
+    .form-input,
+    .form-select,
+    .form-textarea {
+        font-size: 16px; /* Prevents zoom on iOS */
+    }
 }
