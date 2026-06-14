@@ -496,7 +496,20 @@ const res = await fetch(
 
         const upcomingMatches = data.events
             .filter(match => {
-                const extraMatches = [
+                
+                const matchDate = new Date(
+                    `${match.dateEvent}T${match.strTime}Z`
+                );
+
+                return matchDate > now;
+            })
+            .sort((a, b) => {
+                const dateA = new Date(`${a.dateEvent}T${a.strTime}Z`);
+                const dateB = new Date(`${b.dateEvent}T${b.strTime}Z`);
+                return dateA - dateB;
+            })
+            .slice(0, 4);
+        const extraMatches = [
 {
     strHomeTeam: "Netherlands",
     strAwayTeam: "Japan",
@@ -512,18 +525,6 @@ const res = await fetch(
 while (upcomingMatches.length < 4 && extraMatches.length > 0) {
     upcomingMatches.push(extraMatches.shift());
 }
-                const matchDate = new Date(
-                    `${match.dateEvent}T${match.strTime}Z`
-                );
-
-                return matchDate > now;
-            })
-            .sort((a, b) => {
-                const dateA = new Date(`${a.dateEvent}T${a.strTime}Z`);
-                const dateB = new Date(`${b.dateEvent}T${b.strTime}Z`);
-                return dateA - dateB;
-            })
-            .slice(0, 4);
 
         let html = '';
 
@@ -538,6 +539,7 @@ while (upcomingMatches.length < 4 && extraMatches.length > 0) {
     hour: '2-digit',
     minute: '2-digit'
 });
+            
 
             html += `
             <div class="match-card">
