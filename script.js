@@ -482,10 +482,30 @@ async function fetchWorldCupMatches() {
         const data = await res.json();
 
         if (data && data.events && data.events.length > 0) {
+const now = new Date();
 
+const upcomingMatches = data.events
+.filter(match => {
+    const matchDate = new Date(
+        `${match.dateEvent}T${match.strTime}Z`
+    );
+
+    return matchDate > now;
+})
+.sort((a, b) => {
+    const dateA = new Date(
+        `${a.dateEvent}T${a.strTime}Z`
+    );
+
+    const dateB = new Date(
+        `${b.dateEvent}T${b.strTime}Z`
+    );
+
+    return dateA - dateB;
+});
             let html = '';
 
-            data.events.slice(0, 4).forEach(m => {
+            upcomingMatches.slice(0, 4).forEach(m => {
 
                 const matchDate = new Date(
     `${m.dateEvent}T${m.strTime}Z`
@@ -504,9 +524,9 @@ const localTime = matchDate.toLocaleTimeString(
                 <div class="match-card">
 
                     <div class="match-header">
-                        <span>🏆 Mundial 2026</span>
+                        <span>🏆 Mundial FIFA 2026</span>
                         <span class="match-status status-upcoming">
-                            🔜 Próximo Partido
+                            🔜 🔴 Hoy
                         </span>
                     </div>
 
