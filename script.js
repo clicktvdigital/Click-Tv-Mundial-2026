@@ -471,13 +471,18 @@ async function fetchWorldCupMatches() {
 
             data.events.slice(0, 4).forEach(m => {
 
-                const localTime = new Date(
-                    `${m.dateEvent}T${m.strTime}`
-                ).toLocaleTimeString('es-EC', {
-                    timeZone: 'America/Guayaquil',
-                    hour: '2-digit',
-                    minute: '2-digit'
-                });
+                const matchDate = new Date(
+    `${m.dateEvent}T${m.strTime}Z`
+);
+
+const localTime = matchDate.toLocaleTimeString(
+    'es-EC',
+    {
+        timeZone: 'America/Guayaquil',
+        hour: '2-digit',
+        minute: '2-digit'
+    }
+);
 
                 html += `
                 <div class="match-card">
