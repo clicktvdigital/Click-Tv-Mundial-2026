@@ -477,16 +477,14 @@ async function fetchWorldCupMatches() {
     try {
 
         const today = new Date();
-const tomorrow = new Date();
-tomorrow.setDate(today.getDate() + 1);
-
 const dateStr = today.toISOString().split('T')[0];
 
-        const res = await fetch(
-            `https://www.thesportsdb.com/api/v1/json/3/eventsday.php?d=${today}&s=Soccer`
-        );
+const res = await fetch(
+    `https://www.thesportsdb.com/api/v1/json/3/eventsday.php?d=${dateStr}&s=Soccer`
+);
 
         const data = await res.json();
+        console.log(data);
 
         if (!data.events || !data.events.length) {
             showMatchFallback(container);
