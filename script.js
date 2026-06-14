@@ -25,6 +25,7 @@ async function initApp() {
     calculateSavings();
     startToastRotator();
     simulateOnlineUsers();
+    fetchWorldCupMatches();
     
     // Setup Menu Mayoristas toggle
     const navLinks = document.querySelectorAll('.nav-links a');
@@ -237,7 +238,6 @@ const savedCart =
 if(savedCart){
     cart = JSON.parse(savedCart);
     updateCartUI();
-    saveCart();
 }
 
 function addDropdownToCart(baseName, selectId) {
@@ -253,7 +253,7 @@ function changeQty(name, delta) {
         if(item.qty <= 0) {
             cart = cart.filter(i => i.name !== name);
         }
-        saveCart();
+        
         updateCartUI();
         saveCart();
     }
@@ -412,7 +412,7 @@ setInterval(updateCount, 6000);
 async function fetchWorldCupMatches() {
     const container = document.getElementById('matches-container');
     try {
-        const today = '2026-06-14';
+        const today = new Date().toISOString().split('T')[0];
 
 const res = await fetch(
 `https://www.thesportsdb.com/api/v1/json/3/eventsday.php?d=${today}&s=Soccer`

@@ -538,3 +538,10 @@ footer p{
 .cart-bank-info{
     margin-bottom: 20px;
 }
+.cart-totals{
+    padding-bottom: 100px;
+}
+
+.cart-sidebar{
+    padding-bottom: 120px;
+}
