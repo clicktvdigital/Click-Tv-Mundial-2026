@@ -67,6 +67,8 @@ async function detectUserCountry() {
     try {
         const res = await fetch('https://ipapi.co/json/');
         const data = await res.json();
+        console.log(data.events);
+alert("Partidos encontrados: " + data.events.length);
         const locationEl = document.getElementById('user-location');
 
 const countryFlags = {
