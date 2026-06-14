@@ -450,6 +450,22 @@ Croatia: "🇭🇷",
 Denmark: "🇩🇰",
 Switzerland: "🇨🇭"
 };
+const teamNamesES = {
+    "Haiti": "Haití",
+    "Scotland": "Escocia",
+    "Germany": "Alemania",
+    "Curaçao": "Curazao",
+    "Ivory Coast": "Costa de Marfil",
+    "Ecuador": "Ecuador",
+    "USA": "Estados Unidos",
+    "Mexico": "México",
+    "Canada": "Canadá",
+    "England": "Inglaterra",
+    "Netherlands": "Países Bajos",
+    "Switzerland": "Suiza",
+    "Sweden": "Suecia",
+    "Japan": "Japón"
+};
 
 async function fetchWorldCupMatches() {
     const container = document.getElementById('matches-container');
@@ -490,14 +506,15 @@ const localTime = matchDate.toLocaleTimeString(
                     <div class="match-header">
                         <span>🏆 Mundial 2026</span>
                         <span class="match-status status-upcoming">
-                            Próximo
+                            🔜 Próximo Partido
                         </span>
                     </div>
 
                     <div class="match-teams">
 
                         <span class="team">
-                            ${teamFlags[m.strHomeTeam] || '⚽'} ${m.strHomeTeam}
+                            ${teamFlags[m.strHomeTeam] || '⚽'}
+${teamNamesES[m.strHomeTeam] || m.strHomeTeam}
                         </span>
 
                         <span class="match-vs">
@@ -505,7 +522,8 @@ const localTime = matchDate.toLocaleTimeString(
                         </span>
 
                         <span class="team">
-                            ${teamFlags[m.strAwayTeam] || '⚽'} ${m.strAwayTeam}
+                            ${teamFlags[m.strAwayTeam] || '⚽'}
+${teamNamesES[m.strAwayTeam] || m.strAwayTeam}
                         </span>
 
                     </div>
