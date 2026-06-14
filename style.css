@@ -592,5 +592,7 @@ footer p{
 
 .btn-buy i{
     color:#fff !important;
-    margin-right:5px;
+    font-size:24px;
+    margin-right:10px;
+    color:white;
 }
