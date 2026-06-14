@@ -487,6 +487,7 @@ async function fetchWorldCupMatches() {
         );
 
         const data = await res.json();
+        alert(JSON.stringify(data).substring(0,500));
 console.log(data);
         const now = new Date();
 
