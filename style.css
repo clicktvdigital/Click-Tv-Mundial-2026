@@ -466,7 +466,7 @@ section { padding: 60px 5%; width: 100%; box-sizing: border-box; }
 .community-section{box-shadow:0 8px 32px rgba(0,0,0,.4)}
 #wg-api-football-games{
     width:100%;
-    overflow-x:auto;
+    overflow-x:auto;min-height:600px;
 }
 footer{
     background:#080808;

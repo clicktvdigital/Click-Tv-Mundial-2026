@@ -214,6 +214,8 @@ function addToCart(name, priceUSD) {
     } else {
         cart.push({ name, priceUSD, qty: 1 });
     }
+    cart.push(product);
+saveCart();
     updateCartUI();
 
 const cartSidebar = document.getElementById('cart-sidebar');
@@ -221,6 +223,19 @@ const cartSidebar = document.getElementById('cart-sidebar');
 if(cartSidebar){
     cartSidebar.classList.add('active');
 }
+}
+function saveCart(){
+    localStorage.setItem(
+        'clicktv_cart',
+        JSON.stringify(cart)
+    );
+}
+const savedCart =
+    localStorage.getItem('clicktv_cart');
+
+if(savedCart){
+    cart = JSON.parse(savedCart);
+    updateCartUI();
 }
 
 function addDropdownToCart(baseName, selectId) {
