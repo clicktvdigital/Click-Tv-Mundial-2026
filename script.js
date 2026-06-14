@@ -56,6 +56,7 @@ async function fetchExchangeRates() {
     try {
         const res = await fetch('https://open.er-api.com/v6/latest/USD');
         const data = await res.json();
+        alert(JSON.stringify(data).substring(0,500));
         window.rates = data.rates;
     } catch (e) {
         window.rates = { USD:1, PEN:3.8, COP:4000, ARS:1000, CLP:950, MXN:17 };
