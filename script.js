@@ -486,7 +486,7 @@ async function fetchWorldCupMatches() {
         );
 
         const data = await res.json();
-
+console.log(data);
         const now = new Date();
 
         const upcomingMatches = data.matches
