@@ -575,3 +575,22 @@ footer p{
 .cart-sidebar{
     padding-bottom: 120px;
 }
+.btn-buy{
+    background: linear-gradient(135deg,#25D366,#128C7E);
+    color:#fff !important;
+    font-weight:800;
+    font-size:15px;
+    border:none;
+    border-radius:10px;
+    box-shadow:0 0 20px rgba(37,211,102,.45);
+}
+
+.btn-buy:hover{
+    transform:translateY(-3px);
+    box-shadow:0 8px 20px rgba(37,211,102,.45);
+}
+
+.btn-buy i{
+    color:#fff !important;
+    margin-right:5px;
+}
