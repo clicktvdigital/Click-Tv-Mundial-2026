@@ -210,6 +210,7 @@ header {
     background:linear-gradient(135deg,#25D366,#128C7E);
     color:#fff;
     font-weight:700;
+    border:none;
     box-shadow:0 4px 15px rgba(37,211,102,.35);
 }
 
