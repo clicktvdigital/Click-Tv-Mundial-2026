@@ -843,6 +843,7 @@ src="https://widgets.api-sports.io/football/1.1.8/widget.js">
 </footer>
 
 <div class="cart-sidebar" id="cart-sidebar">
+
     <div class="cart-header">
         <h3>🛒 Tu Carrito</h3>
         <button onclick="toggleCart()" aria-label="Cerrar"><i class="fas fa-times"></i></button>
@@ -855,6 +856,7 @@ src="https://widgets.api-sports.io/football/1.1.8/widget.js">
     <div id="cart-items"></div>
     
     <div class="cart-totals" id="cart-totals-section" style="display: none;">
+    
         <div class="coupon-section">
             <input type="text" id="coupon-code" placeholder="Cupón (ej: CLICKTVMUNDIAL)">
             <button class="btn-primary" onclick="applyCoupon()">Validar</button>
@@ -864,7 +866,7 @@ src="https://widgets.api-sports.io/football/1.1.8/widget.js">
         <div class="cart-row" style="color:var(--gold);"><span>Descuento:</span><span id="cart-discount-local">$0.00</span></div>
         <div class="cart-row total"><span>Total Final:</span><span id="cart-total-local">$0.00</span></div>
         <div class="cart-row usd"><span>Total USD:</span><span id="cart-total-usd">$0.00 USD</span></div>
-        </div>
+        
         
         <button class="btn btn-whatsapp btn-block"
 onclick="processCheckout()"
@@ -877,7 +879,7 @@ onclick="window.open('https://wa.me/593939166222?text=Hola,%20adjunto%20comproba
 style="margin-top:15px;">
 📤 ENVIAR COMPROBANTE
 </button>
-    </div>
+    
         <div class="cart-bank-info" style="margin-top: 15px;">
             <h4><i class="fas fa-university"></i> Métodos de Pago</h4>
             <p class="small-text" style="color:#ff4444; font-size:12px; margin-bottom:10px;">⚠️ <b>IMPORTANTE:</b> Al realizar la transferencia agregue: <br><b style="color:white;">clicktvprivado@gmail.com</b><br> en la app bancaria para validación rápida.</p>
@@ -888,11 +890,13 @@ style="margin-top:15px;">
                 <li><span>PayPhone</span><span><a href="https://ppls.me/izAAuu8fptGHF6uZBV9L4Q" target="_blank" style="color:var(--gold);">Pagar</a></span></li>
                 <li><span>PayPal</span><span><a href="https://paypal.me/richardontaneda" target="_blank" style="color:var(--gold);">Pagar</a></span></li>
             </ul>
-        
 </div>
+      
 <div class="payment-note">
 ✅ Después del pago envía tu comprobante para activar tu servicio inmediatamente.
 </div>
+      </div> <!-- cart-totals -->
+</div> <!-- cart-sidebar -->
 <div class="floating-buttons-container">
     <a href="https://wa.me/593939166222?text=%F0%9F%91%8B%20Hola%2C%20necesito%20ayuda%20con%20mi%20servicio%20Click%20TV.%0A%0A%F0%9F%93%BA%20Servicio%3A%0A%E2%9C%A8%20Paramount%2B%0A%F0%9F%93%A1%20DIRECTV%20GO%0A%F0%9F%93%BA%20IPTV%0A%F0%9F%8D%BF%20Netflix%0A%E2%9A%99%EF%B8%8F%20Otro." target="_blank" class="float-btn float-support" aria-label="Soporte Técnico">
         <i class="fas fa-headset"></i>
