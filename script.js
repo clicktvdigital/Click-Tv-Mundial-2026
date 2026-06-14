@@ -466,107 +466,99 @@ const teamNamesES = {
     "Sweden": "Suecia",
     "Japan": "Japón"
 };
-
+const FOOTBALL_API_KEY = '467c885c07fa49baa40ac78cf636f8b0';
 async function fetchWorldCupMatches() {
-    const container = document.getElementById('matches-container');
+
+    const container =
+        document.getElementById('matches-container');
 
     if (!container) return;
 
     try {
-        const today = new Date().toISOString().split('T')[0];
 
         const res = await fetch(
-            `https://www.thesportsdb.com/api/v1/json/3/eventsday.php?d=${today}&s=Soccer`
+            'https://api.football-data.org/v4/competitions/WC/matches',
+            {
+                headers: {
+                    'X-Auth-Token': FOOTBALL_API_KEY
+                }
+            }
         );
 
         const data = await res.json();
 
-        if (data && data.events && data.events.length > 0) {
-const now = new Date();
+        const now = new Date();
 
-const upcomingMatches = data.events
-.filter(match => {
-    const matchDate = new Date(
-        `${match.dateEvent}T${match.strTime}Z`
-    );
+        const upcomingMatches = data.matches
+            .filter(match =>
+                new Date(match.utcDate) > now
+            )
+            .sort((a,b) =>
+                new Date(a.utcDate) -
+                new Date(b.utcDate)
+            )
+            .slice(0,4);
 
-    return matchDate > now;
-})
-.sort((a, b) => {
-    const dateA = new Date(
-        `${a.dateEvent}T${a.strTime}Z`
-    );
+        let html = '';
 
-    const dateB = new Date(
-        `${b.dateEvent}T${b.strTime}Z`
-    );
+        upcomingMatches.forEach(match => {
 
-    return dateA - dateB;
-});
-            let html = '';
+            const localTime =
+                new Date(match.utcDate)
+                .toLocaleTimeString(
+                    'es-EC',
+                    {
+                        timeZone:'America/Guayaquil',
+                        hour:'2-digit',
+                        minute:'2-digit'
+                    }
+                );
 
-            upcomingMatches.slice(0, 4).forEach(m => {
+            html += `
+            <div class="match-card">
 
-                const matchDate = new Date(
-    `${m.dateEvent}T${m.strTime}Z`
-);
+                <div class="match-header">
+                    <span>🏆 Mundial FIFA 2026</span>
+                    <span class="match-status status-upcoming">
+                        Próximo Partido
+                    </span>
+                </div>
 
-const localTime = matchDate.toLocaleTimeString(
-    'es-EC',
-    {
-        timeZone: 'America/Guayaquil',
-        hour: '2-digit',
-        minute: '2-digit'
-    }
-);
+                <div class="match-teams">
 
-                html += `
-                <div class="match-card">
+                    <span class="team">
+                        ⚽ ${match.homeTeam.name}
+                    </span>
 
-                    <div class="match-header">
-                        <span>🏆 Mundial FIFA 2026</span>
-                        <span class="match-status status-upcoming">
-                            🔜 🔴 Hoy
-                        </span>
-                    </div>
+                    <span class="match-vs">
+                        VS
+                    </span>
 
-                    <div class="match-teams">
+                    <span class="team">
+                        ⚽ ${match.awayTeam.name}
+                    </span>
 
-                        <span class="team">
-                            ${teamFlags[m.strHomeTeam] || '⚽'}
-${teamNamesES[m.strHomeTeam] || m.strHomeTeam}
-                        </span>
+                </div>
 
-                        <span class="match-vs">
-                            VS
-                        </span>
+                <div class="match-info">
+                    <i class="far fa-clock"></i>
+                    ${localTime} 🇪🇨
+                </div>
 
-                        <span class="team">
-                            ${teamFlags[m.strAwayTeam] || '⚽'}
-${teamNamesES[m.strAwayTeam] || m.strAwayTeam}
-                        </span>
+            </div>`;
+        });
 
-                    </div>
+        container.innerHTML = html;
 
-                    <div class="match-info">
-                        <i class="far fa-clock"></i>
-                        ${localTime} 🇪🇨
-                    </div>
+    } catch(error) {
 
-                </div>`;
-            });
-
-            container.innerHTML = html;
-
-        } else {
-            showMatchFallback(container);
-        }
-
-    } catch (error) {
         console.error(error);
+
         showMatchFallback(container);
+
     }
 }
+
 function showMatchFallback(container) {
     container.innerHTML = `
         <div style="text-align:center;padding:30px;grid-column:1/-1;">
