@@ -17,20 +17,35 @@
     .logo { font-size: 22px; }
     
     .nav-links {
-        display: none; position: absolute; top: 100%; left: 0; right: 0;
-        background: var(--bg-dark); flex-direction: column; padding: 20px; gap: 15px;
-        border-bottom: 1px solid var(--border); text-align: center;
-    }
-    .nav-links.active { display: flex; }
-    .menu-toggle { display: block; }
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--bg-dark);
+    flex-direction: column;
+    padding: 20px;
+    gap: 15px;
+    border-bottom: 1px solid var(--border);
+    text-align: center;
+}
+    
+    
     
     .hero { min-height: auto; padding: 60px 5%; }
     .hero h1 { font-size: 2.2rem; }
     .hero-buttons { flex-direction: column; gap: 10px; }
     .hero-buttons .btn { width: 100%; }
     
-    .hero-stats { grid-template-columns: repeat(2, 1fr); padding: 15px; gap: 10px;}
-    .hero-stats b { font-size: 1.5rem; }
+    .hero-stats {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 15px;
+    gap: 10px;
+}
+
+.hero-stats b {
+    font-size: 1.5rem;
+}
     
     section { padding: 40px 5%; }
     .section-header h2 { font-size: 1.8rem; }

@@ -65,28 +65,65 @@ async function detectUserCountry() {
     try {
         const res = await fetch('https://ipapi.co/json/');
         const data = await res.json();
-        document.getElementById('user-location').innerText = `${data.country_name}`;
+        const locationEl = document.getElementById('user-location');
+
+if(locationEl){
+    locationEl.innerText = data.country_name;
+}
         if (currencyMap[data.country_code]) {
             currentCurrency = currencyMap[data.country_code];
             document.getElementById('currency-selector').value = currentCurrency;
         }
     } catch (e) {
-        document.getElementById('user-location').innerText = `Latinoamérica`;
+        const locationEl = document.getElementById('user-location');
+
+if(locationEl){
+    locationEl.innerText = 'Latinoamérica';
+}
     }
     applyCurrencyUpdate();
 }
 
-document.getElementById('currency-selector').addEventListener('change', (e) => {
-    currentCurrency = e.target.value;
-    applyCurrencyUpdate();
+const currencySelector = document.getElementById('currency-selector');
+
+if (currencySelector) {
+currencySelector.addEventListener('change', (e) => {
+currentCurrency = e.target.value;
+applyCurrencyUpdate();
 });
+}
 
 function formatMoney(amount, currency) {
-    if(currency === 'COP' || currency === 'CLP' || currency === 'ARS') {
-        return new Intl.NumberFormat('es-LA', { style: 'currency', currency: currency, minimumFractionDigits: 0 }).format(amount);
-    }
-    return new Intl.NumberFormat('es-LA', { style: 'currency', currency: currency }).format(amount);
+
+const value = Number(amount);
+
+switch(currency){
+
+    case 'USD':
+        return `$${value.toFixed(2)} USD`;
+
+    case 'PEN':
+        return `S/ ${value.toFixed(2)}`;
+
+    case 'COP':
+        return `$${Math.round(value).toLocaleString('es-CO')} COP`;
+
+    case 'ARS':
+        return `$${Math.round(value).toLocaleString('es-AR')} ARS`;
+
+    case 'CLP':
+        return `$${Math.round(value).toLocaleString('es-CL')} CLP`;
+
+    case 'MXN':
+        return `$${value.toFixed(2)} MXN`;
+
+    default:
+        return `$${value.toFixed(2)} ${currency}`;
 }
+
+}
+
+
 
 function applyCurrencyUpdate() {
     currentRate = window.rates[currentCurrency] || 1;
@@ -124,27 +161,51 @@ function updateDropdownPrice(selectElement) {
     }
 }
 
-function calculateSavings() {
-    const select = document.getElementById('calc-service');
-    const option = select.options[select.selectedIndex];
-    const usdClick = parseFloat(option.value);
-    const usdOfficial = parseFloat(option.getAttribute('data-official'));
-    
-    const savingsLocal = (usdOfficial * currentRate) - (usdClick * currentRate);
-    const percent = Math.round(((usdOfficial - usdClick) / usdOfficial) * 100);
 
-    document.getElementById('calc-official').innerText = formatMoney(usdOfficial * currentRate, currentCurrency);
-    document.getElementById('calc-click').innerText = formatMoney(usdClick * currentRate, currentCurrency);
-    document.getElementById('calc-savings').innerHTML = `${formatMoney(savingsLocal, currentCurrency)} <br><small>(${percent}% OFF)</small>`;
+
+function calculateSavings() {
+
+const select = document.getElementById('calc-service');
+
+if(!select) return;
+
+const option = select.options[select.selectedIndex];
+
+const usdClick = parseFloat(option.value);
+const usdOfficial = parseFloat(option.getAttribute('data-official'));
+
+const savingsLocal = (usdOfficial * currentRate) - (usdClick * currentRate);
+const percent = Math.round(((usdOfficial - usdClick) / usdOfficial) * 100);
+
+document.getElementById('calc-official').innerText =
+    formatMoney(usdOfficial * currentRate, currentCurrency);
+
+document.getElementById('calc-click').innerText =
+    formatMoney(usdClick * currentRate, currentCurrency);
+
+document.getElementById('calc-savings').innerHTML =
+    `${formatMoney(savingsLocal, currentCurrency)} <br><small>(${percent}% OFF)</small>`;
+
 }
+
 
 function toggleMenu() {
-    document.getElementById('nav-links').classList.toggle('active');
+const nav = document.getElementById('nav-links');
+if(nav){
+nav.classList.toggle('active');
+}
 }
 
-function toggleCart() { 
-    document.getElementById('cart-sidebar').classList.toggle('active'); 
+function toggleCart() {
+    const cartSidebar = document.getElementById('cart-sidebar');
+
+    if(cartSidebar){
+        cartSidebar.classList.toggle('active');
+    }
 }
+
+
+
 
 function addToCart(name, priceUSD) {
     const existing = cart.find(i => i.name === name);
@@ -154,7 +215,12 @@ function addToCart(name, priceUSD) {
         cart.push({ name, priceUSD, qty: 1 });
     }
     updateCartUI();
-    document.getElementById('cart-sidebar').classList.add('active');
+
+const cartSidebar = document.getElementById('cart-sidebar');
+
+if(cartSidebar){
+    cartSidebar.classList.add('active');
+}
 }
 
 function addDropdownToCart(baseName, selectId) {
@@ -307,18 +373,30 @@ function startToastRotator() {
 }
 
 function simulateOnlineUsers() {
-    const onlineCountEl = document.getElementById('online-count');
-    setInterval(() => {
-        const base = 250;
-        const random = Math.floor(Math.random() * 50);
-        onlineCountEl.innerText = base + random;
-    }, 6000);
+
+const onlineCountEl = document.getElementById('online-count');
+
+if(!onlineCountEl) return;
+
+function updateCount(){
+    const base = 250;
+    const random = Math.floor(Math.random() * 50);
+    onlineCountEl.innerText = base + random;
+}
+
+updateCount();
+setInterval(updateCount, 6000);
+
 }
 
 async function fetchWorldCupMatches() {
     const container = document.getElementById('matches-container');
     try {
-        const res = await fetch('https://www.thesportsdb.com/api/v1/json/3/eventsday.php?d=2026-06-13&s=Soccer');
+        const today = new Date().toISOString().split('T')[0];
+
+const res = await fetch(
+`https://www.thesportsdb.com/api/v1/json/3/eventsday.php?d=${today}&s=Soccer`
+);
         const data = await res.json();
         
         if(data && data.events && data.events.length > 0) {
