@@ -206,11 +206,40 @@ header {
 .btn-primary:hover { background: #b70710; transform: translateY(-2px); }
 .btn-gold { background: var(--gold); color: #000; box-shadow: 0 4px 15px rgba(255,193,7,0.2); }
 .btn-gold:hover { background: var(--gold-dark); transform: translateY(-2px); }
-.btn-whatsapp { background: var(--whatsapp); color: white; }
-.btn-telegram { background: var(--telegram); color: white; }
-.btn-block { width: 100%; margin-top: 10px; }
-.btn-cart { background: rgba(255,255,255,0.1); border: 1px solid var(--border); color: white; }
-.btn-cart:hover { background: rgba(255,255,255,0.2); }
+.btn-whatsapp{
+    background:linear-gradient(135deg,#25D366,#128C7E);
+    color:#fff;
+    font-weight:700;
+    box-shadow:0 4px 15px rgba(37,211,102,.35);
+}
+
+.btn-whatsapp:hover{
+    transform:translateY(-3px);
+    box-shadow:0 8px 20px rgba(37,211,102,.45);
+}
+
+.btn-whatsapp i{
+    color:#fff;
+    font-size:18px;
+}
+
+.btn-cart{
+    background:linear-gradient(135deg,#FFC107,#FFB300);
+    border:none;
+    color:#000;
+    font-weight:700;
+    box-shadow:0 4px 15px rgba(255,193,7,.35);
+}
+
+.btn-cart:hover{
+    transform:translateY(-3px);
+    box-shadow:0 8px 20px rgba(255,193,7,.45);
+}
+
+.btn-cart i{
+    color:#000;
+    font-size:18px;
+}
 
 .hero-stats {
     display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px;
