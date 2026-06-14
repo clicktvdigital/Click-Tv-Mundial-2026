@@ -214,9 +214,10 @@ function addToCart(name, priceUSD) {
     } else {
         cart.push({ name, priceUSD, qty: 1 });
     }
-    cart.push(product);
-saveCart();
+    
+
     updateCartUI();
+    saveCart();
 
 const cartSidebar = document.getElementById('cart-sidebar');
 
@@ -236,6 +237,7 @@ const savedCart =
 if(savedCart){
     cart = JSON.parse(savedCart);
     updateCartUI();
+    saveCart();
 }
 
 function addDropdownToCart(baseName, selectId) {
@@ -252,6 +254,7 @@ function changeQty(name, delta) {
             cart = cart.filter(i => i.name !== name);
         }
         updateCartUI();
+        saveCart();
     }
 }
 
@@ -265,6 +268,7 @@ function applyCoupon() {
         showToast('❌ Cupón inválido'); 
     }
     updateCartUI();
+    saveCart();
 }
 
 function updateCartUI() {
