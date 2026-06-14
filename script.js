@@ -67,8 +67,7 @@ async function detectUserCountry() {
     try {
         const res = await fetch('https://ipapi.co/json/');
         const data = await res.json();
-        console.log(data.events);
-alert("Partidos encontrados: " + data.events.length);
+        
         const locationEl = document.getElementById('user-location');
 
 const countryFlags = {
@@ -497,6 +496,22 @@ const res = await fetch(
 
         const upcomingMatches = data.events
             .filter(match => {
+                const extraMatches = [
+{
+    strHomeTeam: "Netherlands",
+    strAwayTeam: "Japan",
+    customTime: "03:00 p. m."
+},
+{
+    strHomeTeam: "Sweden",
+    strAwayTeam: "Tunisia",
+    customTime: "09:00 p. m."
+}
+];
+
+while (upcomingMatches.length < 4 && extraMatches.length > 0) {
+    upcomingMatches.push(extraMatches.shift());
+}
                 const matchDate = new Date(
                     `${match.dateEvent}T${match.strTime}Z`
                 );
@@ -514,13 +529,15 @@ const res = await fetch(
 
         upcomingMatches.forEach(m => {
 
-            const localTime = new Date(
-                `${m.dateEvent}T${m.strTime}Z`
-            ).toLocaleTimeString('es-EC', {
-                timeZone: 'America/Guayaquil',
-                hour: '2-digit',
-                minute: '2-digit'
-            });
+            const localTime = m.customTime
+? m.customTime
+: new Date(
+    `${m.dateEvent}T${m.strTime}Z`
+).toLocaleTimeString('es-EC', {
+    timeZone: 'America/Guayaquil',
+    hour: '2-digit',
+    minute: '2-digit'
+});
 
             html += `
             <div class="match-card">
