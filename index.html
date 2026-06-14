@@ -782,8 +782,13 @@ src="https://widgets.api-sports.io/football/1.1.8/widget.js">
         </div>
     </div>
     <div style="text-align:center; margin-top:20px;">
-        <a href="https://t.me/s/streamid/5181" target="_blank" class="btn btn-primary"><i class="fab fa-telegram"></i> 🔵 Ver reseñas verificadas en Telegram</a>
-    </div>
+    <a href="https://t.me/streamid/5181"
+       onclick="abrirResenas(event)"
+       class="btn btn-primary">
+       <i class="fab fa-telegram"></i>
+       🔵 Revisar Comentarios de los Clientes 🇪🇨
+    </a>
+</div>
 </section>
 
 <section class="contact-section" id="contacto">
@@ -833,7 +838,10 @@ src="https://widgets.api-sports.io/football/1.1.8/widget.js">
         <div class="footer-col">
             <h4>Comunidades</h4>
             <a href="https://t.me/streamid" target="_blank"><i class="fab fa-telegram"></i> Grupo Telegram</a>
-            <a href="https://t.me/s/streamid/5181" target="_blank"><i class="fab fa-telegram"></i> Reseñas Verificadas</a>
+            <a href="#"
+   onclick="abrirResenas(event)">
+   <i class="fab fa-telegram"></i> Reseñas Verificadas
+</a>
             <a href="https://wa.me/593939166222" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp Soporte</a>
         </div>
     </div>
@@ -927,7 +935,17 @@ style="margin-top:15px;">
 </div>
 
 <div id="toast-container"></div>
+<script>
+function abrirResenas(event){
+    event.preventDefault();
 
+    window.open(
+        "https://web.telegram.org/k/#@streamid",
+        "_blank",
+        "noopener,noreferrer"
+    );
+}
+</script>
 <script src="script.js"></script>
 <p style="
 text-align:center;
