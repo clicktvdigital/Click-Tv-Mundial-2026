@@ -68,8 +68,20 @@ async function detectUserCountry() {
         const data = await res.json();
         const locationEl = document.getElementById('user-location');
 
+const countryFlags = {
+    EC: "🇪🇨",
+    PE: "🇵🇪",
+    CO: "🇨🇴",
+    AR: "🇦🇷",
+    CL: "🇨🇱",
+    MX: "🇲🇽",
+    US: "🇺🇸",
+    ES: "🇪🇸"
+};
+
 if(locationEl){
-    locationEl.innerText = data.country_name;
+    locationEl.innerText =
+        `${countryFlags[data.country_code] || "🌎"} ${data.country_name}`;
 }
         if (currencyMap[data.country_code]) {
             currentCurrency = currencyMap[data.country_code];
@@ -408,54 +420,135 @@ updateCount();
 setInterval(updateCount, 6000);
 
 }
+const teamFlags = {
+    Ecuador: "🇪🇨",
+    Germany: "🇩🇪",
+    Scotland: "🏴",
+    Haiti: "🇭🇹",
+    "Ivory Coast": "🇨🇮",
+    "Curaçao": "🇨🇼",
+    Mexico: "🇲🇽",
+    Canada: "🇨🇦",
+    USA: "🇺🇸",
+    Japan: "🇯🇵",
+    Sweden: "🇸🇪",
+    Tunisia: "🇹🇳",
+    Netherlands: "🇳🇱",
+    Spain: "🇪🇸",
+    France: "🇫🇷",
+    Brazil: "🇧🇷",
+    Argentina: "🇦🇷",
+    England: "🏴",
+    Portugal: "🇵🇹",
+Uruguay: "🇺🇾",
+Paraguay: "🇵🇾",
+Bolivia: "🇧🇴",
+Venezuela: "🇻🇪",
+Australia: "🇦🇺",
+Belgium: "🇧🇪",
+Croatia: "🇭🇷",
+Denmark: "🇩🇰",
+Switzerland: "🇨🇭"
+};
 
 async function fetchWorldCupMatches() {
     const container = document.getElementById('matches-container');
+
+    if (!container) return;
+
     try {
         const today = new Date().toISOString().split('T')[0];
 
-const res = await fetch(
-`https://www.thesportsdb.com/api/v1/json/3/eventsday.php?d=${today}&s=Soccer`
-);
+        const res = await fetch(
+            `https://www.thesportsdb.com/api/v1/json/3/eventsday.php?d=${today}&s=Soccer`
+        );
+
         const data = await res.json();
-        
-        if(data && data.events && data.events.length > 0) {
+
+        if (data && data.events && data.events.length > 0) {
+
             let html = '';
+
             data.events.slice(0, 4).forEach(m => {
+
+                const localTime = new Date(
+                    `${m.dateEvent}T${m.strTime}`
+                ).toLocaleTimeString('es-EC', {
+                    timeZone: 'America/Guayaquil',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+
                 html += `
                 <div class="match-card">
-                    <div class="match-header"><span>Mundial 2026</span><span class="match-status status-upcoming">Próximo</span></div>
-                    <div class="match-teams">
-                        <span class="team">${m.strHomeTeam}</span>
-                        <span class="match-vs">VS</span>
-                        <span class="team">${m.strAwayTeam}</span>
+
+                    <div class="match-header">
+                        <span>🏆 Mundial 2026</span>
+                        <span class="match-status status-upcoming">
+                            Próximo
+                        </span>
                     </div>
-                    <div class="match-info"><i class="far fa-clock"></i> ${m.strTime}</div>
+
+                    <div class="match-teams">
+
+                        <span class="team">
+                            ${teamFlags[m.strHomeTeam] || '⚽'} ${m.strHomeTeam}
+                        </span>
+
+                        <span class="match-vs">
+                            VS
+                        </span>
+
+                        <span class="team">
+                            ${teamFlags[m.strAwayTeam] || '⚽'} ${m.strAwayTeam}
+                        </span>
+
+                    </div>
+
+                    <div class="match-info">
+                        <i class="far fa-clock"></i>
+                        ${localTime} 🇪🇨
+                    </div>
+
                 </div>`;
             });
+
             container.innerHTML = html;
+
         } else {
             showMatchFallback(container);
         }
-    } catch(e) {
+
+    } catch (error) {
+        console.error(error);
         showMatchFallback(container);
     }
 }
-
 function showMatchFallback(container) {
     container.innerHTML = `
-        <div style="text-align: center; padding: 30px; grid-column: 1/-1;">
-            <i class="fas fa-futbol" style="font-size: 3rem; color: var(--gold); margin-bottom: 20px;"></i>
-            <h3 style="margin-bottom: 15px; font-size:1.5rem;">⚽ Información próximamente disponible</h3>
-            <p style="color: #aaa; margin-bottom: 20px; font-size: 14px;">Los horarios se actualizarán pronto.</p>
-            <a href="https://www.fifa.com/es/tournaments/mens/worldcup/canadamexicousa2026/scores-fixtures" target="_blank" class="btn btn-primary">
-                <i class="far fa-calendar-alt"></i> Ver Calendario Oficial FIFA
+        <div style="text-align:center;padding:30px;grid-column:1/-1;">
+            <i class="fas fa-futbol"
+               style="font-size:3rem;color:#f5b400;margin-bottom:15px;">
+            </i>
+
+            <h3 style="margin-bottom:10px;">
+                ⚽ Fixture en actualización
+            </h3>
+
+            <p style="color:#aaa;margin-bottom:20px;">
+                Consulta el calendario oficial FIFA.
+            </p>
+
+            <a href="https://www.fifa.com/es/tournaments/mens/worldcup/canadamexicousa2026/scores-fixtures"
+               target="_blank"
+               class="btn btn-primary">
+                Ver Fixture Oficial FIFA
             </a>
         </div>
     `;
 }
-
 document.addEventListener('DOMContentLoaded', initApp);
 
 // Dark mode persistence
 if(localStorage.getItem('theme')==='dark'){document.documentElement.classList.add('dark');}
+
