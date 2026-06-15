@@ -590,7 +590,7 @@ const res = await fetch(
 
 const data = await res.json();
 
-alert(JSON.stringify(data).substring(0,300));
+alert("Eventos encontrados: " + (data.events ? data.events.length : 0));
         
 
         if (!data.events || !data.events.length) {
