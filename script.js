@@ -1,4 +1,4 @@
-alert("SCRIPT INICIO");
+
 
 const products = [];
 const WPP_NUMBER = "593939166222";
@@ -24,39 +24,16 @@ const activities = [
 
 async function initApp() {
 
-    alert("INIT APP");
+    await fetchExchangeRates();
+    await detectUserCountry();
 
-    try {
+    calculateSavings();
+    startToastRotator();
+    simulateOnlineUsers();
+    fetchWorldCupMatches();
 
-        await fetchExchangeRates();
-        alert("PASO 1");
-
-        await detectUserCountry();
-        alert("PASO 2");
-
-        calculateSavings();
-        alert("PASO 3");
-
-        startToastRotator();
-        alert("PASO 4");
-
-        simulateOnlineUsers();
-        alert("PASO 5");
-
-        fetchWorldCupMatches();
-        alert("PASO 6");
-
-    } catch(err){
-
-        alert("ERROR: " + err.message);
-        console.error(err);
-
-    }
-
-}
-    
-    // Setup Menu Mayoristas toggle
     const navLinks = document.querySelectorAll('.nav-links a');
+
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
             if(e.target.getAttribute('href') === '#mayoristas') {
@@ -68,17 +45,17 @@ async function initApp() {
         });
     });
 
-    // Setup Mundial Tabs
     const tabs = document.querySelectorAll('#mundial-tabs .tab-btn');
+
     tabs.forEach(tab => {
         tab.addEventListener('click', (e) => {
             tabs.forEach(t => t.classList.remove('active'));
             e.target.classList.add('active');
-            // Filtrado visual simulado ya que se alimenta de API o fallback
             fetchWorldCupMatches();
         });
     });
 }
+
 
 async function fetchExchangeRates() {
 
@@ -617,7 +594,7 @@ const res = await fetch(
 
 const data = await res.json();
         console.log("DATA:", data);
-alert("EVENTOS: " + (data.events ? data.events.length : "NULL"));
+
 
 
         
@@ -722,7 +699,7 @@ const upcomingMatches = events
 
             </div>`;
         });
-alert("PARTIDOS ENCONTRADOS: " + upcomingMatches.length);
+
         container.innerHTML = html;
 startCountdowns();
 
@@ -758,7 +735,7 @@ function showMatchFallback(container) {
     `;
 }
 document.addEventListener('DOMContentLoaded', () => {
-    alert("DOM CARGADO");
+    
     initApp();
 });
 // Dark mode persistence
