@@ -23,11 +23,13 @@ const activities = [
 ];
 
 async function initApp() {
+    console.log("INIT APP EJECUTANDO");
+alert("INIT APP EJECUTANDO");
 
     await fetchExchangeRates();
     await detectUserCountry();
 
-    fetchWorldCupMatches();
+    await fetchWorldCupMatches();
 
 
 
