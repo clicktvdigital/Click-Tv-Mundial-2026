@@ -429,46 +429,122 @@ const teamFlags = {
     Haiti: "🇭🇹",
     "Ivory Coast": "🇨🇮",
     "Curaçao": "🇨🇼",
+
     Mexico: "🇲🇽",
     Canada: "🇨🇦",
     USA: "🇺🇸",
+    "United States": "🇺🇸",
+    "United States of America": "🇺🇸",
+
     Japan: "🇯🇵",
     Sweden: "🇸🇪",
     Tunisia: "🇹🇳",
     Netherlands: "🇳🇱",
+
     Spain: "🇪🇸",
     France: "🇫🇷",
     Brazil: "🇧🇷",
     Argentina: "🇦🇷",
     England: "🏴",
     Portugal: "🇵🇹",
-Uruguay: "🇺🇾",
-Paraguay: "🇵🇾",
-Bolivia: "🇧🇴",
-Venezuela: "🇻🇪",
-Australia: "🇦🇺",
-Belgium: "🇧🇪",
-Croatia: "🇭🇷",
-Denmark: "🇩🇰",
-Switzerland: "🇨🇭"
+
+    Uruguay: "🇺🇾",
+    Paraguay: "🇵🇾",
+    Bolivia: "🇧🇴",
+    Venezuela: "🇻🇪",
+
+    Australia: "🇦🇺",
+    Belgium: "🇧🇪",
+    Croatia: "🇭🇷",
+    Denmark: "🇩🇰",
+    Switzerland: "🇨🇭",
+
+    "Cape Verde": "🇨🇻",
+    Egypt: "🇪🇬",
+    "Saudi Arabia": "🇸🇦",
+
+    Morocco: "🇲🇦",
+    Algeria: "🇩🇿",
+    Nigeria: "🇳🇬",
+    Cameroon: "🇨🇲",
+    Senegal: "🇸🇳",
+    Ghana: "🇬🇭",
+
+    Chile: "🇨🇱",
+    Peru: "🇵🇪",
+    Colombia: "🇨🇴",
+
+    South Korea: "🇰🇷",
+    China: "🇨🇳",
+
+    Poland: "🇵🇱",
+    Austria: "🇦🇹",
+    Norway: "🇳🇴",
+    Serbia: "🇷🇸",
+    Turkey: "🇹🇷",
+    Ukraine: "🇺🇦"
 };
 const teamNamesES = {
-    "Haiti": "Haití",
-    "Scotland": "Escocia",
-    "Germany": "Alemania",
-    "Curaçao": "Curazao",
+    Germany: "Alemania",
+    Scotland: "Escocia",
+    Haiti: "Haití",
     "Ivory Coast": "Costa de Marfil",
-    "Ecuador": "Ecuador",
-    "USA": "Estados Unidos",
-    "Mexico": "México",
-    "Canada": "Canadá",
-    "England": "Inglaterra",
-    "Netherlands": "Países Bajos",
-    "Switzerland": "Suiza",
-    "Sweden": "Suecia",
-    "Japan": "Japón"
-};
+    "Curaçao": "Curazao",
 
+    Spain: "España",
+    Belgium: "Bélgica",
+    Egypt: "Egipto",
+    "Saudi Arabia": "Arabia Saudita",
+    "Cape Verde": "Cabo Verde",
+
+    Netherlands: "Países Bajos",
+    Japan: "Japón",
+    Sweden: "Suecia",
+    Tunisia: "Túnez",
+
+    France: "Francia",
+    Brazil: "Brasil",
+    Argentina: "Argentina",
+    England: "Inglaterra",
+    Portugal: "Portugal",
+
+    Uruguay: "Uruguay",
+    Paraguay: "Paraguay",
+    Bolivia: "Bolivia",
+    Venezuela: "Venezuela",
+
+    Australia: "Australia",
+    Croatia: "Croacia",
+    Denmark: "Dinamarca",
+    Switzerland: "Suiza",
+
+    Morocco: "Marruecos",
+    Algeria: "Argelia",
+    Nigeria: "Nigeria",
+    Cameroon: "Camerún",
+    Senegal: "Senegal",
+    Ghana: "Ghana",
+
+    Chile: "Chile",
+    Peru: "Perú",
+    Colombia: "Colombia",
+
+    Mexico: "México",
+    Canada: "Canadá",
+    USA: "Estados Unidos",
+    "United States": "Estados Unidos",
+    "United States of America": "Estados Unidos",
+
+    "South Korea": "Corea del Sur",
+    China: "China",
+
+    Poland: "Polonia",
+    Austria: "Austria",
+    Norway: "Noruega",
+    Serbia: "Serbia",
+    Turkey: "Turquía",
+    Ukraine: "Ucrania"
+};
 async function fetchWorldCupMatches() {
 
     const container = document.getElementById('matches-container');
@@ -509,22 +585,7 @@ const res = await fetch(
                 return dateA - dateB;
             })
             .slice(0, 4);
-        const extraMatches = [
-{
-    strHomeTeam: "Netherlands",
-    strAwayTeam: "Japan",
-    customTime: "03:00 p. m."
-},
-{
-    strHomeTeam: "Sweden",
-    strAwayTeam: "Tunisia",
-    customTime: "09:00 p. m."
-}
-];
-
-while (upcomingMatches.length < 4 && extraMatches.length > 0) {
-    upcomingMatches.push(extraMatches.shift());
-}
+        
 
         let html = '';
 
