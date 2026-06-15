@@ -1,6 +1,6 @@
 alert("SCRIPT INICIO");
 
-const products = ...
+const products = [];
 const WPP_NUMBER = "593939166222";
 let cart = [];
 let currentCurrency = 'USD';
@@ -592,11 +592,13 @@ const res = await fetch(
 );
 
 const data = await res.json();
+        console.log("DATA:", data);
+alert("EVENTOS: " + (data.events ? data.events.length : "NULL"));
 
 
         
 
-        if (!data.events || data.events.length === 0) {
+        if (!data.events || !Array.isArray(data.events)) {
 
     data.events = [
         {
@@ -620,8 +622,12 @@ const data = await res.json();
     ];
 }
 
-        const upcomingMatches = data.events
-    .sort((a, b) => {
+        const events = Array.isArray(data.events)
+    ? data.events
+    : [];
+
+const upcomingMatches = events
+.sort((a, b) => {
 
 
         const dateA =
@@ -692,7 +698,7 @@ const data = await res.json();
 
             </div>`;
         });
-
+alert("PARTIDOS ENCONTRADOS: " + upcomingMatches.length);
         container.innerHTML = html;
 startCountdowns();
 
