@@ -53,6 +53,17 @@ async function initApp() {
 }
 
 async function fetchExchangeRates() {
+
+    window.rates = {
+        USD: 1,
+        PEN: 3.80,
+        COP: 4000,
+        ARS: 1000,
+        CLP: 950,
+        MXN: 17
+    };
+
+} {
     try {
         const data = {
 events: [
@@ -78,7 +89,7 @@ strTime: "22:00:00"
 };
         
         console.log("API:", data);
-alert(JSON.stringify(data).substring(0,200));
+
         
         window.rates = data.rates;
     } catch (e) {
@@ -613,7 +624,7 @@ const data = await res.json();
 
         
 
-        if (!data.events || !data.events.length) {
+        if (!data.events || data.events.length === 0) {
 
     data.events = [
         {
