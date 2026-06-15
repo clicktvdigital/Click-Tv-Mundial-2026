@@ -781,4 +781,4 @@ update();
     setTimeout(startCountdowns, 60000);
 
 }
-
+alert("SCRIPT CARGADO");
