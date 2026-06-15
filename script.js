@@ -56,9 +56,7 @@ async function fetchExchangeRates() {
     try {
         const res = await fetch('https://open.er-api.com/v6/latest/USD');
         const data = await res.json();
-        console.log("PARTIDOS API:", data);
-        container.innerHTML =
-    "<div style='padding:20px;color:white'>Cargando partidos...</div>";
+        
         
         window.rates = data.rates;
     } catch (e) {
@@ -590,7 +588,7 @@ const res = await fetch(
 
 const data = await res.json();
 
-alert("Eventos encontrados: " + (data.events ? data.events.length : 0));
+
         
 
         if (!data.events || !data.events.length) {
