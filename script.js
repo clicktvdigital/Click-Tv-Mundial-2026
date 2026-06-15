@@ -1,3 +1,6 @@
+alert("SCRIPT INICIO");
+
+const products = ...
 const WPP_NUMBER = "593939166222";
 let cart = [];
 let currentCurrency = 'USD';
@@ -724,9 +727,10 @@ function showMatchFallback(container) {
         </div>
     `;
 }
-document.addEventListener('DOMContentLoaded', initApp);
-console.log("SCRIPT CARGADO");
-alert("SCRIPT CARGADO");
+document.addEventListener('DOMContentLoaded', () => {
+    alert("DOM CARGADO");
+    initApp();
+});
 // Dark mode persistence
 if(localStorage.getItem('theme')==='dark'){document.documentElement.classList.add('dark');}
 function startCountdowns(){
