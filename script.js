@@ -74,22 +74,37 @@ async function fetchExchangeRates() {
 }
 
 async function detectUserCountry() {
-    try {
-        const res = await fetch('https://ipapi.co/json/');
-        const data = await res.json();
-        
-        const locationEl = document.getElementById('user-location');
 
-const countryFlags = {
-    EC: "🇪🇨",
-    PE: "🇵🇪",
-    CO: "🇨🇴",
-    AR: "🇦🇷",
-    CL: "🇨🇱",
-    MX: "🇲🇽",
-    US: "🇺🇸",
-    ES: "🇪🇸"
-};
+    const locationEl =
+        document.getElementById('user-location');
+
+    try {
+
+        const controller = new AbortController();
+
+        setTimeout(() => controller.abort(), 3000);
+
+        const res = await fetch(
+            'https://ipapi.co/json/',
+            { signal: controller.signal }
+        );
+
+        const data = await res.json();
+
+        if(locationEl){
+            locationEl.innerText =
+                `🌎 ${data.country_name}`;
+        }
+
+    } catch (e) {
+
+        if(locationEl){
+            locationEl.innerText = 'Latinoamérica';
+        }
+
+    }
+
+}
 
 if(locationEl){
     locationEl.innerText =
