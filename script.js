@@ -593,23 +593,22 @@ const res = await fetch(
             return;
         }
 
-        const now = new Date();
-
         const upcomingMatches = data.events
-            .filter(match => {
-                
-                const matchDate = new Date(
-                    `${match.dateEvent}T${match.strTime}Z`
-                );
+    .sort((a, b) => {
+if(upcomingMatches.length === 0){
+    showMatchFallback(container);
+    return;
+}
+        const dateA =
+            new Date(`${a.dateEvent}T${a.strTime}Z`);
 
-                return matchDate > now;
-            })
-            .sort((a, b) => {
-                const dateA = new Date(`${a.dateEvent}T${a.strTime}Z`);
-                const dateB = new Date(`${b.dateEvent}T${b.strTime}Z`);
-                return dateA - dateB;
-            })
-            .slice(0, 4);
+        const dateB =
+            new Date(`${b.dateEvent}T${b.strTime}Z`);
+
+        return dateA - dateB;
+
+    })
+    .slice(0, 6);
         
 
         let html = '';
