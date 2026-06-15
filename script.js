@@ -56,7 +56,10 @@ async function fetchExchangeRates() {
     try {
         const res = await fetch('https://open.er-api.com/v6/latest/USD');
         const data = await res.json();
-        console.log("EVENTOS:", data.events);
+        console.log("PARTIDOS API:", data);
+        container.innerHTML =
+    "<div style='padding:20px;color:white'>Cargando partidos...</div>";
+        
         window.rates = data.rates;
     } catch (e) {
         window.rates = { USD:1, PEN:3.8, COP:4000, ARS:1000, CLP:950, MXN:17 };
@@ -335,7 +338,7 @@ function updateCartUI() {
 }
 
 function processCheckout() {
-     (cart.length === 0) return;
+    if (cart.length === 0) return;
     let text = `🚀 *NUEVO PEDIDO INTERNACIONAL*%0A%0A📍 *País:* ${document.getElementById('user-location').innerText}%0A💱 *Moneda:* ${currentCurrency}%0A🛒 *Resumen:*%0A`;
     cart.forEach(i => { text += `▪ ${i.qty}x ${i.name} -> ${formatMoney(i.priceUSD * currentRate * i.qty, currentCurrency)}%0A`; });
     
