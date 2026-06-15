@@ -63,30 +63,7 @@ async function fetchExchangeRates() {
         MXN: 17
     };
 
-} {
-    try {
-        const data = {
-events: [
-{
-strHomeTeam: "Spain",
-strAwayTeam: "Cape Verde",
-dateEvent: "2026-06-15",
-strTime: "16:00:00"
-},
-{
-strHomeTeam: "Belgium",
-strAwayTeam: "Egypt",
-dateEvent: "2026-06-15",
-strTime: "19:00:00"
-},
-{
-strHomeTeam: "Saudi Arabia",
-strAwayTeam: "Uruguay",
-dateEvent: "2026-06-15",
-strTime: "22:00:00"
 }
-]
-};
         
         console.log("API:", data);
 
