@@ -20,6 +20,7 @@ const activities = [
 ];
 
 async function initApp() {
+    alert("INIT APP");
     await fetchExchangeRates();
     await detectUserCountry();
     calculateSavings();
@@ -724,7 +725,8 @@ function showMatchFallback(container) {
     `;
 }
 document.addEventListener('DOMContentLoaded', initApp);
-
+console.log("SCRIPT CARGADO");
+alert("SCRIPT CARGADO");
 // Dark mode persistence
 if(localStorage.getItem('theme')==='dark'){document.documentElement.classList.add('dark');}
 function startCountdowns(){
