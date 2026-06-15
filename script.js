@@ -106,33 +106,6 @@ async function detectUserCountry() {
 
 }
 
-if(locationEl){
-    locationEl.innerText =
-        `${countryFlags[data.country_code] || "🌎"} ${data.country_name}`;
-}
-        if (currencyMap[data.country_code]) {
-            currentCurrency = currencyMap[data.country_code];
-            document.getElementById('currency-selector').value = currentCurrency;
-        }
-    } catch (e) {
-        const locationEl = document.getElementById('user-location');
-
-if(locationEl){
-    locationEl.innerText = 'Latinoamérica';
-}
-    }
-    applyCurrencyUpdate();
-}
-
-const currencySelector = document.getElementById('currency-selector');
-
-if (currencySelector) {
-currencySelector.addEventListener('change', (e) => {
-currentCurrency = e.target.value;
-applyCurrencyUpdate();
-});
-}
-
 function formatMoney(amount, currency) {
 
 const value = Number(amount);
