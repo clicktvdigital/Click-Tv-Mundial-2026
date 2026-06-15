@@ -482,7 +482,17 @@ const teamFlags = {
     Norway: "🇳🇴",
     Serbia: "🇷🇸",
     Turkey: "🇹🇷",
-    Ukraine: "🇺🇦"
+    Ukraine: "🇺🇦",
+    Iran: "🇮🇷",
+"New Zealand": "🇳🇿",
+Jordan: "🇯🇴",
+Iraq: "🇮🇶",
+Panama: "🇵🇦",
+"South Africa": "🇿🇦",
+Czechia: "🇨🇿",
+"Bosnia and Herzegovina": "🇧🇦",
+"DR Congo": "🇨🇩",
+Uzbekistan: "🇺🇿"
 };
 const teamNamesES = {
     Germany: "Alemania",
@@ -543,7 +553,22 @@ const teamNamesES = {
     Norway: "Noruega",
     Serbia: "Serbia",
     Turkey: "Turquía",
-    Ukraine: "Ucrania"
+    Ukraine: "Ucrania",
+    "Iran": "Irán",
+"New Zealand": "Nueva Zelanda",
+"Jordan": "Jordania",
+"Algeria": "Argelia",
+"Norway": "Noruega",
+"Senegal": "Senegal",
+"Iraq": "Irak",
+"Ghana": "Ghana",
+"Panama": "Panamá",
+"Turkey": "Turquía",
+"Morocco": "Marruecos",
+"Bosnia and Herzegovina": "Bosnia y Herzegovina",
+"South Africa": "Sudáfrica",
+"South Korea": "Corea del Sur",
+"Czechia": "Chequia"
 };
 async function fetchWorldCupMatches() {
 
@@ -561,7 +586,7 @@ const res = await fetch(
 );
 
         const data = await res.json();
-        console.log(data);
+        
 
         if (!data.events || !data.events.length) {
             showMatchFallback(container);
@@ -608,8 +633,8 @@ const res = await fetch(
                 <div class="match-header">
                     <span>🏆 Mundial FIFA 2026</span>
                     <span class="match-status status-upcoming">
-                        🔴 Hoy
-                    </span>
+    ⚽ Mundial 2026
+</span>
                 </div>
 
                 <div class="match-teams">
@@ -629,13 +654,19 @@ const res = await fetch(
                 </div>
 
                 <div class="match-info">
-                    🕒 ${localTime} 🇪🇨
+                    🕒 Hora Ecuador: ${localTime} 🇪🇨
+<br>
+<span class="countdown"
+      data-date="${m.dateEvent}"
+      data-time="${m.strTime}">
+</span>
                 </div>
 
             </div>`;
         });
 
         container.innerHTML = html;
+startCountdowns();
 
     } catch (error) {
 
@@ -672,4 +703,55 @@ document.addEventListener('DOMContentLoaded', initApp);
 
 // Dark mode persistence
 if(localStorage.getItem('theme')==='dark'){document.documentElement.classList.add('dark');}
+function startCountdowns(){
+
+document
+.querySelectorAll('.countdown')
+.forEach(el=>{
+
+const date =
+    el.dataset.date;
+
+const time =
+    el.dataset.time;
+
+const matchDate =
+    new Date(`${date}T${time}Z`);
+
+function update(){
+
+const diff =
+    matchDate - new Date();
+
+if(diff <= 0){
+
+    el.innerHTML =
+        '🔴 EN VIVO';
+
+    return;
+}
+
+const hours =
+    Math.floor(diff/1000/60/60);
+
+const mins =
+    Math.floor(
+        (diff/1000/60)%60
+    );
+
+if(hours === 0){
+    el.innerHTML = `🔥 ${mins} min`;
+}else{
+    el.innerHTML = `⏳ ${hours}h ${mins}m`;
+}
+
+}
+
+update();
+    
+
+});
+    setTimeout(startCountdowns, 60000);
+
+}
 
