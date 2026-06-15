@@ -588,7 +588,9 @@ const res = await fetch(
     `https://www.thesportsdb.com/api/v1/json/3/eventsday.php?d=${dateStr}&s=Soccer`
 );
 
-        const data = await res.json();
+const data = await res.json();
+
+alert(JSON.stringify(data).substring(0,300));
         
 
         if (!data.events || !data.events.length) {
