@@ -22,9 +22,18 @@ const activities = [
     "🟢 Cliente de México activó IPTV Ultra"
 ];
 
-async function initApp() {
-    console.log("INIT APP EJECUTANDO");
-alert("INIT APP EJECUTANDO");
+    async function initApp() {
+    alert("PASO 1");
+
+    await fetchExchangeRates();
+    alert("PASO 2");
+
+    await detectUserCountry();
+    alert("PASO 3");
+
+    await fetchWorldCupMatches();
+    alert("PASO 4");
+}
 
     await fetchExchangeRates();
     await detectUserCountry();
