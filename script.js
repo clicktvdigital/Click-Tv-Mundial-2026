@@ -23,13 +23,37 @@ const activities = [
 ];
 
 async function initApp() {
+
     alert("INIT APP");
-    await fetchExchangeRates();
-    await detectUserCountry();
-    calculateSavings();
-    startToastRotator();
-    simulateOnlineUsers();
-    fetchWorldCupMatches();
+
+    try {
+
+        await fetchExchangeRates();
+        alert("PASO 1");
+
+        await detectUserCountry();
+        alert("PASO 2");
+
+        calculateSavings();
+        alert("PASO 3");
+
+        startToastRotator();
+        alert("PASO 4");
+
+        simulateOnlineUsers();
+        alert("PASO 5");
+
+        fetchWorldCupMatches();
+        alert("PASO 6");
+
+    } catch(err){
+
+        alert("ERROR: " + err.message);
+        console.error(err);
+
+    }
+
+}
     
     // Setup Menu Mayoristas toggle
     const navLinks = document.querySelectorAll('.nav-links a');
