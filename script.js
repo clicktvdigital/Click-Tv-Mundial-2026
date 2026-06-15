@@ -34,15 +34,6 @@ const activities = [
     await fetchWorldCupMatches();
     alert("PASO 4");
 }
-
-    await fetchExchangeRates();
-    await detectUserCountry();
-
-    await fetchWorldCupMatches();
-
-
-
-
     const navLinks = document.querySelectorAll('.nav-links a');
 
     navLinks.forEach(link => {
