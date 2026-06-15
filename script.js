@@ -25,12 +25,15 @@ const activities = [
 async function initApp() {
 
     await fetchExchangeRates();
-    await detectUserCountry();
+
+    // await detectUserCountry();
 
     calculateSavings();
     startToastRotator();
     simulateOnlineUsers();
     fetchWorldCupMatches();
+
+
 
     const navLinks = document.querySelectorAll('.nav-links a');
 
