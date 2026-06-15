@@ -64,15 +64,6 @@ async function fetchExchangeRates() {
     };
 
 }
-        
-        console.log("API:", data);
-
-        
-        window.rates = data.rates;
-    } catch (e) {
-        window.rates = { USD:1, PEN:3.8, COP:4000, ARS:1000, CLP:950, MXN:17 };
-    }
-}
 
 async function detectUserCountry() {
     try {
