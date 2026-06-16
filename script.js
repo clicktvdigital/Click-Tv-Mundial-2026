@@ -24,35 +24,30 @@ const activities = [
 
     async function initApp() {
 
-    await fetchExchangeRates();
-    await detectUserCountry();
-    await fetchWorldCupMatches();
+    try {
 
-    startToastRotator();
-    simulateOnlineUsers();
+        console.log("1");
+        await fetchExchangeRates();
 
-    const navLinks = document.querySelectorAll('.nav-links a');
+        console.log("2");
+        await detectUserCountry();
 
-    navLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
-            if(e.target.getAttribute('href') === '#mayoristas') {
-                e.preventDefault();
-                document.getElementById('mayoristas').style.display = 'block';
-                document.getElementById('mayoristas').scrollIntoView();
-            }
-            document.getElementById('nav-links').classList.remove('active');
-        });
-    });
+        console.log("3");
+        await fetchWorldCupMatches();
 
-    const tabs = document.querySelectorAll('#mundial-tabs .tab-btn');
+        console.log("4");
+        startToastRotator();
 
-    tabs.forEach(tab => {
-        tab.addEventListener('click', (e) => {
-            tabs.forEach(t => t.classList.remove('active'));
-            e.target.classList.add('active');
-            fetchWorldCupMatches();
-        });
-    });
+        console.log("5");
+        simulateOnlineUsers();
+
+        console.log("6");
+
+    } catch(err) {
+
+        console.error("ERROR INIT:", err);
+
+    }
 
 }
 
@@ -584,12 +579,9 @@ async function fetchWorldCupMatches() {
         const today = new Date();
 const dateStr = today.toISOString().split('T')[0];
 
-const res = await fetch(
-    `https://www.thesportsdb.com/api/v1/json/3/eventsday.php?d=${dateStr}&s=Soccer`
-);
+const data = { events: [] };
 
-const data = await res.json();
-        console.log("DATA:", data);
+
 
 
 
@@ -707,6 +699,7 @@ const upcomingMatches = events
             </div>`;
         });
 console.log("HTML generado:", html);
+        console.log("VOY A PINTAR");
         container.innerHTML = html;
         
 startCountdowns();
