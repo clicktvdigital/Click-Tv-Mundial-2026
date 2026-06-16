@@ -1,5 +1,5 @@
 
-
+alert("SCRIPT ARRANCA");
 const products = [];
 const WPP_NUMBER = "593939166222";
 let cart = [];
@@ -791,6 +791,7 @@ setInterval(update, 60000);
 
 });
 }
+alert("FINAL SCRIPT");
 
 
 
