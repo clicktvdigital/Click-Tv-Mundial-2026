@@ -40,6 +40,8 @@ console.log("INIT APP");
 
         console.log("5");
         simulateOnlineUsers();
+        updateCartUI();
+applyCurrencyUpdate();
 
         console.log("6");
 
@@ -237,17 +239,20 @@ function saveCart(){
     );
 }
 try {
+
     const savedCart =
         localStorage.getItem('clicktv_cart');
 
     if(savedCart){
         cart = JSON.parse(savedCart);
-        updateCartUI();
     }
+
 } catch(e){
-    console.error("Error carrito:", e);
-    localStorage.removeItem('clicktv_cart');
+
+    console.error(e);
+
 }
+
 
 function addDropdownToCart(baseName, selectId) {
     const select = document.getElementById(selectId);
