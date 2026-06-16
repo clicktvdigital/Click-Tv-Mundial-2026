@@ -33,7 +33,7 @@ const activities = [
 
     await fetchWorldCupMatches();
     alert("PASO 4");
-}
+
     const navLinks = document.querySelectorAll('.nav-links a');
 
     navLinks.forEach(link => {
@@ -56,7 +56,7 @@ const activities = [
             fetchWorldCupMatches();
         });
     });
-}
+
 
 
 async function fetchExchangeRates() {
