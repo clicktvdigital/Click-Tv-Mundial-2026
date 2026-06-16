@@ -356,27 +356,38 @@ async function fetchWorldCupMatches() {
     const container = document.getElementById('matches-container');
     if (!container) return;
     try {
-        const response = await fetch(
-    "https://v3.football.api-sports.io/fixtures?league=1&season=2026&next=20",
-    {
-        method: "GET",
-        headers: {
-            "x-apisports-key": API_KEY
-        }
-    }
-);
-
-const data = await response.json();
-        
-        console.log("API DATA:", data);
-alert(JSON.stringify(data).substring(0,500));
-
-const events = (data.response || []).map(match => ({
-    strHomeTeam: match.teams.home.name,
-    strAwayTeam: match.teams.away.name,
-    dateEvent: match.fixture.date.split("T")[0],
-    strTime: match.fixture.date.split("T")[1].substring(0,8)
-}));
+        const events = [
+  {
+    strHomeTeam: "France",
+    strAwayTeam: "Senegal",
+    dateEvent: "2026-06-16",
+    strTime: "15:00:00"
+  },
+  {
+    strHomeTeam: "Iraq",
+    strAwayTeam: "Norway",
+    dateEvent: "2026-06-16",
+    strTime: "18:00:00"
+  },
+  {
+    strHomeTeam: "Argentina",
+    strAwayTeam: "Algeria",
+    dateEvent: "2026-06-16",
+    strTime: "21:00:00"
+  },
+  {
+    strHomeTeam: "Portugal",
+    strAwayTeam: "DR Congo",
+    dateEvent: "2026-06-17",
+    strTime: "13:00:00"
+  },
+  {
+    strHomeTeam: "England",
+    strAwayTeam: "Croatia",
+    dateEvent: "2026-06-17",
+    strTime: "16:00:00"
+  }
+];
             
 
 
