@@ -23,20 +23,38 @@ const activities = [
 ];
 
     async function initApp() {
+
     alert("PASO 1");
 
-    await fetchExchangeRates();
-    alert("PASO 2");
+    try {
 
-    await detectUserCountry();
-    alert("PASO 3");
+        alert("PASO 2");
+        await fetchExchangeRates();
 
-    await fetchWorldCupMatches();
-    alert("PASO 4");
-        
-startToastRotator();
-showToast("🔥 PRUEBA TOAST");
+        alert("PASO 3");
+        await detectUserCountry();
+
+        alert("PASO 4");
+        await fetchWorldCupMatches();
+
+        alert("PASO 5");
+
+        startToastRotator();
+
+        alert("PASO 6");
+
         simulateOnlineUsers();
+
+        alert("PASO 7");
+
+    } catch(err) {
+
+        alert("ERROR: " + err.message);
+        console.error(err);
+
+    }
+
+}
     const navLinks = document.querySelectorAll('.nav-links a');
 
     navLinks.forEach(link => {
