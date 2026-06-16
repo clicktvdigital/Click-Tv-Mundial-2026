@@ -52,9 +52,9 @@ const activities = [
         alert("ERROR: " + err.message);
         console.error(err);
 
-    }
+    
 
-}
+
     const navLinks = document.querySelectorAll('.nav-links a');
 
     navLinks.forEach(link => {
