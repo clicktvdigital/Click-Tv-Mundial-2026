@@ -404,7 +404,7 @@ async function fetchWorldCupMatches() {
 
         let html = '';
         upcomingMatches.forEach(m => {
-            const localTime = new Date(`${m.dateEvent}T${m.strTime}Z`).toLocaleTimeString('es-EC', {
+            const localTime = new Date(`${m.dateEvent}T${m.strTime}`).toLocaleTimeString('es-EC', {
                 timeZone: 'America/Guayaquil',
                 hour: '2-digit',
                 minute: '2-digit'
