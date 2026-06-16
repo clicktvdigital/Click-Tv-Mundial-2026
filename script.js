@@ -36,7 +36,7 @@ const activities = [
         
 startToastRotator();
 showToast("🔥 PRUEBA TOAST");
-        
+        simulateOnlineUsers();
     const navLinks = document.querySelectorAll('.nav-links a');
 
     navLinks.forEach(link => {
@@ -782,7 +782,13 @@ update();
     
 
 });
-    setTimeout(startCountdowns, 60000);
-
-}
+    setTimeout(() => {
+    showToast("🔥 PRUEBA");
+}, 3000);
+    
 alert("SCRIPT CARGADO");
+alert(
+document.getElementById("toast-container")
+? "TOAST EXISTE"
+: "TOAST NO EXISTE"
+);
