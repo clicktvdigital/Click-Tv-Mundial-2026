@@ -33,7 +33,10 @@ const activities = [
 
     await fetchWorldCupMatches();
     alert("PASO 4");
-
+        
+startToastRotator();
+showToast("🔥 PRUEBA TOAST");
+        
     const navLinks = document.querySelectorAll('.nav-links a');
 
     navLinks.forEach(link => {
