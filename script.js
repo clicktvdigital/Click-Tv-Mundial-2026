@@ -1,5 +1,6 @@
 const products = [];
 const WPP_NUMBER = "593939166222";
+const API_KEY = "7e284e79d45dced6ed3dd58cadca697c";
 let cart = [];
 let currentCurrency = 'USD';
 let currentRate = 1;
@@ -355,10 +356,26 @@ async function fetchWorldCupMatches() {
     const container = document.getElementById('matches-container');
     if (!container) return;
     try {
-        const events = [
-            { strHomeTeam: "Ecuador", strAwayTeam: "Ivory Coast", dateEvent: "2026-06-17", strTime: "18:00:00" },
-            { strHomeTeam: "Spain", strAwayTeam: "Egypt", dateEvent: "2026-06-17", strTime: "21:00:00" }
-        ];
+        const response = await fetch(
+    "https://v3.football.api-sports.io/fixtures?league=1&season=2026&next=20",
+    {
+        method: "GET",
+        headers: {
+            "x-apisports-key": API_KEY
+        }
+    }
+);
+
+const data = await response.json();
+
+const events = (data.response || []).map(match => ({
+    strHomeTeam: match.teams.home.name,
+    strAwayTeam: match.teams.away.name,
+    dateEvent: match.fixture.date.split("T")[0],
+    strTime: match.fixture.date.split("T")[1].substring(0,8)
+}));
+            
+
 
         const upcomingMatches = events.sort((a, b) => {
             const dateA = new Date(`${a.dateEvent}T${a.strTime}Z`);
