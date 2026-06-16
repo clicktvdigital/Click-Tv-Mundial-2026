@@ -5,21 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#050505">
     
-    <title>CLICK TV MUNDIAL 2026 | Streaming Premium IPTV</title>
-    <meta name="description" content="Click TV Mundial 2026: DIRECTV GO, Paramount+, DAZN, Disney+, IPTV Premium. Activación inmediata en toda Latinoamérica.">
+    <title>CLICK TV MUNDIAL 2026 | Streaming Premium IPTV Mundial de Fútbol</title>
+    <meta name="description" content="Click TV Mundial 2026: DIRECTV GO, Paramount+, DAZN, Disney+, IPTV Premium. Activación inmediata en toda Latinoamérica. Pagos en moneda local.">
+    <meta name="keywords" content="Mundial 2026 Ecuador, IPTV Ecuador, DAZN Ecuador, Paramount Ecuador, DIRECTV GO Ecuador, Streaming Ecuador, IPTV LATAM">
+    <meta name="author" content="Click TV Streaming">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://click-tv-mundial.vercel.app/">
     
-    <!-- Open Graph -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="🏆 CLICK TV MUNDIAL 2026 | Streaming Premium">
     <meta property="og:image" content="https://click-tv-mundial.vercel.app/assets/img/banner-mundial.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:description" content="Disfruta del Mundial 2026 en DIRECTV GO, Paramount+, DAZN, Disney+ e IPTV Premium. Activación inmediata.">
+    <meta property="og:url" content="https://click-tv-mundial.vercel.app/">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="CLICK TV Mundial 2026">
+    <meta name="twitter:description" content="Streaming Premium Mundial 2026">
+    <meta name="twitter:image" content="https://click-tv-mundial.vercel.app/assets/img/banner-mundial.jpg">
     
     <link rel="icon" type="image/png" href="https://1000logos.net/wp-content/uploads/2023/05/World-Cup-2026-Logo.png">
     
-    <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=Bebas+Neue&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Click TV Mundial 2026",
+      "url": "https://click-tv-mundial.vercel.app/",
+      "sameAs": ["https://t.me/streamid", "https://wa.me/593939166222"],
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+593-939-166-222",
+        "contactType": "customer service",
+        "areaServed": "LATAM",
+        "availableLanguage": ["Spanish"]
+      }
+    }
+    </script>
     
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="responsive.css">
@@ -32,8 +59,9 @@
         <span class="separator">|</span>
         <span><i class="fas fa-signal"></i> <b id="online-count">257</b> conectados</span>
     </div>
+  
     <div class="top-actions">
-        <select id="currency-selector" onchange="changeCurrency(this.value)" aria-label="Seleccionar moneda">
+        <select id="currency-selector" onchange="currentCurrency=this.value; applyCurrencyUpdate();" aria-label="Seleccionar moneda">
             <option value="USD">🇺🇸 USD - Dólar</option>
             <option value="PEN">🇵🇪 PEN - Sol</option>
             <option value="COP">🇨🇴 COP - Peso</option>
@@ -48,9 +76,14 @@
     <a href="#" class="logo"><i class="fas fa-tv logo-icon"></i> CLICK<span>TV</span> <small>2026</small></a>
     <nav class="nav-links" id="nav-links">
         <a href="#inicio">🏠 Inicio</a>
-        <a href="#mundial">⚽ Mundial</a>
+        <a href="#mundial">⚽ Mundial 2026</a>
         <a href="#streaming">🎬 Streaming</a>
         <a href="#iptv">📺 IPTV</a>
+        <a href="#musica">🎵 Música</a>
+        <a href="#apps">🎓 Apps Premium</a>
+        <a href="#deportes">🏆 Deportes</a>
+        <a href="#pagos">💳 Pagos</a>
+        <a href="#mayoristas">💼 Mayoristas</a>
         <a href="#contacto">💬 Contacto</a>
     </nav>
     <div class="header-actions">
@@ -69,9 +102,9 @@
     <div class="hero-content">
         <span class="badge">⚽ FIFA WORLD CUP 2026™ • MÉXICO / USA / CANADÁ</span>
         <h1>Streaming <span>Premium</span><br>Mundialista</h1>
-        <p>Vive la pasión del fútbol en máxima calidad. Paramount+, DAZN, DIRECTV GO, Disney+ e IPTV.</p>
+        <p>Vive la pasión del fútbol en máxima calidad. Paramount+, DAZN, DIRECTV GO, Disney+ e IPTV. Activación inmediata en toda Latinoamérica.</p>
         <div class="hero-buttons">
-            <a href="#mundial" class="btn btn-primary"><i class="fas fa-broadcast-tower"></i> VER FIXTURE OFICIAL</a>
+            <a href="#mundial" class="btn btn-primary"><i class="fas fa-broadcast-tower"></i> ⚽ VER FIXTURE OFICIAL FIFA 2026</a>
             <a href="#streaming" class="btn btn-gold"><i class="fas fa-shopping-bag"></i> VER CATÁLOGO</a>
         </div>
         <div class="hero-stats">
@@ -83,72 +116,806 @@
     </div>
 </section>
 
+<section class="trust-section">
+    <div class="trust-grid">
+        <div class="trust-item"><i class="fas fa-bolt"></i><span>⚡ Activación inmediata</span></div>
+        <div class="trust-item"><i class="fas fa-globe-americas"></i><span>🌎 Disponible en LATAM</span></div>
+        <div class="trust-item"><i class="fas fa-shield-alt"></i><span>🛡️ Compra segura</span></div>
+        <div class="trust-item"><i class="fas fa-credit-card"></i><span>💳 Múltiples pagos</span></div>
+        <div class="trust-item"><i class="fas fa-tv"></i><span>📱 Smart TV / Móvil</span></div>
+        <div class="trust-item"><i class="fas fa-futbol"></i><span>⚽ Especialistas Mundial</span></div>
+    </div>
+</section>
+
 <section class="mundial-section" id="mundial">
     <div class="section-header">
         <span class="section-badge">🏆 FIFA WORLD CUP 2026™</span>
         <h2>Centro del <span>Mundial</span></h2>
-        <p>Sigue los partidos de la Copa Mundial. Horarios actualizados.</p>
+        <p>Sigue los partidos de la Copa Mundial. Horarios de tu país.</p>
     </div>
     
-    <div class="radio-worldcup">
-        <div class="radio-card">
-            <div class="radio-header">🔴 EN VIVO • RADIO DIBLU 88.9 FM</div>
-            <p>Escucha análisis y cobertura deportiva en vivo mientras navegas.</p>
-            <audio controls preload="none">
-                <source src="https://streamingecuador.net:9002/stream" type="audio/mpeg">
-            </audio>
+   <section class="radio-worldcup">
+    <div class="radio-card">
+        <div class="radio-header">🔴 EN VIVO • RADIO DIBLU 88.9 FM</div>
+        <p>Escucha análisis, comentarios y cobertura deportiva en vivo.</p>
+        <audio controls preload="none" style="width:100%;">
+            <source src="https://streamingecuador.net:9002/stream" type="audio/mpeg">
+            Tu navegador no soporta audio HTML5.
+        </audio>
+        <div style="margin-top:10px; font-size:12px; color:#aaa;">
+            ⚽ Narración deportiva en vivo mientras sigues el Mundial 2026
         </div>
     </div>
+</section>
     
     <div class="matches-container" id="matches-container"></div>
 </section>
 
-<!-- Catálogo (Simplificado para el ejemplo, se mantienen todas las marcas en tu versión final) -->
+<section class="savings-calculator" id="ahorro">
+    <div class="section-header">
+        <span class="section-badge">📊 AHORRO REAL</span>
+        <h2>Calculadora de <span>Ahorro</span></h2>
+        <p>Compara el precio oficial vs Click TV y descubre tu ahorro.</p>
+    </div>
+    <div class="calc-box">
+        <select id="calc-service" onchange="calculateSavings()">
+            <option value="15" data-official="25">DIRECTV GO (Oficial: $25)</option>
+            <option value="5" data-official="10">PARAMOUNT+ (Oficial: $10)</option>
+            <option value="5" data-official="15">DAZN (Oficial: $15)</option>
+            <option value="5" data-official="22">DISNEY+ PREMIUM (Oficial: $22)</option>
+        </select>
+        <div class="calc-results">
+            <div class="res-item">
+                <span>Precio Oficial</span>
+                <h3 id="calc-official">$25.00</h3>
+            </div>
+            <div class="res-item highlight">
+                <span>Click TV 2026</span>
+                <h3 id="calc-click">$15.00</h3>
+            </div>
+            <div class="res-item">
+                <span>Tú Ahorras</span>
+                <h3 id="calc-savings">$10.00 <br><small>(40% OFF)</small></h3>
+            </div>
+        </div>
+    </div>
+</section>
+
 <section class="products" id="streaming">
     <div class="section-header">
-        <h2>Catálogo <span>Streaming</span></h2>
+        <span class="section-badge">🎬 STREAMING PREMIUM</span>
+        <h2>Catálogo <span>Oficial</span></h2>
+        <p>Precios mostrados en tu moneda local.</p>
     </div>
     <div class="grid" id="streaming-grid">
-        <!-- Ejemplo de Card Optimizada -->
+        <!-- Paramount+ -->
         <div class="card brand-paramount">
-            <span class="card-badge">⚽ TOP MUNDIAL</span>
+            <span class="card-badge">⚽ IDEAL PARA EL MUNDIAL</span>
             <div class="card-icon"><i class="fas fa-mountain"></i></div>
             <h3>PARAMOUNT+</h3>
-            <p class="card-desc">Series, películas y todos los deportes en HD.</p>
+            <p class="card-desc">Acceso a películas, series y deportes.</p>
             <select class="plan-select" id="paramount-select" onchange="updateDropdownPrice(this)">
                 <option value="5" data-usd="5">1 Mes - $5 USD</option>
             </select>
             <div class="price-container">
-                <div class="local-price" data-usd="5">$5.00</div>
+                <div class="local-price current-currency-label" data-usd="5">$5.00</div>
                 <div class="usd-reference" data-usd="5">~ $5.00 USD</div>
             </div>
             <div class="card-buttons">
-                <button class="btn btn-buy" onclick="buyNowDropdown('Paramount+', 'paramount-select')"><i class="fab fa-whatsapp"></i> Comprar</button>
-                <button class="btn btn-cart" onclick="addDropdownToCart('PARAMOUNT+', 'paramount-select')"><i class="fas fa-cart-plus"></i> + Carrito</button>
+                <button class="btn btn-buy" onclick="buyNow('Paramount+ 1 Mes', 5)"><i class="fab fa-whatsapp"></i>  Comprar Ahora</button>
+                <button class="btn btn-cart" onclick="addDropdownToCart('PARAMOUNT+', 'paramount-select')"><i class="fas fa-cart-plus"></i> Añadir al Carrito</button>
             </div>
         </div>
-        <!-- Repetir estructura para los demás productos -->
+
+        <!-- Disney+ Premium -->
+        <div class="card brand-disney">
+            <span class="card-badge">⭐ RECOMENDADO</span>
+            <div class="card-icon"><i class="fas fa-magic"></i></div>
+            <h3>DISNEY+ PREMIUM</h3>
+            <p class="card-desc">Todo Disney, Pixar, Marvel, Star Wars, ESPN.</p>
+            <select class="plan-select" id="disney-select" onchange="updateDropdownPrice(this)">
+                <option value="5" data-usd="5">1 Mes - $5 USD</option>
+            </select>
+            <div class="price-container">
+                <div class="local-price current-currency-label" data-usd="5">$5.00</div>
+                <div class="usd-reference" data-usd="5">~ $5.00 USD</div>
+            </div>
+            <div class="card-buttons">
+                <button class="btn btn-buy" onclick="buyNow('Disney+ Premium 1 Mes', 5)"><i class="fab fa-whatsapp"></i> Comprar Ahora</button>
+                <button class="btn btn-cart" onclick="addDropdownToCart('DISNEY+ PREMIUM', 'disney-select')"><i class="fas fa-cart-plus"></i> Añadir al Carrito</button>
+            </div>
+        </div>
+
+        <!-- DIRECTV GO -->
+        <div class="card brand-directv">
+            <span class="card-badge">💎 PREMIUM</span>
+            <div class="card-icon"><i class="fas fa-satellite-dish"></i></div>
+            <h3>DIRECTV GO</h3>
+            <p class="card-desc">104 partidos del Mundial 2026, DSports.</p>
+            <select class="plan-select" id="directv-select" onchange="updateDropdownPrice(this)">
+                <option value="15" data-usd="15">1 Dispositivo - $15 USD</option>
+                <option value="25" data-usd="25">Cuenta Completa - $25 USD</option>
+            </select>
+            <div class="price-container">
+                <div class="local-price current-currency-label" data-usd="15">$15.00</div>
+                <div class="usd-reference" data-usd="15">~ $15.00 USD</div>
+            </div>
+            <div class="card-buttons">
+                <button class="btn btn-buy" onclick="buyNowDropdown('DIRECTV GO', 'directv-select')"><i class="fab fa-whatsapp"></i> Comprar Ahora</button>
+                <button class="btn btn-cart" onclick="addDropdownToCart('DIRECTV GO', 'directv-select')"><i class="fas fa-cart-plus"></i> Añadir al Carrito</button>
+            </div>
+        </div>
+
+        <!-- Netflix Compartido -->
+        <div class="card brand-netflix">
+            <span class="card-badge">🔥 MÁS VENDIDO</span>
+            <div class="card-icon"><i class="fas fa-film"></i></div>
+            <h3>NETFLIX COMPARTIDO</h3>
+            <p class="card-desc">Disfruta el mejor catálogo de series.</p>
+            <select class="plan-select" id="netflix-comp-select" onchange="updateDropdownPrice(this)">
+                <option value="4" data-usd="4">1 Mes - $4 USD</option>
+                <option value="12" data-usd="12">3 Meses - $12 USD</option>
+                <option value="24" data-usd="24">6 Meses - $24 USD</option>
+                <option value="48" data-usd="48">12 Meses - $48 USD</option>
+            </select>
+            <div class="price-container">
+                <div class="local-price current-currency-label" data-usd="4">$4.00</div>
+                <div class="usd-reference" data-usd="4">~ $4.00 USD</div>
+            </div>
+            <div class="card-buttons">
+                <button class="btn btn-buy" onclick="buyNowDropdown('Netflix Compartido', 'netflix-comp-select')"><i class="fab fa-whatsapp"></i> Comprar Ahora</button>
+                <button class="btn btn-cart" onclick="addDropdownToCart('NETFLIX COMPARTIDO', 'netflix-comp-select')"><i class="fas fa-cart-plus"></i> Añadir al Carrito</button>
+            </div>
+        </div>
+
+        <!-- Netflix Perfil Extra -->
+        <div class="card brand-netflix">
+            <div class="card-icon"><i class="fas fa-user-circle"></i></div>
+            <h3>NETFLIX PERFIL EXTRA</h3>
+            <p class="card-desc">Privacidad total para tu hogar.</p>
+            <select class="plan-select" id="netflix-extra-select" onchange="updateDropdownPrice(this)">
+                <option value="6" data-usd="6">1 Mes - $6 USD</option>
+                <option value="18" data-usd="18">3 Meses - $18 USD</option>
+                <option value="36" data-usd="36">6 Meses - $36 USD</option>
+                <option value="72" data-usd="72">12 Meses - $72 USD</option>
+            </select>
+            <div class="price-container">
+                <div class="local-price current-currency-label" data-usd="6">$6.00</div>
+                <div class="usd-reference" data-usd="6">~ $6.00 USD</div>
+            </div>
+            <div class="card-buttons">
+                <button class="btn btn-buy" onclick="buyNowDropdown('Netflix Perfil Extra', 'netflix-extra-select')"><i class="fab fa-whatsapp"></i> Comprar Ahora</button>
+                <button class="btn btn-cart" onclick="addDropdownToCart('NETFLIX PERFIL EXTRA', 'netflix-extra-select')"><i class="fas fa-cart-plus"></i> Añadir al Carrito</button>
+            </div>
+        </div>
+
+        <!-- Max -->
+        <div class="card brand-max">
+            <div class="card-icon"><i class="fas fa-tv"></i></div>
+            <h3>MAX</h3>
+            <p class="card-desc">HBO, Warner Bros, DC y más.</p>
+            <select class="plan-select" id="max-select" onchange="updateDropdownPrice(this)">
+                <option value="3" data-usd="3">1 Mes - $3 USD</option>
+                <option value="8" data-usd="8">3 Meses - $8 USD</option>
+                <option value="15" data-usd="15">6 Meses - $15 USD</option>
+                <option value="25" data-usd="25">12 Meses - $25 USD</option>
+            </select>
+            <div class="price-container">
+                <div class="local-price current-currency-label" data-usd="3">$3.00</div>
+                <div class="usd-reference" data-usd="3">~ $3.00 USD</div>
+            </div>
+            <div class="card-buttons">
+                <button class="btn btn-buy" onclick="buyNowDropdown('Max', 'max-select')"><i class="fab fa-whatsapp"></i> Comprar Ahora</button>
+                <button class="btn btn-cart" onclick="addDropdownToCart('MAX', 'max-select')"><i class="fas fa-cart-plus"></i> Añadir al Carrito</button>
+            </div>
+        </div>
+
+        <!-- Prime Video -->
+        <div class="card brand-prime">
+            <div class="card-icon"><i class="fas fa-play"></i></div>
+            <h3>PRIME VIDEO</h3>
+            <p class="card-desc">Series originales, películas exclusivas.</p>
+            <select class="plan-select" id="prime-select" onchange="updateDropdownPrice(this)">
+                <option value="3" data-usd="3">1 Mes - $3 USD</option>
+                <option value="8" data-usd="8">3 Meses - $8 USD</option>
+                <option value="15" data-usd="15">6 Meses - $15 USD</option>
+                <option value="25" data-usd="25">12 Meses - $25 USD</option>
+            </select>
+            <div class="price-container">
+                <div class="local-price current-currency-label" data-usd="3">$3.00</div>
+                <div class="usd-reference" data-usd="3">~ $3.00 USD</div>
+            </div>
+            <div class="card-buttons">
+                <button class="btn btn-buy" onclick="buyNowDropdown('Prime Video', 'prime-select')"><i class="fab fa-whatsapp"></i> Comprar Ahora</button>
+                <button class="btn btn-cart" onclick="addDropdownToCart('PRIME VIDEO', 'prime-select')"><i class="fas fa-cart-plus"></i> Añadir al Carrito</button>
+            </div>
+        </div>
+
+        <!-- Apple TV -->
+        <div class="card brand-apple">
+            <div class="card-icon"><i class="fab fa-apple"></i></div>
+            <h3>APPLE TV</h3>
+            <p class="card-desc">Calidad y contenido original.</p>
+            <select class="plan-select" id="apple-select" onchange="updateDropdownPrice(this)">
+                <option value="3" data-usd="3">1 Dispositivo - $3 USD</option>
+                <option value="5" data-usd="5">Cuenta Completa - $5 USD</option>
+            </select>
+            <div class="price-container">
+                <div class="local-price current-currency-label" data-usd="3">$3.00</div>
+                <div class="usd-reference" data-usd="3">~ $3.00 USD</div>
+            </div>
+            <div class="card-buttons">
+                <button class="btn btn-buy" onclick="buyNowDropdown('Apple TV', 'apple-select')"><i class="fab fa-whatsapp"></i> Comprar Ahora</button>
+                <button class="btn btn-cart" onclick="addDropdownToCart('APPLE TV', 'apple-select')"><i class="fas fa-cart-plus"></i> Añadir al Carrito</button>
+            </div>
+        </div>
+        
+        <!-- VIX Premium -->
+        <div class="card brand-vix">
+            <div class="card-icon"><i class="fas fa-video"></i></div>
+            <h3>VIX PREMIUM</h3>
+            <p class="card-desc">Lo mejor en español.</p>
+            <select class="plan-select" id="vix-select" onchange="updateDropdownPrice(this)">
+                <option value="3" data-usd="3">1 Mes - $3 USD</option>
+                <option value="8" data-usd="8">3 Meses - $8 USD</option>
+                <option value="15" data-usd="15">6 Meses - $15 USD</option>
+                <option value="25" data-usd="25">12 Meses - $25 USD</option>
+            </select>
+            <div class="price-container">
+                <div class="local-price current-currency-label" data-usd="3">$3.00</div>
+                <div class="usd-reference" data-usd="3">~ $3.00 USD</div>
+            </div>
+            <div class="card-buttons">
+                <button class="btn btn-buy" onclick="buyNowDropdown('VIX Premium', 'vix-select')"><i class="fab fa-whatsapp"></i> Comprar Ahora</button>
+                <button class="btn btn-cart" onclick="addDropdownToCart('VIX PREMIUM', 'vix-select')"><i class="fas fa-cart-plus"></i> Añadir al Carrito</button>
+            </div>
+        </div>
+        
+        <!-- Viki Rakuten -->
+        <div class="card brand-viki">
+            <div class="card-icon"><i class="fas fa-globe-asia"></i></div>
+            <h3>VIKI RAKUTEN</h3>
+            <p class="card-desc">Dramas asiáticos y más.</p>
+            <select class="plan-select" id="viki-select" onchange="updateDropdownPrice(this)">
+                <option value="5" data-usd="5">1 Dispositivo - $5 USD</option>
+                <option value="6" data-usd="6">Cuenta Completa - $6 USD</option>
+            </select>
+            <div class="price-container">
+                <div class="local-price current-currency-label" data-usd="5">$5.00</div>
+                <div class="usd-reference" data-usd="5">~ $5.00 USD</div>
+            </div>
+            <div class="card-buttons">
+                <button class="btn btn-buy" onclick="buyNowDropdown('Viki Rakuten', 'viki-select')"><i class="fab fa-whatsapp"></i> Comprar Ahora</button>
+                <button class="btn btn-cart" onclick="addDropdownToCart('VIKI RAKUTEN', 'viki-select')"><i class="fas fa-cart-plus"></i> Añadir al Carrito</button>
+            </div>
+        </div>
     </div>
 </section>
+
+<section class="products iptv-section" id="iptv">
+    <div class="section-header">
+        <span class="section-badge">📺 TELEVISIÓN PREMIUM</span>
+        <h2>IPTV & <span>Reproductores</span></h2>
+        <p>Servicios Multiplataforma (Smart TV, PC, Móviles)</p>
+    </div>
+    <div class="grid">
+        <div class="card brand-iptv">
+            <div class="card-icon"><i class="fas fa-tv"></i></div>
+            <h3>IPTV BÁSICO</h3>
+            <p class="card-desc">Mundial 2026, TV, Series y Películas.</p>
+            <select class="plan-select" id="iptvb-select" onchange="updateDropdownPrice(this)">
+                <option value="3" data-usd="3">1 Dispositivo - $3 USD</option>
+                <option value="5" data-usd="5">2 Dispositivos - $5 USD</option>
+                <option value="7" data-usd="7">3 Dispositivos - $7 USD</option>
+            </select>
+            <div class="price-container">
+                <div class="local-price current-currency-label" data-usd="3">$3.00</div>
+                <div class="usd-reference" data-usd="3">~ $3.00 USD</div>
+            </div>
+            <div class="card-buttons">
+                <button class="btn btn-buy" onclick="buyNowDropdown('IPTV Básico', 'iptvb-select')"><i class="fab fa-whatsapp"></i> Comprar Ahora</button>
+                <button class="btn btn-cart" onclick="addDropdownToCart('IPTV BÁSICO', 'iptvb-select')"><i class="fas fa-cart-plus"></i> Añadir al Carrito</button>
+            </div>
+        </div>
+
+        <div class="card brand-iptv featured">
+            <span class="card-badge">⭐ RECOMENDADO</span>
+            <div class="card-icon"><i class="fas fa-satellite-dish"></i></div>
+            <h3>IPTV PREMIUM</h3>
+            <p class="card-desc">Mayor estabilidad y catálogo VIP.</p>
+            <select class="plan-select" id="iptvp-select" onchange="updateDropdownPrice(this)">
+                <option value="5" data-usd="5">1 Dispositivo - $5 USD</option>
+                <option value="10" data-usd="10">2 Dispositivos - $10 USD</option>
+                <option value="15" data-usd="15">3 Dispositivos - $15 USD</option>
+            </select>
+            <div class="price-container">
+                <div class="local-price current-currency-label" data-usd="5">$5.00</div>
+                <div class="usd-reference" data-usd="5">~ $5.00 USD</div>
+            </div>
+            <div class="card-buttons">
+                <button class="btn btn-buy" onclick="buyNowDropdown('IPTV Premium', 'iptvp-select')"><i class="fab fa-whatsapp"></i> Comprar Ahora</button>
+                <button class="btn btn-cart" onclick="addDropdownToCart('IPTV PREMIUM', 'iptvp-select')"><i class="fas fa-cart-plus"></i> Añadir al Carrito</button>
+            </div>
+        </div>
+
+        <div class="card brand-iptv">
+            <span class="card-badge">💎 PREMIUM</span>
+            <div class="card-icon"><i class="fas fa-gem"></i></div>
+            <h3>IPTV ULTRA</h3>
+            <p class="card-desc">Calidad 4K, 0% Buffering garantizado.</p>
+            <select class="plan-select" id="iptvu-select" onchange="updateDropdownPrice(this)">
+                <option value="7" data-usd="7">1 Dispositivo - $7 USD</option>
+                <option value="14" data-usd="14">2 Dispositivos - $14 USD</option>
+                <option value="21" data-usd="21">3 Dispositivos - $21 USD</option>
+            </select>
+            <div class="price-container">
+                <div class="local-price current-currency-label" data-usd="7">$7.00</div>
+                <div class="usd-reference" data-usd="7">~ $7.00 USD</div>
+            </div>
+            <div class="card-buttons">
+                <button class="btn btn-buy" onclick="buyNowDropdown('IPTV Ultra', 'iptvu-select')"><i class="fab fa-whatsapp"></i> Comprar Ahora</button>
+                <button class="btn btn-cart" onclick="addDropdownToCart('IPTV ULTRA', 'iptvu-select')"><i class="fas fa-cart-plus"></i> Añadir al Carrito</button>
+            </div>
+        </div>
+
+        <div class="card brand-ibo">
+            <div class="card-icon"><i class="fas fa-play"></i></div>
+            <h3>IBO PLAYER</h3>
+            <p class="card-desc">Licencia para reproductores (Android, TV, iOS, Windows).</p>
+            <select class="plan-select" id="ibo-select" onchange="updateDropdownPrice(this)">
+                <option value="10" data-usd="10">Anual - $10 USD</option>
+                <option value="20" data-usd="20">Permanente - $20 USD</option>
+            </select>
+            <div class="price-container">
+                <div class="local-price current-currency-label" data-usd="10">$10.00</div>
+                <div class="usd-reference" data-usd="10">~ $10.00 USD</div>
+            </div>
+            <div class="card-buttons">
+                <button class="btn btn-buy" onclick="buyNowDropdown('IBO Player', 'ibo-select')"><i class="fab fa-whatsapp"></i> Comprar Ahora</button>
+                <button class="btn btn-cart" onclick="addDropdownToCart('IBO PLAYER', 'ibo-select')"><i class="fas fa-cart-plus"></i> Añadir al Carrito</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="section-header" style="margin-top: 50px;">
+        <span class="section-badge">📱 SOLO ANDROID</span>
+        <h2>Plataformas <span>Android</span></h2>
+        <p>Exclusivo para Celulares, TV Box, Fire TV y Android TV.</p>
+    </div>
+    <div class="grid">
+        <div class="card brand-megax">
+            <div class="card-icon"><i class="fas fa-film"></i></div><h3>MEGAX TV</h3>
+            <p class="card-desc">Contenido Mundial 2026 y más.</p>
+            <select class="plan-select" id="megax-select" onchange="updateDropdownPrice(this)">
+                <option value="5" data-usd="5">1 Mes / 1 Disp - $5 USD</option>
+            </select>
+            <div class="price-container">
+                <div class="local-price current-currency-label" data-usd="5">$5.00</div>
+            </div>
+            <div class="card-buttons">
+                <button class="btn btn-buy" onclick="buyNowDropdown('MegaX TV', 'megax-select')"><i class="fab fa-whatsapp"></i> Comprar Ahora</button>
+                <button class="btn btn-cart" onclick="addDropdownToCart('MEGAX TV', 'megax-select')"><i class="fas fa-cart-plus"></i> Añadir al Carrito</button>
+            </div>
+        </div>
+        <div class="card brand-flujo">
+            <div class="card-icon"><i class="fas fa-water"></i></div><h3>FLUJO TV</h3>
+            <select class="plan-select" id="flujo-select" onchange="updateDropdownPrice(this)">
+                <option value="3" data-usd="3">1 Mes / 1 Disp - $3 USD</option>
+            </select>
+            <div class="price-container">
+                <div class="local-price current-currency-label" data-usd="3">$3.00</div>
+            </div>
+            <div class="card-buttons">
+                <button class="btn btn-buy" onclick="buyNowDropdown('Flujo TV', 'flujo-select')"><i class="fab fa-whatsapp"></i> Comprar Ahora</button>
+                <button class="btn btn-cart" onclick="addDropdownToCart('FLUJO TV', 'flujo-select')"><i class="fas fa-cart-plus"></i> Añadir al Carrito</button>
+            </div>
+        </div>
+        <div class="card brand-oleada">
+            <div class="card-icon"><i class="fas fa-wave-square"></i></div><h3>OLEADA TV</h3>
+            <select class="plan-select" id="oleada-select" onchange="updateDropdownPrice(this)">
+                <option value="5" data-usd="5">1 Mes / 1 Disp - $5 USD</option>
+            </select>
+            <div class="price-container">
+                <div class="local-price current-currency-label" data-usd="5">$5.00</div>
+            </div>
+            <div class="card-buttons">
+                <button class="btn btn-buy" onclick="buyNowDropdown('Oleada TV', 'oleada-select')"><i class="fab fa-whatsapp"></i> Comprar Ahora</button>
+                <button class="btn btn-cart" onclick="addDropdownToCart('OLEADA TV', 'oleada-select')"><i class="fas fa-cart-plus"></i> Añadir al Carrito</button>
+            </div>
+        </div>
+        <div class="card brand-matv">
+            <div class="card-icon"><i class="fas fa-tv"></i></div><h3>MA TV DIGITAL</h3>
+            <select class="plan-select" id="matv-select" onchange="updateDropdownPrice(this)">
+                <option value="5" data-usd="5">1 Mes / 1 Disp - $5 USD</option>
+            </select>
+            <div class="price-container">
+                <div class="local-price current-currency-label" data-usd="5">$5.00</div>
+            </div>
+            <div class="card-buttons">
+                <button class="btn btn-buy" onclick="buyNowDropdown('MA TV Digital', 'matv-select')"><i class="fab fa-whatsapp"></i> Comprar Ahora</button>
+                <button class="btn btn-cart" onclick="addDropdownToCart('MA TV DIGITAL', 'matv-select')"><i class="fas fa-cart-plus"></i> Añadir al Carrito</button>
+            </div>
+        </div>
+        <div class="card brand-stella">
+            <div class="card-icon"><i class="fas fa-star"></i></div><h3>STELLA TV</h3>
+            <select class="plan-select" id="stella-select" onchange="updateDropdownPrice(this)">
+                <option value="5" data-usd="5">1 Mes / 1 Disp - $5 USD</option>
+            </select>
+            <div class="price-container">
+                <div class="local-price current-currency-label" data-usd="5">$5.00</div>
+            </div>
+            <div class="card-buttons">
+                <button class="btn btn-buy" onclick="buyNowDropdown('Stella TV', 'stella-select')"><i class="fab fa-whatsapp"></i> Comprar Ahora</button>
+                <button class="btn btn-cart" onclick="addDropdownToCart('STELLA TV', 'stella-select')"><i class="fas fa-cart-plus"></i> Añadir al Carrito</button>
+            </div>
+        </div>
+        <div class="card brand-telelatino">
+            <div class="card-icon"><i class="fas fa-satellite"></i></div><h3>TELELATINO</h3>
+            <select class="plan-select" id="telelatino-select" onchange="updateDropdownPrice(this)">
+                <option value="3" data-usd="3">1 Mes / 1 Disp - $3 USD</option>
+                <option value="5" data-usd="5">Cuenta Completa - $5 USD</option>
+            </select>
+            <div class="price-container">
+                <div class="local-price current-currency-label" data-usd="3">$3.00</div>
+            </div>
+            <div class="card-buttons">
+                <button class="btn btn-buy" onclick="buyNowDropdown('Telelatino', 'telelatino-select')"><i class="fab fa-whatsapp"></i> Comprar Ahora</button>
+                <button class="btn btn-cart" onclick="addDropdownToCart('TELELATINO', 'telelatino-select')"><i class="fas fa-cart-plus"></i> Añadir al Carrito</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="products" id="musica">
+    <div class="section-header">
+        <span class="section-badge">🎵 AUDIO</span>
+        <h2>Música <span>Premium</span></h2>
+    </div>
+    <div class="grid">
+        <div class="card brand-spotify">
+            <div class="card-icon"><i class="fab fa-spotify"></i></div><h3>SPOTIFY</h3>
+            <select class="plan-select" id="spotify-select" onchange="updateDropdownPrice(this)">
+                <option value="5" data-usd="5">3 Meses - $5 USD</option>
+                <option value="10" data-usd="10">6 Meses - $10 USD</option>
+                <option value="15" data-usd="15">12 Meses - $15 USD</option>
+            </select>
+            <div class="price-container">
+                <div class="local-price current-currency-label" data-usd="5">$5.00</div>
+            </div>
+            <div class="card-buttons">
+                <button class="btn btn-buy" onclick="buyNowDropdown('Spotify', 'spotify-select')"><i class="fab fa-whatsapp"></i> Comprar Ahora</button>
+                <button class="btn btn-cart" onclick="addDropdownToCart('SPOTIFY', 'spotify-select')"><i class="fas fa-cart-plus"></i> Añadir al Carrito</button>
+            </div>
+        </div>
+        <div class="card brand-deezer">
+            <div class="card-icon"><i class="fas fa-music"></i></div><h3>DEEZER</h3>
+            <select class="plan-select" id="deezer-select" onchange="updateDropdownPrice(this)">
+                <option value="5" data-usd="5">1 Dispositivo - $5 USD</option>
+            </select>
+            <div class="price-container">
+                <div class="local-price current-currency-label" data-usd="5">$5.00</div>
+            </div>
+            <div class="card-buttons">
+                <button class="btn btn-buy" onclick="buyNowDropdown('Deezer', 'deezer-select')"><i class="fab fa-whatsapp"></i> Comprar Ahora</button>
+                <button class="btn btn-cart" onclick="addDropdownToCart('DEEZER', 'deezer-select')"><i class="fas fa-cart-plus"></i> Añadir al Carrito</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="products" id="apps">
+    <div class="section-header">
+        <span class="section-badge">🎓 APPS</span>
+        <h2>Apps <span>Premium</span></h2>
+    </div>
+    <div class="grid">
+        <div class="card brand-canva">
+            <div class="card-icon"><i class="fas fa-paint-brush"></i></div><h3>CANVA PRO</h3>
+            <p class="card-desc">Consultar disponibilidad.</p>
+            <div class="card-buttons">
+                <button class="btn btn-buy" style="width:100%" onclick="window.open('https://wa.me/593939166222?text=Hola,%20deseo%20consultar%20disponibilidad%20de%20Canva%20Pro', '_blank')"><i class="fab fa-whatsapp"></i> Consultar</button>
+            </div>
+        </div>
+        <div class="card brand-duolingo">
+            <div class="card-icon"><i class="fas fa-language"></i></div><h3>DUOLINGO</h3>
+            <p class="card-desc">Consultar disponibilidad.</p>
+            <div class="card-buttons">
+                <button class="btn btn-buy" style="width:100%" onclick="window.open('https://wa.me/593939166222?text=Hola,%20deseo%20consultar%20disponibilidad%20de%20Duolingo', '_blank')"><i class="fab fa-whatsapp"></i> Consultar</button>
+            </div>
+        </div>
+        <div class="card brand-crunchyroll">
+            <div class="card-icon"><i class="fas fa-meteor"></i></div><h3>CRUNCHYROLL</h3>
+            <select class="plan-select" id="crunchy-select" onchange="updateDropdownPrice(this)">
+                <option value="3" data-usd="3">1 Mes - $3 USD</option>
+                <option value="8" data-usd="8">3 Meses - $8 USD</option>
+                <option value="15" data-usd="15">6 Meses - $15 USD</option>
+                <option value="25" data-usd="25">12 Meses - $25 USD</option>
+            </select>
+            <div class="price-container">
+                <div class="local-price current-currency-label" data-usd="3">$3.00</div>
+            </div>
+            <div class="card-buttons">
+                <button class="btn btn-buy" onclick="buyNowDropdown('Crunchyroll', 'crunchy-select')"><i class="fab fa-whatsapp"></i> Comprar Ahora</button>
+                <button class="btn btn-cart" onclick="addDropdownToCart('CRUNCHYROLL', 'crunchy-select')"><i class="fas fa-cart-plus"></i> Añadir al Carrito</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="products" id="deportes">
+    <div class="section-header">
+        <span class="section-badge">🏆 DEPORTES</span>
+        <h2>Deportes <span>Premium</span></h2>
+    </div>
+    <div class="grid">
+        <div class="card brand-dazn">
+            <div class="card-icon"><i class="fas fa-satellite-dish"></i></div><h3>DAZN</h3>
+            <div class="price-container">
+                <div class="local-price current-currency-label" data-usd="5">$5.00</div>
+            </div>
+            <div class="card-buttons">
+                <button class="btn btn-buy" onclick="buyNow('DAZN 1 Mes', 5)"><i class="fab fa-whatsapp"></i> Comprar Ahora</button>
+                <button class="btn btn-cart" onclick="addToCart('DAZN', 5)"><i class="fas fa-cart-plus"></i> Añadir al Carrito</button>
+            </div>
+        </div>
+        <div class="card brand-nba">
+            <div class="card-icon"><i class="fas fa-basketball-ball"></i></div><h3>NBA</h3>
+            <div class="price-container">
+                <div class="local-price current-currency-label" data-usd="5">$5.00</div>
+            </div>
+            <div class="card-buttons">
+                <button class="btn btn-buy" onclick="buyNow('NBA 1 Dispositivo', 5)"><i class="fab fa-whatsapp"></i> Comprar Ahora</button>
+                <button class="btn btn-cart" onclick="addToCart('NBA', 5)"><i class="fas fa-cart-plus"></i> Añadir al Carrito</button>
+            </div>
+        </div>
+        <div class="card brand-ufc">
+            <div class="card-icon"><i class="fas fa-fist-raised"></i></div><h3>UFC</h3>
+            <div class="price-container">
+                <div class="local-price current-currency-label" data-usd="5">$5.00</div>
+            </div>
+            <div class="card-buttons">
+                <button class="btn btn-buy" onclick="buyNow('UFC 1 Dispositivo', 5)"><i class="fab fa-whatsapp"></i> Comprar Ahora</button>
+                <button class="btn btn-cart" onclick="addToCart('UFC', 5)"><i class="fas fa-cart-plus"></i> Añadir al Carrito</button>
+            </div>
+        </div>
+        <div class="card brand-ecdf">
+            <div class="card-icon"><i class="fas fa-futbol"></i></div><h3>ECDF</h3>
+            <select class="plan-select" id="ecdf-select" onchange="updateDropdownPrice(this)">
+                <option value="5" data-usd="5">1 Dispositivo - $5 USD</option>
+                <option value="5" data-usd="5">Completa - $5 USD</option>
+            </select>
+            <div class="price-container">
+                <div class="local-price current-currency-label" data-usd="5">$5.00</div>
+            </div>
+            <div class="card-buttons">
+                <button class="btn btn-buy" onclick="buyNowDropdown('ECDF', 'ecdf-select')"><i class="fab fa-whatsapp"></i> Comprar Ahora</button>
+                <button class="btn btn-cart" onclick="addDropdownToCart('ECDF', 'ecdf-select')"><i class="fas fa-cart-plus"></i> Añadir al Carrito</button>
+            </div>
+        </div>
+        <div class="card brand-zapping">
+            <div class="card-icon"><i class="fas fa-bolt"></i></div><h3>ZAPPING PRO</h3>
+            <select class="plan-select" id="zapping-select" onchange="updateDropdownPrice(this)">
+                <option value="10" data-usd="10">1 Dispositivo - $10 USD</option>
+                <option value="18" data-usd="18">Completa - $18 USD</option>
+            </select>
+            <div class="price-container">
+                <div class="local-price current-currency-label" data-usd="10">$10.00</div>
+            </div>
+            <div class="card-buttons">
+                <button class="btn btn-buy" onclick="buyNowDropdown('Zapping Pro', 'zapping-select')"><i class="fab fa-whatsapp"></i> Comprar Ahora</button>
+                <button class="btn btn-cart" onclick="addDropdownToCart('ZAPPING PRO', 'zapping-select')"><i class="fas fa-cart-plus"></i> Añadir al Carrito</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="products" id="mayoristas" style="display:none; background: #080808; border-top: 1px dashed #333;">
+    <div class="section-header">
+        <span class="section-badge">💼 B2B</span>
+        <h2>Sección <span>Mayoristas</span></h2>
+        <p>Paneles y créditos para revendedores.</p>
+    </div>
+    <div class="grid">
+        <div class="card">
+            <h3>Outlook x Mayor</h3>
+            <p class="card-desc">Precio por unidad: $2.75. Pedido mín 50.</p>
+            <button class="btn btn-buy" style="width:100%" onclick="window.open('https://wa.me/593939166222?text=Hola,%20información%20Outlook%20Mayoristas', '_blank')"><i class="fab fa-whatsapp"></i> Consultar</button>
+        </div>
+        <div class="card">
+            <h3>Paneles IPTV / Apps</h3>
+            <p class="card-desc">GX+, Oleada, Stella, Telelatino, VOD, Flujo, MegaX.</p>
+            <button class="btn btn-buy" style="width:100%" onclick="window.open('https://wa.me/593939166222?text=Hola,%20información%20Paneles%20Mayoristas', '_blank')"><i class="fab fa-whatsapp"></i> Consultar Planes</button>
+        </div>
+    </div>
+</section>
+
+<section class="reviews-section" id="resenas">
+    <div class="section-header">
+        <span class="section-badge">⭐ TESTIMONIOS</span>
+        <h2>Reseñas <span>Verificadas</span></h2>
+    </div>
+    <div class="reviews-grid">
+        <div class="review-card">
+            <div class="stars">★★★★★</div>
+            <p class="review-text">"Excelente servicio. Activación inmediata y sin cortes para el Mundial."</p>
+            <div class="review-author"><div class="review-info"><b>Cliente Verificado</b><small>Quito - Ecuador</small></div></div>
+        </div>
+        <div class="review-card">
+            <div class="stars">★★★★★</div>
+            <p class="review-text">"Paramount+ me funcionó perfecto. Buena atención."</p>
+            <div class="review-author"><div class="review-info"><b>Cliente Verificado</b><small>Lima - Perú</small></div></div>
+        </div>
+        <div class="review-card">
+            <div class="stars">★★★★★</div>
+            <p class="review-text">"El IPTV Premium tiene todos los canales, muy estable."</p>
+            <div class="review-author"><div class="review-info"><b>Cliente Verificado</b><small>Bogotá - Colombia</small></div></div>
+        </div>
+        <div class="review-card">
+            <div class="stars">★★★★★</div>
+            <p class="review-text">"Directv GO activo rápido. Pagué con Deuna y a los 5 minutos ya estaba viendo."</p>
+            <div class="review-author"><div class="review-info"><b>Cliente Verificado</b><small>Guayaquil - Ecuador</small></div></div>
+        </div>
+        <div class="review-card">
+            <div class="stars">★★★★★</div>
+            <p class="review-text">"Disney Plus excelente para mis hijos, 100% confiable."</p>
+            <div class="review-author"><div class="review-info"><b>Cliente Verificado</b><small>Santiago - Chile</small></div></div>
+        </div>
+    </div>
+    <div style="text-align:center; margin-top:20px;">
+    <a href="https://t.me/streamid/5181"
+       onclick="abrirResenas(event)"
+       class="btn btn-primary">
+       <i class="fab fa-telegram"></i>
+       🔵 Revisar Comentarios de los Clientes 🇪🇨
+    </a>
+</div>
+</section>
+
+<section class="contact-section" id="contacto">
+    <div class="section-header">
+        <span class="section-badge">🌎 CONTACTO</span>
+        <h2>Formulario <span>Internacional</span></h2>
+    </div>
+    <form class="contact-form" id="contact-form" onsubmit="submitContactForm(event)">
+        <div class="form-row">
+            <input type="text" id="contact-name" placeholder="Nombre" required>
+            <input type="text" id="contact-last" placeholder="Apellido" required>
+        </div>
+        <div class="form-row">
+            <select id="contact-country" required>
+                <option value="">País</option>
+                <option value="Ecuador">Ecuador</option>
+                <option value="Perú">Perú</option>
+                <option value="Colombia">Colombia</option>
+                <option value="Chile">Chile</option>
+                <option value="Argentina">Argentina</option>
+                <option value="México">México</option>
+                <option value="Estados Unidos">Estados Unidos</option>
+                <option value="España">España</option>
+                <option value="Otro">Otro</option>
+            </select>
+            <input type="tel" id="contact-phone" placeholder="Número de celular" required>
+        </div>
+        <textarea id="contact-msg" placeholder="Mensaje o consulta" rows="4" required></textarea>
+        
+        <div class="form-row">
+            <button type="submit" class="btn btn-whatsapp" onclick="setContactMethod('whatsapp')">
+                <i class="fab fa-whatsapp"></i> ENVIAR A WHATSAPP
+            </button>
+            <button type="submit" class="btn btn-telegram" onclick="setContactMethod('telegram')">
+                <i class="fab fa-telegram"></i> ENVIAR A TELEGRAM
+            </button>
+        </div>
+    </form>
+</section>
+
+<footer>
+    <div class="footer-content">
+        <div class="footer-col">
+            <h4>CLICK<span>TV</span> 2026</h4>
+            <p>Streaming Premium del Mundial 2026 para toda Latinoamérica.</p>
+        </div>
+        <div class="footer-col">
+            <h4>Comunidades</h4>
+            <a href="https://t.me/streamid" target="_blank"><i class="fab fa-telegram"></i> Grupo Telegram</a>
+            <a href="#" onclick="abrirResenas(event)">
+                <i class="fab fa-telegram"></i> Reseñas Verificadas
+            </a>
+            <a href="https://wa.me/593939166222" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp Soporte</a>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>© 2026 Click TV Streaming. Todos los derechos reservados.</p>
+    </div>
+</footer>
 
 <div class="cart-sidebar" id="cart-sidebar">
     <div class="cart-header">
         <h3>🛒 Tu Carrito</h3>
-        <button onclick="toggleCart()"><i class="fas fa-times"></i></button>
+        <button onclick="toggleCart()" aria-label="Cerrar"><i class="fas fa-times"></i></button>
     </div>
+    
+    <div id="cart-empty-msg" style="text-align: center; color: #888; margin-top: 20px;">
+        Tu carrito está vacío.
+    </div>
+
     <div id="cart-items"></div>
-    <div id="cart-totals-section" class="cart-totals">
-        <div class="cart-row"><span>Total Final:</span><span id="cart-total-local">$0.00</span></div>
-        <button class="btn btn-whatsapp btn-block" onclick="processCheckout()">Finalizar Pedido</button>
+    
+    <div class="cart-totals" id="cart-totals-section" style="display: none;">
+        <div class="coupon-section">
+            <input type="text" id="coupon-code" placeholder="Cupón (ej: CLICKTVMUNDIAL)">
+            <button class="btn-primary" onclick="applyCoupon()">Validar</button>
+        </div>
+        <div class="cart-row"><span>Subtotal:</span><span id="cart-subtotal-local">$0.00</span></div>
+        <div class="cart-row" style="color:var(--gold);"><span>Descuento:</span><span id="cart-discount-local">$0.00</span></div>
+        <div class="cart-row total"><span>Total Final:</span><span id="cart-total-local">$0.00</span></div>
+        <div class="cart-row usd"><span>Total USD:</span><span id="cart-total-usd">$0.00 USD</span></div>
+        
+        <button class="btn btn-whatsapp btn-block" onclick="processCheckout()" style="margin-top:15px;">
+            <i class="fab fa-whatsapp"></i> Finalizar Pedido
+        </button>
+        <button class="btn btn-gold btn-block" onclick="window.open('https://wa.me/593939166222?text=Hola,%20adjunto%20comprobante%20de%20pago', '_blank')" style="margin-top:15px;">
+            📤 ENVIAR COMPROBANTE
+        </button>
+    
+        <div class="cart-bank-info" style="margin-top: 15px;">
+            <h4><i class="fas fa-university"></i> Métodos de Pago</h4>
+            <p class="small-text" style="color:#ff4444; font-size:12px; margin-bottom:10px;">⚠️ <b>IMPORTANTE:</b> Al realizar la transferencia agregue: <br><b style="color:white;">clicktvprivado@gmail.com</b><br> en la app bancaria para validación rápida.</p>
+            <ul class="cart-bank-list">
+                <li><span>Pichincha:</span><span>2205375908 <button onclick="copyToClipboard('2205375908')" class="copy-btn"><i class="fas fa-copy"></i> Copiar</button></span></li>
+                <li><span>Guayaquil:</span><span>0013647475 <button onclick="copyToClipboard('0013647475')" class="copy-btn"><i class="fas fa-copy"></i> Copiar</button></span></li>
+                <li>
+                    <span>DEUNA!</span>
+                    <span>
+                        <a href="https://pagar.deuna.app/H92p/U2FsdGVkX1+d5ztHtEqOvWZoCPyapr0gLHqVfd5bPEnxFHTZK9YHPAshlvR6BD3wG3A1HJIxJsdqS/ac5gip07gMGakILWEtHrLHQwCiL6Z/SAeuNxx4UZlxsyvCLBJjtcSCj7/jZoDAyB7FNrWMdr7WIw0EUeiv1Cdbs0Xtw4VfcP9tlvf4dRXGPzF65Wjr+YC1aZpkCI5gHp6qXtIAfA==" target="_blank" rel="noopener noreferrer" style="background:#6bff6b; color:#000; padding:6px 12px; border-radius:8px; font-weight:700; text-decoration:none; display:inline-block;">💳 PAGAR CON DEUNA</a>
+                    </span>
+                </li>
+                <li><span>PayPhone</span><span><a href="https://ppls.me/izAAuu8fptGHF6uZBV9L4Q" target="_blank" style="color:var(--gold);">Pagar</a></span></li>
+                <li><span>PayPal</span><span><a href="https://paypal.me/richardontaneda" target="_blank" style="color:var(--gold);">Pagar</a></span></li>
+            </ul>
+        </div>
+        <div class="payment-note">✅ Después del pago envía tu comprobante para activar tu servicio inmediatamente.</div>
     </div>
 </div>
 
 <div class="floating-buttons-container">
-    <a href="https://wa.me/593939166222" target="_blank" class="float-btn float-whatsapp"><i class="fab fa-whatsapp"></i></a>
+    <a href="https://wa.me/593939166222?text=%F0%9F%91%8B%20Hola%2C%20necesito%20ayuda%20con%20mi%20servicio%20Click%20TV." target="_blank" class="float-btn float-support" aria-label="Soporte Técnico">
+        <i class="fas fa-headset"></i>
+    </a>
+    <a href="https://t.me/streamid" target="_blank" class="float-btn float-telegram" aria-label="Telegram">
+        <i class="fab fa-telegram-plane"></i>
+    </a>
+    <a href="https://wa.me/593939166222" target="_blank" class="float-btn float-whatsapp" aria-label="WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
 </div>
 
 <div id="toast-container"></div>
 
-<script src="script.js"></script>
+<script>
+function abrirResenas(event){
+    event.preventDefault();
+    window.open("https://web.telegram.org/k/#@streamid", "_blank", "noopener,noreferrer");
+}
+</script>
+
+<script src="./script.js?v=20260616-1"></script>
+
+<div class="community-section" style="max-width:1200px;margin:30px auto;padding:20px;background:#111;border-radius:15px;">
+    <h2 style="color:#fff;">💬 Comunidad Click TV</h2>
+    <div id="disqus_thread"></div>
+</div>
+<script>
+var disqus_config = function () {
+    this.page.url = 'https://click-tv-mundial.vercel.app/';
+    this.page.identifier = 'clicktv-mundial-2026';
+};
+(function () {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://click-tv-mundial-2026.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+})();
+</script>
 </body>
 </html>

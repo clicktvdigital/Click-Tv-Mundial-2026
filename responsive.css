@@ -1,31 +1,143 @@
+/* ========================================== */
+/* RESPONSIVE DESIGN - CLICK TV 2026 */
+/* ========================================== */
+
+/* Tablets y Laptops Pequeñas */
 @media (max-width: 1024px) {
-    .grid { grid-template-columns: repeat(2, 1fr); }
+    .hero h1 { font-size: 3rem; }
+    .grid { 
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); 
+        gap: 15px;
+    }
+    .hero-content { max-width: 800px; }
 }
 
+/* Dispositivos Móviles (Tablets y Smartphones Grandes) */
 @media (max-width: 768px) {
-    .hero h1 { font-size: 2.5rem; }
-    .grid { grid-template-columns: 1fr; }
+    html, body { overflow-x: hidden; max-width: 100vw; }
     
+    /* Top Bar adjustments */
+    .top-bar { 
+        flex-direction: column; 
+        text-align: center; 
+        padding: 10px; 
+        gap: 8px;
+    }
+    .separator { display: none; }
+    .top-info { justify-content: center; flex-wrap: wrap; }
+    
+    /* Header & Navigation */
+    header { padding: 12px 5%; }
+    .logo { font-size: 22px; }
+    
+    .menu-toggle { 
+        display: block; /* Mostrar botón de hamburguesa */
+    }
+
     .nav-links {
-        display: none;
+        display: none; /* Ocultar por defecto en móvil */
         flex-direction: column;
-        background: #0a0a0a;
         position: absolute;
         top: 100%;
         left: 0;
-        width: 100%;
-        padding: 20px;
+        right: 0;
+        background: var(--bg-dark);
+        padding: 25px;
+        gap: 15px;
         border-bottom: 1px solid var(--border);
+        text-align: center;
+        z-index: 1000;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+    }
+
+    /* Clase activa disparada por JS */
+    .nav-links.active {
+        display: flex !important;
     }
     
-    .nav-links.active { display: flex; }
+    /* Hero Section */
+    .hero { min-height: auto; padding: 80px 5% 60px; }
+    .hero h1 { font-size: 2.2rem; }
+    .hero-buttons { flex-direction: column; gap: 12px; }
+    .hero-buttons .btn { width: 100%; }
     
-    .form-row { grid-template-columns: 1fr; }
+    .hero-stats {
+        grid-template-columns: repeat(2, 1fr);
+        padding: 15px;
+        gap: 12px;
+    }
+    .hero-stats b { font-size: 1.5rem; }
     
-    .cart-sidebar { width: 100%; }
+    /* Sections Global */
+    section { padding: 40px 5%; }
+    .section-header h2 { font-size: 1.8rem; }
+    
+    /* Calculator */
+    .calc-results { grid-template-columns: 1fr; gap: 12px; }
+    .calc-box { padding: 15px; }
+    
+    /* Catalogue Grid */
+    .grid { 
+        grid-template-columns: 1fr; 
+        gap: 20px; 
+    }
+    .card { padding: 25px 15px; }
+    
+    /* Contact Form */
+    .form-row { grid-template-columns: 1fr; gap: 15px; }
+    .contact-form { padding: 20px; }
+    
+    /* Cart Sidebar */
+    .cart-sidebar { 
+        width: 100%; 
+        right: -100%; 
+    }
+    .cart-sidebar.active {
+        right: 0;
+    }
+    
+    /* Floating Buttons */
+    .floating-buttons-container { bottom: 15px; right: 15px; }
+    .float-btn { width: 45px; height: 45px; font-size: 20px; }
+    .float-support { font-size: 12px; padding: 0 12px; }
+    
+    /* Matches / Mundial */
+    .match-teams { font-size: 13px; }
+    .team { display: flex; flex-direction: column; align-items: center; gap: 5px; text-align: center; }
+    
+    /* Toast notifications */
+    #toast-container { 
+        bottom: 15px; 
+        left: 10px; 
+        right: 10px; 
+        width: calc(100% - 20px); 
+    }
+    .toast { width: 100%; font-size: 12px; }
+
+    /* Trust Section */
+    .trust-grid { gap: 15px; justify-content: flex-start; }
+    .trust-item { font-size: 12px; }
 }
 
+/* Smartphones Pequeños */
 @media (max-width: 480px) {
-    .hero-stats { grid-template-columns: 1fr; }
-    .hero-buttons .btn { width: 100%; }
+    .hero h1 { font-size: 1.8rem; }
+    .badge { font-size: 9px; padding: 4px 10px; }
+    .section-header h2 { font-size: 1.6rem; }
+    
+    .logo { font-size: 20px; }
+    .logo small { display: none; } /* Ocultar "2026" en pantallas muy pequeñas para ahorrar espacio */
+    
+    .card-icon { width: 50px; height: 50px; font-size: 1.5rem; }
+    .local-price { font-size: 1.8rem; }
+
+    /* Ajuste para los botones de compra en el carrito móvil */
+    .cart-bank-list li { flex-direction: column; align-items: flex-start; gap: 5px; }
+    .copy-btn { width: 100%; text-align: center; margin-top: 5px; }
+}
+
+/* Ajustes para pantallas con altura reducida (landscape) */
+@media (max-height: 500px) and (orientation: landscape) {
+    .hero { min-height: 100vh; }
+    .nav-links { overflow-y: auto; max-height: 80vh; }
 }
