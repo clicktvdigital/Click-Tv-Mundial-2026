@@ -1,6 +1,5 @@
 
-document.body.style.background = "red";
-alert("VERSION NUEVA");
+
 const products = [];
 const WPP_NUMBER = "593939166222";
 let cart = [];
@@ -24,7 +23,7 @@ const activities = [
 ];
 
     async function initApp() {
-alert("INIT APP INICIADO");
+console.log("INIT APP");
     try {
 
         console.log("1");
@@ -237,12 +236,17 @@ function saveCart(){
         JSON.stringify(cart)
     );
 }
-const savedCart =
-    localStorage.getItem('clicktv_cart');
+try {
+    const savedCart =
+        localStorage.getItem('clicktv_cart');
 
-if(savedCart){
-    cart = JSON.parse(savedCart);
-    updateCartUI();
+    if(savedCart){
+        cart = JSON.parse(savedCart);
+        updateCartUI();
+    }
+} catch(e){
+    console.error("Error carrito:", e);
+    localStorage.removeItem('clicktv_cart');
 }
 
 function addDropdownToCart(baseName, selectId) {
@@ -738,7 +742,8 @@ function showMatchFallback(container) {
 }
 
     
-    document.addEventListener('DOMContentLoaded', () => {
+    window.addEventListener('load', () => {
+    console.log("WINDOW LOAD");
     initApp();
 });
 // Dark mode persistence
@@ -792,7 +797,7 @@ setInterval(update, 60000);
 
 });
 }
-alert("FINAL SCRIPT");
+
 
 
 
