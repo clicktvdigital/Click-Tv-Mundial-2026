@@ -361,31 +361,31 @@ async function fetchWorldCupMatches() {
     strHomeTeam: "France",
     strAwayTeam: "Senegal",
     dateEvent: "2026-06-16",
-    strTime: "15:00:00"
+    strTime: "14:00:00" // Ecuador
   },
   {
     strHomeTeam: "Iraq",
     strAwayTeam: "Norway",
     dateEvent: "2026-06-16",
-    strTime: "18:00:00"
+    strTime: "17:00:00" // Ecuador
   },
   {
     strHomeTeam: "Argentina",
     strAwayTeam: "Algeria",
     dateEvent: "2026-06-16",
-    strTime: "21:00:00"
+    strTime: "20:00:00" // Ecuador
   },
   {
     strHomeTeam: "Portugal",
     strAwayTeam: "DR Congo",
     dateEvent: "2026-06-17",
-    strTime: "13:00:00"
+    strTime: "12:00:00" // Ecuador
   },
   {
     strHomeTeam: "England",
     strAwayTeam: "Croatia",
     dateEvent: "2026-06-17",
-    strTime: "16:00:00"
+    strTime: "15:00:00" // Ecuador
   }
 ];
             
@@ -442,7 +442,7 @@ function startCountdowns(){
     document.querySelectorAll('.countdown').forEach(el=>{
         const date = el.dataset.date;
         const time = el.dataset.time;
-        const matchDate = new Date(`${date}T${time}Z`);
+        const matchDate = new Date(`${date}T${time}`);
         function update(){
             const diff = matchDate - new Date();
             if(diff <= 0){
