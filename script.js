@@ -1,5 +1,6 @@
 
-alert("SCRIPT ARRANCA");
+document.body.style.background = "red";
+alert("VERSION NUEVA");
 const products = [];
 const WPP_NUMBER = "593939166222";
 let cart = [];
