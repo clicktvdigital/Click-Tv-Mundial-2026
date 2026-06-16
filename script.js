@@ -56,7 +56,8 @@ const activities = [
             fetchWorldCupMatches();
         });
     });
-
+        
+    }
 
 
 async function fetchExchangeRates() {
