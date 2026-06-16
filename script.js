@@ -1,5 +1,5 @@
 
-
+alert("HOLA DESDE SCRIPT");
 const products = [];
 const WPP_NUMBER = "593939166222";
 let cart = [];
