@@ -367,6 +367,9 @@ async function fetchWorldCupMatches() {
 );
 
 const data = await response.json();
+        
+        console.log("API DATA:", data);
+alert(JSON.stringify(data).substring(0,500));
 
 const events = (data.response || []).map(match => ({
     strHomeTeam: match.teams.home.name,
