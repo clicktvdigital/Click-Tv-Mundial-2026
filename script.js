@@ -1,5 +1,5 @@
 
-alert("HOLA DESDE SCRIPT");
+
 const products = [];
 const WPP_NUMBER = "593939166222";
 let cart = [];
@@ -406,10 +406,18 @@ function setContactMethod(method){
 }
 
 function showToast(msg) {
+
     const c = document.getElementById('toast-container');
+
+    if(!c) return;
+
     const t = document.createElement('div');
-    t.className = 'toast'; t.innerHTML = msg;
+
+    t.className = 'toast';
+    t.innerHTML = msg;
+
     c.appendChild(t);
+
     setTimeout(() => {
         t.style.opacity = '0';
         t.style.transform = 'translateX(-100%)';
@@ -635,9 +643,20 @@ const data = await res.json();
     ];
 }
 
-        const events = Array.isArray(data.events)
-    ? data.events
-    : [];
+        const events = [
+{
+    strHomeTeam: "Ecuador",
+    strAwayTeam: "Costa de Marfil",
+    dateEvent: "2026-06-17",
+    strTime: "18:00:00"
+},
+{
+    strHomeTeam: "Spain",
+    strAwayTeam: "Egypt",
+    dateEvent: "2026-06-17",
+    strTime: "21:00:00"
+}
+];
 
 const upcomingMatches = events
 .sort((a, b) => {
@@ -798,19 +817,11 @@ if(hours === 0){
 }
 
 update();
-    
+setInterval(update, 60000);
 
 });
 }
-    setTimeout(() => {
-    showToast("🔥 PRUEBA");
-}, 3000);
-    
-alert("SCRIPT CARGADO");
-alert(
-document.getElementById("toast-container")
-? "TOAST EXISTE"
-: "TOAST NO EXISTE"
-);
-alert("FINAL DEL ARCHIVO");
+
+
+
 
