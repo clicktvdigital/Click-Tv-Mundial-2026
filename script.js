@@ -792,3 +792,9 @@ document.getElementById("toast-container")
 ? "TOAST EXISTE"
 : "TOAST NO EXISTE"
 );
+alert("FINAL DEL ARCHIVO");
+
+document.addEventListener('DOMContentLoaded', () => {
+    alert("DOM LISTO");
+    initApp();
+});
