@@ -24,36 +24,12 @@ const activities = [
 
     async function initApp() {
 
-    alert("PASO 1");
+    await fetchExchangeRates();
+    await detectUserCountry();
+    await fetchWorldCupMatches();
 
-    try {
-
-        alert("PASO 2");
-        await fetchExchangeRates();
-
-        alert("PASO 3");
-        await detectUserCountry();
-
-        alert("PASO 4");
-        await fetchWorldCupMatches();
-
-        alert("PASO 5");
-
-        startToastRotator();
-
-        alert("PASO 6");
-
-        simulateOnlineUsers();
-
-        alert("PASO 7");
-
-    } catch(err) {
-
-        alert("ERROR: " + err.message);
-        console.error(err);
-    }
-    
-
+    startToastRotator();
+    simulateOnlineUsers();
 
     const navLinks = document.querySelectorAll('.nav-links a');
 
@@ -77,8 +53,8 @@ const activities = [
             fetchWorldCupMatches();
         });
     });
-        
-    }
+
+}
 
 
 async function fetchExchangeRates() {
@@ -730,8 +706,9 @@ const upcomingMatches = events
 
             </div>`;
         });
-
+console.log("HTML generado:", html);
         container.innerHTML = html;
+        
 startCountdowns();
 
     } catch (error) {
