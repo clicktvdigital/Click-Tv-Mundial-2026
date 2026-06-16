@@ -23,7 +23,7 @@ const activities = [
 ];
 
     async function initApp() {
-
+alert("INIT APP INICIADO");
     try {
 
         console.log("1");
