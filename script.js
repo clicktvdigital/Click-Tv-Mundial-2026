@@ -51,7 +51,7 @@ const activities = [
 
         alert("ERROR: " + err.message);
         console.error(err);
-
+    }
     
 
 
@@ -746,8 +746,9 @@ function showMatchFallback(container) {
         </div>
     `;
 }
-document.addEventListener('DOMContentLoaded', () => {
+
     
+    document.addEventListener('DOMContentLoaded', () => {
     initApp();
 });
 // Dark mode persistence
@@ -800,6 +801,7 @@ update();
     
 
 });
+}
     setTimeout(() => {
     showToast("🔥 PRUEBA");
 }, 3000);
@@ -812,7 +814,3 @@ document.getElementById("toast-container")
 );
 alert("FINAL DEL ARCHIVO");
 
-document.addEventListener('DOMContentLoaded', () => {
-    alert("DOM LISTO");
-    initApp();
-});
