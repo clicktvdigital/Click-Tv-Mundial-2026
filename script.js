@@ -238,19 +238,10 @@ function saveCart(){
         JSON.stringify(cart)
     );
 }
-try {
+const savedCart = localStorage.getItem('clicktv_cart');
 
-    const savedCart =
-        localStorage.getItem('clicktv_cart');
-
-    if(savedCart){
-        cart = JSON.parse(savedCart);
-    }
-
-} catch(e){
-
-    console.error(e);
-
+if(savedCart){
+    cart = JSON.parse(savedCart);
 }
 
 
@@ -803,6 +794,7 @@ setInterval(update, 60000);
 });
 }
 
+alert("SCRIPT LLEGO AL FINAL");
 
 
 
