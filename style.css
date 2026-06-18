@@ -363,13 +363,20 @@ section { padding: 60px 5%; width: 100%; box-sizing: border-box; }
     font-size:4rem;
     font-weight:900;
     letter-spacing:2px;
+    display:inline-block;
+    padding:10px 22px;
+    border-radius:14px;
 
-    color:#ffffff;
+    background:rgba(255,193,7,.08);
+
+    border:1px solid rgba(255,193,7,.25);
+
+    color:#fff;
 
     text-shadow:
-        0 0 8px rgba(255,193,7,.6),
-        0 0 16px rgba(255,193,7,.4);
-
+        0 0 3px rgba(255,255,255,.4),
+        0 0 8px rgba(255,193,7,.5),
+        0 0 15px rgba(255,193,7,.25);
     margin:20px 0 10px;
     line-height:1;
 }
@@ -513,7 +520,7 @@ section { padding: 60px 5%; width: 100%; box-sizing: border-box; }
 /* ========================================== */
 /* FLOATING BUTTONS & TOASTS */
 /* ========================================== */
-.floating-buttons-container { position: fixed; bottom: 20px; right: 20px; display: flex; flex-direction: column; gap: 12px; z-index: 999; }
+.floating-buttons-container { position: fixed; bottom: 120px; right: 20px; display: flex; flex-direction: column; gap: 12px; z-index: 999; }
 .float-btn{
     width:70px;
     height:70px;
@@ -526,7 +533,7 @@ section { padding: 60px 5%; width: 100%; box-sizing: border-box; }
         0 10px 25px rgba(0,0,0,.45);
 }
 .float-whatsapp{
-    background:#25D366;
+    background:#25D366; margin-bottom:90px;
 }
 
 .float-whatsapp i{
@@ -637,7 +644,7 @@ footer { background: #080808; border-top: 1px solid var(--border); padding: 40px
     display:flex;
     align-items:center;
     justify-content:center;
-    gap:10px;
+    gap:12px;
 
     padding:12px 18px;
     margin-bottom:10px;
@@ -649,7 +656,7 @@ footer { background: #080808; border-top: 1px solid var(--border); padding: 40px
 
 .btn-buy i{
     color:#25D366;
-    font-size:24px;
+    font-size:32px;
 }
 
 .btn-buy:hover{
