@@ -204,22 +204,31 @@ header {
 .btn-whatsapp{
     width:100%;
     background:linear-gradient(135deg,#25D366,#1EBE5D);
-    color:#FFFFFF !important;
-    font-size:22px;
+    color:#fff;
+    font-size:24px;
     font-weight:800;
-    padding:18px;
+    padding:22px;
     border-radius:18px;
     border:none;
-    text-align:center;
-    box-shadow:0 0 20px rgba(37,211,102,.35);
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:14px;
+
+    box-shadow:
+        0 0 20px rgba(37,211,102,.4),
+        0 8px 25px rgba(37,211,102,.25);
+
+    transition:.3s;
+}
+
+.btn-whatsapp:hover{
+    transform:translateY(-3px);
 }
 
 .btn-whatsapp i{
-    color:#FFFFFF !important;
-    font-size:28px;
-}
-.btn-whatsapp:hover{
-    transform:translateY(-2px);
+    font-size:34px;
 }
 
 .btn-cart{
@@ -351,15 +360,18 @@ section { padding: 60px 5%; width: 100%; box-sizing: border-box; }
 }
 .local-price{
     font-family:'Bebas Neue',sans-serif;
-    font-size:3rem;
+    font-size:4rem;
     font-weight:900;
-    letter-spacing:1px;
+    letter-spacing:2px;
 
-    color:var(--card-color,var(--gold));
+    color:#ffffff;
 
-    text-shadow:0 0 6px rgba(255,255,255,.15);
+    text-shadow:
+        0 0 8px rgba(255,193,7,.6),
+        0 0 16px rgba(255,193,7,.4);
 
-    margin:15px 0;
+    margin:20px 0 10px;
+    line-height:1;
 }
 .usd-reference { font-size: 11px; color: #666; margin-top: 2px; }
 .card-buttons { display: flex; flex-direction: column; gap: 8px; margin-top: auto; }
@@ -563,4 +575,37 @@ footer { background: #080808; border-top: 1px solid var(--border); padding: 40px
     font-weight:500;
     text-align:center;
     line-height:1.8;
+}
+
+/* FORMULARIO PREMIUM */
+
+.contact-form input,
+.contact-form select,
+.contact-form textarea{
+    width:100%;
+    background:#111;
+    color:#fff;
+    border:1px solid rgba(255,255,255,.15);
+    border-radius:12px;
+    padding:14px 16px;
+    font-size:16px;
+    margin-bottom:12px;
+    outline:none;
+}
+
+.contact-form input:focus,
+.contact-form select:focus,
+.contact-form textarea:focus{
+    border-color:#FFC107;
+    box-shadow:0 0 15px rgba(255,193,7,.2);
+}
+
+.contact-form textarea{
+    min-height:140px;
+    resize:none;
+}
+
+.contact-form input::placeholder,
+.contact-form textarea::placeholder{
+    color:#888;
 }
