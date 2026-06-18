@@ -345,7 +345,7 @@ function simulateOnlineUsers() {
 }
 
 const teamFlags = {
-    Ecuador: "🇪🇨", Germany: "🇩🇪", Scotland: "🏴", Haiti: "🇭🇹", "Ivory Coast": "🇨🇮", Curaçao: "🇨🇼", Mexico: "🇲🇽", Canada: "🇨🇦", USA: "🇺🇸", Japan: "🇯🇵", Sweden: "🇸🇪", Tunisia: "🇹🇳", Netherlands: "🇳🇱", Spain: "🇪🇸", France: "🇫🇷", Brazil: "🇧🇷", Argentina: "🇦🇷", England: "🏴", Portugal: "🇵🇹", Uruguay: "🇺🇾", Paraguay: "🇵🇾", Bolivia: "🇧🇴", Venezuela: "🇻🇪", Australia: "🇦🇺", Belgium: "🇧🇪", Croatia: "🇭🇷", Denmark: "🇩🇰", Switzerland: "🇨🇭", Egypt: "🇪🇬", "Saudi Arabia": "🇸🇦", Morocco: "🇲🇦", Algeria: "🇩🇿", Nigeria: "🇳🇬", Cameroon: "🇨🇲", Senegal: "🇸🇳", Ghana: "🇬🇭", Chile: "🇨🇱", Peru: "🇵🇪", Colombia: "🇨🇴" ,South Africa: "🇿🇦",
+    Ecuador: "🇪🇨", Germany: "🇩🇪", Scotland: "🏴", Haiti: "🇭🇹", "Ivory Coast": "🇨🇮", Curaçao: "🇨🇼", Mexico: "🇲🇽", Canada: "🇨🇦", USA: "🇺🇸", Japan: "🇯🇵", Sweden: "🇸🇪", Tunisia: "🇹🇳", Netherlands: "🇳🇱", Spain: "🇪🇸", France: "🇫🇷", Brazil: "🇧🇷", Argentina: "🇦🇷", England: "🏴", Portugal: "🇵🇹", Uruguay: "🇺🇾", Paraguay: "🇵🇾", Bolivia: "🇧🇴", Venezuela: "🇻🇪", Australia: "🇦🇺", Belgium: "🇧🇪", Croatia: "🇭🇷", Denmark: "🇩🇰", Switzerland: "🇨🇭", Egypt: "🇪🇬", "Saudi Arabia": "🇸🇦", Morocco: "🇲🇦", Algeria: "🇩🇿", Nigeria: "🇳🇬", Cameroon: "🇨🇲", Senegal: "🇸🇳", Ghana: "🇬🇭", Chile: "🇨🇱", Peru: "🇵🇪", Colombia: "🇨🇴" , South Africa: "🇿🇦",
 Czechia: "🇨🇿",
 Switzerland: "🇨🇭",
 Bosnia and Herzegovina: "🇧🇦",
@@ -353,7 +353,7 @@ Qatar: "🇶🇦",
 South Korea: "🇰🇷",
 Turkey: "🇹🇷" , Iraq: "🇮🇶",
 Norway: "🇳🇴",
-"DR Congo": "🇨🇩" ,
+"DR Congo": "🇨🇩"
 };
 
 const teamNamesES = {
