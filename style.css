@@ -211,12 +211,12 @@ header {
 
     background:linear-gradient(135deg,#25D366,#1ebe5d);
 
-    color:#fff;
+    color:#25D366;
 
     padding:14px;
     border-radius:14px;
 
-    font-size:20px;
+    font-size:24px;
     font-weight:800;
 
     margin:15px 0;
@@ -227,8 +227,8 @@ header {
 }
 
 .btn-whatsapp i{
-    color:#fff;
-    font-size:26px;
+    color:#25D366;
+    font-size:30px;
 }
 
 .btn-whatsapp:hover{
@@ -364,17 +364,15 @@ section { padding: 60px 5%; width: 100%; box-sizing: border-box; }
 }
 .local-price{
     font-family:'Bebas Neue',sans-serif;
-    font-size:3.3rem;
-    color:var(--card-color,var(--gold));
-    letter-spacing:2px;
+    font-size:3rem;
     font-weight:900;
-    margin:18px 0;
+    letter-spacing:1px;
 
-    text-shadow:
-        0 0 8px currentColor,
-        0 0 18px currentColor;
+    color:var(--card-color,var(--gold));
 
-    transform:scale(1.05);
+    text-shadow:0 0 6px rgba(255,255,255,.15);
+
+    margin:15px 0;
 }
 .usd-reference { font-size: 11px; color: #666; margin-top: 2px; }
 .card-buttons { display: flex; flex-direction: column; gap: 8px; margin-top: auto; }
@@ -573,11 +571,9 @@ footer { background: #080808; border-top: 1px solid var(--border); padding: 40px
 }
 .service-guarantee{
     margin-top:12px;
-    color:#bbb;
-    font-size:12px;
+    color:#e5e5e5;
+    font-size:15px;
+    font-weight:500;
     text-align:center;
-    line-height:1.7;
-    max-width:90%;
-    margin-left:auto;
-    margin-right:auto;
+    line-height:1.8;
 }
