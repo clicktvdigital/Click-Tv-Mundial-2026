@@ -202,34 +202,25 @@ header {
 .btn-gold:hover { background: var(--gold-dark); transform: translateY(-2px); }
 
 .btn-whatsapp{
-    width:100%;
     display:flex;
     align-items:center;
     justify-content:center;
     gap:10px;
 
-    background:linear-gradient(135deg,#25D366,#1EBE5D);
-    color:#fff;
-
-    padding:16px;
-    border-radius:14px;
-
+    color:#25D366;
     font-size:20px;
     font-weight:800;
 
-    border:1px solid rgba(255,255,255,.1);
-
-    box-shadow:
-        0 6px 20px rgba(37,211,102,.35),
-        inset 0 1px 0 rgba(255,255,255,.15);
-
-    transition:all .25s ease;
+    margin:8px 0 12px;
+    transition:.3s;
 }
+
 .btn-whatsapp:hover{
-    transform:translateY(-2px);
-    box-shadow:
-        0 10px 25px rgba(37,211,102,.45),
-        inset 0 1px 0 rgba(255,255,255,.15);
+    transform:scale(1.03);
+    color:#32e676;
+}
+.btn-whatsapp i{
+    font-size:24px;
 }
 .btn-cart{
     background:linear-gradient(135deg,#FFC107,#FFB300);
@@ -564,8 +555,12 @@ footer { background: #080808; border-top: 1px solid var(--border); padding: 40px
     color:#ddd;
 }
 .service-guarantee{
-    margin-top:10px;
+    margin-top:12px;
     color:#bbb;
-    font-size:13px;
+    font-size:12px;
     text-align:center;
+    line-height:1.7;
+    max-width:90%;
+    margin-left:auto;
+    margin-right:auto;
 }
