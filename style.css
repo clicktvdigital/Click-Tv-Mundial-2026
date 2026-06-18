@@ -22,7 +22,7 @@
     --brand-directv: #1976D2;
     --brand-max: #7B1FA2;
     --brand-prime: #03A9F4;
-    --brand-apple: #757575;
+    --brand-apple: #FFFFFF;
     --brand-crunchy: #F57C00;
     --brand-spotify: #1DB954;
     --brand-deezer: #8E24AA;
@@ -205,23 +205,27 @@ header {
     display:flex;
     align-items:center;
     justify-content:center;
-    gap:10px;
+    gap:12px;
 
     color:#25D366;
-    font-size:20px;
+    font-size:22px;
     font-weight:800;
 
-    margin:8px 0 12px;
+    margin:15px 0;
+
     transition:.3s;
 }
 
-.btn-whatsapp:hover{
-    transform:scale(1.03);
-    color:#32e676;
-}
 .btn-whatsapp i{
-    font-size:24px;
+    color:#25D366;
+    font-size:28px;
 }
+
+.btn-whatsapp:hover{
+    color:#32e676;
+    transform:scale(1.03);
+}
+
 .btn-cart{
     background:linear-gradient(135deg,#FFC107,#FFB300);
     border:none;
@@ -356,7 +360,7 @@ section { padding: 60px 5%; width: 100%; box-sizing: border-box; }
     letter-spacing:1px;
     margin:10px 0;
     font-weight:900;
-    text-shadow:0 0 8px currentColor;
+    text-shadow:0 0 4px currentColor;
 }
 .usd-reference { font-size: 11px; color: #666; margin-top: 2px; }
 .card-buttons { display: flex; flex-direction: column; gap: 8px; margin-top: auto; }
