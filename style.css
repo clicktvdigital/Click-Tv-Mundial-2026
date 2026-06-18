@@ -301,12 +301,13 @@ section { padding: 60px 5%; width: 100%; box-sizing: border-box; }
     top:-12px;
     left:50%;
     transform:translateX(-50%);
-    padding:8px 20px;
+    padding:8px 18px;
     border-radius:30px;
     font-size:12px;
     font-weight:800;
     white-space:nowrap;
-    min-width:220px;
+    width:max-content;
+    max-width:90%;
     text-align:center;
     box-shadow:0 8px 20px rgba(0,0,0,.35);
     z-index:10;
@@ -348,7 +349,6 @@ section { padding: 60px 5%; width: 100%; box-sizing: border-box; }
     font-size:3rem;
     color:var(--card-color,var(--gold));
     letter-spacing:1px;
-    text-shadow:0 0 10px rgba(255,193,7,.25);
     margin:10px 0; font-weight:900;
 text-shadow:0 0 20px currentColor;
 }
