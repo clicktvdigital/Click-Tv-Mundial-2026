@@ -353,7 +353,7 @@ Qatar: "🇶🇦",
 South Korea: "🇰🇷",
 Turkey: "🇹🇷" , Iraq: "🇮🇶",
 Norway: "🇳🇴",
-"DR Congo": "🇨🇩"
+"DR Congo": "🇨🇩" ,
 };
 
 const teamNamesES = {
