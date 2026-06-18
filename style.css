@@ -207,13 +207,18 @@ header {
     justify-content:center;
     gap:12px;
 
+    background:rgba(37,211,102,.08);
+    border:1px solid rgba(37,211,102,.25);
+
     color:#25D366;
+
+    padding:12px;
+    border-radius:12px;
+
     font-size:22px;
     font-weight:800;
 
     margin:15px 0;
-
-    transition:.3s;
 }
 
 .btn-whatsapp i{
