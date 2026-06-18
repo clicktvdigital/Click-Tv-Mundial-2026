@@ -207,6 +207,13 @@ header {
     font-weight:700;
     border:none;
     box-shadow:0 4px 15px rgba(37,211,102,.35);
+    width:100%;
+    padding:14px;
+    border-radius:12px;
+    font-size:18px;
+    font-weight:700;
+    justify-content:center;
+
 }
 .btn-whatsapp:hover{ transform:translateY(-3px); box-shadow:0 8px 20px rgba(37,211,102,.45); }
 
@@ -341,7 +348,7 @@ section { padding: 60px 5%; width: 100%; box-sizing: border-box; }
     font-size:3rem;
     color:var(--card-color,var(--gold));
     letter-spacing:1px;
-    text-shadow:0 0 15px rgba(255,193,7,.25);
+    text-shadow:0 0 10px rgba(255,193,7,.25);
     margin:10px 0; font-weight:900;
 text-shadow:0 0 20px currentColor;
 }
@@ -540,4 +547,10 @@ footer { background: #080808; border-top: 1px solid var(--border); padding: 40px
     padding:8px 12px;
     font-size:13px;
     color:#ddd;
+}
+.service-guarantee{
+    margin-top:10px;
+    color:#bbb;
+    font-size:13px;
+    text-align:center;
 }
