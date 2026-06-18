@@ -345,11 +345,25 @@ function simulateOnlineUsers() {
 }
 
 const teamFlags = {
-    Ecuador: "🇪🇨", Germany: "🇩🇪", Scotland: "🏴", Haiti: "🇭🇹", "Ivory Coast": "🇨🇮", Curaçao: "🇨🇼", Mexico: "🇲🇽", Canada: "🇨🇦", USA: "🇺🇸", Japan: "🇯🇵", Sweden: "🇸🇪", Tunisia: "🇹🇳", Netherlands: "🇳🇱", Spain: "🇪🇸", France: "🇫🇷", Brazil: "🇧🇷", Argentina: "🇦🇷", England: "🏴", Portugal: "🇵🇹", Uruguay: "🇺🇾", Paraguay: "🇵🇾", Bolivia: "🇧🇴", Venezuela: "🇻🇪", Australia: "🇦🇺", Belgium: "🇧🇪", Croatia: "🇭🇷", Denmark: "🇩🇰", Switzerland: "🇨🇭", Egypt: "🇪🇬", "Saudi Arabia": "🇸🇦", Morocco: "🇲🇦", Algeria: "🇩🇿", Nigeria: "🇳🇬", Cameroon: "🇨🇲", Senegal: "🇸🇳", Ghana: "🇬🇭", Chile: "🇨🇱", Peru: "🇵🇪", Colombia: "🇨🇴"
+    Ecuador: "🇪🇨", Germany: "🇩🇪", Scotland: "🏴", Haiti: "🇭🇹", "Ivory Coast": "🇨🇮", Curaçao: "🇨🇼", Mexico: "🇲🇽", Canada: "🇨🇦", USA: "🇺🇸", Japan: "🇯🇵", Sweden: "🇸🇪", Tunisia: "🇹🇳", Netherlands: "🇳🇱", Spain: "🇪🇸", France: "🇫🇷", Brazil: "🇧🇷", Argentina: "🇦🇷", England: "🏴", Portugal: "🇵🇹", Uruguay: "🇺🇾", Paraguay: "🇵🇾", Bolivia: "🇧🇴", Venezuela: "🇻🇪", Australia: "🇦🇺", Belgium: "🇧🇪", Croatia: "🇭🇷", Denmark: "🇩🇰", Switzerland: "🇨🇭", Egypt: "🇪🇬", "Saudi Arabia": "🇸🇦", Morocco: "🇲🇦", Algeria: "🇩🇿", Nigeria: "🇳🇬", Cameroon: "🇨🇲", Senegal: "🇸🇳", Ghana: "🇬🇭", Chile: "🇨🇱", Peru: "🇵🇪", Colombia: "🇨🇴" ,South Africa: "🇿🇦",
+Czechia: "🇨🇿",
+Switzerland: "🇨🇭",
+Bosnia and Herzegovina: "🇧🇦",
+Qatar: "🇶🇦",
+South Korea: "🇰🇷",
+Turkey: "🇹🇷" , Iraq: "🇮🇶",
+Norway: "🇳🇴",
+"DR Congo": "🇨🇩"
 };
 
 const teamNamesES = {
-    Germany: "Alemania", Scotland: "Escocia", Haiti: "Haití", "Ivory Coast": "Costa de Marfil", Curaçao: "Curazao", Spain: "España", Belgium: "Bélgica", Egypt: "Egipto", "Saudi Arabia": "Arabia Saudita", Netherlands: "Países Bajos", Japan: "Japón", Sweden: "Suecia", Tunisia: "Túnez", France: "Francia", Brazil: "Brasil", Argentina: "Argentina", England: "Inglaterra", Portugal: "Portugal", Uruguay: "Uruguay", Paraguay: "Paraguay", Bolivia: "Bolivia", Venezuela: "Venezuela", Australia: "Australia", Croatia: "Croacia", Denmark: "Dinamarca", Switzerland: "Suiza", Morocco: "Marruecos", Algeria: "Argelia", Nigeria: "Nigeria", Cameroon: "Cameroón", Senegal: "Senegal", Ghana: "Ghana", Chile: "Chile", Peru: "Perú", Colombia: "Colombia", Mexico: "México", Canada: "Canadá", USA: "Estados Unidos"
+    Germany: "Alemania", Scotland: "Escocia", Haiti: "Haití", "Ivory Coast": "Costa de Marfil", Curaçao: "Curazao", Spain: "España", Belgium: "Bélgica", Egypt: "Egipto", "Saudi Arabia": "Arabia Saudita", Netherlands: "Países Bajos", Japan: "Japón", Sweden: "Suecia", Tunisia: "Túnez", France: "Francia", Brazil: "Brasil", Argentina: "Argentina", England: "Inglaterra", Portugal: "Portugal", Uruguay: "Uruguay", Paraguay: "Paraguay", Bolivia: "Bolivia", Venezuela: "Venezuela", Australia: "Australia", Croatia: "Croacia", Denmark: "Dinamarca", Switzerland: "Suiza", Morocco: "Marruecos", Algeria: "Argelia", Nigeria: "Nigeria", Cameroon: "Cameroón", Senegal: "Senegal", Ghana: "Ghana", Chile: "Chile", Peru: "Perú", Colombia: "Colombia", Mexico: "México", Canada: "Canadá", South Africa: "Sudáfrica",
+Czechia: "Chequia",
+Switzerland: "Suiza",
+"Bosnia and Herzegovina": "Bosnia y Herzegovina",
+Qatar: "Catar",
+"South Korea": "Corea del Sur",
+Turkey: "Turquía" , USA: "Estados Unidos"
 };
 
 async function fetchWorldCupMatches() {
@@ -358,42 +372,48 @@ async function fetchWorldCupMatches() {
     try {
         const events = [
   {
-    strHomeTeam: "France",
-    strAwayTeam: "Senegal",
-    dateEvent: "2026-06-16",
+    strHomeTeam: "Czechia",
+    strAwayTeam: "South Africa",
+    dateEvent: "2026-06-18",
+    strTime: "11:00:00" // Ecuador
+  },
+  {
+    strHomeTeam: "Switzerland",
+    strAwayTeam: "Bosnia and Herzegovina",
+    dateEvent: "2026-06-18",
     strTime: "14:00:00" // Ecuador
   },
   {
-    strHomeTeam: "Iraq",
-    strAwayTeam: "Norway",
-    dateEvent: "2026-06-16",
+    strHomeTeam: "Canada",
+    strAwayTeam: "Qatar",
+    dateEvent: "2026-06-18",
     strTime: "17:00:00" // Ecuador
   },
   {
-    strHomeTeam: "Argentina",
-    strAwayTeam: "Algeria",
-    dateEvent: "2026-06-16",
+    strHomeTeam: "Mexico",
+    strAwayTeam: "South Korea",
+    dateEvent: "2026-06-18",
     strTime: "20:00:00" // Ecuador
   },
   {
-    strHomeTeam: "Portugal",
-    strAwayTeam: "DR Congo",
-    dateEvent: "2026-06-17",
-    strTime: "12:00:00" // Ecuador
+    strHomeTeam: "USA",
+    strAwayTeam: "Australia",
+    dateEvent: "2026-06-19",
+    strTime: "14:00:00" // Ecuador
   },
   {
-    strHomeTeam: "England",
-    strAwayTeam: "Croatia",
-    dateEvent: "2026-06-17",
-    strTime: "15:00:00" // Ecuador
+    strHomeTeam: "Scotland",
+    strAwayTeam: "Morocco",
+    dateEvent: "2026-06-19",
+    strTime: "17:00:00" // Ecuador
   }
 ];
             
 
 
         const upcomingMatches = events.sort((a, b) => {
-            const dateA = new Date(`${a.dateEvent}T${a.strTime}Z`);
-            const dateB = new Date(`${b.dateEvent}T${b.strTime}Z`);
+            const dateA = new Date(`${a.dateEvent}T${a.strTime}`);
+const dateB = new Date(`${b.dateEvent}T${b.strTime}`);
             return dateA - dateB;
         }).slice(0, 6);
 
@@ -444,14 +464,32 @@ function startCountdowns(){
         const time = el.dataset.time;
         const matchDate = new Date(`${date}T${time}`);
         function update(){
-            const diff = matchDate - new Date();
-            if(diff <= 0){
-                el.innerHTML = '🔴 EN VIVO';
-                return;
-            }
-            const hours = Math.floor(diff/1000/60/60);
-            const mins = Math.floor((diff/1000/60)%60);
-            el.innerHTML = hours === 0 ? `🔥 ${mins} min` : `⏳ ${hours}h ${mins}m`;
+
+    const now = new Date();
+
+    const diff = matchDate - now;
+
+    // Duración estimada del partido: 2 horas
+    const liveEnd = new Date(matchDate.getTime() + (2 * 60 * 60 * 1000));
+
+    if(now >= liveEnd){
+        el.innerHTML = '✅ FINALIZADO';
+        return;
+    }
+
+    if(now >= matchDate){
+        el.innerHTML = '🔴 EN VIVO';
+        return;
+    }
+
+    const hours = Math.floor(diff / 1000 / 60 / 60);
+    const mins = Math.floor((diff / 1000 / 60) % 60);
+
+    if(hours === 0){
+        el.innerHTML = `🔥 Faltan ${mins} min`;
+    } else {
+        el.innerHTML = `⏳ Faltan ${hours}h ${mins}m`;
+    }
         }
         update();
         setInterval(update, 60000);
