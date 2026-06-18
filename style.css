@@ -514,8 +514,24 @@ section { padding: 60px 5%; width: 100%; box-sizing: border-box; }
 /* FLOATING BUTTONS & TOASTS */
 /* ========================================== */
 .floating-buttons-container { position: fixed; bottom: 20px; right: 20px; display: flex; flex-direction: column; gap: 12px; z-index: 999; }
-.float-btn { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 22px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); transition: 0.3s; }
-.float-whatsapp { background: var(--whatsapp); }
+.float-btn{
+    width:70px;
+    height:70px;
+
+    font-size:32px;
+
+    border-radius:50%;
+
+    box-shadow:
+        0 10px 25px rgba(0,0,0,.45);
+}
+.float-whatsapp{
+    background:#25D366;
+}
+
+.float-whatsapp i{
+    font-size:38px;
+}
 .float-telegram { background: var(--telegram); }
 .float-support { width: auto; border-radius: 30px; padding: 0 18px; font-size: 14px; font-weight: 600; background: #333; }
 
@@ -608,4 +624,35 @@ footer { background: #080808; border-top: 1px solid var(--border); padding: 40px
 .contact-form input::placeholder,
 .contact-form textarea::placeholder{
     color:#888;
+}
+
+.btn-buy{
+    width:100%;
+    background:transparent;
+    color:#fff;
+
+    font-size:18px;
+    font-weight:800;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+
+    padding:12px 18px;
+    margin-bottom:10px;
+
+    border-radius:12px;
+
+    transition:.3s;
+}
+
+.btn-buy i{
+    color:#25D366;
+    font-size:24px;
+}
+
+.btn-buy:hover{
+    transform:translateY(-2px);
+    color:#FFC107;
 }
