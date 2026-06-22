@@ -673,3 +673,18 @@ footer { background: #080808; border-top: 1px solid var(--border); padding: 40px
     transform:translateY(-2px);
     color:#FFC107;
 }
+
+/* Asegurar que el contenedor sea responsivo */
+.video-js {
+    width: 100% !important;
+    height: auto !important;
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #000;
+}
+
+/* Ajuste específico para el contenedor del player */
+#click-tv-player {
+    display: block;
+    margin: 0 auto;
+}
