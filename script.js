@@ -448,30 +448,31 @@ async function fetchWorldCupMatches() {
     try {
         const events = [
   {
-    strHomeTeam: "Argentina",
-    strAwayTeam: "Austria",
-    dateEvent: "2026-06-22",
+    strHomeTeam: "Portugal",
+    strAwayTeam: "Uzbekistán",
+    dateEvent: "2026-06-23",
     strTime: "12:00:00" // Ecuador
   },
   {
-    strHomeTeam: "France",
-    strAwayTeam: "Iraq",
-    dateEvent: "2026-06-22",
-    strTime: "16:00:00" // Ecuador
+    strHomeTeam: "Inglaterra",
+    strAwayTeam: "Ghana",
+    dateEvent: "2026-06-23",
+    strTime: "15:00:00" // Ecuador
   },
   {
-    strHomeTeam: "Norway",
-    strAwayTeam: "Senegal",
-    dateEvent: "2026-06-22",
-    strTime: "19:00:00" // Ecuador
+    strHomeTeam: "Panamá",
+    strAwayTeam: "Croacia",
+    dateEvent: "2026-06-23",
+    strTime: "18:00:00" // Ecuador
   },
   {
-    strHomeTeam: "Jordan",
-    strAwayTeam: "Algeria",
-    dateEvent: "2026-06-22",
-    strTime: "22:00:00" // Ecuador
+    strHomeTeam: "Colombia",
+    strAwayTeam: "RD Congo",
+    dateEvent: "2026-06-23",
+    strTime: "21:00:00" // Ecuador
   }
 ];
+
 
             
 
