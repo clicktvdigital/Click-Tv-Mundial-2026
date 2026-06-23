@@ -134,30 +134,24 @@
         <p>Sigue los partidos de la Copa Mundial. Horarios de tu país.</p>
     </div>
   
-  <!-- REPRODUCTOR INTEGRADO -->
-<!-- Repositorio de estilos de Video.js -->
-<link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
-
-<div style="max-width: 800px; margin: 20px auto;">
-    <video
-        id="click-tv-player"
-        class="video-js vjs-default-skin vjs-big-play-centered"
-        controls
-        preload="auto"
-        width="100%"
-        height="450">
-        <source src="https://flowpremium.digital:2087/PatricioFernandez/Fernandez2026/204145" type="application/x-mpegURL">
-    </video>
-</div>
-
-<script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@videojs/http-streaming@3.9.0/dist/videojs-http-streaming.min.js"></script>
-<script>
-    var player = videojs('click-tv-player', {
-        fluid: true,
-        responsive: true
-    });
-</script>
+  <!-- ACCESO DIRECTO AL STREAMING -->
+<section class="radio-worldcup" style="text-align: center; margin: 40px 0; padding: 30px; background: #111; border-radius: 15px;">
+    <div class="radio-card">
+        <h3 style="color: #fff; margin-bottom: 20px;"><i class="fas fa-tv"></i> TRANSMISIÓN EN VIVO</h3>
+        <p style="color: #ccc; margin-bottom: 25px;">Haz clic abajo para abrir el reproductor del Mundial en una ventana nueva.</p>
+        
+        <a href="https://zona593movie.com:8443/PatricioFernandez/Fernandez2026/204145" 
+           target="_blank" 
+           class="btn btn-primary" 
+           style="padding: 15px 30px; font-size: 18px; text-decoration: none; display: inline-block;">
+           <i class="fas fa-play-circle"></i> VER PARTIDO EN VIVO
+        </a>
+        
+        <div style="margin-top: 20px; font-size: 12px; color: #777;">
+            * Se abrirá en una ventana nueva para asegurar la mejor compatibilidad.
+        </div>
+    </div>
+</section>
 
 
 
