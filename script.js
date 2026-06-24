@@ -604,3 +604,55 @@ function renderComments() {
 }
 
 window.addEventListener("load", renderComments);
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text);
+
+    // 📳 vibración tipo iPhone (si el dispositivo lo permite)
+    if (navigator.vibrate) {
+        navigator.vibrate(50);
+    }
+
+    // 🍎 toast estilo iOS
+    const toast = document.createElement("div");
+    toast.innerText = "Copiado ✔ " + text;
+
+    toast.style.position = "fixed";
+    toast.style.bottom = "30px";
+    toast.style.left = "50%";
+    toast.style.transform = "translateX(-50%)";
+
+    toast.style.padding = "12px 18px";
+    toast.style.borderRadius = "14px";
+
+    toast.style.background = "rgba(30,30,30,0.85)";
+    toast.style.backdropFilter = "blur(10px)";
+    toast.style.webkitBackdropFilter = "blur(10px)";
+
+    toast.style.color = "#fff";
+    toast.style.fontSize = "14px";
+    toast.style.fontWeight = "500";
+
+    toast.style.boxShadow = "0 10px 25px rgba(0,0,0,0.3)";
+    toast.style.zIndex = "9999";
+
+    toast.style.opacity = "0";
+    toast.style.transition = "all 0.25s ease";
+
+    document.body.appendChild(toast);
+
+    // entrada suave
+    setTimeout(() => {
+        toast.style.opacity = "1";
+        toast.style.transform = "translateX(-50%) translateY(-5px)";
+    }, 50);
+
+    // salida suave
+    setTimeout(() => {
+        toast.style.opacity = "0";
+        toast.style.transform = "translateX(-50%) translateY(10px)";
+    }, 1600);
+
+    setTimeout(() => {
+        toast.remove();
+    }, 2000);
+}

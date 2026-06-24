@@ -945,25 +945,80 @@ footer { background: #080808; border-top: 1px solid var(--border); padding: 40px
     margin-top:15px;
 }
 
+
 /* =============================== */
-/* 🔥 MEJORA EXTRA (MUY IMPORTANTE) */
+/* 💳 CHECKOUT PRO NIVEL FINTECH */
 /* =============================== */
 
-/* hace que todo el checkout respire mejor */
-.payment-section h4{
-    margin-bottom:10px;
+/* 🔹 LAYOUT GENERAL */
+.checkout-actions{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    margin-top:18px;
+}
+
+/* =============================== */
+/* 🏦 PAYMENT SECTION */
+/* =============================== */
+
+.payment-section{
+    margin-top:22px;
+    padding-bottom:12px;
+}
+
+/* TITULOS */
+.payment-title{
+    margin-bottom:12px;
     font-size:16px;
     letter-spacing:0.3px;
 }
 
-/* mejora lectura general */
-.payment-section{
-    padding-bottom:10px;
+/* =============================== */
+/* ⚠️ ALERTA PRO */
+/* =============================== */
+
+.payment-warning{
+    font-size:13px;
+    color:#ff4d4d;
+    line-height:1.6;
+
+    background:rgba(255,77,77,0.08);
+    padding:14px;
+    border-radius:12px;
+
+    border-left:3px solid #ff4d4d;
+
+    box-shadow:0 6px 18px rgba(0,0,0,0.25);
 }
+
+/* EMAIL DESTACADO */
+.highlight-email{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+
+    color:#00e676;
+    font-weight:900;
+
+    background:rgba(0,230,118,0.12);
+    padding:4px 8px;
+    border-radius:8px;
+
+    border:1px solid rgba(0,230,118,0.3);
+
+    letter-spacing:0.3px;
+}
+
+/* =============================== */
+/* 💳 BOTONES DE PAGO */
+/* =============================== */
+
 .payment-section a{
     width:100%;
 }
 
+/* BOTÓN BASE */
 .pay-btn{
     display:flex;
     align-items:center;
@@ -977,7 +1032,9 @@ footer { background: #080808; border-top: 1px solid var(--border); padding: 40px
     font-weight:700;
     text-decoration:none;
 
-    transition:0.2s;
+    transition:0.25s ease;
+
+    box-shadow:0 6px 16px rgba(0,0,0,0.25);
 }
 
 /* DEUNA */
@@ -998,7 +1055,42 @@ footer { background: #080808; border-top: 1px solid var(--border); padding: 40px
     color:#fff;
 }
 
+/* HOVER GLOBAL */
 .pay-btn:hover{
     transform:translateY(-2px);
-    opacity:0.9;
+    opacity:0.92;
+}
+
+/* =============================== */
+/* 🧠 MICRO MEJORA UX */
+/* =============================== */
+
+.payment-section h4{
+    margin-bottom:10px;
+    font-size:16px;
+    letter-spacing:0.3px;
+}
+@keyframes fadeInUp{
+    from{
+        opacity:0;
+        transform:translateX(-50%) translateY(10px);
+    }
+    to{
+        opacity:1;
+        transform:translateX(-50%) translateY(0);
+    }
+}
+.copy-toast{
+    animation: iphoneFade 0.25s ease;
+}
+
+@keyframes iphoneFade{
+    from{
+        opacity:0;
+        transform:translateX(-50%) translateY(10px);
+    }
+    to{
+        opacity:1;
+        transform:translateX(-50%) translateY(0);
+    }
 }
