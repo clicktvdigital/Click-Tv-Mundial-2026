@@ -960,3 +960,45 @@ footer { background: #080808; border-top: 1px solid var(--border); padding: 40px
 .payment-section{
     padding-bottom:10px;
 }
+.payment-section a{
+    width:100%;
+}
+
+.pay-btn{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+
+    padding:14px;
+    margin-top:10px;
+
+    border-radius:12px;
+    font-weight:700;
+    text-decoration:none;
+
+    transition:0.2s;
+}
+
+/* DEUNA */
+.pay-btn.deuna{
+    background:#6bff6b;
+    color:#000;
+}
+
+/* PAYPHONE */
+.pay-btn.payphone{
+    background:#ffb300;
+    color:#000;
+}
+
+/* PAYPAL */
+.pay-btn.paypal{
+    background:#003087;
+    color:#fff;
+}
+
+.pay-btn:hover{
+    transform:translateY(-2px);
+    opacity:0.9;
+}
