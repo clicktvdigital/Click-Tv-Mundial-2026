@@ -1,6 +1,3 @@
-<!DOCTYPE html>
-<html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -36,14 +33,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=Bebas+Neue&display=swap" rel="stylesheet">
 
-    <!-- ICONOS FONT AWESOME (OBLIGATORIO PARA QUE FUNCIONE TODO) -->
+    <!-- ICONOS (OBLIGATORIO PARA QUE FUNCIONEN LOS ICONOS) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <!-- CSS PRINCIPAL -->
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="responsive.css">
 
-    <!-- 🔥 JSON-LD (SEO PRO - CORRECTO Y OCULTO) -->
+    <!-- JSON-LD SEO (CORRECTO Y OCULTO) -->
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
@@ -64,28 +61,6 @@
     }
     </script>
 </head>
-
-<body>
-
-<!-- TOP BAR -->
-<div class="top-bar">
-    <div class="top-info">
-        <span><i class="fas fa-map-marker-alt"></i> <span id="user-location">Detectando...</span></span>
-        <span class="separator">|</span>
-        <span><i class="fas fa-signal"></i> <b id="online-count">257</b> conectados</span>
-    </div>
-
-    <div class="top-actions">
-        <select id="currency-selector" onchange="currentCurrency=this.value; applyCurrencyUpdate();">
-            <option value="USD">🇺🇸 USD - Dólar</option>
-            <option value="PEN">🇵🇪 PEN - Sol</option>
-            <option value="COP">🇨🇴 COP - Peso</option>
-            <option value="ARS">🇦🇷 ARS - Peso</option>
-            <option value="CLP">🇨🇱 CLP - Peso</option>
-            <option value="MXN">🇲🇽 MXN - Peso</option>
-        </select>
-    </div>
-</div>
 
 <!-- HEADER -->
 <header>
@@ -1036,25 +1011,27 @@
 
         </div>
 
-
 <!-- 💳 MÉTODOS DE PAGO PRO -->
 <div class="payment-section">
 
     <h4 class="payment-title">🏦 Métodos de Pago</h4>
 
-    <p class="payment-warning">
-    ⚠️ IMPORTANTE: agrega
-    <span class="email-chip">
-        clicktvprivado@gmail.com
-        <span class="verified-badge">✔ Verificado</span>
-    </span>
-    en tu app bancaria para validación rápida.
-</p>
+    <!-- ALERTA EMAIL -->
+    <div class="payment-warning">
+        ⚠️ IMPORTANTE: agrega 
+        <span class="email-chip">
+            clicktvprivado@gmail.com
+            <span class="verified-badge">✔ Verificado</span>
+        </span>
+        en tu app bancaria para validación rápida.
+    </div>
 
-<button class="copy-email-btn" onclick="copyToClipboard('clicktvprivado@gmail.com')">
-    📋 Copiar correo
-</button>
-    <!-- 🏦 BANCOS -->
+    <!-- BOTÓN COPIAR EMAIL -->
+    <button class="copy-email-btn" onclick="copyToClipboard('clicktvprivado@gmail.com')">
+        📋 Copiar correo
+    </button>
+
+    <!-- BANCOS -->
     <div class="bank-section">
 
         <div class="bank-card">
@@ -1079,7 +1056,7 @@
 
     </div>
 
-    <!-- 💳 MÉTODOS DIGITALES -->
+    <!-- MÉTODOS DIGITALES -->
     <div class="payment-grid">
 
         <a class="pay-btn deuna" href="https://pagar.deuna.app/..." target="_blank">
