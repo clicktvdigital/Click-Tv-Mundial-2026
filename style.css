@@ -974,16 +974,17 @@ footer { background: #080808; border-top: 1px solid var(--border); padding: 40px
     letter-spacing:0.3px;
 }
 
+
 /* =============================== */
-/* ⚠️ ALERTA PRO */
+/* ⚠️ ALERTA PRO FINTECH */
 /* =============================== */
 
 .payment-warning{
     font-size:13px;
-    color:#ff4d4d;
+    color:#ff6b6b;
     line-height:1.6;
 
-    background:rgba(255,77,77,0.08);
+    background:rgba(255,107,107,0.06);
     padding:14px;
     border-radius:12px;
 
@@ -992,22 +993,38 @@ footer { background: #080808; border-top: 1px solid var(--border); padding: 40px
     box-shadow:0 6px 18px rgba(0,0,0,0.25);
 }
 
-/* EMAIL DESTACADO */
-.highlight-email{
+/* =============================== */
+/* 🟢 EMAIL CHIP PRO (UI LIMPIO) */
+/* =============================== */
+
+.email-chip{
     display:inline-flex;
     align-items:center;
     gap:6px;
 
-    color:#00e676;
-    font-weight:900;
+    padding:6px 10px;
+    margin:0 6px;
+
+    border-radius:999px;
 
     background:rgba(0,230,118,0.12);
-    padding:4px 8px;
-    border-radius:8px;
-
     border:1px solid rgba(0,230,118,0.3);
 
-    letter-spacing:0.3px;
+    color:#00e676;
+    font-weight:900;
+    font-size:13px;
+}
+
+/* ✔ VERIFICADO BADGE */
+.verified-badge{
+    font-size:10px;
+    background:#00e676;
+    color:#000;
+
+    padding:2px 6px;
+    border-radius:999px;
+
+    font-weight:800;
 }
 
 /* =============================== */
@@ -1018,11 +1035,7 @@ footer { background: #080808; border-top: 1px solid var(--border); padding: 40px
     width:100%;
 }
 
-
-/* =============================== */
-/* 💳 BOTÓN DE PAGO PRO */
-/* =============================== */
-
+/* BOTÓN BASE PRO */
 .pay-btn{
     display:flex;
     align-items:center;
@@ -1036,11 +1049,10 @@ footer { background: #080808; border-top: 1px solid var(--border); padding: 40px
     font-weight:800;
     text-decoration:none;
 
-    transition:0.25s ease;
+    transition:all 0.25s ease;
 
     box-shadow:0 8px 20px rgba(0,0,0,0.25);
 
-    /* mejora UX */
     will-change: transform;
 }
 
@@ -1062,19 +1074,19 @@ footer { background: #080808; border-top: 1px solid var(--border); padding: 40px
     color:#fff;
 }
 
-/* HOVER GLOBAL PRO */
+/* HOVER SUAVE TIPO APP */
 .pay-btn:hover{
-    transform:translateY(-3px) scale(1.01);
+    transform:translateY(-3px);
     opacity:0.95;
 }
 
-/* ACTIVE CLICK */
+/* CLICK FEEDBACK REAL */
 .pay-btn:active{
     transform:translateY(0px) scale(0.98);
 }
 
 /* =============================== */
-/* 🧠 TITULOS CHECKOUT */
+/* 🧠 TITULOS */
 /* =============================== */
 
 .payment-section h4{
@@ -1085,7 +1097,7 @@ footer { background: #080808; border-top: 1px solid var(--border); padding: 40px
 }
 
 /* =============================== */
-/* 🍎 TOAST COPY (iPhone STYLE REAL) */
+/* 🍎 TOAST iOS STYLE PERFECTO */
 /* =============================== */
 
 .copy-toast{
@@ -1095,8 +1107,8 @@ footer { background: #080808; border-top: 1px solid var(--border); padding: 40px
     transform:translateX(-50%);
 
     background:rgba(30,30,30,0.88);
-    backdrop-filter:blur(10px);
-    -webkit-backdrop-filter:blur(10px);
+    backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px);
 
     color:#fff;
     padding:12px 18px;
@@ -1111,7 +1123,7 @@ footer { background: #080808; border-top: 1px solid var(--border); padding: 40px
     z-index:9999;
 }
 
-/* ENTRADA Y SALIDA UNIFICADA */
+/* ANIMACIÓN UNIFICADA */
 @keyframes toastIn{
     from{
         opacity:0;

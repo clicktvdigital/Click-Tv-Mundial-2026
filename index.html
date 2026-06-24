@@ -1044,16 +1044,17 @@
 
         </div>
 
-        <!-- 💳 MÉTODOS DE PAGO PRO -->
+
+<!-- 💳 MÉTODOS DE PAGO PRO -->
 <div class="payment-section">
 
     <h4 class="payment-title">🏦 Métodos de Pago</h4>
 
     <p class="payment-warning">
         ⚠️ IMPORTANTE: agrega  
-        <span class="highlight-email">
+        <span class="email-chip">
             clicktvprivado@gmail.com
-            <span class="verified">✔ Verificado</span>
+            <span class="verified-badge">✔ Verificado</span>
         </span>
         en tu app bancaria para validación rápida.
     </p>
@@ -1062,80 +1063,57 @@
         📋 Copiar correo
     </button>
 
-</div>
+    <!-- 🏦 BANCOS -->
+    <div class="bank-section">
 
-    <!-- BANCOS -->
-    <div class="bank-card">
-        <span class="bank-name">Pichincha</span>
-        <div class="bank-actions">
-            <code>2205375908</code>
-            <button class="copy-btn" onclick="copyToClipboard('2205375908')">
-                📋 Copiar
-            </button>
+        <div class="bank-card">
+            <span class="bank-name">Pichincha</span>
+            <div class="bank-actions">
+                <code>2205375908</code>
+                <button class="copy-btn" onclick="copyToClipboard('2205375908')">
+                    📋 Copiar
+                </button>
+            </div>
         </div>
+
+        <div class="bank-card">
+            <span class="bank-name">Guayaquil</span>
+            <div class="bank-actions">
+                <code>0013647475</code>
+                <button class="copy-btn" onclick="copyToClipboard('0013647475')">
+                    📋 Copiar
+                </button>
+            </div>
+        </div>
+
     </div>
 
-    <div class="bank-card">
-        <span class="bank-name">Guayaquil</span>
-        <div class="bank-actions">
-            <code>0013647475</code>
-            <button class="copy-btn" onclick="copyToClipboard('0013647475')">
-                📋 Copiar
-            </button>
-        </div>
-    </div>
-
-    <!-- MÉTODOS DIGITALES -->
+    <!-- 💳 MÉTODOS DIGITALES -->
     <div class="payment-grid">
 
         <a class="pay-btn deuna" href="https://pagar.deuna.app/..." target="_blank">
-    💳 Pagar con Deuna
-</a>
+            💳 Pagar con Deuna
+        </a>
 
-<a class="pay-btn payphone" href="https://ppls.me/..." target="_blank">
-    📱 PayPhone
-</a>
+        <a class="pay-btn payphone" href="https://ppls.me/..." target="_blank">
+            📱 PayPhone
+        </a>
 
-<a class="pay-btn paypal" href="https://paypal.me/..." target="_blank">
-    🅿️ PayPal
-</a>
+        <a class="pay-btn paypal" href="https://paypal.me/..." target="_blank">
+            🅿️ PayPal
+        </a>
 
     </div>
 
 </div>
 
-<!-- 🧾 MENSAJE FINAL MEJORADO -->
+<!-- 🧾 MENSAJE FINAL PRO -->
 <div class="payment-note">
-    <strong>Después del pago</strong>, envía tu comprobante para activar tu servicio inmediatamente.
-  
+    <strong>Después del pago</strong>, envía tu comprobante para activar tu servicio inmediatamente.  
     Nuestro sistema valida los pagos en pocos minutos.
 </div>
 
-<div class="floating-buttons-container">
-    <a href="https://wa.me/593939166222?text=%F0%9F%91%8B%20Hola%2C%20necesito%20ayuda%20con%20mi%20servicio%20Click%20TV." target="_blank" class="float-btn float-support" aria-label="Soporte Técnico">
-        <i class="fas fa-headset"></i>
-    </a>
-    <a href="https://t.me/streamid" target="_blank" class="float-btn float-telegram" aria-label="Telegram">
-        <i class="fab fa-telegram-plane"></i>
-    </a>
-    <a href="https://wa.me/593939166222" target="_blank" class="float-btn float-whatsapp" aria-label="WhatsApp">
-        <i class="fab fa-whatsapp"></i>
-    </a>
-</div>
-
-<div id="toast-container"></div>
-
-<script>
-function abrirResenas(event){
-    event.preventDefault();
-    window.open("https://web.telegram.org/k/#@streamid", "_blank", "noopener,noreferrer");
-}
-</script>
-
-<script src="./script.js?v=20260616-1"></script>
-
-
-<!-- 💬 COMUNIDAD LIMPIA -->
+<!-- 💬 COMUNIDAD -->
 <div class="community-section" id="community">
 
     <h2>💬 Comunidad Click TV</h2>
@@ -1153,7 +1131,15 @@ function abrirResenas(event){
 
 </div>
 
-<script src="script.js"></script>
+<!-- 🔥 FLOATING BUTTONS -->
+<div class="floating-buttons-container">
+    <a href="https://wa.me/593939166222?text=Hola" class="float-btn float-whatsapp"></a>
+    <a href="https://t.me/streamid" class="float-btn float-telegram"></a>
+    <a href="https://wa.me/593939166222" class="float-btn float-support"></a>
+</div>
+
+<!-- ❌ SOLO UN SCRIPT -->
+<script src="./script.js?v=20260616-1"></script>
 
 </body>
 </html>
