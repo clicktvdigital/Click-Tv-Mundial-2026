@@ -975,28 +975,20 @@ footer { background: #080808; border-top: 1px solid var(--border); padding: 40px
 }
 
 
-/* =============================== */
-/* ⚠️ ALERTA PRO FINTECH */
-/* =============================== */
-
+/* ALERTA (más limpia, menos agresiva) */
 .payment-warning{
     font-size:13px;
     color:#ff6b6b;
-    line-height:1.6;
+    line-height:1.5;
 
     background:rgba(255,107,107,0.06);
-    padding:14px;
+    padding:12px;
     border-radius:12px;
 
     border-left:3px solid #ff4d4d;
-
-    box-shadow:0 6px 18px rgba(0,0,0,0.25);
 }
 
-/* =============================== */
-/* 🟢 EMAIL CHIP PRO (UI LIMPIO) */
-/* =============================== */
-
+/* EMAIL CHIP (CORREGIDO: NO SALE DEL BLOQUE) */
 .email-chip{
     display:inline-flex;
     align-items:center;
@@ -1011,11 +1003,15 @@ footer { background: #080808; border-top: 1px solid var(--border); padding: 40px
     border:1px solid rgba(0,230,118,0.3);
 
     color:#00e676;
-    font-weight:900;
+    font-weight:800;
+
     font-size:13px;
+
+    max-width:100%;
+    flex-wrap:wrap;
 }
 
-/* ✔ VERIFICADO BADGE */
+/* VERIFICADO (YA NO SE SALE) */
 .verified-badge{
     font-size:10px;
     background:#00e676;
@@ -1024,7 +1020,40 @@ footer { background: #080808; border-top: 1px solid var(--border); padding: 40px
     padding:2px 6px;
     border-radius:999px;
 
-    font-weight:800;
+    font-weight:700;
+
+    white-space:nowrap;
+}
+
+/* BOTÓN REAL (YA NO PARECE TEXTO) */
+.copy-email-btn{
+    width:100%;
+    margin-top:10px;
+
+    padding:12px 14px;
+
+    border-radius:12px;
+
+    background:#1a1a1a;
+    color:#fff;
+
+    border:1px solid rgba(255,255,255,0.12);
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+
+    transition:0.2s ease;
+}
+
+.copy-email-btn:hover{
+    transform:translateY(-2px);
+    background:#222;
 }
 
 /* =============================== */
