@@ -1,95 +1,153 @@
-<!DOCTYPE html>
-<html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- 🔥 SEO BASE -->
+    <title>CLICK TV MUNDIAL 2026 | Streaming Premium</title>
+    <meta name="description" content="Streaming Premium Mundial 2026 - IPTV, deportes y entretenimiento en vivo. Activación inmediata en LATAM.">
+    <meta name="keywords" content="IPTV, Mundial 2026, Streaming, DAZN, Paramount, DIRECTV GO, Disney+, Netflix">
+    <meta name="author" content="CLICK TV">
+    <meta name="robots" content="index, follow">
+
+    <!-- 🌐 URL CANÓNICA -->
+    <link rel="canonical" href="https://click-tv-mundial.vercel.app/">
+
+    <!-- 🎨 COLOR APP (IMPORTANTE PARA MÓVIL) -->
     <meta name="theme-color" content="#050505">
 
-    <title>CLICK TV MUNDIAL 2026</title>
+    <!-- 📱 OPEN GRAPH (REDES SOCIALES) -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="CLICK TV MUNDIAL 2026">
+    <meta property="og:description" content="Streaming Premium Mundial 2026 en vivo">
+    <meta property="og:image" content="https://click-tv-mundial.vercel.app/banner.jpg">
+    <meta property="og:url" content="https://click-tv-mundial.vercel.app/">
 
-    <!-- SEO -->
-    <meta name="description" content="Streaming Premium Mundial 2026">
-    <meta name="keywords" content="IPTV, Mundial 2026, Streaming">
+    <!-- 🐦 TWITTER -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="CLICK TV Mundial 2026">
+    <meta name="twitter:description" content="Streaming Premium Mundial 2026">
+    <meta name="twitter:image" content="https://click-tv-mundial.vercel.app/banner.jpg">
 
-    <!-- ICONOS -->
+    <!-- ⭐ ICONO -->
+    <link rel="icon" type="image/png" href="https://1000logos.net/wp-content/uploads/2023/05/World-Cup-2026-Logo.png">
+
+    <!-- 🔤 FONTS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+    <!-- 🧠 FONT AWESOME (OBLIGATORIO PARA ICONOS) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    <!-- FONTS -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
-
-    <!-- CSS -->
+    <!-- 🎨 TU CSS -->
     <link rel="stylesheet" href="style.css">
+
+    <!-- ⚠️ IMPORTANTE: NO PONGAS JS AQUÍ -->
 </head>
 
-<body>
+<!-- HEADER PRO -->
+<header class="header">
 
-<!-- HEADER -->
-<header>
-    <a href="#" class="logo">
-        <i class="fas fa-tv"></i> CLICK<span>TV</span> <small>2026</small>
+    <!-- LOGO -->
+    <a href="#inicio" class="logo">
+        <i class="fas fa-tv"></i>
+        <span>CLICK</span>TV <small>2026</small>
     </a>
 
-    <nav class="nav-links">
-        <a href="#inicio">Inicio</a>
-        <a href="#streaming">Streaming</a>
-        <a href="#iptv">IPTV</a>
-        <a href="#mundial">Partidos</a>
-        <a href="#pagos">Pagos</a>
+    <!-- NAV -->
+    <nav class="nav-links" id="nav-links">
+        <a href="#inicio">🏠 Inicio</a>
+        <a href="#streaming">🎬 Streaming</a>
+        <a href="#iptv">📺 IPTV</a>
+        <a href="#mundial">⚽ Partidos</a>
+        <a href="#pagos">💳 Pagos</a>
     </nav>
 
+    <!-- ACCIONES -->
     <div class="header-actions">
 
-        <button class="cart-icon" onclick="toggleCart()">
+        <!-- CARRITO -->
+        <button class="cart-icon" onclick="toggleCart()" aria-label="Carrito">
             <i class="fas fa-shopping-cart"></i>
             <span id="cart-count">0</span>
         </button>
 
-        <button class="menu-toggle" onclick="toggleMenu()">
+        <!-- MENU MOBILE -->
+        <button class="menu-toggle" onclick="toggleMenu()" aria-label="Menú">
             <i class="fas fa-bars"></i>
         </button>
 
     </div>
+
 </header>
 
 <!-- CONTENIDO PRINCIPAL -->
-<main>
+<main id="main-content">
 
     <!-- HERO / INICIO -->
-    <section id="inicio"></section>
+    <section id="inicio" class="hero-section">
+        <div class="hero-content">
+            <h1>Streaming Premium Mundial 2026</h1>
+            <p>Disfruta IPTV, partidos en vivo y plataformas premium.</p>
+        </div>
+    </section>
 
     <!-- STREAMING -->
     <section class="products" id="streaming">
         <div class="section-header">
-            <h2>Streaming Premium</h2>
+            <h2>🎬 Streaming Premium</h2>
+            <p>Catálogo oficial disponible</p>
         </div>
+
+        <!-- IMPORTANTE: este ID es clave para tu JS -->
         <div class="grid" id="streaming-grid"></div>
     </section>
 
     <!-- IPTV -->
-    <section id="iptv"></section>
+    <section class="products" id="iptv">
+        <div class="section-header">
+            <h2>📺 IPTV</h2>
+        </div>
 
-    <!-- PARTIDOS (MATCHES) -->
-    <section id="mundial">
+        <div class="grid" id="iptv-grid"></div>
+    </section>
+
+    <!-- PARTIDOS / MATCHES -->
+    <section class="matches-section" id="mundial">
+        <div class="section-header">
+            <h2>⚽ Partidos en Vivo</h2>
+            <p>Calendario Mundial 2026</p>
+        </div>
+
+        <!-- CLAVE PARA JS -->
         <div id="matches-container"></div>
     </section>
 
     <!-- RADIO -->
-    <section id="radio">
-        <audio controls>
+    <section class="radio-section" id="radio">
+        <div class="section-header">
+            <h2>🔴 Radio en Vivo</h2>
+        </div>
+
+        <audio controls class="radio-player">
             <source src="https://streamingecuador.net:9002/stream" type="audio/mpeg">
+            Tu navegador no soporta audio.
         </audio>
     </section>
 
     <!-- PAGOS -->
-    <section id="pagos"></section>
+    <section class="payment-section" id="pagos">
+        <div class="section-header">
+            <h2>💳 Métodos de Pago</h2>
+        </div>
+    </section>
 
 </main>
 
-<!-- CARRITO (FUERA DEL MAIN) -->
+<!-- 🛒 CARRITO (FUERA DEL MAIN SIEMPRE) -->
 <div class="cart-sidebar" id="cart-sidebar"></div>
 
-<!-- FLOATING BUTTONS -->
+<!-- 📱 FLOATING BUTTONS (SOLO UNA VEZ) -->
 <div class="floating-buttons-container">
 
     <a href="https://wa.me/593939166222?text=Hola%20necesito%20soporte"
@@ -992,27 +1050,25 @@
     </div>
 
     <!-- MÉTODOS DIGITALES -->
-    <div class="payment-grid">
+<div class="payment-grid">
 
-        <a class="pay-btn deuna" href="https://pagar.deuna.app/..." target="_blank">
-            💳 Pagar con Deuna
-        </a>
+    <a class="pay-btn deuna" href="https://pagar.deuna.app/..." target="_blank">
+        💳 Pagar con Deuna
+    </a>
 
-        <a class="pay-btn payphone" href="https://ppls.me/..." target="_blank">
-            📱 PayPhone
-        </a>
+    <a class="pay-btn payphone" href="https://ppls.me/..." target="_blank">
+        📱 PayPhone
+    </a>
 
-        <a class="pay-btn paypal" href="https://paypal.me/..." target="_blank">
-            🅿️ PayPal
-        </a>
-
-    </div>
+    <a class="pay-btn paypal" href="https://paypal.me/..." target="_blank">
+        🅿️ PayPal
+    </a>
 
 </div>
 
 <!-- 🧾 MENSAJE FINAL PRO -->
 <div class="payment-note">
-    <strong>Después del pago</strong>, envía tu comprobante para activar tu servicio inmediatamente.  
+    <strong>Después del pago</strong>, envía tu comprobante para activar tu servicio inmediatamente.
     Nuestro sistema valida los pagos en pocos minutos.
 </div>
 
@@ -1034,30 +1090,30 @@
 
 </div>
 
-<!-- 🔥 FLOATING BUTTONS -->
+<!-- 🔥 FLOATING BUTTONS (SOLO UNO) -->
 <div class="floating-buttons-container">
 
-    <!-- WHATSAPP SOPORTE -->
-    <a href="https://wa.me/593939166222?text=Hola%2C%20necesito%20ayuda%20con%20mi%20servicio%20Click%20TV"
+    <a href="https://wa.me/593939166222?text=Hola%20necesito%20ayuda"
        target="_blank"
        class="float-btn float-whatsapp">
         <i class="fab fa-whatsapp"></i>
     </a>
 
-    <!-- TELEGRAM -->
     <a href="https://t.me/streamid"
        target="_blank"
        class="float-btn float-telegram">
         <i class="fab fa-telegram-plane"></i>
     </a>
 
-    
-<!-- floating buttons -->
-<div class="floating-buttons-container">
-    ...
+    <a href="https://wa.me/593939166222?text=Soporte"
+       target="_blank"
+       class="float-btn float-support">
+        <i class="fas fa-headset"></i>
+    </a>
+
 </div>
 
-<!-- script SIEMPRE AQUÍ -->
+<!-- SCRIPT FINAL (SOLO UNA VEZ) -->
 <script src="./script.js?v=20260616-1"></script>
 
 </body>
