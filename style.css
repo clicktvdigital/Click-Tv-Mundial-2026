@@ -692,78 +692,123 @@ footer { background: #080808; border-top: 1px solid var(--border); padding: 40px
     margin: 0 auto;
 }
 /* =============================== */
-/* 💬 COMENTARIOS PRO */
+/* 💬 COMENTARIOS PRO NIVEL APP */
 /* =============================== */
 
 .community-section{
     max-width:900px;
     margin:40px auto;
-    padding:20px;
-    background:#111;
-    border-radius:15px;
+    padding:22px;
+    background:linear-gradient(180deg, #111, #0d0d0d);
+    border-radius:16px;
     color:white;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
 }
 
+/* FORMULARIO */
 .comment-box input,
 .comment-box textarea{
     width:100%;
-    margin:5px 0;
-    padding:10px;
-    border-radius:8px;
-    border:none;
+    margin:10px 0;
+    padding:12px 14px;
+    border-radius:10px;
+    border:1px solid rgba(255,255,255,0.08);
     outline:none;
     background:#1a1a1a;
     color:white;
+    transition:0.2s;
+    font-size:14px;
 }
 
+.comment-box input:focus,
+.comment-box textarea:focus{
+    border-color:#00c853;
+    box-shadow:0 0 10px rgba(0,200,83,0.2);
+}
+
+/* BOTÓN PUBLICAR */
 .comment-box button{
-    background:#00c853;
+    background:linear-gradient(135deg,#00c853,#00a844);
     border:none;
-    padding:10px 20px;
-    border-radius:8px;
+    padding:12px 18px;
+    border-radius:10px;
     font-weight:bold;
     cursor:pointer;
     margin-top:10px;
-    transition:0.2s;
+    transition:0.25s;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    color:#000;
 }
 
 .comment-box button:hover{
-    transform: scale(1.05);
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 12px 25px rgba(0,200,83,0.25);
 }
 
 /* 💬 CARD DE COMENTARIO */
 .comment-card{
-    background:#1a1a1a;
-    padding:12px;
-    margin-top:10px;
-    border-radius:10px;
+    background:rgba(255,255,255,0.03);
+    padding:16px;
+    margin-top:12px;
+    border-radius:14px;
+    border:1px solid rgba(255,255,255,0.05);
 
-    /* ✨ ANIMACIÓN QUE ME PEDISTE */
-    animation: fadeIn .3s ease;
+    animation: fadeIn .25s ease;
+    transition: all 0.25s ease;
 }
 
-/* 👇 ANIMACIÓN */
-@keyframes fadeIn{
-    from{opacity:0; transform:translateY(10px);}
-    to{opacity:1; transform:translateY(0);}
+.comment-card:hover{
+    transform: translateY(-4px);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.35);
+    border-color:rgba(0,200,83,0.2);
 }
 
+/* HEADER DEL COMENTARIO */
 .comment-header{
-    margin-bottom:5px;
+    margin-bottom:6px;
+    font-weight:bold;
+    color:#00e676;
+    font-size:14px;
 }
 
-/* ❤️ BOTÓN LIKE */
+/* TEXTO */
+.comment-card p{
+    font-size:14px;
+    color:#e0e0e0;
+    line-height:1.4;
+    margin:6px 0;
+}
+
+/* ❤️ LIKE BUTTON PRO */
 .like-btn{
-    background:transparent;
-    border:none;
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.08);
     color:#ff4d4d;
-    font-size:16px;
+    font-size:14px;
     cursor:pointer;
-    margin-top:5px;
+    margin-top:8px;
+    padding:6px 10px;
+    border-radius:8px;
     transition:0.2s;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
 }
 
-/* ✨ EFECTO HOVER LIKE */
 .like-btn:hover{
-    transform: scale(1.1);
+    transform: scale(1.08);
+    background:rgba(255,77,77,0.1);
+    border-color:rgba(255,77,77,0.3);
+}
+
+/* ✨ ANIMACIÓN ENTRADA */
+@keyframes fadeIn{
+    from{
+        opacity:0;
+        transform:translateY(10px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
 }

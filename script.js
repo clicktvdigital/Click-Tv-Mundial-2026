@@ -554,7 +554,8 @@ function addComment() {
     comments.unshift({
         name,
         text,
-        likes: 0
+        likes: 0,
+        liked: false
     });
 
     saveComments();
@@ -565,7 +566,17 @@ function addComment() {
 }
 
 function toggleLike(index) {
-    comments[index].likes++;
+    const comment = comments[index];
+
+    // ❤️ toggle like (pro)
+    if (!comment.liked) {
+        comment.likes++;
+        comment.liked = true;
+    } else {
+        comment.likes--;
+        comment.liked = false;
+    }
+
     saveComments();
     renderComments();
 }
@@ -576,10 +587,8 @@ function saveComments() {
 
 function renderComments() {
     const container = document.getElementById("comments-list");
-    container.innerHTML = "";
 
-    comments.forEach((c, i) => {
-        container.innerHTML += `
+    container.innerHTML = comments.map((c, i) => `
         <div class="comment-card">
             <div class="comment-header">
                 <b>${c.name}</b>
@@ -587,11 +596,11 @@ function renderComments() {
 
             <p>${c.text}</p>
 
-            <button class="like-btn" onclick="toggleLike(${i})">
+            <button class="like-btn ${c.liked ? 'liked' : ''}" onclick="toggleLike(${i})">
                 ❤️ ${c.likes}
             </button>
-        </div>`;
-    });
+        </div>
+    `).join("");
 }
 
 window.addEventListener("load", renderComments);
