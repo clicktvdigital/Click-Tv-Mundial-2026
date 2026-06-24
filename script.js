@@ -542,3 +542,49 @@ function startCountdowns(){
 }
 
 window.addEventListener('load', initApp);
+
+// ===============================
+// 💬 SISTEMA DE COMENTARIOS PRO
+// ===============================
+
+function loadComments() {
+    const comments = JSON.parse(localStorage.getItem("clicktv_comments")) || [];
+    const container = document.getElementById("comments-list");
+
+    container.innerHTML = "";
+
+    comments.reverse().forEach(c => {
+        container.innerHTML += `
+            <div style="background:#1a1a1a;padding:10px;margin-bottom:10px;border-radius:10px;color:#fff;">
+                <b style="color:#00e676;">${c.name}</b>
+                <p style="margin:5px 0;">${c.text}</p>
+                <small style="color:#777;">${c.date}</small>
+            </div>
+        `;
+    });
+}
+
+function addComment() {
+    const name = document.getElementById("comment-name").value;
+    const text = document.getElementById("comment-text").value;
+
+    if (!name || !text) return alert("Completa los campos");
+
+    const comments = JSON.parse(localStorage.getItem("clicktv_comments")) || [];
+
+    comments.push({
+        name,
+        text,
+        date: new Date().toLocaleString()
+    });
+
+    localStorage.setItem("clicktv_comments", JSON.stringify(comments));
+
+    document.getElementById("comment-name").value = "";
+    document.getElementById("comment-text").value = "";
+
+    loadComments();
+}
+
+// cargar al iniciar
+window.addEventListener("load", loadComments);

@@ -1071,17 +1071,24 @@ function abrirResenas(event){
 
 
 
-<script>
-var disqus_config = function () {
-    this.page.url = "https://clicktvdigital.github.io/Click-Tv-Mundial-2026/";
-    this.page.identifier = "clicktv-mundial-2026";
-};
+<div class="community-section" style="max-width:1200px;margin:30px auto;padding:20px;background:#111;border-radius:15px;">
+    <h2 style="color:#fff;">💬 Comunidad Click TV</h2>
 
-(function () {
-    var d = document, s = d.createElement('script');
-    s.src = "https://clicktvdigital.disqus.com/embed.js";
-    s.setAttribute('data-timestamp', +new Date());
-    (d.head || d.body).appendChild(s);
-})();
-</script></body>
+    <!-- FORMULARIO -->
+    <div style="margin-top:15px;">
+        <input id="comment-name" placeholder="Tu nombre" 
+            style="width:100%;padding:10px;margin-bottom:10px;border-radius:8px;border:none;">
+
+        <textarea id="comment-text" placeholder="Escribe tu comentario..."
+            style="width:100%;padding:10px;border-radius:8px;border:none;height:80px;"></textarea>
+
+        <button onclick="addComment()"
+            style="margin-top:10px;background:#00c853;color:#000;padding:10px 20px;border:none;border-radius:8px;font-weight:bold;cursor:pointer;">
+            Publicar comentario
+        </button>
+    </div>
+
+    <!-- LISTA -->
+    <div id="comments-list" style="margin-top:20px;"></div>
+</div></body>
 </html>
