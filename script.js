@@ -1,3 +1,14 @@
+// 🟢 BASE DE PARTIDOS (puedes ampliarla luego o traerla de API)
+        const ALL_MATCHES = [
+            { strHomeTeam: "Portugal", strAwayTeam: "Uzbekistán", dateEvent: "2026-06-23", strTime: "12:00:00" },
+            { strHomeTeam: "Inglaterra", strAwayTeam: "Ghana", dateEvent: "2026-06-23", strTime: "15:00:00" },
+            { strHomeTeam: "Panamá", strAwayTeam: "Croacia", dateEvent: "2026-06-23", strTime: "18:00:00" },
+            { strHomeTeam: "Colombia", strAwayTeam: "RD Congo", dateEvent: "2026-06-23", strTime: "21:00:00" },
+
+            { strHomeTeam: "Brasil", strAwayTeam: "Escocia", dateEvent: "2026-06-24", strTime: "18:00:00" },
+            { strHomeTeam: "México", strAwayTeam: "Czechia", dateEvent: "2026-06-24", strTime: "21:00:00" }
+        ];
+
 const products = [];
 const WPP_NUMBER = "593939166222";
 const API_KEY = "7e284e79d45dced6ed3dd58cadca697c";
@@ -444,122 +455,88 @@ const teamNamesES = {
 
 async function fetchWorldCupMatches() {
     const container = document.getElementById('matches-container');
-    if (!container) return;
-    try {
-        const events = [
-  {
-    strHomeTeam: "Portugal",
-    strAwayTeam: "Uzbekistán",
-    dateEvent: "2026-06-23",
-    strTime: "12:00:00" // Ecuador
-  },
-  {
-    strHomeTeam: "Inglaterra",
-    strAwayTeam: "Ghana",
-    dateEvent: "2026-06-23",
-    strTime: "15:00:00" // Ecuador
-  },
-  {
-    strHomeTeam: "Panamá",
-    strAwayTeam: "Croacia",
-    dateEvent: "2026-06-23",
-    strTime: "18:00:00" // Ecuador
-  },
-  {
-    strHomeTeam: "Colombia",
-    strAwayTeam: "RD Congo",
-    dateEvent: "2026-06-23",
-    strTime: "21:00:00" // Ecuador
-  }
-];
+    
+        // 📍 FECHA ACTUAL EN ECUADOR
+        const todayEC = new Date().toLocaleDateString('en-CA', {
+    timeZone: 'America/Guayaquil'
+});
 
+const todayMatches = ALL_MATCHES
+    .filter(m => m.dateEvent === todayEC)
+    .sort((a, b) =>
+        new Date(`${a.dateEvent}T${a.strTime}`) -
+        new Date(`${b.dateEvent}T${b.strTime}`)
+    );
 
-            
+let html = '';
 
+todayMatches.forEach(m => {
 
-        const upcomingMatches = events.sort((a, b) => {
-            const dateA = new Date(`${a.dateEvent}T${a.strTime}`);
-const dateB = new Date(`${b.dateEvent}T${b.strTime}`);
-            return dateA - dateB;
-        }).slice(0, 6);
+    const matchDate = new Date(`${m.dateEvent}T${m.strTime}-05:00`);
 
-        if(upcomingMatches.length === 0){
-            showMatchFallback(container);
-            return;
-        }
+    const localTime = matchDate.toLocaleTimeString('es-EC', {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true
+    });
 
-        let html = '';
-        upcomingMatches.forEach(m => {
-            const localTime = new Date(`${m.dateEvent}T${m.strTime}`).toLocaleTimeString('es-EC', {
-                timeZone: 'America/Guayaquil',
-                hour: '2-digit',
-                minute: '2-digit'
-            });
-            
-            html += `
-            <div class="match-card">
-                <div class="match-header">
-                    <span>🏆 Mundial FIFA 2026</span>
-                    <span class="match-status status-upcoming">⚽ Mundial 2026</span>
-                </div>
-                <div class="match-teams">
-                    <span class="team">${teamFlags[m.strHomeTeam] || '⚽'} ${teamNamesES[m.strHomeTeam] || m.strHomeTeam}</span>
-                    <span class="match-vs">VS</span>
-                    <span class="team">${teamFlags[m.strAwayTeam] || '⚽'} ${teamNamesES[m.strAwayTeam] || m.strAwayTeam}</span>
-                </div>
-                <div class="match-info">
-                    🕒 Hora Ecuador: ${localTime} 🇪🇨<br>
-                    <span class="countdown" data-date="${m.dateEvent}" data-time="${m.strTime}"></span>
-                </div>
-            </div>`;
-        });
-        container.innerHTML = html;
-        startCountdowns();
-    } catch (error) {
-        showMatchFallback(container);
-    }
+    html += `
+    <div class="match-card">
+        <div class="match-header">
+            <span>🏆 FIFA World Cup 2026 LIVE</span>
+            <span class="match-status status-upcoming">⚽ Partido del día</span>
+        </div>
+
+        <div class="match-teams">
+            <span class="team">${teamFlags[m.strHomeTeam] || '⚽'} ${teamNamesES[m.strHomeTeam] || m.strHomeTeam}</span>
+            <span class="match-vs">VS</span>
+            <span class="team">${teamFlags[m.strAwayTeam] || '⚽'} ${teamNamesES[m.strAwayTeam] || m.strAwayTeam}</span>
+        </div>
+
+        <div class="match-info">
+            🕒 Hora Ecuador: ${localTime} 🇪🇨<br>
+            <span class="countdown" data-date="${m.dateEvent}" data-time="${m.strTime}"></span>
+        </div>
+    </div>`;
+});
+
+container.innerHTML = html;
+startCountdowns();
 }
 
-function showMatchFallback(container) {
-    container.innerHTML = `<div style="text-align:center;padding:30px;grid-column:1/-1;"><h3>⚽ Fixture en actualización</h3><p>Consulta el calendario oficial FIFA.</p></div>`;
-}
+let countdownInterval = null;
 
 function startCountdowns(){
-    document.querySelectorAll('.countdown').forEach(el=>{
-        const date = el.dataset.date;
-        const time = el.dataset.time;
-        const matchDate = new Date(`${date}T${time}`);
-        function update(){
+    if(countdownInterval) clearInterval(countdownInterval);
 
-    const now = new Date();
+    countdownInterval = setInterval(()=>{
+        document.querySelectorAll('.countdown').forEach(el=>{
+            const date = el.dataset.date;
+            const time = el.dataset.time;
 
-    const diff = matchDate - now;
+            const matchDate = new Date(`${date}T${time}-05:00`);
+            const now = new Date();
+            const diff = matchDate - now;
+            const liveEnd = new Date(matchDate.getTime() + (2 * 60 * 60 * 1000));
 
-    // Duración estimada del partido: 2 horas
-    const liveEnd = new Date(matchDate.getTime() + (2 * 60 * 60 * 1000));
+            if(now >= liveEnd){
+                el.innerHTML = '✅ FINALIZADO';
+                return;
+            }
 
-    if(now >= liveEnd){
-        el.innerHTML = '✅ FINALIZADO';
-        return;
-    }
+            if(now >= matchDate){
+                el.innerHTML = '🔴 EN VIVO';
+                return;
+            }
 
-    if(now >= matchDate){
-        el.innerHTML = '🔴 EN VIVO';
-        return;
-    }
+            const hours = Math.floor(diff / 1000 / 60 / 60);
+            const mins = Math.floor((diff / 1000 / 60) % 60);
 
-    const hours = Math.floor(diff / 1000 / 60 / 60);
-    const mins = Math.floor((diff / 1000 / 60) % 60);
-
-    if(hours === 0){
-        el.innerHTML = `🔥 Faltan ${mins} min`;
-    } else {
-        el.innerHTML = `⏳ Faltan ${hours}h ${mins}m`;
-    }
-        }
-        update();
-        setInterval(update, 60000);
-    });
+            el.innerHTML = hours === 0
+                ? `🔥 Faltan ${mins} min`
+                : `⏳ Faltan ${hours}h ${mins}m`;
+        });
+    }, 60000);
 }
 
 window.addEventListener('load', initApp);
