@@ -1064,9 +1064,17 @@ function abrirResenas(event){
 
 <script src="./script.js?v=20260616-1"></script>
 
+<div class="community-section">
+    <h2>💬 Comunidad Click TV</h2>
 
-<div class="community-section" style="max-width:1200px;margin:30px auto;padding:20px;background:#111;border-radius:15px;">
-    <h2 style="color:#fff;">💬 Comunidad Click TV</h2>
+    <div class="comment-box">
+        <input id="name" placeholder="Tu nombre">
+        <textarea id="comment" placeholder="Escribe un comentario..."></textarea>
+        <button onclick="addComment()">Publicar</button>
+    </div>
+
+    <div id="comments"></div>
+</div>
 
     <!-- FORMULARIO -->
     <div style="margin-top:15px;">

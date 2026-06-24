@@ -588,3 +588,80 @@ function addComment() {
 
 // cargar al iniciar
 window.addEventListener("load", loadComments);
+
+// ===============================
+// 💬 SISTEMA PRO TIPO RED SOCIAL
+// ===============================
+
+let comments = JSON.parse(localStorage.getItem("comments_pro")) || [];
+
+function renderComments() {
+    const container = document.getElementById("comments");
+    container.innerHTML = "";
+
+    comments.forEach((c, index) => {
+        container.innerHTML += `
+        <div class="comment">
+            <div class="comment-header">
+                <div class="avatar">${c.name.charAt(0).toUpperCase()}</div>
+                <b>${c.name}</b>
+            </div>
+
+            <p>${c.text}</p>
+
+            <div class="comment-actions">
+                <span onclick="likeComment(${index})">❤️ ${c.likes || 0}</span>
+                <span onclick="replyComment(${index})">💬 Responder</span>
+                <span onclick="deleteComment(${index})">🗑️</span>
+            </div>
+
+            <div class="replies">
+                ${(c.replies || []).map(r => `
+                    <div class="reply">↳ ${r}</div>
+                `).join("")}
+            </div>
+        </div>
+        `;
+    });
+
+    localStorage.setItem("comments_pro", JSON.stringify(comments));
+}
+
+function addComment() {
+    const name = document.getElementById("name").value;
+    const text = document.getElementById("comment").value;
+
+    if (!name || !text) return;
+
+    comments.push({
+        name,
+        text,
+        likes: 0,
+        replies: []
+    });
+
+    document.getElementById("name").value = "";
+    document.getElementById("comment").value = "";
+
+    renderComments();
+}
+
+function likeComment(i) {
+    comments[i].likes = (comments[i].likes || 0) + 1;
+    renderComments();
+}
+
+function replyComment(i) {
+    const reply = prompt("Escribe tu respuesta:");
+    if (!reply) return;
+
+    comments[i].replies.push(reply);
+    renderComments();
+}
+
+function deleteComment(i) {
+    comments.splice(i, 1);
+    renderComments();
+}
+
+window.addEventListener("load", renderComments);
