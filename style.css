@@ -851,3 +851,49 @@ footer { background: #080808; border-top: 1px solid var(--border); padding: 40px
         transform:translateY(0);
     }
 }
+
+/* =============================== */
+/* 💳 CHECKOUT PRO (NUEVO) */
+/* =============================== */
+
+.checkout-actions{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    margin-top:15px;
+}
+
+.payment-section{
+    margin-top:20px;
+}
+
+.bank-card{
+    background:#1a1a1a;
+    padding:12px;
+    border-radius:10px;
+    margin-top:10px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.bank-card code{
+    color:#fff;
+    font-weight:bold;
+}
+
+.bank-card button{
+    background:#333;
+    border:none;
+    padding:6px 10px;
+    border-radius:6px;
+    color:#fff;
+    cursor:pointer;
+}
+
+.warning{
+    font-size:12px;
+    color:#ff4d4d;
+    margin-bottom:10px;
+}
