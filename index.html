@@ -1,3 +1,6 @@
+<!DOCTYPE html>
+<html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -7,19 +10,19 @@
 
     <!-- SEO -->
     <meta name="description" content="Click TV Mundial 2026: DIRECTV GO, Paramount+, DAZN, Disney+, IPTV Premium. Activación inmediata en toda Latinoamérica. Pagos en moneda local.">
-    <meta name="keywords" content="Mundial 2026, IPTV, DAZN, Paramount+, DIRECTV GO, Streaming LATAM, IPTV Ecuador">
+    <meta name="keywords" content="Mundial 2026, IPTV, DAZN, Paramount+, DIRECTV GO, Streaming LATAM, Ecuador IPTV">
     <meta name="author" content="Click TV Streaming">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://click-tv-mundial.vercel.app/">
 
-    <!-- OPEN GRAPH (FACEBOOK / WHATSAPP) -->
+    <!-- OPEN GRAPH -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="🏆 CLICK TV MUNDIAL 2026 | Streaming Premium">
     <meta property="og:description" content="Disfruta del Mundial 2026 en plataformas premium con activación inmediata.">
     <meta property="og:image" content="https://click-tv-mundial.vercel.app/assets/img/banner-mundial.jpg">
     <meta property="og:url" content="https://click-tv-mundial.vercel.app/">
 
-    <!-- TWITTER CARD -->
+    <!-- TWITTER -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="CLICK TV Mundial 2026">
     <meta name="twitter:description" content="Streaming Premium Mundial 2026">
@@ -28,47 +31,52 @@
     <!-- ICON -->
     <link rel="icon" type="image/png" href="https://1000logos.net/wp-content/uploads/2023/05/World-Cup-2026-Logo.png">
 
-    <!-- FONTS (OPTIMIZADO) -->
+    <!-- FONTS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=Bebas+Neue&display=swap" rel="stylesheet">
 
-    <!-- ICONOS (FONT AWESOME CORRECTO) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <!-- ICONOS FONT AWESOME (OBLIGATORIO PARA QUE FUNCIONE TODO) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <!-- CSS PRINCIPAL -->
-    <link rel="stylesheet" href="styles.css">
-</head>
-    {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "Click TV Mundial 2026",
-      "url": "https://click-tv-mundial.vercel.app/",
-      "sameAs": ["https://t.me/streamid", "https://wa.me/593939166222"],
-      "contactPoint": {
-        "@type": "ContactPoint",
-        "telephone": "+593-939-166-222",
-        "contactType": "customer service",
-        "areaServed": "LATAM",
-        "availableLanguage": ["Spanish"]
-      }
-    }
-    </script>
-    
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="responsive.css">
+
+    <!-- 🔥 JSON-LD (SEO PRO - CORRECTO Y OCULTO) -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Click TV Mundial 2026",
+        "url": "https://click-tv-mundial.vercel.app/",
+        "sameAs": [
+            "https://t.me/streamid",
+            "https://wa.me/593939166222"
+        ],
+        "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+593-939-166-222",
+            "contactType": "customer service",
+            "areaServed": "LATAM",
+            "availableLanguage": ["Spanish"]
+        }
+    }
+    </script>
 </head>
+
 <body>
 
+<!-- TOP BAR -->
 <div class="top-bar">
     <div class="top-info">
         <span><i class="fas fa-map-marker-alt"></i> <span id="user-location">Detectando...</span></span>
         <span class="separator">|</span>
         <span><i class="fas fa-signal"></i> <b id="online-count">257</b> conectados</span>
     </div>
-  
+
     <div class="top-actions">
-        <select id="currency-selector" onchange="currentCurrency=this.value; applyCurrencyUpdate();" aria-label="Seleccionar moneda">
+        <select id="currency-selector" onchange="currentCurrency=this.value; applyCurrencyUpdate();">
             <option value="USD">🇺🇸 USD - Dólar</option>
             <option value="PEN">🇵🇪 PEN - Sol</option>
             <option value="COP">🇨🇴 COP - Peso</option>
@@ -79,49 +87,26 @@
     </div>
 </div>
 
+<!-- HEADER -->
 <header>
-    <a href="#" class="logo"><i class="fas fa-tv logo-icon"></i> CLICK<span>TV</span> <small>2026</small></a>
+    <a href="#" class="logo">
+        <i class="fas fa-tv logo-icon"></i> CLICK<span>TV</span> <small>2026</small>
+    </a>
+
     <nav class="nav-links" id="nav-links">
         <a href="#inicio">🏠 Inicio</a>
         <a href="#mundial">⚽ Mundial 2026</a>
         <a href="#streaming">🎬 Streaming</a>
         <a href="#iptv">📺 IPTV</a>
-        <a href="#musica">🎵 Música</a>
-        <a href="#apps">🎓 Apps Premium</a>
-        <a href="#deportes">🏆 Deportes</a>
         <a href="#pagos">💳 Pagos</a>
-        <a href="#mayoristas">💼 Mayoristas</a>
         <a href="#contacto">💬 Contacto</a>
     </nav>
+
     <div class="header-actions">
-        <button class="cart-icon" onclick="toggleCart()" aria-label="Abrir carrito">
+        <button class="cart-icon" onclick="toggleCart()">
             <i class="fas fa-shopping-cart"></i>
             <span id="cart-count">0</span>
-        </button>
-        <button class="menu-toggle" onclick="toggleMenu()" aria-label="Menú">
-            <i class="fas fa-bars"></i>
-        </button>
-    </div>
-</header>
-
-<section class="hero" id="inicio">
-    <div class="hero-overlay"></div>
-    <div class="hero-content">
-        <span class="badge">⚽ FIFA WORLD CUP 2026™ • MÉXICO / USA / CANADÁ</span>
-        <h1>Streaming <span>Premium</span><br>Mundialista</h1>
-        <p>Vive la pasión del fútbol en máxima calidad. Paramount+, DAZN, DIRECTV GO, Disney+ e IPTV. Activación inmediata en toda Latinoamérica.</p>
-        <div class="hero-buttons">
-            <a href="#mundial" class="btn btn-primary"><i class="fas fa-broadcast-tower"></i> ⚽ VER FIXTURE OFICIAL FIFA 2026</a>
-            <a href="#streaming" class="btn btn-gold"><i class="fas fa-shopping-bag"></i> VER CATÁLOGO</a>
-        </div>
-        <div class="hero-stats">
-            <div><b id="stat-clients">+5000</b><span>Clientes</span></div>
-            <div><b id="stat-activations">+12000</b><span>Activaciones</span></div>
-            <div><b id="stat-countries">14</b><span>Países</span></div>
-            <div><b>24/7</b><span>Soporte</span></div>
-        </div>
-    </div>
-</section>
+       
 
 <section class="trust-section">
     <div class="trust-grid">
