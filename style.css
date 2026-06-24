@@ -184,53 +184,92 @@ header {
 .hero p { font-size: clamp(1rem, 2vw, 1.1rem); color: #ccc; margin-bottom: 30px; }
 
 .hero-buttons { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-bottom: 40px; }
+/* =============================== */
+/* 🔘 BOTONES BASE PRO */
+/* =============================== */
+
 .btn {
-    padding: 12px 24px;
-    border-radius: 6px;
+    padding: 14px 24px;
+    border-radius: 10px;
     font-weight: 600;
-    transition: all 0.3s ease;
+    transition: all 0.25s ease;
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    font-size: 14px;
-    text-align: center;
     justify-content: center;
-}
-.btn-primary { background: var(--primary-red); color: #fff; box-shadow: 0 4px 15px rgba(229,9,20,0.3); }
-.btn-primary:hover { background: #b70710; transform: translateY(-2px); }
-.btn-gold { background: var(--gold); color: #000; box-shadow: 0 4px 15px rgba(255,193,7,0.2); }
-.btn-gold:hover { background: var(--gold-dark); transform: translateY(-2px); }
-
-.btn-whatsapp{
-    width:100%;
-    background:linear-gradient(135deg,#25D366,#1EBE5D);
-    color:#fff;
-    font-size:24px;
-    font-weight:800;
-    padding:22px;
-    border-radius:18px;
-    border:none;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:14px;
-
-    box-shadow:
-        0 0 20px rgba(37,211,102,.4),
-        0 8px 25px rgba(37,211,102,.25);
-
-    transition:.3s;
+    gap: 10px;
+    font-size: 15px;
+    text-align: center;
+    border: none;
+    cursor: pointer;
 }
 
-.btn-whatsapp:hover{
-    transform:translateY(-3px);
+/* =============================== */
+/* 🔴 BOTÓN PRIMARY (GENERAL) */
+/* =============================== */
+
+.btn-primary {
+    background: var(--primary-red);
+    color: #fff;
+    box-shadow: 0 6px 18px rgba(229,9,20,0.25);
 }
 
-.btn-whatsapp i{
-    font-size:34px;
+.btn-primary:hover {
+    background: #b70710;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(229,9,20,0.35);
 }
 
+/* =============================== */
+/* 🟡 BOTÓN GOLD */
+/* =============================== */
+
+.btn-gold {
+    background: var(--gold);
+    color: #000;
+    box-shadow: 0 6px 18px rgba(255,193,7,0.2);
+}
+
+.btn-gold:hover {
+    background: var(--gold-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(255,193,7,0.3);
+}
+
+/* =============================== */
+/* 🟢 WHATSAPP (PRO PREMIUM) */
+/* =============================== */
+
+.btn-whatsapp {
+    width: 100%;
+    background: linear-gradient(135deg,#25D366,#1EBE5D);
+    color: #fff;
+    font-weight: 700;
+    padding: 18px;
+    border-radius: 14px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+
+    box-shadow: 0 10px 25px rgba(37,211,102,0.25);
+}
+
+/* hover pro */
+.btn-whatsapp:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 30px rgba(37,211,102,0.35);
+}
+
+/* click feedback */
+.btn-whatsapp:active {
+    transform: scale(0.98);
+}
+
+/* icono */
+.btn-whatsapp i {
+    font-size: 28px;
+}
 .btn-cart{
     background:linear-gradient(135deg,#FFC107,#FFB300);
     border:none;
