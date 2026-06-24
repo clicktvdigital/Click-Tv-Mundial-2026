@@ -691,3 +691,22 @@ footer { background: #080808; border-top: 1px solid var(--border); padding: 40px
     display: block;
     margin: 0 auto;
 }
+.community-section input,
+.community-section textarea {
+    background: #1a1a1a;
+    color: white;
+    border: 1px solid #333;
+}
+
+.community-section button {
+    transition: 0.2s;
+}
+
+.community-section button:hover {
+    transform: scale(1.02);
+    opacity: 0.9;
+}
+.community-section {
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 20px rgba(0,0,0,0.4);
+}
