@@ -691,6 +691,10 @@ footer { background: #080808; border-top: 1px solid var(--border); padding: 40px
     display: block;
     margin: 0 auto;
 }
+/* =============================== */
+/* 💬 COMENTARIOS PRO */
+/* =============================== */
+
 .community-section{
     max-width:900px;
     margin:40px auto;
@@ -708,6 +712,8 @@ footer { background: #080808; border-top: 1px solid var(--border); padding: 40px
     border-radius:8px;
     border:none;
     outline:none;
+    background:#1a1a1a;
+    color:white;
 }
 
 .comment-box button{
@@ -718,19 +724,35 @@ footer { background: #080808; border-top: 1px solid var(--border); padding: 40px
     font-weight:bold;
     cursor:pointer;
     margin-top:10px;
+    transition:0.2s;
 }
 
+.comment-box button:hover{
+    transform: scale(1.05);
+}
+
+/* 💬 CARD DE COMENTARIO */
 .comment-card{
     background:#1a1a1a;
     padding:12px;
     margin-top:10px;
     border-radius:10px;
+
+    /* ✨ ANIMACIÓN QUE ME PEDISTE */
+    animation: fadeIn .3s ease;
+}
+
+/* 👇 ANIMACIÓN */
+@keyframes fadeIn{
+    from{opacity:0; transform:translateY(10px);}
+    to{opacity:1; transform:translateY(0);}
 }
 
 .comment-header{
     margin-bottom:5px;
 }
 
+/* ❤️ BOTÓN LIKE */
 .like-btn{
     background:transparent;
     border:none;
@@ -738,4 +760,10 @@ footer { background: #080808; border-top: 1px solid var(--border); padding: 40px
     font-size:16px;
     cursor:pointer;
     margin-top:5px;
+    transition:0.2s;
+}
+
+/* ✨ EFECTO HOVER LIKE */
+.like-btn:hover{
+    transform: scale(1.1);
 }

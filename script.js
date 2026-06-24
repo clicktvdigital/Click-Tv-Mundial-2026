@@ -543,57 +543,7 @@ function startCountdowns(){
 
 window.addEventListener('load', initApp);
 
-// ===============================
-// 💬 SISTEMA DE COMENTARIOS PRO
-// ===============================
-
-function loadComments() {
-    const comments = JSON.parse(localStorage.getItem("clicktv_comments")) || [];
-    const container = document.getElementById("comments-list");
-
-    container.innerHTML = "";
-
-    comments.reverse().forEach(c => {
-        container.innerHTML += `
-            <div style="background:#1a1a1a;padding:10px;margin-bottom:10px;border-radius:10px;color:#fff;">
-                <b style="color:#00e676;">${c.name}</b>
-                <p style="margin:5px 0;">${c.text}</p>
-                <small style="color:#777;">${c.date}</small>
-            </div>
-        `;
-    });
-}
-
-function addComment() {
-    const name = document.getElementById("comment-name").value;
-    const text = document.getElementById("comment-text").value;
-
-    if (!name || !text) return alert("Completa los campos");
-
-    const comments = JSON.parse(localStorage.getItem("clicktv_comments")) || [];
-
-    comments.push({
-        name,
-        text,
-        date: new Date().toLocaleString()
-    });
-
-    localStorage.setItem("clicktv_comments", JSON.stringify(comments));
-
-    document.getElementById("comment-name").value = "";
-    document.getElementById("comment-text").value = "";
-
-    loadComments();
-}
-
-// cargar al iniciar
-window.addEventListener("load", loadComments);
-
-// ===============================
-// 💬 SISTEMA PRO TIPO RED SOCIAL
-// ===============================
-
-let comments = [];
+let comments = JSON.parse(localStorage.getItem("clicktv_comments")) || [];
 
 function addComment() {
     const name = document.getElementById("comment-name").value.trim();
@@ -604,21 +554,31 @@ function addComment() {
     comments.unshift({
         name,
         text,
-        likes: 0,
-        liked: false
+        likes: 0
     });
+
+    saveComments();
+    renderComments();
 
     document.getElementById("comment-name").value = "";
     document.getElementById("comment-text").value = "";
+}
 
+function toggleLike(index) {
+    comments[index].likes++;
+    saveComments();
     renderComments();
+}
+
+function saveComments() {
+    localStorage.setItem("clicktv_comments", JSON.stringify(comments));
 }
 
 function renderComments() {
     const container = document.getElementById("comments-list");
     container.innerHTML = "";
 
-    comments.forEach((c, index) => {
+    comments.forEach((c, i) => {
         container.innerHTML += `
         <div class="comment-card">
             <div class="comment-header">
@@ -627,22 +587,11 @@ function renderComments() {
 
             <p>${c.text}</p>
 
-            <button class="like-btn" onclick="toggleLike(${index})">
+            <button class="like-btn" onclick="toggleLike(${i})">
                 ❤️ ${c.likes}
             </button>
-        </div>
-        `;
+        </div>`;
     });
 }
 
-function toggleLike(index) {
-    if (!comments[index].liked) {
-        comments[index].likes++;
-        comments[index].liked = true;
-    } else {
-        comments[index].likes--;
-        comments[index].liked = false;
-    }
-
-    renderComments();
-}
+window.addEventListener("load", renderComments);
