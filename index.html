@@ -1044,51 +1044,59 @@
 
         </div>
 
-        <!-- MÉTODOS DE PAGO -->
-        <div class="payment-section">
+        <!-- 💳 MÉTODOS DE PAGO PRO -->
+<div class="payment-section">
 
-            <h4>🏦 Métodos de Pago</h4>
+    <h4 class="payment-title">🏦 Métodos de Pago</h4>
 
-            <p class="warning">
-                ⚠️ IMPORTANTE: agrega <b>clicktvprivado@gmail.com</b> en tu app bancaria para validación rápida.
-            </p>
+    <p class="payment-warning">
+        ⚠️ IMPORTANTE: agrega <b>clicktvprivado@gmail.com</b> en tu app bancaria para validación rápida.
+    </p>
 
-            <div class="bank-card">
-                <span>Pichincha</span>
-                <div>
-                    <code>2205375908</code>
-                    <button onclick="copyToClipboard('2205375908')">Copiar</button>
-                </div>
-            </div>
-
-            <div class="bank-card">
-                <span>Guayaquil</span>
-                <div>
-                    <code>0013647475</code>
-                    <button onclick="copyToClipboard('0013647475')">Copiar</button>
-                </div>
-            </div>
-
-            <a class="pay-btn deuna" href="https://pagar.deuna.app/H92p/..." target="_blank">
-                💳 Pagar con Deuna
-            </a>
-
-            <a class="pay-btn payphone" href="https://ppls.me/izAAuu8fptGHF6uZBV9L4Q" target="_blank">
-                📱 PayPhone
-            </a>
-
-            <a class="pay-btn paypal" href="https://paypal.me/richardontaneda" target="_blank">
-                🅿️ PayPal
-            </a>
-
+    <!-- BANCOS -->
+    <div class="bank-card">
+        <span class="bank-name">Pichincha</span>
+        <div class="bank-actions">
+            <code>2205375908</code>
+            <button class="copy-btn" onclick="copyToClipboard('2205375908')">
+                📋 Copiar
+            </button>
         </div>
+    </div>
 
-        <!-- FINAL NOTE -->
-        <div class="payment-note">
-            Después del pago envía tu comprobante para activar tu servicio inmediatamente.
+    <div class="bank-card">
+        <span class="bank-name">Guayaquil</span>
+        <div class="bank-actions">
+            <code>0013647475</code>
+            <button class="copy-btn" onclick="copyToClipboard('0013647475')">
+                📋 Copiar
+            </button>
         </div>
+    </div>
+
+    <!-- MÉTODOS DIGITALES -->
+    <div class="payment-grid">
+
+        <a class="pay-btn deuna" href="https://pagar.deuna.app/H92p/..." target="_blank">
+            💳 Pagar con Deuna
+        </a>
+
+        <a class="pay-btn payphone" href="https://ppls.me/izAAuu8fptGHF6uZBV9L4Q" target="_blank">
+            📱 PayPhone
+        </a>
+
+        <a class="pay-btn paypal" href="https://paypal.me/richardontaneda" target="_blank">
+            🅿️ PayPal
+        </a>
 
     </div>
+
+</div>
+
+<!-- 🧾 MENSAJE FINAL MEJORADO -->
+<div class="payment-note">
+    <strong>Después del pago</strong>, envía tu comprobante para activar tu servicio inmediatamente.  
+    Nuestro sistema valida los pagos en pocos minutos.
 </div>
 
 <div class="floating-buttons-container">
