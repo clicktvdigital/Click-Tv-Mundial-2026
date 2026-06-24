@@ -24,21 +24,22 @@
 
 <body>
 
-<!-- HEADER ÚNICO (CORREGIDO) -->
+<!-- HEADER -->
 <header>
     <a href="#" class="logo">
         <i class="fas fa-tv"></i> CLICK<span>TV</span> <small>2026</small>
     </a>
 
-    <nav class="nav-links" id="nav-links">
+    <nav class="nav-links">
         <a href="#inicio">Inicio</a>
         <a href="#streaming">Streaming</a>
         <a href="#iptv">IPTV</a>
+        <a href="#mundial">Partidos</a>
         <a href="#pagos">Pagos</a>
-        <a href="#contacto">Contacto</a>
     </nav>
 
     <div class="header-actions">
+
         <button class="cart-icon" onclick="toggleCart()">
             <i class="fas fa-shopping-cart"></i>
             <span id="cart-count">0</span>
@@ -47,59 +48,72 @@
         <button class="menu-toggle" onclick="toggleMenu()">
             <i class="fas fa-bars"></i>
         </button>
+
     </div>
 </header>
 
 <!-- CONTENIDO PRINCIPAL -->
 <main>
 
-    <!-- PRODUCTOS -->
-    <section id="streaming">
-        <!-- TU GRID AQUÍ -->
+    <!-- HERO / INICIO -->
+    <section id="inicio"></section>
+
+    <!-- STREAMING -->
+    <section class="products" id="streaming">
+        <div class="section-header">
+            <h2>Streaming Premium</h2>
+        </div>
+        <div class="grid" id="streaming-grid"></div>
     </section>
 
-    <section id="iptv">
-        <!-- IPTV AQUÍ -->
+    <!-- IPTV -->
+    <section id="iptv"></section>
+
+    <!-- PARTIDOS (MATCHES) -->
+    <section id="mundial">
+        <div id="matches-container"></div>
     </section>
+
+    <!-- RADIO -->
+    <section id="radio">
+        <audio controls>
+            <source src="https://streamingecuador.net:9002/stream" type="audio/mpeg">
+        </audio>
+    </section>
+
+    <!-- PAGOS -->
+    <section id="pagos"></section>
 
 </main>
 
-<!-- CARRITO -->
-<div class="cart-sidebar" id="cart-sidebar">
-    <!-- tu carrito completo aquí -->
-</div>
+<!-- CARRITO (FUERA DEL MAIN) -->
+<div class="cart-sidebar" id="cart-sidebar"></div>
 
-<!-- FLOATING BUTTONS (CORREGIDO) -->
+<!-- FLOATING BUTTONS -->
 <div class="floating-buttons-container">
 
     <a href="https://wa.me/593939166222?text=Hola%20necesito%20soporte"
-       class="float-btn float-whatsapp" target="_blank">
+       class="float-btn float-whatsapp"
+       target="_blank">
         <i class="fab fa-whatsapp"></i>
     </a>
 
     <a href="https://t.me/streamid"
-       class="float-btn float-telegram" target="_blank">
+       class="float-btn float-telegram"
+       target="_blank">
         <i class="fab fa-telegram-plane"></i>
     </a>
 
     <a href="https://wa.me/593939166222?text=Soporte%20técnico"
-       class="float-btn float-support" target="_blank">
+       class="float-btn float-support"
+       target="_blank">
         <i class="fas fa-headset"></i>
     </a>
 
 </div>
 
-<!-- SCRIPT ÚNICO -->
-<script src="./script.js"></script>
 
-<section class="products" id="streaming">
-    <div class="section-header">
-        <span class="section-badge">🎬 STREAMING PREMIUM</span>
-        <h2>Catálogo <span>Oficial</span></h2>
-        <p>Precios mostrados en tu moneda local.</p>
-    </div>
-    <div class="grid" id="streaming-grid">
-        <!-- Paramount+ -->
+<!-- Paramount+ -->
         <div class="card brand-paramount">
             <span class="card-badge">⚽ IDEAL PARA EL MUNDIAL</span>
             <div class="card-icon"><i class="fas fa-mountain"></i></div>
@@ -1037,29 +1051,14 @@
         <i class="fab fa-telegram-plane"></i>
     </a>
 
-    <!-- SOPORTE -->
-    <a href="https://wa.me/593939166222?text=Hola%2C%20necesito%20soporte%20técnico"
-       target="_blank"
-       class="float-btn float-support">
-        <i class="fas fa-headset"></i>
-    </a>
-
+    
+<!-- floating buttons -->
+<div class="floating-buttons-container">
+    ...
 </div>
 
-<!-- ❌ SOLO UN SCRIPT -->
+<!-- script SIEMPRE AQUÍ -->
 <script src="./script.js?v=20260616-1"></script>
-
-</body>
-</html>
-            </div>
-    </div>
-</section>
-
-<!-- FIN PRODUCTOS -->
-
-<footer>
-    <p>© 2026 CLICK TV - Todos los derechos reservados</p>
-</footer>
 
 </body>
 </html>
