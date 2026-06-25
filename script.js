@@ -170,3 +170,7 @@ function changeCurrency(cur) {
 function filterProducts() {}
 function filterCategory() {}
 function updateDropdownPrice() {}
+
+window.addEventListener("DOMContentLoaded", ()=>{
+    calculateSavings();
+});
