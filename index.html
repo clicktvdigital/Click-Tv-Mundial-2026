@@ -3,113 +3,66 @@
 
 <head>
     <meta charset="UTF-8">
-    
-    <!-- ⚡ MOBILE OPTIMIZED -->
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#050505">
     <meta name="format-detection" content="telephone=no">
-    
-    <!-- 🔥 TITLE OPTIMIZADO -->
+
     <title>CLICK TV STREAMING MUNDIAL 2026 | IPTV + Streaming Premium LATAM</title>
-    
-    <!-- SEO -->
-    <meta name="description" content="CLICK TV STREAMING MUNDIAL 2026: IPTV Premium, DAZN, Paramount+, Disney+, DIRECTV GO. Activación inmediata en Latinoamérica. Pagos seguros en moneda local.">
-    <meta name="keywords" content="IPTV, Streaming, Mundial 2026, DAZN, Paramount, Disney Plus, DIRECTV GO, LATAM IPTV, Ecuador streaming">
+
+    <meta name="description" content="CLICK TV STREAMING MUNDIAL 2026: IPTV Premium, DAZN, Paramount+, Disney+, DIRECTV GO.">
+    <meta name="keywords" content="IPTV, Streaming, Mundial 2026">
     <meta name="author" content="CLICK TV STREAMING MUNDIAL 2026">
-    <meta name="robots" content="index, follow">
+
     <link rel="canonical" href="https://click-tv-mundial.vercel.app/">
-    
-    <!-- 🔥 OPEN GRAPH (REDES SOCIALES) -->
+
     <meta property="og:type" content="website">
-    <meta property="og:title" content="🏆 CLICK TV STREAMING MUNDIAL 2026">
-    <meta property="og:description" content="Streaming Premium + IPTV + Mundial 2026 en vivo. Activación inmediata en LATAM.">
+    <meta property="og:title" content="CLICK TV STREAMING MUNDIAL 2026">
+    <meta property="og:description" content="Streaming Premium + IPTV Mundial 2026">
     <meta property="og:image" content="https://click-tv-mundial.vercel.app/assets/img/banner-mundial.jpg">
-    <meta property="og:url" content="https://click-tv-mundial.vercel.app/">
-    
-    <!-- TWITTER -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="CLICK TV STREAMING MUNDIAL 2026">
-    <meta name="twitter:description" content="IPTV Premium + Streaming Mundial 2026">
-    <meta name="twitter:image" content="https://click-tv-mundial.vercel.app/assets/img/banner-mundial.jpg">
-    
-    <!-- FAVICON -->
-    <link rel="icon" type="image/png" href="https://1000logos.net/wp-content/uploads/2023/05/World-Cup-2026-Logo.png">
-    
-    <!-- 🔥 PRELOAD FONTS (MEJOR VELOCIDAD) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=Bebas+Neue&display=swap" rel="stylesheet">
-    
-    <!-- ICONOS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
-    <!-- JSON SEO (SIN CAMBIOS IMPORTANTES) -->
-    <script type="application/ld+json">
-        {
-            "@context": "https://schema.org",
-            "@type": "Organization",
-            "name": "CLICK TV STREAMING MUNDIAL 2026",
-            "url": "https://click-tv-mundial.vercel.app/",
-            "sameAs": [
-                "https://t.me/streamid",
-                "https://wa.me/593939166222"
-            ],
-            "contactPoint": {
-                "@type": "ContactPoint",
-                "telephone": "+593939166222",
-                "contactType": "customer service",
-                "areaServed": "LATAM",
-                "availableLanguage": ["Spanish"]
-            }
-        }
-    </script>
-    
-    <!-- TU CSS (NO SE TOCA) -->
+
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="responsive.css">
-    
 </head>
-<!-- ================= CART SIDEBAR AMAZON PRO FIX ================= -->
+
+<body>
+    <!-- ================= CART SIDEBAR ================= -->
 <div class="cart-sidebar" id="cart-sidebar">
-    
+
     <div class="cart-header">
         <h3>🛒 Tu Carrito</h3>
-        
-        <button onclick="toggleCart()" aria-label="Cerrar">
+
+        <button onclick="toggleCart()">
             <i class="fas fa-times"></i>
         </button>
     </div>
-    
-    <!-- ITEMS -->
+
     <div id="cart-items"></div>
-    
-    <!-- EMPTY STATE -->
+
     <div id="cart-empty" style="text-align:center;color:#888;margin-top:20px;">
         Tu carrito está vacío 🛒
     </div>
-    
-    <!-- TOTALS -->
+
     <div class="cart-totals" id="cart-totals-section" style="display:none;">
-        
+
         <div class="cart-row">
             <span>Subtotal:</span>
             <span id="cart-subtotal-local">$0.00</span>
         </div>
-        
+
         <div class="cart-row total">
             <span>Total:</span>
             <span id="cart-total-local">$0.00</span>
         </div>
-        
+
         <button class="btn btn-whatsapp btn-block" onclick="processCheckout()">
             <i class="fab fa-whatsapp"></i> Finalizar Pedido
         </button>
-        
+
     </div>
-    
+
 </div>
-<!-- ===================== TOP BAR ===================== -->
+<!-- ================= TOP BAR ================= -->
 <div class="top-bar">
     <div class="top-info">
 
@@ -129,8 +82,7 @@
 
     <div class="top-actions">
         <select id="currency-selector"
-                onchange="if(typeof changeCurrency === 'function'){ changeCurrency(this.value); } else { currentCurrency=this.value; applyCurrencyUpdate(); }"
-                aria-label="Seleccionar moneda">
+            onchange="currentCurrency=this.value; if(typeof applyCurrencyUpdate==='function'){ applyCurrencyUpdate(); }">
 
             <option value="USD">🇺🇸 USD</option>
             <option value="PEN">🇵🇪 PEN</option>
@@ -143,6 +95,7 @@
     </div>
 </div>
 
+<!-- 👇 AQUI EMPIEZA TU CONTENIDO REAL -->
 <!-- ===================== HEADER ===================== -->
 <header class="main-header">
 
