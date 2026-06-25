@@ -3,862 +3,182 @@
 
 <head>
     <meta charset="UTF-8">
-
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#050505">
     <meta name="format-detection" content="telephone=no">
-
+    
     <title>CLICK TV STREAMING MUNDIAL 2026 | IPTV + Streaming Premium LATAM</title>
-
+    
     <meta name="description" content="CLICK TV STREAMING MUNDIAL 2026: IPTV Premium, DAZN, Paramount+, Disney+, DIRECTV GO.">
     <meta name="keywords" content="IPTV, Streaming, Mundial 2026">
     <meta name="author" content="CLICK TV STREAMING MUNDIAL 2026">
-
+    
     <link rel="canonical" href="https://click-tv-mundial.vercel.app/">
-
+    
     <meta property="og:type" content="website">
     <meta property="og:title" content="CLICK TV STREAMING MUNDIAL 2026">
     <meta property="og:description" content="Streaming Premium + IPTV Mundial 2026">
     <meta property="og:image" content="https://click-tv-mundial.vercel.app/assets/img/banner-mundial.jpg">
-
+    
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="responsive.css">
 </head>
 
 <body>
-    <!-- ================= CART SIDEBAR ================= -->
-<div class="cart-sidebar" id="cart-sidebar">
-
-    <div class="cart-header">
-        <h3>🛒 Tu Carrito</h3>
-
-        <button onclick="toggleCart()">
-            <i class="fas fa-times"></i>
-        </button>
-    </div>
-
-    <div id="cart-items"></div>
-
-    <div id="cart-empty" style="text-align:center;color:#888;margin-top:20px;">
-        Tu carrito está vacío 🛒
-    </div>
-
-    <div class="cart-totals" id="cart-totals-section" style="display:none;">
-
-        <div class="cart-row">
-            <span>Subtotal:</span>
-            <span id="cart-subtotal-local">$0.00</span>
+    
+    <!-- ================= CART ================= -->
+    <div class="cart-sidebar" id="cart-sidebar">
+        <div class="cart-header">
+            <h3>🛒 Tu Carrito</h3>
+            <button onclick="toggleCart()"><i class="fas fa-times"></i></button>
         </div>
-
-        <div class="cart-row total">
-            <span>Total:</span>
-            <span id="cart-total-local">$0.00</span>
+        
+        <div id="cart-items"></div>
+        
+        <div id="cart-empty" style="text-align:center;color:#888;margin-top:20px;">
+            Tu carrito está vacío 🛒
         </div>
-
-        <button class="btn btn-whatsapp btn-block" onclick="processCheckout()">
-            <i class="fab fa-whatsapp"></i> Finalizar Pedido
-        </button>
-
+        
+        <div class="cart-totals" id="cart-totals-section" style="display:none;">
+            <div class="cart-row">
+                <span>Subtotal:</span>
+                <span id="cart-subtotal-local">$0.00</span>
+            </div>
+            
+            <div class="cart-row total">
+                <span>Total:</span>
+                <span id="cart-total-local">$0.00</span>
+            </div>
+            
+            <button onclick="processCheckout()" class="btn btn-whatsapp btn-block">
+                WhatsApp Checkout
+            </button>
+        </div>
     </div>
-
-</div>
-<!-- ================= TOP BAR ================= -->
-<div class="top-bar">
-    <div class="top-info">
-
-        <span>
-            <i class="fas fa-map-marker-alt"></i>
-            <span id="user-location">Detectando...</span>
-        </span>
-
-        <span class="separator">|</span>
-
-        <span>
-            <i class="fas fa-signal"></i>
-            <b id="online-count">257</b> conectados
-        </span>
-
-    </div>
-
-    <div class="top-actions">
-        <select id="currency-selector"
-            onchange="currentCurrency=this.value; if(typeof applyCurrencyUpdate==='function'){ applyCurrencyUpdate(); }">
-
-            <option value="USD">🇺🇸 USD</option>
-            <option value="PEN">🇵🇪 PEN</option>
-            <option value="COP">🇨🇴 COP</option>
-            <option value="ARS">🇦🇷 ARS</option>
-            <option value="CLP">🇨🇱 CLP</option>
-            <option value="MXN">🇲🇽 MXN</option>
-
+    
+    <!-- ================= TOP BAR ================= -->
+    <div class="top-bar">
+        <span id="user-location">Detectando...</span>
+        <b id="online-count">257</b> conectados
+        
+        <select id="currency-selector" onchange="currentCurrency=this.value; applyCurrencyUpdate && applyCurrencyUpdate();">
+            <option value="USD">USD</option>
+            <option value="PEN">PEN</option>
+            <option value="COP">COP</option>
+            <option value="ARS">ARS</option>
+            <option value="CLP">CLP</option>
+            <option value="MXN">MXN</option>
         </select>
     </div>
-</div>
-
-<!-- 👇 AQUI EMPIEZA TU CONTENIDO REAL -->
-<!-- ===================== HEADER ===================== -->
-<header class="main-header">
-
-    <div class="header-container">
-
-        <!-- LOGO -->
+    
+    <!-- ================= HEADER ================= -->
+    <header class="main-header">
+        
         <a href="#inicio" class="logo">
-            <i class="fas fa-tv logo-icon"></i>
-            CLICK<span>TV</span>
-            <small>2026</small>
+            CLICK<span>TV</span> 2026
         </a>
-
-        <!-- NAV -->
+        
         <nav class="nav-links" id="nav-links">
-
-            <a href="#inicio">🏠 Inicio</a>
-            <a href="#mundial">⚽ Mundial 2026</a>
-            <a href="#streaming">🎬 Streaming</a>
-            <a href="#iptv">📺 IPTV</a>
-            <a href="#musica">🎵 Música</a>
-            <a href="#apps">🎓 Apps Premium</a>
-            <a href="#deportes">🏆 Deportes</a>
-            <a href="#pagos">💳 Pagos</a>
-            <a href="#mayoristas">💼 Mayoristas</a>
-            <a href="#contacto">💬 Contacto</a>
-
+            <a href="#inicio">Inicio</a>
+            <a href="#mundial">Mundial</a>
+            <a href="#catalogo">Catálogo</a>
+            <a href="#apps">Apps</a>
+            <a href="#deportes">Deportes</a>
+            <a href="#contacto">Contacto</a>
         </nav>
-
-        <!-- ACTIONS -->
-        <div class="header-actions">
-
-            <!-- CART -->
-            <button class="cart-icon"
-                    onclick="if(typeof toggleCart==='function'){ toggleCart(); }"
-                    aria-label="Abrir carrito">
-
-                <i class="fas fa-shopping-cart"></i>
-                <span id="cart-count">0</span>
-
-            </button>
-
-            <!-- MENU MOBILE -->
-            <button class="menu-toggle"
-                    onclick="if(typeof toggleMenu==='function'){ toggleMenu(); }"
-                    aria-label="Menú">
-
-                <i class="fas fa-bars"></i>
-
-            </button>
-
-        </div>
-
-    </div>
-
-</header>
-
-<!-- ===================== HERO ===================== -->
-<section class="hero" id="inicio">
-
-    <div class="hero-overlay"></div>
-
-    <div class="hero-content">
-
-        <span class="badge">
-            ⚽ FIFA WORLD CUP 2026™ • MÉXICO / USA / CANADÁ
-        </span>
-
-        <h1>
-            Streaming <span>Premium</span><br>
-            Mundialista
-        </h1>
-
-        <p>
-            Vive la pasión del fútbol en máxima calidad.
-            Paramount+, DAZN, DIRECTV GO, Disney+ e IPTV.
-            Activación inmediata en toda Latinoamérica.
-        </p>
-
-        <div class="hero-buttons">
-
-            <a href="#mundial" class="btn btn-primary">
-                <i class="fas fa-broadcast-tower"></i>
-                ⚽ VER FIXTURE OFICIAL FIFA 2026
-            </a>
-
-            <a href="#streaming" class="btn btn-gold">
-                <i class="fas fa-shopping-bag"></i>
-                VER CATÁLOGO
-            </a>
-
-        </div>
-
-        <div class="hero-stats">
-
-            <div class="stat-box">
-                <b id="stat-clients">+5000</b>
-                <span>Clientes</span>
-            </div>
-
-            <div class="stat-box">
-                <b id="stat-activations">+12000</b>
-                <span>Activaciones</span>
-            </div>
-
-            <div class="stat-box">
-                <b id="stat-countries">14</b>
-                <span>Países</span>
-            </div>
-
-            <div class="stat-box">
-                <b>24/7</b>
-                <span>Soporte</span>
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-<!-- ===================== TRUST ===================== -->
-<section class="trust-section">
-
-    <div class="trust-grid">
-
-        <div class="trust-item">
-            <i class="fas fa-bolt"></i>
-            <span>⚡ Activación inmediata</span>
-        </div>
-
-        <div class="trust-item">
-            <i class="fas fa-shield-alt"></i>
-            <span>🔒 Pago seguro</span>
-        </div>
-
-        <div class="trust-item">
-            <i class="fas fa-globe"></i>
-            <span>🌎 LATAM completo</span>
-        </div>
-
-    </div>
-
-</section>
-        <div class="trust-item">
-    <i class="fas fa-globe-americas"></i>
-    <span>🌎 Disponible en LATAM</span>
-</div>
-
-<div class="trust-item">
-    <i class="fas fa-shield-alt"></i>
-    <span>🛡️ Compra segura</span>
-</div>
-
-<div class="trust-item">
-    <i class="fas fa-credit-card"></i>
-    <span>💳 Múltiples métodos de pago</span>
-</div>
-
-<div class="trust-item">
-    <i class="fas fa-tv"></i>
-    <span>📱 Smart TV / Móvil / PC</span>
-</div>
-
-<div class="trust-item">
-    <i class="fas fa-futbol"></i>
-    <span>⚽ Especialistas en Mundial</span>
-</div>
-<!-- ===================== MUNDIAL ===================== -->
-<section class="mundial-section" id="mundial">
+        
+        <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+        
+        <button class="cart-icon" onclick="toggleCart()">
+            🛒 <span id="cart-count">0</span>
+        </button>
+        
+    </header>
     
-    <div class="section-header">
+    <!-- ================= HERO ================= -->
+    <section class="hero" id="inicio">
         
-        <span class="section-badge">
-            🏆 FIFA WORLD CUP 2026™
-        </span>
+        <h1>Streaming <span>Premium</span> Mundial 2026</h1>
         
-        <h2>
-            Centro del <span>Mundial</span>
-        </h2>
+        <p>IPTV + Streaming activación inmediata en LATAM</p>
         
-        <p>
-            Sigue los partidos de la Copa Mundial. Horarios según tu país.
-        </p>
+        <a class="btn btn-primary" href="#catalogo">Ver catálogo</a>
         
-    </div>
+    </section>
     
-    <!-- RADIO -->
-    <section class="radio-worldcup">
+    <!-- ================= MUNDIAL ================= -->
+    <section id="mundial">
         
-        <div class="radio-card">
+        <h2>Centro del Mundial</h2>
+        
+        <div class="matches-container" id="matches-container"></div>
+        
+    </section>
+    
+    <!-- ================= CALCULADORA ================= -->
+    <section id="ahorro">
+        
+        <h2>Calculadora de Ahorro</h2>
+        
+        <select onchange="calculateSavings && calculateSavings()">
+            <option value="15" data-official="25">DIRECTV GO</option>
+            <option value="5" data-official="10">Paramount+</option>
+        </select>
+        
+    </section>
+    
+    <!-- ================= CATALOGO ================= -->
+    <section id="catalogo">
+        
+        <h2>Catálogo</h2>
+        
+        <div class="amazon-grid">
             
-            <div class="radio-header">
-                🔴 EN VIVO • RADIO DIBLU 88.9 FM
+            <div class="amazon-card">
+                <h3>Paramount+</h3>
+                <button onclick="addToCart('Paramount+',5)">Agregar</button>
             </div>
             
-            <p>
-                Escucha análisis, comentarios y cobertura deportiva en vivo.
-            </p>
-            
-            <audio controls preload="none" style="width:100%;">
-                <source src="https://streamingecuador.net:9002/stream" type="audio/mpeg">
-            </audio>
-            
-            <div class="radio-footer">
-                ⚽ Narración deportiva en vivo mientras sigues el Mundial 2026
+            <div class="amazon-card">
+                <h3>Disney+</h3>
+                <button onclick="addToCart('Disney+',5)">Agregar</button>
             </div>
             
         </div>
         
     </section>
     
-    <!-- MATCHES -->
-    <div class="matches-container" id="matches-container"></div>
+    <!-- ================= APPS ================= -->
+    <section id="apps">
+        <h2>Apps Premium</h2>
+    </section>
     
-</section>
-<!-- ===================== CALCULADORA ===================== -->
-<section class="savings-calculator" id="ahorro">
-
-    <div class="section-header">
-
-        <span class="section-badge">📊 AHORRO REAL</span>
-
-        <h2>Calculadora de <span>Ahorro</span></h2>
-
-        <p>Compara el precio oficial vs Click TV y descubre tu ahorro.</p>
-
-    </div>
-
-    <div class="calc-box">
-
-        <select id="calc-service"
-                onchange="if(typeof calculateSavings==='function'){ calculateSavings(); }">
-
-            <option value="15" data-official="25">DIRECTV GO (Oficial: $25)</option>
-            <option value="5" data-official="10">PARAMOUNT+ (Oficial: $10)</option>
-            <option value="5" data-official="15">DAZN (Oficial: $15)</option>
-            <option value="5" data-official="22">DISNEY+ PREMIUM (Oficial: $22)</option>
-
-        </select>
-
-        <div class="calc-results">
-
-            <div class="res-item">
-                <span>Precio Oficial</span>
-                <h3 id="calc-official">$25.00</h3>
-            </div>
-
-            <div class="res-item highlight">
-                <span>Click TV 2026</span>
-                <h3 id="calc-click">$15.00</h3>
-            </div>
-
-            <div class="res-item">
-                <span>Tú Ahorras</span>
-                <h3 id="calc-savings">$10.00 <br><small>(40% OFF)</small></h3>
-            </div>
-
+    <!-- ================= DEPORTES ================= -->
+    <section id="deportes">
+        <h2>Deportes</h2>
+    </section>
+    
+    <!-- ================= RESEÑAS ================= -->
+    <section id="resenas">
+        <h2>Reseñas</h2>
+        
+        <div>
+            ⭐⭐⭐⭐⭐ Excelente servicio
         </div>
-
-    </div>
-
-</section>
-<!-- ===================== AMAZON PRO CATALOGO (FIX FINAL) ===================== -->
-<section class="amazon-catalog" id="catalogo">
-
-    <!-- HEADER GLOBAL -->
-    <div class="amazon-header">
-
-        <h1>🛒 Click TV Store</h1>
-
-        <div class="amazon-search">
-            <input type="text"
-                   placeholder="Buscar servicios... (Netflix, IPTV, Disney+)"
-                   onkeyup="if(typeof filterProducts==='function'){ filterProducts(this.value); }">
-            <i class="fas fa-search"></i>
-        </div>
-
-        <div class="amazon-filters">
-
-            <button onclick="if(typeof filterCategory==='function'){ filterCategory('all'); }">Todo</button>
-            <button onclick="if(typeof filterCategory==='function'){ filterCategory('streaming'); }">Streaming</button>
-            <button onclick="if(typeof filterCategory==='function'){ filterCategory('iptv'); }">IPTV</button>
-            <button onclick="if(typeof filterCategory==='function'){ filterCategory('android'); }">Android</button>
-            <button onclick="if(typeof filterCategory==='function'){ filterCategory('music'); }">Música</button>
-            <button onclick="if(typeof filterCategory==='function'){ filterCategory('sports'); }">Deportes</button>
-
-        </div>
-
-    </div>
-
-    <!-- GRID PRINCIPAL -->
-    <div class="amazon-grid" id="amazon-grid">
-
-        <!-- ================= STREAMING ================= -->
-        <div class="amazon-section-title">🎬 Streaming Premium</div>
-
-        <div class="amazon-card streaming">
-            <h3>Paramount+</h3>
-            <p>Películas, series y deportes</p>
-
-            <select onchange="if(typeof updateDropdownPrice==='function'){ updateDropdownPrice(this); }">
-                <option data-usd="5">1 Mes - $5</option>
-            </select>
-
-            <div class="price">$5 USD</div>
-
-            <div class="amazon-actions">
-                <button onclick="if(typeof buyNow==='function'){ buyNow('Paramount+', 5); }">Comprar</button>
-                <button onclick="if(typeof addToCart==='function'){ addToCart('Paramount+', 5); }">Carrito</button>
-            </div>
-        </div>
-
-        <div class="amazon-card streaming">
-            <h3>Disney+ Premium</h3>
-            <p>Disney, Marvel, Star Wars</p>
-
-            <select onchange="if(typeof updateDropdownPrice==='function'){ updateDropdownPrice(this); }">
-                <option data-usd="5">1 Mes - $5</option>
-            </select>
-
-            <div class="price">$5 USD</div>
-
-            <div class="amazon-actions">
-                <button onclick="if(typeof buyNow==='function'){ buyNow('Disney+', 5); }">Comprar</button>
-                <button onclick="if(typeof addToCart==='function'){ addToCart('Disney+', 5); }">Carrito</button>
-            </div>
-        </div>
-
-        <!-- ================= IPTV ================= -->
-        <div class="amazon-section-title">📺 IPTV Premium</div>
-
-        <div class="amazon-card iptv">
-            <h3>IPTV Básico</h3>
-            <p>TV + Mundial 2026</p>
-
-            <select onchange="if(typeof updateDropdownPrice==='function'){ updateDropdownPrice(this); }">
-                <option data-usd="3">1 Disp - $3</option>
-                <option data-usd="5">2 Disp - $5</option>
-                <option data-usd="7">3 Disp - $7</option>
-            </select>
-
-            <div class="price">$3 USD</div>
-
-            <div class="amazon-actions">
-                <button onclick="if(typeof buyNow==='function'){ buyNow('IPTV Básico', 3); }">Comprar</button>
-                <button onclick="if(typeof addToCart==='function'){ addToCart('IPTV Básico', 3); }">Carrito</button>
-            </div>
-        </div>
-
-        <div class="amazon-card iptv featured">
-            <span class="badge">⭐ TOP</span>
-
-            <h3>IPTV Ultra</h3>
-            <p>4K + Sin cortes</p>
-
-            <select onchange="if(typeof updateDropdownPrice==='function'){ updateDropdownPrice(this); }">
-                <option data-usd="7">1 Disp - $7</option>
-                <option data-usd="14">2 Disp - $14</option>
-                <option data-usd="21">3 Disp - $21</option>
-            </select>
-
-            <div class="price">$7 USD</div>
-
-            <div class="amazon-actions">
-                <button onclick="if(typeof buyNow==='function'){ buyNow('IPTV Ultra', 7); }">Comprar</button>
-                <button onclick="if(typeof addToCart==='function'){ addToCart('IPTV Ultra', 7); }">Carrito</button>
-            </div>
-        </div>
-
-        <!-- ================= ANDROID ================= -->
-        <div class="amazon-section-title">📱 Android Apps</div>
-
-        <div class="amazon-card android">
-            <h3>MegaX TV</h3>
-            <p>Contenido Mundial</p>
-
-            <div class="price">$5 USD</div>
-
-            <div class="amazon-actions">
-                <button onclick="if(typeof buyNow==='function'){ buyNow('MegaX TV', 5); }">Comprar</button>
-                <button onclick="if(typeof addToCart==='function'){ addToCart('MegaX TV', 5); }">Carrito</button>
-            </div>
-        </div>
-
-        <!-- ================= MUSIC ================= -->
-        <div class="amazon-section-title">🎵 Música</div>
-
-        <div class="amazon-card music">
-            <h3>Spotify Premium</h3>
-
-            <select onchange="if(typeof updateDropdownPrice==='function'){ updateDropdownPrice(this); }">
-                <option data-usd="5">3 Meses - $5</option>
-                <option data-usd="10">6 Meses - $10</option>
-                <option data-usd="15">12 Meses - $15</option>
-            </select>
-
-            <div class="price">$5 USD</div>
-
-            <div class="amazon-actions">
-                <button onclick="if(typeof buyNow==='function'){ buyNow('Spotify', 5); }">Comprar</button>
-                <button onclick="if(typeof addToCart==='function'){ addToCart('Spotify', 5); }">Carrito</button>
-            </div>
-        </div>
-
-        <!-- ================= SPORTS ================= -->
-        <div class="amazon-section-title">🏆 Deportes</div>
-
-        <div class="amazon-card sports">
-            <h3>DAZN</h3>
-
-            <div class="price">$5 USD</div>
-
-            <div class="amazon-actions">
-                <button onclick="if(typeof buyNow==='function'){ buyNow('DAZN', 5); }">Comprar</button>
-                <button onclick="if(typeof addToCart==='function'){ addToCart('DAZN', 5); }">Carrito</button>
-            </div>
-        </div>
-
-    </div>
-</section>
-<!-- ================= AMAZON PRO: APPS (FIX CLEAN) ================= -->
-<section class="amazon-section" id="apps">
-
-    <div class="amazon-title">
-        <h2>🎓 Apps Premium</h2>
-        <input type="text"
-               placeholder="Buscar apps..."
-               onkeyup="if(typeof filterProducts==='function'){ filterProducts(this.value); }">
-    </div>
-
-    <div class="amazon-grid">
-
-        <!-- CANVA -->
-        <div class="amazon-card apps">
-
-            <h3>Canva Pro</h3>
-            <p>Diseño profesional ilimitado</p>
-
-            <div class="amazon-actions full">
-
-                <button onclick="window.open('https://wa.me/593939166222?text=Canva%20Pro','_blank')">
-                    Consultar
-                </button>
-
-            </div>
-
-        </div>
-
-        <!-- DUOLINGO -->
-        <div class="amazon-card apps">
-
-            <h3>Duolingo Premium</h3>
-            <p>Aprendizaje de idiomas sin límites</p>
-
-            <div class="amazon-actions full">
-
-                <button onclick="window.open('https://wa.me/593939166222?text=Duolingo','_blank')">
-                    Consultar
-                </button>
-
-            </div>
-
-        </div>
-
-        <!-- CRUNCHYROLL -->
-        <div class="amazon-card apps">
-
-            <h3>Crunchyroll</h3>
-
-            <select onchange="if(typeof updateDropdownPrice==='function'){ updateDropdownPrice(this); }">
-                <option data-usd="3">1 Mes - $3</option>
-                <option data-usd="8">3 Meses - $8</option>
-                <option data-usd="15">6 Meses - $15</option>
-                <option data-usd="25">12 Meses - $25</option>
-            </select>
-
-            <div class="price">$3 USD</div>
-
-            <div class="amazon-actions">
-
-                <button onclick="if(typeof buyNow==='function'){ buyNow('Crunchyroll', 3); }">
-                    Comprar
-                </button>
-
-                <button onclick="if(typeof addToCart==='function'){ addToCart('Crunchyroll', 3); }">
-                    Carrito
-                </button>
-
-            </div>
-
-        </div>
-
-    </div>
-</section>
-
-<!-- ================= AMAZON PRO: DEPORTES ================= -->
-<section class="amazon-section" id="deportes">
-
-    <div class="amazon-title">
-        <h2>🏆 Deportes Premium</h2>
-    </div>
-
-    <div class="amazon-grid">
-
-        <div class="amazon-card sports">
-
-            <h3>DAZN</h3>
-            <p>Fútbol y deportes en vivo</p>
-
-            <div class="price">$5 USD</div>
-
-            <div class="amazon-actions">
-
-                <button onclick="if(typeof buyNow==='function'){ buyNow('DAZN', 5); }">
-                    Comprar
-                </button>
-
-                <button onclick="if(typeof addToCart==='function'){ addToCart('DAZN', 5); }">
-                    Carrito
-                </button>
-
-            </div>
-
-        </div>
-
-        <div class="amazon-card sports">
-
-            <h3>NBA League Pass</h3>
-            <p>Baloncesto en vivo</p>
-
-            <div class="price">$5 USD</div>
-
-            <div class="amazon-actions">
-
-                <button onclick="if(typeof buyNow==='function'){ buyNow('NBA', 5); }">
-                    Comprar
-                </button>
-
-                <button onclick="if(typeof addToCart==='function'){ addToCart('NBA', 5); }">
-                    Carrito
-                </button>
-
-            </div>
-
-        </div>
-
-    </div>
-</section>
-
-<!-- ================= AMAZON PRO: MAYORISTAS ================= -->
-<section class="amazon-section b2b" id="mayoristas">
-
-    <div class="amazon-title">
-        <h2>💼 Mayoristas (B2B)</h2>
-        <p>Paneles y créditos para revendedores</p>
-    </div>
-
-    <div class="amazon-grid">
-
-        <div class="amazon-card b2b">
-
-            <h3>Outlook Mayorista</h3>
-            <p>Precio por unidad $2.75 - mínimo 50 unidades</p>
-
-            <div class="amazon-actions full">
-
-                <button onclick="window.open('https://wa.me/593939166222?text=Outlook%20Mayoristas','_blank')">
-                    Consultar
-                </button>
-
-            </div>
-
-        </div>
-
-        <div class="amazon-card b2b">
-
-            <h3>Panel IPTV & Apps</h3>
-            <p>GX+, Oleada, Stella, Telelatino, MegaX</p>
-
-            <div class="amazon-actions full">
-
-                <button onclick="window.open('https://wa.me/593939166222?text=Paneles%20Mayoristas','_blank')">
-                    Consultar Planes
-                </button>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-<!-- ================= AMAZON PRO: RESEÑAS ================= -->
-<section class="amazon-section reviews" id="resenas">
-
-    <div class="amazon-title">
-        <h2>⭐ Reseñas verificadas</h2>
-        <p>Experiencias reales de clientes</p>
-    </div>
-
-    <div class="reviews-grid-pro">
-
-        <div class="review-card-pro">
-            <div class="stars">★★★★★</div>
-            <p>“Excelente servicio, activación inmediata y sin cortes para el Mundial.”</p>
-            <span>Quito - Ecuador</span>
-        </div>
-
-        <div class="review-card-pro">
-            <div class="stars">★★★★★</div>
-            <p>“Paramount+ funciona perfecto, buena atención.”</p>
-            <span>Lima - Perú</span>
-        </div>
-
-        <div class="review-card-pro">
-            <div class="stars">★★★★★</div>
-            <p>“IPTV Premium muy estable y completo.”</p>
-            <span>Bogotá - Colombia</span>
-        </div>
-
-        <div class="review-card-pro">
-            <div class="stars">★★★★★</div>
-            <p>“Directv GO activado en minutos con Deuna.”</p>
-            <span>Guayaquil - Ecuador</span>
-        </div>
-
-        <div class="review-card-pro">
-            <div class="stars">★★★★★</div>
-            <p>“Disney Plus perfecto para familia.”</p>
-            <span>Santiago - Chile</span>
-        </div>
-
-    </div>
-
-    <div class="amazon-center">
-
-        <a href="https://t.me/streamid/5181"
-           class="amazon-btn primary"
-           onclick="if(typeof abrirResenas==='function'){ abrirResenas(event); }">
-
-            🔵 Ver comentarios en Telegram
-
-        </a>
-
-    </div>
-
-</section>
-<!-- ================= AMAZON PRO: CONTACTO (FIX CLEAN) ================= -->
-<section class="amazon-section contact" id="contacto">
-
-    <div class="amazon-title">
-        <h2>🌎 Contacto Internacional</h2>
-        <p>Soporte rápido 24/7</p>
-    </div>
-
-    <form class="contact-form-pro"
-          id="contact-form"
-          onsubmit="if(typeof submitContactForm==='function'){ submitContactForm(event); } else { event.preventDefault(); }">
-
-        <div class="form-grid">
-
-            <input type="text" id="contact-name" placeholder="Nombre" required>
-            <input type="text" id="contact-last" placeholder="Apellido" required>
-
-            <select id="contact-country" required>
-                <option value="">Selecciona tu país</option>
-                <option value="Ecuador">Ecuador</option>
-                <option value="Perú">Perú</option>
-                <option value="Colombia">Colombia</option>
-                <option value="Chile">Chile</option>
-                <option value="Argentina">Argentina</option>
-                <option value="México">México</option>
-                <option value="Estados Unidos">USA</option>
-                <option value="España">España</option>
-                <option value="Otro">Otro</option>
-            </select>
-
-            <input type="tel" id="contact-phone" placeholder="Número de celular" required>
-
-            <textarea id="contact-msg"
-                      placeholder="Escribe tu consulta..."
-                      rows="4"
-                      required></textarea>
-
-        </div>
-
-        <div class="contact-actions">
-
-            <button type="button"
-                    class="btn-whatsapp"
-                    onclick="if(typeof setContactMethod==='function'){ setContactMethod('whatsapp'); submitContactForm(event); }">
-
-                <i class="fab fa-whatsapp"></i>
-                Enviar por WhatsApp
-            </button>
-
-            <button type="button"
-                    class="btn-telegram"
-                    onclick="if(typeof setContactMethod==='function'){ setContactMethod('telegram'); submitContactForm(event); }">
-
-                <i class="fab fa-telegram"></i>
-                Enviar por Telegram
-            </button>
-
-        </div>
-
-    </form>
-
-</section>
-<!-- ================= AMAZON PRO FOOTER (FIX CLEAN) ================= -->
-<footer class="amazon-footer">
-
-    <div class="footer-grid">
-
-        <!-- BRAND -->
-        <div class="footer-box">
-
-            <h3>CLICK<span>TV</span> 2026</h3>
-
-            <p>
-                Streaming Premium y IPTV para toda Latinoamérica.
-                Activación inmediata y soporte 24/7.
-            </p>
-
-        </div>
-
-        <!-- LINKS -->
-        <div class="footer-box">
-
-            <h4>Comunidad</h4>
-
-            <a href="https://t.me/streamid" target="_blank">
-                <i class="fab fa-telegram"></i> Telegram Oficial
-            </a>
-
-            <a href="#resenas"
-               onclick="if(typeof abrirResenas==='function'){ abrirResenas(event); }">
-                <i class="fas fa-star"></i> Reseñas Verificadas
-            </a>
-
-            <a href="https://wa.me/593939166222" target="_blank">
-                <i class="fab fa-whatsapp"></i> Soporte WhatsApp
-            </a>
-
-        </div>
-
-        <!-- INFO -->
-        <div class="footer-box">
-
-            <h4>Información</h4>
-
-            <p>⚡ Activación inmediata</p>
-            <p>🌎 Disponible en LATAM</p>
-            <p>💳 Pagos seguros</p>
-            <p>📱 Compatible con Smart TV</p>
-
-        </div>
-
-    </div>
-
-    <div class="footer-bottom">
-        <p>© 2026 Click TV Streaming — Todos los derechos reservados</p>
-    </div>
-
-</footer>
+        
+    </section>
+    
+    <!-- ================= CONTACTO ================= -->
+    <section id="contacto">
+        <h2>Contacto</h2>
+    </section>
+    
+    <!-- ================= FOOTER ================= -->
+    <footer>
+        <p>© 2026 Click TV</p>
+    </footer>
+    
+</body>
+
+</html>
