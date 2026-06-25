@@ -60,7 +60,18 @@ body {
     align-items: center;
     padding: 15px 0;
 }
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
 
+.search-box input {
+    height: 38px;
+    border-radius: 20px;
+    padding: 0 12px;
+    font-size: 14px;
+}
 .logo {
     font-size: 24px;
     font-weight: 800;
@@ -261,7 +272,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    z-index: 9999;
+    z-index: 99999;
 }
 
 .float-btn {
