@@ -269,3 +269,119 @@ function addDropdownToCart(baseName, selectId) {
 window.addEventListener('DOMContentLoaded', function() {
     initApp();
 });
+
+// ================= AMAZON PRO FIX ENGINE =================
+
+let cart = [];
+let currentCurrency = 'USD';
+let currentRate = 1;
+
+// ---------- ADD TO CART (NORMAL) ----------
+function addToCart(name, priceUSD) {
+
+    const item = cart.find(i => i.name === name);
+
+    if (item) {
+        item.qty++;
+    } else {
+        cart.push({
+            name: name,
+            priceUSD: Number(priceUSD),
+            qty: 1
+        });
+    }
+
+    updateCartUI();
+}
+
+function addDropdownToCart(baseName, selectId) {
+
+    const select = document.getElementById(selectId);
+    if (!select) return;
+
+    const opt = select.options[select.selectedIndex];
+    const price = parseFloat(opt.getAttribute("data-usd"));
+
+    const planText = opt.text.split("-")[0].trim();
+
+    addToCart(`${baseName} - ${planText}`, price);
+}
+
+function buyNow(name, price) {
+    
+    const msg = `Hola, quiero comprar:\n\n🛒 ${name}\n💰 Precio: $${price} USD\n\nGracias`;
+    
+    window.open(
+        `https://wa.me/593939166222?text=${encodeURIComponent(msg)}`,
+        "_blank"
+    );
+}
+
+function buyNowDropdown(name, selectId) {
+
+    const select = document.getElementById(selectId);
+    if (!select) return;
+
+    const opt = select.options[select.selectedIndex];
+    const price = parseFloat(opt.getAttribute("data-usd"));
+    const plan = opt.text.split("-")[0].trim();
+
+    buyNow(`${name} - ${plan}`, price);
+}
+
+function updateDropdownPrice(select) {
+
+    const opt = select.options[select.selectedIndex];
+    const priceUSD = parseFloat(opt.getAttribute("data-usd"));
+
+    const card = select.closest(".card");
+
+    if (!card) return;
+
+    const priceEl = card.querySelector(".local-price");
+    const usdEl = card.querySelector(".usd-reference");
+
+    if (priceEl) {
+        priceEl.innerText = `$${priceUSD.toFixed(2)} USD`;
+    }
+
+    if (usdEl) {
+        usdEl.innerText = `~ $${priceUSD.toFixed(2)} USD`;
+    }
+}
+
+function updateCartUI() {
+    
+    const container = document.getElementById("cart-items");
+    const count = document.getElementById("cart-count");
+    
+    if (!container) return;
+    
+    container.innerHTML = "";
+    
+    let totalItems = 0;
+    
+    cart.forEach(item => {
+        
+        totalItems += item.qty;
+        
+        container.innerHTML += `
+            <div class="cart-item">
+                <b>${item.name}</b>
+                <span>x${item.qty}</span>
+            </div>
+        `;
+    });
+    
+    if (count) count.innerText = totalItems;
+}
+function applyCurrencyUpdate() {
+    
+    document.querySelectorAll(".local-price").forEach(el => {
+        
+        const usd = parseFloat(el.getAttribute("data-usd"));
+        if (!usd) return;
+        
+        el.innerText = `$${(usd * currentRate).toFixed(2)} ${currentCurrency}`;
+    });
+}
