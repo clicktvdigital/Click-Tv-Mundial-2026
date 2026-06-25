@@ -4,27 +4,135 @@
 <head>
     <meta charset="UTF-8">
     
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#050505">
-    <meta name="format-detection" content="telephone=no">
     
-    <title>CLICK TV STREAMING MUNDIAL 2026 | IPTV + Streaming Premium LATAM</title>
-    
-    <meta name="description" content="CLICK TV STREAMING MUNDIAL 2026: IPTV Premium, DAZN, Paramount+, Disney+, DIRECTV GO.">
-    <meta name="keywords" content="IPTV, Streaming, Mundial 2026">
-    <meta name="author" content="CLICK TV STREAMING MUNDIAL 2026">
-    
-    <link rel="canonical" href="https://click-tv-mundial.vercel.app/">
-    
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="CLICK TV STREAMING MUNDIAL 2026">
-    <meta property="og:description" content="Streaming Premium + IPTV Mundial 2026">
-    <meta property="og:image" content="https://click-tv-mundial.vercel.app/assets/img/banner-mundial.jpg">
+    <title>CLICK TV STREAMING MUNDIAL 2026</title>
     
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="responsive.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
+<!-- ================= AMAZON PRO SYSTEM CORE ================= -->
+<script>
+let cart = [];
+let currentCurrency = 'USD';
+let currentRate = 1;
+let currencyUpdating = false;
 
+const WPP_NUMBER = "593939166222";
+
+window.rates = window.rates || {
+    USD: 1,
+    PEN: 3.80,
+    COP: 4000,
+    ARS: 1000,
+    CLP: 950,
+    MXN: 17
+};
+
+// ================= FORMAT MONEY =================
+function formatMoney(v, c){
+    v = Number(v);
+    switch(c){
+        case 'USD': return `$${v.toFixed(2)} USD`;
+        case 'PEN': return `S/ ${v.toFixed(2)}`;
+        case 'COP': return `$${Math.round(v).toLocaleString()} COP`;
+        case 'ARS': return `$${Math.round(v)} ARS`;
+        case 'CLP': return `$${Math.round(v)} CLP`;
+        case 'MXN': return `$${v.toFixed(2)} MXN`;
+        default: return `$${v.toFixed(2)}`;
+    }
+}
+
+// ================= CART CORE =================
+function addToCart(name, price){
+    if(!name || isNaN(price)) return;
+
+    let item = cart.find(i => i.name === name);
+
+    if(item){
+        item.qty++;
+    } else {
+        cart.push({name, price, qty:1});
+    }
+
+    updateCartUI();
+    document.getElementById("cart-sidebar")?.classList.add("active");
+}
+
+// ================= CART UI =================
+function updateCartUI(){
+
+    const container = document.getElementById("cart-items");
+    const count = document.getElementById("cart-count");
+    const empty = document.getElementById("cart-empty");
+    const totals = document.getElementById("cart-totals-section");
+
+    if(!container) return;
+
+    let html = "";
+    let total = 0;
+
+    cart.forEach(i=>{
+        total += i.price * i.qty;
+
+        html += `
+        <div class="cart-item">
+            <b>${i.name}</b>
+            <span>x${i.qty}</span>
+        </div>`;
+    });
+
+    container.innerHTML = html;
+
+    if(count) count.innerText = cart.reduce((a,b)=>a+b.qty,0);
+
+    if(cart.length === 0){
+        empty && (empty.style.display = "block");
+        totals && (totals.style.display = "none");
+    } else {
+        empty && (empty.style.display = "none");
+        totals && (totals.style.display = "block");
+    }
+}
+
+// ================= BUY NOW =================
+function buyNow(name, price){
+    const msg = `🛒 PEDIDO CLICK TV\n\n📦 ${name}\n💰 $${price} USD`;
+
+    window.open(
+        `https://wa.me/${WPP_NUMBER}?text=${encodeURIComponent(msg)}`,
+        "_blank"
+    );
+}
+
+// ================= DROPDOWN =================
+function addDropdownToCart(base, id){
+
+    const sel = document.getElementById(id);
+    if(!sel) return;
+
+    const opt = sel.options[sel.selectedIndex];
+    const price = parseFloat(opt.dataset.usd);
+
+    if(isNaN(price)) return;
+
+    const label = opt.text.split("-")[0].trim();
+
+    addToCart(`${base} - ${label}`, price);
+}
+
+// ================= MENU =================
+function toggleMenu(){
+    document.getElementById("nav-links")?.classList.toggle("active");
+}
+
+function toggleCart(){
+    document.getElementById("cart-sidebar")?.classList.toggle("active");
+}
+</script>
 <body>
     
     <!-- ================= CART ================= -->
@@ -59,62 +167,77 @@
     
     <!-- ================= TOP BAR ================= -->
     <div class="top-bar">
-        <span id="user-location">Detectando...</span>
-        <b id="online-count">257</b> conectados
-        
-        <select id="currency-selector" onchange="currentCurrency=this.value; applyCurrencyUpdate && applyCurrencyUpdate();">
-            <option value="USD">USD</option>
-            <option value="PEN">PEN</option>
-            <option value="COP">COP</option>
-            <option value="ARS">ARS</option>
-            <option value="CLP">CLP</option>
-            <option value="MXN">MXN</option>
-        </select>
-    </div>
+    
+    <span id="user-location">Detectando...</span>
+    
+    <b id="online-count">257</b> conectados
+    
+    <select onchange="currentCurrency=this.value; applyCurrencyUpdate()">
+        <option value="USD">USD</option>
+        <option value="PEN">PEN</option>
+        <option value="COP">COP</option>
+        <option value="ARS">ARS</option>
+        <option value="CLP">CLP</option>
+        <option value="MXN">MXN</option>
+    </select>
+    
+</div>
     
     <!-- ================= HEADER ================= -->
     <header class="main-header">
-        
-        <a href="#inicio" class="logo">
-            CLICK<span>TV</span> 2026
-        </a>
-        
-        <nav class="nav-links" id="nav-links">
-            <a href="#inicio">Inicio</a>
-            <a href="#mundial">Mundial</a>
-            <a href="#catalogo">Catálogo</a>
-            <a href="#apps">Apps</a>
-            <a href="#deportes">Deportes</a>
-            <a href="#contacto">Contacto</a>
-        </nav>
-        
-        <button class="menu-toggle" onclick="toggleMenu()">☰</button>
-        
-        <button class="cart-icon" onclick="toggleCart()">
-            🛒 <span id="cart-count">0</span>
-        </button>
-        
-    </header>
+    
+    <a href="#inicio" class="logo">
+        CLICK<span>TV</span> 2026
+    </a>
+    
+    <nav class="nav-links" id="nav-links">
+        <a href="#inicio">Inicio</a>
+        <a href="#mundial">Mundial</a>
+        <a href="#catalogo">Catálogo</a>
+        <a href="#apps">Apps</a>
+        <a href="#deportes">Deportes</a>
+        <a href="#contacto">Contacto</a>
+    </nav>
+    
+    <button onclick="toggleMenu()">☰</button>
+    
+    <button onclick="toggleCart()">
+        🛒 <span id="cart-count">0</span>
+    </button>
+    
+</header>
     
     <!-- ================= HERO ================= -->
     <section class="hero" id="inicio">
-        
-        <h1>Streaming <span>Premium</span> Mundial 2026</h1>
-        
-        <p>IPTV + Streaming activación inmediata en LATAM</p>
-        
-        <a class="btn btn-primary" href="#catalogo">Ver catálogo</a>
-        
-    </section>
     
-    <!-- ================= MUNDIAL ================= -->
-    <section id="mundial">
+    <h1>Streaming <span>Premium</span> 2026</h1>
+    
+    <p>IPTV + Streaming LATAM</p>
+    
+    <a href="#catalogo" class="btn btn-primary">Ver catálogo</a>
+    
+</section>
+    
+    <!-- ================= CATÁLOGO ================= -->
+    <section id="catalogo">
+    
+    <h2>Catálogo</h2>
+    
+    <div class="amazon-grid">
         
-        <h2>Centro del Mundial</h2>
+        <div class="amazon-card">
+            <h3>Paramount+</h3>
+            <button onclick="addToCart('Paramount+',5)">Agregar</button>
+        </div>
         
-        <div class="matches-container" id="matches-container"></div>
+        <div class="amazon-card">
+            <h3>Disney+</h3>
+            <button onclick="addToCart('Disney+',5)">Agregar</button>
+        </div>
         
-    </section>
+    </div>
+    
+</section>
     
     <!-- ================= CALCULADORA ================= -->
     <section id="ahorro">
@@ -180,5 +303,30 @@
     </footer>
     
 </body>
+<div class="cart-sidebar" id="cart-sidebar">
+
+    <div class="cart-header">
+        <h3>🛒 Carrito</h3>
+        <button onclick="toggleCart()">✖</button>
+    </div>
+
+    <div id="cart-items"></div>
+
+    <div id="cart-empty" style="text-align:center;color:#888;margin-top:20px;">
+        Carrito vacío 🛒
+    </div>
+
+    <div class="cart-totals" id="cart-totals-section" style="display:none;">
+        <div class="cart-row">
+            <span>Total:</span>
+            <span id="cart-total-local">$0.00</span>
+        </div>
+
+        <button onclick="processCheckout()" class="btn btn-primary">
+            Finalizar por WhatsApp
+        </button>
+    </div>
+
+</div>
 
 </html>
