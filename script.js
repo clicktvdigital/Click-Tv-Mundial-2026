@@ -1,122 +1,387 @@
-let cart = [];
-let currentCurrency = 'USD';
+/* ==========================================================================
+   CLICK TV STREAMING MUNDIAL 2026 — script.js
+   Lógica principal: carrito, cupones, pagos, moneda, geolocalización, UI
+   ========================================================================== */
 
-// Inicialización
-document.addEventListener('DOMContentLoaded', () => {
-    renderCatalog(PRODUCTOS);
-    initCalculator();
+const CLAVE_CARRITO = "clicktv_carrito";
+const CLAVE_MONEDA = "clicktv_moneda";
+const CLAVE_CUPON = "clicktv_cupon";
+
+let carrito = [];
+let monedaActual = "USD";
+let cuponAplicado = null;
+
+// ---------------------------------------------------------------------------
+// INICIALIZACIÓN
+// ---------------------------------------------------------------------------
+document.addEventListener("DOMContentLoaded", () => {
+  cargarCarritoDesdeStorage();
+  cargarMonedaDesdeStorage();
+  inicializarFiltros();
+  renderCatalogo();
+  cargarResenas();
+  renderMundial();
+  inicializarUI();
+  detectarPais();
+  actualizarContadorCarrito();
 });
 
-function renderCatalog(items) {
-    const container = document.getElementById('catalog-container');
-    container.innerHTML = '';
+function inicializarUI() {
+  // Menú móvil
+  const btnMenu = document.getElementById("btn-menu-movil");
+  const navMenu = document.getElementById("nav-menu");
+  if (btnMenu && navMenu) {
+    btnMenu.addEventListener("click", () => navMenu.classList.toggle("abierto"));
+  }
 
-    items.forEach(p => {
-        const localPrice = (p.precio * TASAS[currentCurrency]).toLocaleString();
-        container.innerHTML += `
-            <div class="card">
-                ${p.hot ? '<span class="badge" style="position:absolute; top:10px; right:10px;">HOT 🔥</span>' : ''}
-                <img src="${p.imagen}" alt="${p.nombre}">
-                <h3>${p.nombre}</h3>
-                <p class="price">${getSymbol()} ${localPrice}</p>
-                <button class="btn-primary" onclick="addToCart(${p.id})">Añadir al Carrito</button>
-                <button class="btn-outline" style="margin-top:8px; border:1px solid #333;" onclick="buyNow(${p.id})">Comprar YA</button>
+  // Carrito: abrir / cerrar
+  document.getElementById("btn-abrir-carrito")?.addEventListener("click", abrirCarrito);
+  document.getElementById("btn-cerrar-carrito")?.addEventListener("click", cerrarCarrito);
+  document.getElementById("carrito-overlay")?.addEventListener("click", cerrarCarrito);
+
+  // Cupón
+  document.getElementById("btn-aplicar-cupon")?.addEventListener("click", aplicarCupon);
+
+  // Checkout
+  document.getElementById("btn-finalizar-compra")?.addEventListener("click", finalizarCompra);
+
+  // Pagos simulados
+  document.querySelectorAll(".btn-pago").forEach((btn) => {
+    btn.addEventListener("click", () => procesarPago(btn.dataset.metodo));
+  });
+
+  // Selector de moneda
+  document.getElementById("selector-moneda")?.addEventListener("change", (e) => {
+    monedaActual = e.target.value;
+    localStorage.setItem(CLAVE_MONEDA, monedaActual);
+    renderCatalogo();
+    renderCarrito();
+    mostrarToast(`Moneda cambiada a ${monedaActual}`, "info");
+  });
+
+  // Formulario de reseña
+  document.getElementById("form-resena")?.addEventListener("submit", agregarResena);
+
+  // Scroll to top
+  const btnScrollTop = document.getElementById("btn-scroll-top");
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 400) {
+      btnScrollTop?.classList.add("visible");
+    } else {
+      btnScrollTop?.classList.remove("visible");
+    }
+  });
+  btnScrollTop?.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+
+  // Navegación suave + cerrar menú móvil
+  document.querySelectorAll(".nav-link").forEach((link) => {
+    link.addEventListener("click", () => navMenu?.classList.remove("abierto"));
+  });
+
+  // Año dinámico en footer
+  const anio = document.getElementById("anio-actual");
+  if (anio) anio.textContent = new Date().getFullYear();
+}
+
+// ---------------------------------------------------------------------------
+// FORMATEO DE MONEDA
+// ---------------------------------------------------------------------------
+function formatearPrecio(precioUSD) {
+  const info = TASAS_CAMBIO[monedaActual] || TASAS_CAMBIO.USD;
+  const convertido = precioUSD * info.tasa;
+  const decimales = monedaActual === "USD" || monedaActual === "EUR" || monedaActual === "PEN" ? 2 : 0;
+  return `${info.simbolo}${convertido.toFixed(decimales)}`;
+}
+
+function cargarMonedaDesdeStorage() {
+  const guardada = localStorage.getItem(CLAVE_MONEDA);
+  if (guardada && TASAS_CAMBIO[guardada]) {
+    monedaActual = guardada;
+    const selector = document.getElementById("selector-moneda");
+    if (selector) selector.value = guardada;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// GEOLOCALIZACIÓN
+// ---------------------------------------------------------------------------
+function detectarPais() {
+  const elPais = document.getElementById("pais-detectado");
+  if (!elPais) return;
+
+  if (!navigator.geolocation) {
+    elPais.textContent = "Ubicación no disponible";
+    return;
+  }
+
+  elPais.textContent = "Detectando ubicación... 📍";
+
+  navigator.geolocation.getCurrentPosition(
+    async (posicion) => {
+      try {
+        const { latitude, longitude } = posicion.coords;
+        const respuesta = await fetch(
+          `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
+        );
+        const datos = await respuesta.json();
+        const pais = datos?.address?.country || "Desconocido";
+        elPais.textContent = `📍 ${pais}`;
+        sugerirMonedaPorPais(pais);
+      } catch {
+        elPais.textContent = "📍 Ubicación detectada";
+      }
+    },
+    () => {
+      elPais.textContent = "📍 Activa la ubicación para personalizar tu moneda";
+    }
+  );
+}
+
+function sugerirMonedaPorPais(pais) {
+  const mapa = {
+    México: "MXN",
+    Colombia: "COP",
+    Perú: "PEN",
+    Argentina: "ARS",
+    Chile: "CLP",
+    España: "EUR",
+    Alemania: "EUR",
+    Francia: "EUR"
+  };
+  const sugerida = mapa[pais];
+  if (sugerida && !localStorage.getItem(CLAVE_MONEDA)) {
+    monedaActual = sugerida;
+    const selector = document.getElementById("selector-moneda");
+    if (selector) selector.value = sugerida;
+    renderCatalogo();
+    renderCarrito();
+  }
+}
+
+// ---------------------------------------------------------------------------
+// CARRITO — PERSISTENCIA
+// ---------------------------------------------------------------------------
+function cargarCarritoDesdeStorage() {
+  const guardado = localStorage.getItem(CLAVE_CARRITO);
+  carrito = guardado ? JSON.parse(guardado) : [];
+  const cuponGuardado = localStorage.getItem(CLAVE_CUPON);
+  cuponAplicado = cuponGuardado ? JSON.parse(cuponGuardado) : null;
+}
+
+function guardarCarritoEnStorage() {
+  localStorage.setItem(CLAVE_CARRITO, JSON.stringify(carrito));
+}
+
+// ---------------------------------------------------------------------------
+// CARRITO — ACCIONES
+// ---------------------------------------------------------------------------
+function agregarAlCarrito(producto, plan) {
+  const itemId = `${producto.id}-${plan.tipo}`;
+  const existente = carrito.find((item) => item.itemId === itemId);
+
+  if (existente) {
+    existente.cantidad += 1;
+  } else {
+    carrito.push({
+      itemId,
+      productoId: producto.id,
+      nombre: producto.nombre,
+      icono: producto.icono,
+      plan: plan.tipo,
+      precio: plan.precio,
+      cantidad: 1
+    });
+  }
+
+  guardarCarritoEnStorage();
+  renderCarrito();
+  actualizarContadorCarrito();
+  mostrarToast(`${producto.nombre} agregado al carrito 🛒`, "exito");
+  abrirCarrito();
+}
+
+function eliminarDelCarrito(itemId) {
+  carrito = carrito.filter((item) => item.itemId !== itemId);
+  guardarCarritoEnStorage();
+  renderCarrito();
+  actualizarContadorCarrito();
+  mostrarToast("Producto eliminado del carrito 🗑️", "info");
+}
+
+function cambiarCantidad(itemId, delta) {
+  const item = carrito.find((i) => i.itemId === itemId);
+  if (!item) return;
+  item.cantidad += delta;
+  if (item.cantidad <= 0) {
+    eliminarDelCarrito(itemId);
+    return;
+  }
+  guardarCarritoEnStorage();
+  renderCarrito();
+  actualizarContadorCarrito();
+}
+
+// ---------------------------------------------------------------------------
+// CARRITO — RENDER
+// ---------------------------------------------------------------------------
+function renderCarrito() {
+  const contenedor = document.getElementById("carrito-items");
+  const elSubtotal = document.getElementById("carrito-subtotal");
+  const elDescuento = document.getElementById("carrito-descuento");
+  const elTotal = document.getElementById("carrito-total");
+  if (!contenedor) return;
+
+  if (carrito.length === 0) {
+    contenedor.innerHTML = `<p class="carrito-vacio">Tu carrito está vacío. ¡Explora nuestro catálogo! 🛍️</p>`;
+  } else {
+    contenedor.innerHTML = carrito
+      .map(
+        (item) => `
+        <div class="carrito-item">
+          <span class="carrito-item__icono">${item.icono}</span>
+          <div class="carrito-item__info">
+            <p class="carrito-item__nombre">${item.nombre}</p>
+            <p class="carrito-item__plan">Plan ${item.plan} · ${formatearPrecio(item.precio)}</p>
+            <div class="carrito-item__cantidad">
+              <button onclick="cambiarCantidad('${item.itemId}', -1)" aria-label="Reducir cantidad">−</button>
+              <span>${item.cantidad}</span>
+              <button onclick="cambiarCantidad('${item.itemId}', 1)" aria-label="Aumentar cantidad">+</button>
             </div>
-        `;
-    });
+          </div>
+          <button class="carrito-item__borrar" onclick="eliminarDelCarrito('${item.itemId}')" aria-label="Eliminar producto">
+            🗑️
+          </button>
+        </div>
+      `
+      )
+      .join("");
+  }
+
+  const subtotalUSD = carrito.reduce((acc, item) => acc + item.precio * item.cantidad, 0);
+  const descuentoUSD = cuponAplicado ? subtotalUSD * (cuponAplicado.porcentaje / 100) : 0;
+  const totalUSD = subtotalUSD - descuentoUSD;
+
+  if (elSubtotal) elSubtotal.textContent = formatearPrecio(subtotalUSD);
+  if (elDescuento) elDescuento.textContent = `- ${formatearPrecio(descuentoUSD)}`;
+  if (elTotal) elTotal.textContent = formatearPrecio(totalUSD);
+
+  const elCuponInfo = document.getElementById("cupon-info");
+  if (elCuponInfo) {
+    elCuponInfo.textContent = cuponAplicado
+      ? `Cupón aplicado: ${cuponAplicado.codigo} (${cuponAplicado.porcentaje}% off)`
+      : "";
+  }
 }
 
-function addToCart(id) {
-    const product = PRODUCTOS.find(p => p.id === id);
-    cart.push(product);
-    updateCartUI();
-    // Abrir carrito automáticamente al añadir
-    document.getElementById('cart-sidebar').classList.add('active');
+function actualizarContadorCarrito() {
+  const contador = document.getElementById("contador-carrito");
+  if (!contador) return;
+  const totalItems = carrito.reduce((acc, item) => acc + item.cantidad, 0);
+  contador.textContent = totalItems;
+  contador.style.display = totalItems > 0 ? "inline-flex" : "none";
 }
 
-function updateCartUI() {
-    const container = document.getElementById('cart-items');
-    const count = document.getElementById('cart-count');
-    const total = document.getElementById('cart-total');
-    
-    container.innerHTML = '';
-    let totalValue = 0;
-
-    cart.forEach((item, index) => {
-        totalValue += item.precio;
-        container.innerHTML += `
-            <div class="flex-between" style="margin-bottom:15px; background:#1a1a1a; padding:10px; border-radius:8px;">
-                <div>
-                    <h4 style="font-size:14px;">${item.nombre}</h4>
-                    <small>${getSymbol()} ${(item.precio * TASAS[currentCurrency]).toFixed(2)}</small>
-                </div>
-                <button onclick="removeItem(${index})" style="background:none; border:none; color:red; cursor:pointer;">&times;</button>
-            </div>
-        `;
-    });
-
-    count.innerText = cart.length;
-    total.innerText = `${getSymbol()} ${(totalValue * TASAS[currentCurrency]).toLocaleString()}`;
+function abrirCarrito() {
+  document.getElementById("panel-carrito")?.classList.add("abierto");
+  document.getElementById("carrito-overlay")?.classList.add("visible");
+  renderCarrito();
 }
 
-function updateCurrency() {
-    currentCurrency = document.getElementById('currency-selector').value;
-    renderCatalog(PRODUCTOS);
-    updateCartUI();
-    calculateSavings();
+function cerrarCarrito() {
+  document.getElementById("panel-carrito")?.classList.remove("abierto");
+  document.getElementById("carrito-overlay")?.classList.remove("visible");
 }
 
-function getSymbol() {
-    const symbols = { USD: '$', PEN: 'S/', COP: '$', CLP: '$' };
-    return symbols[currentCurrency];
+// ---------------------------------------------------------------------------
+// CUPONES
+// ---------------------------------------------------------------------------
+function aplicarCupon() {
+  const input = document.getElementById("input-cupon");
+  if (!input) return;
+  const codigo = input.value.trim().toUpperCase();
+
+  if (!codigo) {
+    mostrarToast("Ingresa un código de cupón.", "error");
+    return;
+  }
+
+  const cupon = CUPONES[codigo];
+  if (!cupon) {
+    mostrarToast("Cupón inválido o expirado.", "error");
+    return;
+  }
+
+  cuponAplicado = { codigo, porcentaje: cupon.porcentaje };
+  localStorage.setItem(CLAVE_CUPON, JSON.stringify(cuponAplicado));
+  renderCarrito();
+  mostrarToast(`¡Cupón ${codigo} aplicado! ${cupon.descripcion}`, "exito");
 }
 
-function toggleCart() { document.getElementById('cart-sidebar').classList.toggle('active'); }
-function toggleMenu() { document.getElementById('nav-menu').classList.toggle('active'); }
-
-function removeItem(index) {
-    cart.splice(index, 1);
-    updateCartUI();
+// ---------------------------------------------------------------------------
+// CHECKOUT Y PAGOS SIMULADOS
+// ---------------------------------------------------------------------------
+function finalizarCompra() {
+  if (carrito.length === 0) {
+    mostrarToast("Tu carrito está vacío.", "error");
+    return;
+  }
+  document.getElementById("seccion-pagos")?.classList.add("visible");
+  mostrarToast("Selecciona un método de pago para continuar.", "info");
 }
 
-function checkoutWhatsApp() {
-    if(cart.length === 0) return alert("Tu carrito está vacío");
-    let items = cart.map(i => `- ${i.nombre}`).join('%0A');
-    let total = document.getElementById('cart-total').innerText;
-    let msg = `Hola Click TV! 👋 Deseo realizar este pedido:%0A${items}%0A%0A*Total:* ${total}`;
-    window.open(`https://wa.me/593939166222?text=${msg}`, '_blank');
+function procesarPago(metodo) {
+  if (carrito.length === 0) {
+    mostrarToast("Agrega productos antes de pagar.", "error");
+    return;
+  }
+
+  const resumen = carrito
+    .map((item) => `• ${item.nombre} (${item.plan}) x${item.cantidad}`)
+    .join("\n");
+
+  const subtotalUSD = carrito.reduce((acc, item) => acc + item.precio * item.cantidad, 0);
+  const descuentoUSD = cuponAplicado ? subtotalUSD * (cuponAplicado.porcentaje / 100) : 0;
+  const totalUSD = subtotalUSD - descuentoUSD;
+
+  switch (metodo) {
+    case "whatsapp": {
+      const mensaje = encodeURIComponent(
+        `Hola, quiero finalizar mi compra:\n${resumen}\n\nTotal: ${formatearPrecio(
+          totalUSD
+        )}${cuponAplicado ? ` (cupón ${cuponAplicado.codigo} aplicado)` : ""}`
+      );
+      window.open(`https://wa.me/${CONFIG.whatsappNumero}?text=${mensaje}`, "_blank");
+      break;
+    }
+    case "paypal":
+      mostrarToast("Redirigiendo a PayPal (simulado)... 💳", "info");
+      break;
+    case "payphone":
+      mostrarToast("Redirigiendo a Payphone (simulado)... 📱", "info");
+      break;
+    case "transferencia":
+      mostrarToast("Mostrando datos bancarios para transferencia (simulado) 🏦", "info");
+      break;
+    default:
+      mostrarToast("Procesando pago...", "info");
+  }
 }
 
-function buyNow(id) {
-    const p = PRODUCTOS.find(p => p.id === id);
-    let msg = `Hola Click TV! 👋 Deseo comprar de inmediato: *${p.nombre}*`;
-    window.open(`https://wa.me/593939166222?text=${msg}`, '_blank');
-}
+// ---------------------------------------------------------------------------
+// TOASTS
+// ---------------------------------------------------------------------------
+function mostrarToast(mensaje, tipo = "info") {
+  const contenedor = document.getElementById("toast-contenedor");
+  if (!contenedor) return;
 
-// Calculadora
-function initCalculator() {
-    const select = document.getElementById('calc-service');
-    PRODUCTOS.forEach(p => {
-        select.innerHTML += `<option value="${p.id}">${p.nombre}</option>`;
-    });
-    calculateSavings();
-}
+  const toast = document.createElement("div");
+  toast.className = `toast toast--${tipo}`;
+  toast.textContent = mensaje;
+  contenedor.appendChild(toast);
 
-function calculateSavings() {
-    const id = document.getElementById('calc-service').value;
-    const p = PRODUCTOS.find(p => p.id == id);
-    const rate = TASAS[currentCurrency];
-    
-    document.getElementById('price-off').innerText = `${getSymbol()} ${(p.precioOficial * rate).toLocaleString()}`;
-    document.getElementById('price-click').innerText = `${getSymbol()} ${(p.precio * rate).toLocaleString()}`;
-    document.getElementById('price-saved').innerText = `${getSymbol()} ${((p.precioOficial - p.precio) * rate).toLocaleString()}`;
-}
-
-function filterCatalog(cat) {
-    const btns = document.querySelectorAll('.filter-btn');
-    btns.forEach(b => b.classList.remove('active'));
-    event.target.classList.add('active');
-    
-    if(cat === 'todos') renderCatalog(PRODUCTOS);
-    else renderCatalog(PRODUCTOS.filter(p => p.categoria === cat));
+  setTimeout(() => toast.classList.add("visible"), 10);
+  setTimeout(() => {
+    toast.classList.remove("visible");
+    setTimeout(() => toast.remove(), 300);
+  }, 3500);
 }
