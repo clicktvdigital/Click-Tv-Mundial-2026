@@ -1,3 +1,4 @@
+let countdownIntervals = [];
 const products = [];
 const WPP_NUMBER = "593939166222";
 let cart = [];
@@ -19,7 +20,7 @@ const activities = [
     "🟢 Cliente de Santiago adquirió Netflix",
     "🟢 Cliente de México activó IPTV Ultra"
 ];
-
+let cartRendering = false;
 async function initApp() {
     try {
         await fetchExchangeRates();
@@ -31,13 +32,13 @@ async function initApp() {
         });
 
         // PROTEGIDO
-        fetchWorldCupMatches().catch(() => {
-            console.warn("matches error");
-        });
+        fetchWorldCupMatches().catch((err) => {
+    console.error("MATCH ERROR:", err);
+});
 
         if (typeof startToastRotator === "function") startToastRotator();
         if (typeof simulateOnlineUsers === "function") simulateOnlineUsers();
-let cartRendering = false;
+
         updateCartUI();
         applyCurrencyUpdate();
 
@@ -172,7 +173,9 @@ const teamFlags = { Ecuador: "🇪🇨", Spain: "🇪🇸", Belgium: "🇧🇪",
 async function fetchWorldCupMatches() {
     const container = document.getElementById('matches-container');
     if (!container) return;
-    const events = window.worldcupMatches || [];
+    const events = Array.isArray(window.worldcupMatches)
+    ? window.worldcupMatches
+    : [];
     if (!events.length) {
     container.innerHTML = `<div class="empty-matches">No hay partidos disponibles</div>`;
     return;
@@ -192,19 +195,35 @@ async function fetchWorldCupMatches() {
     startCountdowns();
 }
 
-function startCountdowns(){
+function startCountdowns() {
     countdownIntervals.forEach(clearInterval);
     countdownIntervals = [];
 
-    document.querySelectorAll('.countdown').forEach(el=>{
-        if (!el.dataset.date || !el.dataset.time) return;
+    document.querySelectorAll('.countdown').forEach(el => {
 
-const matchDate = new Date(`${el.dataset.date}T${el.dataset.time}`);
+        if (!el.dataset.date) {
+    el.innerHTML = "SIN FECHA";
+    return;
+}
+
+        const time = el.dataset.time.includes(':')
+            ? el.dataset.time
+            : el.dataset.time + ":00";
+
+        const matchDate = new Date(`${el.dataset.date}T${time || "00:00:00"}`);
 
         const interval = setInterval(() => {
             const diff = matchDate - new Date();
-            if(diff <= 0) el.innerHTML = 'EN VIVO';
-            else el.innerHTML = `⏳ Faltan ${Math.floor(diff/1000/60)} min`;
+
+            if (isNaN(matchDate)) {
+                el.innerHTML = 'HORARIO NO DISPONIBLE';
+                clearInterval(interval);
+                return;
+            }
+
+            if (diff <= 0) el.innerHTML = 'EN VIVO 🔴';
+            else el.innerHTML = `⏳ Faltan ${Math.floor(diff / 1000 / 60)} min`;
+
         }, 1000);
 
         countdownIntervals.push(interval);
