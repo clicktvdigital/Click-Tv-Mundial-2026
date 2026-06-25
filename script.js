@@ -79,23 +79,24 @@ let currencyUpdating = false;
 
 function applyCurrencyUpdate() {
     if (currencyUpdating) return;
-
     currencyUpdating = true;
-
+    
     currentRate = window.rates[currentCurrency] || 1;
-
+    
     document.querySelectorAll('.local-price').forEach(el => {
         const usdPrice = parseFloat(el.getAttribute('data-usd'));
-        el.innerText = formatMoney(usdPrice * currentRate, currentCurrency);
+        
+        if (!isNaN(usdPrice)) {
+            el.innerText = formatMoney(usdPrice * currentRate, currentCurrency);
+        }
     });
-
+    
     updateCartUI();
-
+    
     setTimeout(() => {
         currencyUpdating = false;
-    }, 50);
+    }, 80);
 }
-
 function toggleMenu() {
     document.getElementById('nav-links').classList.toggle('active');
 }
@@ -105,11 +106,20 @@ function toggleCart() {
 }
 
 function addToCart(name, priceUSD) {
+    if (!name || isNaN(priceUSD)) return;
+    
     const existing = cart.find(i => i.name === name);
-    if (existing) existing.qty++;
-    else cart.push({ name, priceUSD, qty: 1 });
+    
+    if (existing) {
+        existing.qty++;
+    } else {
+        cart.push({ name, priceUSD, qty: 1 });
+    }
+    
     updateCartUI();
-    document.getElementById('cart-sidebar').classList.add('active');
+    
+    const sidebar = document.getElementById('cart-sidebar');
+    if (sidebar) sidebar.classList.add('active');
 }
 
 function updateCartUI() {
@@ -144,15 +154,20 @@ function updateCartUI() {
 
     let subtotalUSD = 0;
 
-    cart.forEach(item => {
-        subtotalUSD += item.priceUSD * item.qty;
+    let html = "";
 
-        itemsContainer.innerHTML += `
+cart.forEach(item => {
+    subtotalUSD += item.priceUSD * item.qty;
+    
+    html += `
         <div class="cart-item">
             <h4>${item.name}</h4>
             <p>x${item.qty}</p>
-        </div>`;
-    });
+        </div>
+    `;
+});
+
+itemsContainer.innerHTML = html;
 
     if (totalsSection) totalsSection.style.display = 'block';
 
@@ -238,10 +253,19 @@ const time = rawTime.includes(':') ?
 
 function addDropdownToCart(baseName, selectId) {
     const select = document.getElementById(selectId);
+    if (!select) return;
+    
     const opt = select.options[select.selectedIndex];
-    addToCart(`${baseName} - ${opt.text.split('-')[0].trim()}`, parseFloat(opt.getAttribute('data-usd')));
+    if (!opt) return;
+    
+    const price = parseFloat(opt.getAttribute('data-usd'));
+    
+    if (isNaN(price)) return;
+    
+    const name = `${baseName} - ${opt.text.split('-')[0].trim()}`;
+    
+    addToCart(name, price);
 }
-
 window.addEventListener('DOMContentLoaded', function() {
     initApp();
 });
