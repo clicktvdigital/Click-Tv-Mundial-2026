@@ -50,10 +50,13 @@ function addDropdownToCart(baseName, selectId) {
 
 function updateCartUI() {
     const container = document.getElementById('cart-items');
+    if (!container) return;
+
     const countLabel = document.getElementById('cart-count');
     const subtotalLabel = document.getElementById('cart-subtotal-local');
     const totalLabel = document.getElementById('cart-total-local');
-    
+
+    if (!countLabel || !subtotalLabel || !totalLabel) return;
     container.innerHTML = '';
     let subtotalUSD = 0;
     let totalItems = 0;
@@ -210,14 +213,35 @@ function renderMatches() {
 
     container.innerHTML = `
         <div class="match-card">
-            <h3>⚽ Partido en vivo</h3>
-            <p>Actualización automática activada</p>
+            <h3>⚽ Mundial 2026 en vivo</h3>
+            <p>Partidos actualizándose automáticamente</p>
+            <span style="color:#00ff88;">EN VIVO</span>
         </div>
     `;
 }
-document.addEventListener("DOMContentLoaded", () => {
-    try { updateCartUI(); } catch(e){}
-    try { detectUserCountry(); } catch(e){}
-    try { startOnlineCounter(); } catch(e){}
-    try { renderMatches(); } catch(e){}
+function toggleMenu() {
+    const menu = document.getElementById('nav-menu');
+    if (!menu) return;
+    menu.classList.toggle('active');
+}
+
+
+
+window.addEventListener("DOMContentLoaded", () => {
+    console.log("SYSTEM INIT OK");
+
+    if (typeof toggleCart !== "function") {
+        console.warn("toggleCart missing");
+    }
+
+    if (document.getElementById("streaming-grid")) {
+        console.log("catalog container OK");
+    }
+
+    if (document.getElementById("matches-container")) {
+        console.log("matches container OK");
+    }
+});
+window.addEventListener("error", function(e) {
+    console.log("⚠️ Error capturado:", e.message);
 });
