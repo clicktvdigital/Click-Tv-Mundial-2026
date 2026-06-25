@@ -329,34 +329,41 @@ header {
     font-size: 16px;
 }
 
-/* ================= BOTONES ================= */
-.card button {
-    margin-top: 8px;
-    width: 100%;
-    padding: 10px;
+
+/* ================= BOTONES LIMPIOS GLOBAL ================= */
+button {
+    font-family: inherit;
     border: none;
-    border-radius: 8px;
     cursor: pointer;
-    font-weight: bold;
-    transition: 0.2s;
+    transition: all 0.25s ease;
 }
 
-/* carrito */
+/* ================= BOTON CARRITO ================= */
 .card button:first-of-type {
-    background: var(--primary);
-    color: #fff;
+    background: linear-gradient(135deg, #E50914, #b00610);
+    color: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 8px;
+    font-weight: bold;
+    box-shadow: 0 4px 10px rgba(229,9,20,0.3);
 }
 
-/* comprar */
+/* ================= BOTON COMPRA ================= */
 .card button:last-of-type {
-    background: var(--gold);
-    color: #000;
+    background: linear-gradient(135deg, #FFC107, #ffb300);
+    color: black;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 6px;
+    font-weight: bold;
+    box-shadow: 0 4px 10px rgba(255,193,7,0.3);
 }
 
-/* hover */
+/* ================= HOVER PRO ================= */
 .card button:hover {
-    opacity: 0.9;
-    transform: scale(1.02);
+    transform: translateY(-2px) scale(1.02);
+    filter: brightness(1.05);
 }
 /* ================= RESEÑAS ================= */
 .reviews {
