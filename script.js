@@ -120,4 +120,3 @@ function filterCatalog(cat) {
     if(cat === 'todos') renderCatalog(PRODUCTOS);
     else renderCatalog(PRODUCTOS.filter(p => p.categoria === cat));
 }
-

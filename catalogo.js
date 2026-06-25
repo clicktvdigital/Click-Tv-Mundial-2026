@@ -43,4 +43,3 @@ const TASAS = {
     COP: 3950,
     CLP: 940
 };
-
