@@ -56,33 +56,49 @@ body { background: var(--bg); color: var(--text); overflow-x: hidden; scroll-beh
 
 /* Calculator */
 
+
 .calc-box {
-    background: #0b0b0b;
-    padding: 20px;
-    border-radius: 16px;
+    background: linear-gradient(145deg, #0f0f0f, #0b0b0b);
+    padding: 22px;
+    border-radius: 18px;
     border: 1px solid rgba(255,255,255,0.08);
-    max-width: 700px;
-    margin: auto;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.6);
 }
 
+.calc-box label,
+.calc-box p {
+    font-size: 15px;
+    font-weight: 600;
+    color: #FFC107;
+    margin-bottom: 8px;
+}
 /* SELECT MEJORADO */
+
 .calc-box select {
     width: 100%;
-    padding: 12px;
-    border-radius: 10px;
+    padding: 14px 16px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.15);
     background: #111;
-    color: white;
-    border: 1px solid rgba(255,255,255,0.1);
-    margin-bottom: 20px;
+    color: #fff;
+    outline: none;
+    margin-top: 10px;
 }
 
 /* GRID KPI */
-.calc-visual {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
+
+.calc-visual h3 {
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
 }
 
+.calc-visual span {
+    color: #aaa;
+    font-size: 13px;
+}
 /* CARDS */
 .calc-card {
     background: #111;
@@ -110,9 +126,21 @@ body { background: var(--bg); color: var(--text); overflow-x: hidden; scroll-beh
 }
 
 /* COLORES KPI */
-.calc-card.red h3 { color: #ff4d4d; }
-.calc-card.blue h3 { color: #4da6ff; }
-.calc-card.green h3 { color: #2ecc71; }
+
+.calc-card.green h3 {
+    color: #2ecc71;
+    text-shadow: 0 0 10px rgba(46,204,113,0.3);
+}
+
+.calc-card.red h3 {
+    color: #ff4d4d;
+    text-shadow: 0 0 10px rgba(255,77,77,0.3);
+}
+
+.calc-card.blue h3 {
+    color: #4da6ff;
+    text-shadow: 0 0 10px rgba(77,166,255,0.3);
+}
 
 /* AHORRO MÁS PRO (CENTRO VISUAL) */
 .calc-card.green {
