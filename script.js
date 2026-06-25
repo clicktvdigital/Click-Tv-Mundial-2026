@@ -132,30 +132,31 @@ function toggleMenu() {
     document.getElementById("nav-links")?.classList.toggle("active");
 }
 
-function calculateSavings() {
-    
+function calculateSavings(){
+
     const select = document.getElementById("calc-service");
-    if (!select) return;
-    
+    if(!select) return;
+
     const opt = select.options[select.selectedIndex];
-    
-    if (!opt) return;
-    
-    const official = Number(opt.getAttribute("data-official"));
-    const click = Number(opt.getAttribute("data-click"));
-    
-    if (isNaN(official) || isNaN(click)) return;
-    
+    if(!opt) return;
+
+    const official = Number(opt.dataset.official);
+    const click = Number(opt.dataset.click);
+
+    if(!official || !click) return;
+
     const savings = official - click;
     const percent = Math.round((savings / official) * 100);
-    
-    const offEl = document.getElementById("calc-official");
-    const clickEl = document.getElementById("calc-click");
-    const saveEl = document.getElementById("calc-savings");
-    
-    if (offEl) offEl.innerText = `$${official.toFixed(2)}`;
-    if (clickEl) clickEl.innerText = `$${click.toFixed(2)}`;
-    if (saveEl) saveEl.innerText = `$${savings.toFixed(2)} (${percent}%)`;
+
+    document.getElementById("calc-official").innerText = `$${official}`;
+    document.getElementById("calc-click").innerText = `$${click}`;
+    document.getElementById("calc-savings").innerText = `$${savings} (${percent}%)`;
+
+    // BARRA VISUAL
+    const bar = document.getElementById("bar-fill");
+    if(bar){
+        bar.style.width = percent + "%";
+    }
 }
 function changeCurrency(cur) {
     currentCurrency = cur;
@@ -163,7 +164,7 @@ function changeCurrency(cur) {
     updateCartUI();
 }
 
-// placeholders para evitar errores HTML
+// placeholders para evitar errores HTML"
 function filterProducts() {}
 function filterCategory() {}
 function updateDropdownPrice() {}
