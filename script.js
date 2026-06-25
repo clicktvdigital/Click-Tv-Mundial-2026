@@ -1,54 +1,66 @@
-// ================= AMAZON PRO CART FIX (FINAL CLEAN) =================
+// ================= AMAZON PRO CLEAN FINAL ENGINE =================
 
 let cart = [];
 let currentCurrency = 'USD';
 let currentRate = 1;
-let currencyUpdating = false;
 
 const WPP_NUMBER = "593939166222";
 
 window.rates = { USD: 1, PEN: 3.8, COP: 4000, ARS: 1000, CLP: 950, MXN: 17 };
 
-// ================= CART =================
+// ================= INIT =================
+window.addEventListener("DOMContentLoaded", () => {
+    updateCartUI();
+});
+
+// ================= ADD CART =================
 function addToCart(name, priceUSD) {
     
     if (!name || isNaN(priceUSD)) return;
     
     const item = cart.find(i => i.name === name);
     
-    if (item) item.qty++;
-    else cart.push({ name, priceUSD, qty: 1 });
+    if (item) {
+        item.qty++;
+    } else {
+        cart.push({
+            name,
+            priceUSD: Number(priceUSD),
+            qty: 1
+        });
+    }
     
     updateCartUI();
     openCart();
 }
 
+// ================= UPDATE UI =================
 function updateCartUI() {
     
-    const items = document.getElementById("cart-items");
+    const container = document.getElementById("cart-items");
     const empty = document.getElementById("cart-empty");
     const totals = document.getElementById("cart-totals-section");
     const count = document.getElementById("cart-count");
     
-    if (!items) return;
+    if (!container) return;
     
     let html = "";
-    let total = 0;
+    let totalItems = 0;
     
-    cart.forEach(i => {
-        total += i.qty;
+    cart.forEach(item => {
+        totalItems += item.qty;
         
         html += `
-        <div class="cart-item">
-            <b>${i.name}</b>
-            <span>x${i.qty}</span>
-        </div>`;
+            <div class="cart-item">
+                <b>${item.name}</b>
+                <span>x${item.qty}</span>
+            </div>
+        `;
     });
     
-    items.innerHTML = html;
+    container.innerHTML = html;
     
-    if (count) count.innerText = total;
-    
+    // EMPTY STATE
     if (cart.length === 0) {
         if (empty) empty.style.display = "block";
         if (totals) totals.style.display = "none";
@@ -56,6 +68,8 @@ function updateCartUI() {
         if (empty) empty.style.display = "none";
         if (totals) totals.style.display = "block";
     }
+    
+    if (count) count.innerText = totalItems;
 }
 
 // ================= DROPDOWN =================
@@ -74,7 +88,7 @@ function addDropdownToCart(baseName, selectId) {
     addToCart(`${baseName} - ${label}`, price);
 }
 
-// ================= CART UI =================
+// ================= OPEN CART =================
 function openCart() {
     const el = document.getElementById("cart-sidebar");
     if (el) el.classList.add("active");
@@ -85,7 +99,7 @@ function toggleCart() {
     if (el) el.classList.toggle("active");
 }
 
-// ================= BUY =================
+// ================= BUY NOW =================
 function buyNow(name, price) {
     
     const msg = `🛒 CLICK TV\n\n📦 ${name}\n💰 $${price} USD`;
@@ -95,8 +109,3 @@ function buyNow(name, price) {
         "_blank"
     );
 }
-
-// ================= INIT =================
-window.addEventListener("DOMContentLoaded", () => {
-    updateCartUI();
-});
