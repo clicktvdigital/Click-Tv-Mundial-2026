@@ -1,467 +1,111 @@
 
 
-/* ================= VARIABLES ================= */
-:root {
-    --bg: #050505;
-    --card: #111111;
-    --text: #ffffff;
-    --soft: #aaaaaa;
 
-    --primary: #E50914;
-    --gold: #FFC107;
-
-    --whatsapp: #25D366;
-    --telegram: #0088cc;
-
-    --border: rgba(255,255,255,0.08);
-}
-
-/* ================= RESET ================= */
+/* ================= RESET GENERAL ================= */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Montserrat', sans-serif;
+    font-family: Arial, sans-serif;
 }
 
 body {
-    background: var(--bg);
-    color: var(--text);
+    background: #050505;
+    color: #fff;
     overflow-x: hidden;
 }
 
+/* ================= LINKS ================= */
 a {
     text-decoration: none;
     color: inherit;
 }
 
-/* ================= TOP BAR ================= */
-
-.top-bar {
-    background: #0b0b0b;
-    padding: 10px 15px;
-    font-size: 13px;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-/* ================= HEADER ================= */
-header {
-    position: sticky;
-    top: 0;
-    z-index: 999;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 20px;
-    background: rgba(5,5,5,0.95);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid var(--border);
-}
-
-/* LOGO */
-.logo {
-    font-size: 20px;
-    font-weight: 800;
-    color: var(--text);
-}
-
-.logo span {
-    color: var(--gold);
-}
-
-/* NAVBAR */
-.nav-links {
-    display: flex;
-    gap: 15px;
-}
-
-.nav-links a {
-    font-size: 13px;
-    color: var(--soft);
-    transition: 0.3s;
-}
-
-.nav-links a:hover {
-    color: var(--gold);
-}
-
-/* HEADER ACTIONS */
-.header-actions {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-/* CART BUTTON */
-.cart-btn {
-    background: var(--primary);
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 8px;
-    cursor: pointer;
-}
-
-/* MENU BUTTON */
-.menu-btn {
-    background: var(--card);
-    color: white;
-    border: 1px solid var(--border);
-    padding: 8px 12px;
-    border-radius: 8px;
-    cursor: pointer;
-}
-
-/* ACTIVE MENU MOBILE */
-.nav-links.active {
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    top: 60px;
-    right: 20px;
-    background: var(--card);
-    padding: 15px;
-    border-radius: 10px;
-}
-
-/* ================= HERO ================= */
-.hero {
-    min-height: 75vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 60px 20px;
-    background: radial-gradient(circle at top, #111, #050505);
-}
-
-.hero h1 {
-    font-size: clamp(2rem, 5vw, 4rem);
-    font-weight: 800;
-}
-
-.hero h1 span {
-    color: var(--gold);
-}
-
-.hero p {
-    margin-top: 15px;
-    color: var(--soft);
-    font-size: 15px;
-}
-
-/* ================= BOTÓN HERO ================= */
-.btn-primary {
-    display: inline-block;
-    margin-top: 20px;
-    padding: 12px 18px;
-    background: var(--primary);
-    color: #fff;
-    border-radius: 8px;
-    font-weight: bold;
-    transition: 0.3s;
-}
-
-.btn-primary:hover {
-    transform: translateY(-3px);
-}
-
-/* ================= MUNDIAL SECTION ================= */
-#mundial {
-    padding: 60px 20px;
-}
-
-#mundial h2 {
-    text-align: center;
-    font-size: 28px;
-    margin-bottom: 10px;
-}
-
-/* ================= RADIO ================= */
-.radio-box {
-    margin-top: 30px;
-    background: var(--card);
-    padding: 20px;
-    border-radius: 12px;
-    border: 1px solid var(--border);
-    text-align: center;
-}
-
-/* ================= TELEAMAZONAS ================= */
-.tv-box {
-    margin-top: 20px;
-    background: var(--card);
-    padding: 20px;
-    border-radius: 12px;
-    border: 1px solid var(--border);
-    text-align: center;
-}
-
-.tv-box a {
-    display: inline-block;
-    margin-top: 10px;
-    padding: 10px 15px;
-    background: var(--gold);
-    color: #000;
-    border-radius: 8px;
-    font-weight: bold;
-}
-
-/* ================= CALCULADORA PRO ================= */
-.calc-pro {
-    padding: 60px 20px;
-    background: #050505;
-    text-align: center;
-}
-
-/* TITULO */
-.calc-pro h2 {
-    font-size: 28px;
-    margin-bottom: 10px;
-}
-
-/* SELECT */
-#calc-service {
-    margin-top: 20px;
-    padding: 10px;
-    border-radius: 8px;
-    border: 1px solid var(--border);
-    background: var(--card);
-    color: var(--text);
-}
-
-/* ================= RESULTADOS ================= */
-.calc-results {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
-    margin-top: 25px;
-}
-
-/* CARD BASE */
-.calc-results .box {
-    background: var(--card);
-    padding: 20px;
-    border-radius: 12px;
-    border: 1px solid var(--border);
-}
-
-/* TITULOS */
-.calc-results h3 {
-    margin-top: 10px;
-    font-size: 22px;
-}
-
-/* COLORES */
-.box.red h3 {
-    color: #ff4d4d;
-}
-
-.box.blue h3 {
-    color: #4da6ff;
-}
-
-.box.green h3 {
-    color: #2ecc71;
-}
-
-/* ================= BARRA PROGRESO ================= */
-.bar-container {
-    width: 100%;
-    height: 10px;
-    background: #222;
-    margin-top: 25px;
-    border-radius: 10px;
-    overflow: hidden;
-}
-
-.bar-fill {
-    height: 100%;
-    width: 0%;
-    background: linear-gradient(90deg, #ff4d4d, #2ecc71);
-    transition: width 0.4s ease;
-}
-
- 
-/* ================= CATALOGO ================= */
-#catalogo {
-    padding: 60px 20px;
-    background: #050505;
-}
-
-/* TITULO */
-
-#catalogo h2 {
-    text-align: center;
-    font-size: 32px;
-    font-weight: 800;
-    margin-bottom: 30px;
-    color: #fff;
-}
-
-#catalogo h3 {
-    grid-column: 1 / -1;
-    font-size: 18px;
-    margin: 20px 0 10px;
-    color: #E50914;
+/* ================= TITULOS ================= */
+h1, h2, h3, h4 {
     font-weight: 700;
 }
 
-/* ================= GRID REAL (IMPORTANTE) ================= */
-/* AHORA USA catalog-container en vez de catalog-grid */
+/* ================= CATÁLOGO ================= */
+#catalogo {
+    padding: 40px 20px;
+    background: #050505;
+}
 
+#catalogo h2 {
+    text-align: center;
+    font-size: 28px;
+    margin-bottom: 25px;
+    color: #fff;
+}
+
+/* GRID PRINCIPAL */
 #catalog-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 20px;
+    gap: 18px;
     padding-bottom: 80px;
-    /* 👈 evita que botones flotantes tapen contenido */
 }
 
-/* ================= CARD ================= */
-
-/* ================= AMAZON PRO CARDS ================= */
+/* ================= CARD PRO ================= */
 .card {
     background: linear-gradient(145deg, #111, #0c0c0c);
     border: 1px solid rgba(255,255,255,0.08);
     border-radius: 16px;
-    padding: 18px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-    transition: all 0.25s ease;
+    padding: 15px;
     display: flex;
     flex-direction: column;
     gap: 10px;
+    transition: 0.25s ease;
 }
 
 .card:hover {
     transform: translateY(-6px);
     border-color: #E50914;
-    box-shadow: 0 15px 35px rgba(229,9,20,0.25);
 }
 
-/* TITULO PRODUCTO */
+/* TITULO */
 .card h4 {
     font-size: 18px;
-    font-weight: 700;
     color: #fff;
 }
 
-/* PRECIO TEXTO */
+/* TEXTO PRECIO */
 .card span {
-    font-size: 14px;
     color: #aaa;
+    font-size: 14px;
 }
 
-/* ================= BOTONES AMAZON STYLE ================= */
+/* ================= BOTONES ================= */
 .card button {
     width: 100%;
     padding: 12px;
     border-radius: 10px;
-    font-weight: 600;
-    cursor: pointer;
     border: none;
-    transition: all 0.2s ease;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s ease;
 }
 
-/* BOTON CARRITO */
+/* CARRITO */
 .card button:first-of-type {
-    background: linear-gradient(135deg, #E50914, #b00610);
+    background: #E50914;
     color: white;
 }
 
-/* BOTON COMPRA */
+/* COMPRA */
 .card button:last-of-type {
-    background: linear-gradient(135deg, #FFC107, #ffb300);
+    background: #FFC107;
     color: black;
 }
 
-/* HOVER BOTONES */
+/* HOVER */
 .card button:hover {
     transform: scale(1.03);
     opacity: 0.95;
 }
-/* ================= RESEÑAS ================= */
-.reviews {
-    padding: 60px 20px;
-    background: #050505;
-    text-align: center;
-}
-
-.reviews h2 {
-    font-size: 28px;
-    margin-bottom: 25px;
-}
-
-/* GRID RESEÑAS */
-.reviews-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 15px;
-}
-
-/* CARD RESEÑA */
-.review-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    padding: 15px;
-    border-radius: 12px;
-    transition: 0.3s;
-}
-
-.review-card:hover {
-    transform: translateY(-5px);
-    border-color: var(--gold);
-}
-
-/* TEXTO RESEÑA */
-.review-card p {
-    font-size: 14px;
-    margin-bottom: 8px;
-    color: var(--text);
-}
-
-.review-card small {
-    color: var(--soft);
-}
-
-/* ================= TOAST ================= */
-#toast-container {
-    position: fixed;
-    bottom: 20px;
-    left: 20px;
-    z-index: 99999;
-}
-
-/* NOTIFICACION */
-.toast {
-    background: rgba(0,0,0,0.85);
-    color: #fff;
-    padding: 10px 14px;
-    margin-top: 10px;
-    border-radius: 8px;
-    border-left: 3px solid var(--gold);
-    animation: slideIn 0.4s ease;
-}
-
-/* ANIMACION */
-@keyframes slideIn {
-    from {
-        transform: translateX(-30px);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
-}
 
 /* ================= FLOATING BUTTONS ================= */
-
-
-
 .floating-buttons {
     position: fixed;
     right: 15px;
@@ -472,16 +116,15 @@ header {
     z-index: 999999;
 }
 
-/* BOTONES CIRCULARES */
+/* BOTONES */
 .floating-buttons a {
-    width: 52px;
-    height: 52px;
+    width: 55px;
+    height: 55px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
-    text-decoration: none;
     box-shadow: 0 10px 25px rgba(0,0,0,0.4);
 }
 
@@ -494,176 +137,20 @@ header {
 .floating-buttons a:nth-child(2) {
     background: #0088cc;
 }
-/* ================= ANIMACIONES GLOBALES ================= */
-.card, .review-card {
-    transition: all 0.3s ease;
-}
 
-.card:hover, .review-card:hover {
-    transform: translateY(-6px);
-}
-
-/* ================= RESPONSIVE BASE ================= */
+/* ================= MOBILE ================= */
 @media (max-width: 768px) {
 
-    .calc-results {
+    #catalog-container {
         grid-template-columns: 1fr;
     }
 
-    .catalog-grid {
-        grid-template-columns: 1fr;
+    .card {
+        padding: 12px;
     }
 
     .floating-buttons {
         right: 10px;
         bottom: 10px;
     }
-}
-
-/* ================= CARRITO SIDEBAR ================= */
-.cart-sidebar {
-    position: fixed;
-    top: 0;
-    right: -100%;
-    width: 360px;
-    height: 100vh;
-    background: var(--card);
-    border-left: 1px solid var(--border);
-    z-index: 99999;
-    display: flex;
-    flex-direction: column;
-    transition: right 0.3s ease;
-}
-
-/* ACTIVO */
-.cart-sidebar.active {
-    right: 0;
-}
-
-/* HEADER CARRITO */
-.cart-header {
-    padding: 15px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid var(--border);
-}
-
-/* ITEMS */
-#cart-items {
-    flex: 1;
-    overflow-y: auto;
-    padding: 15px;
-}
-
-/* ITEM */
-.cart-item {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-    background: #151515;
-    border-radius: 10px;
-    margin-bottom: 10px;
-    border: 1px solid var(--border);
-}
-
-/* VACIO */
-#cart-empty {
-    text-align: center;
-    color: var(--soft);
-    padding: 20px;
-}
-
-/* ================= TOP BAR FIX ================= */
-.top-bar {
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-/* ================= HEADER RESPONSIVE ================= */
-@media (max-width: 768px) {
-
-    .nav-links {
-        display: none;
-        flex-direction: column;
-        position: absolute;
-        top: 60px;
-        right: 20px;
-        background: var(--card);
-        padding: 15px;
-        border-radius: 10px;
-        border: 1px solid var(--border);
-    }
-
-    .nav-links.active {
-        display: flex;
-    }
-
-    header {
-        flex-wrap: wrap;
-    }
-
-    .cart-sidebar {
-        width: 100%;
-    }
-}
-
-/* ================= FIX GENERAL ================= */
-button {
-    cursor: pointer;
-}
-
-section {
-    scroll-margin-top: 80px;
-}
-
-/* ================= SMOOTH UI ================= */
-html {
-    scroll-behavior: smooth;
-}
-
-/* EVITA DESBORDES */
-body {
-    overflow-x: hidden;
-}
-
-/* MEJORA BOTONES */
-button:hover {
-    opacity: 0.9;
-    transform: translateY(-2px);
-    transition: 0.2s;
-}
-
-
-.card {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-/* CONTENEDOR DE BOTONES */
-.card button {
-    width: 100%;
-    padding: 10px;
-    border-radius: 10px;
-    font-weight: 600;
-    border: none;
-    cursor: pointer;
-}
-
-/* BOTÓN CARRITO */
-.card button:first-of-type {
-    background: #E50914;
-    color: white;
-}
-
-/* BOTÓN COMPRAR */
-.card button:last-of-type {
-    background: #FFC107;
-    color: black;
-}
-
-/* SEPARACIÓN VISUAL POR BLOQUE */
-.card h4 {
-    margin-bottom: 8px;
 }
