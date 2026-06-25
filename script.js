@@ -6,6 +6,8 @@ let currentCurrency = 'USD';
 let currentRate = 1;
 let currencyUpdating = false;
 
+window.rates = window.rates || { USD: 1 };
+
 const WPP_NUMBER = "593939166222";
 
 const currencyMap = {
@@ -65,21 +67,28 @@ function formatMoney(amount, currency) {
 
 // ================= CURRENCY =================
 function applyCurrencyUpdate() {
+    
     if (currencyUpdating) return;
     currencyUpdating = true;
-
+    
+    if (!window.rates) {
+        window.rates = { USD: 1 };
+    }
+    
     currentRate = window.rates[currentCurrency] || 1;
-
+    
     document.querySelectorAll('.local-price').forEach(el => {
+        
         const usd = parseFloat(el.dataset.usd);
-        if (!isNaN(usd)) {
-            el.innerText = formatMoney(usd * currentRate, currentCurrency);
-        }
+        
+        if (isNaN(usd)) return;
+        
+        el.innerText = formatMoney(usd * currentRate, currentCurrency);
     });
-
+    
     updateCartUI();
-
-    setTimeout(() => currencyUpdating = false, 80);
+    
+    setTimeout(() => currencyUpdating = false, 100);
 }
 
 // ================= CART CORE =================
@@ -98,18 +107,20 @@ function addToCart(name, priceUSD) {
 }
 
 function updateCartUI() {
-
+    
     const container = document.getElementById("cart-items");
     const count = document.getElementById("cart-count");
-
+    const empty = document.getElementById("cart-empty");
+    const totals = document.getElementById("cart-totals-section");
+    
     if (!container) return;
-
+    
     let html = "";
     let totalItems = 0;
-
+    
     cart.forEach(item => {
         totalItems += item.qty;
-
+        
         html += `
             <div class="cart-item">
                 <b>${item.name}</b>
@@ -117,11 +128,21 @@ function updateCartUI() {
             </div>
         `;
     });
-
+    
     container.innerHTML = html;
+    
+    // ✅ CONTROL EMPTY STATE
+    if (cart.length === 0) {
+        if (empty) empty.style.display = "block";
+        if (totals) totals.style.display = "none";
+    } else {
+        if (empty) empty.style.display = "none";
+        if (totals) totals.style.display = "block";
+    }
+    
+    // ✅ SAFE COUNT
     if (count) count.innerText = totalItems;
 }
-
 // ================= DROPDOWN =================
 function addDropdownToCart(baseName, selectId) {
 
