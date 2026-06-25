@@ -1,268 +1,254 @@
 
-/* ================= MOBILE FIRST RESET ================= */
+/* ================================================================
+   RESPONSIVE PRO ENGINE - CLICK TV
+   Mobile First Strategy | UI/UX High Conversion
+   ================================================================ */
+
+/* --- 1. GLOBAL CORE FIXES --- */
+:root {
+    --safe-area-bottom: env(safe-area-inset-bottom);
+    --header-height: 70px;
+}
+
 body {
     overflow-x: hidden;
+    width: 100%;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
 }
 
-/* EVITA DESBORDES EN TODA LA WEB */
-img, video, iframe {
+/* Evitar desbordes críticos */
+img, video, iframe, audio {
     max-width: 100%;
+    height: auto;
 }
 
-/* ================= GLOBAL MOBILE FIX ================= */
 section {
-    padding-left: 15px;
-    padding-right: 15px;
+    padding: 40px 15px; /* Espaciado uniforme móvil */
+    max-width: 100vw;
+    box-sizing: border-box;
 }
 
-/* ================= TEXTOS RESPONSIVE ================= */
-h1 {
-    font-size: clamp(22px, 5vw, 40px);
+/* --- 2. TYPOGRAPHY & TOUCH TARGETS --- */
+h1 { font-size: clamp(24px, 7vw, 42px); font-weight: 900; line-height: 1.1; }
+h2 { font-size: clamp(20px, 5vw, 32px); font-weight: 700; margin-bottom: 20px; }
+p { font-size: 16px; line-height: 1.6; color: rgba(255,255,255,0.8); }
+
+/* Optimización de botones para dedos (Touch Targets) */
+button, .btn-primary, .nav-links a, .float-btn {
+    min-height: 44px; /* Estándar Apple/Google */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.2s active;
 }
 
-h2 {
-    font-size: clamp(18px, 4vw, 30px);
+button:active { transform: scale(0.96); }
+
+/* --- 3. HEADER & NAVIGATION (MOBILE FIRST) --- */
+header {
+    height: var(--header-height);
+    padding: 0 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: var(--bg);
 }
 
-p {
-    font-size: 14px;
-    line-height: 1.5;
+.nav-links {
+    position: fixed;
+    top: var(--header-height);
+    left: 0;
+    width: 100%;
+    height: 0;
+    background: var(--card);
+    flex-direction: column;
+    overflow: hidden;
+    transition: height 0.3s ease-in-out;
+    border-bottom: 0 solid var(--border);
 }
 
-/* ================= HEADER RESPONSIVE ================= */
+.nav-links.active {
+    height: calc(100vh - var(--header-height));
+    padding: 20px 0;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+}
+
+.nav-links a {
+    width: 100%;
+    padding: 15px 25px;
+    font-size: 18px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+/* --- 4. PRODUCT CATALOG GRID (MOBILE FIRST) --- */
+#catalog-container, .catalog-grid, .grid {
+    display: grid;
+    grid-template-columns: 1fr; /* 1 Columna en móvil */
+    gap: 20px;
+    width: 100%;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    height: 100%;
+}
+
+.card button {
+    width: 100%;
+    margin-top: 10px;
+    font-weight: 700;
+}
+
+/* --- 5. CART SIDEBAR RESPONSIVE --- */
+.cart-sidebar {
+    width: 100%; /* Full width en móvil */
+    max-width: 400px;
+    right: -100%;
+    height: 100%;
+    padding-bottom: calc(20px + var(--safe-area-bottom));
+}
+
+@media (min-width: 768px) {
+    .cart-sidebar {
+        width: 380px;
+        right: -380px;
+    }
+}
+
+/* --- 6. CALCULATOR MOBILE OPTIMIZATION --- */
+.calc-results {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+}
+
+.calc-pro select {
+    width: 100%;
+    height: 50px;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+/* --- 7. FLOATING BUTTONS (SAFE AREA FIX) --- */
+.floating-buttons {
+    right: 15px;
+    bottom: calc(15px + var(--safe-area-bottom));
+    gap: 12px;
+}
+
 @media (max-width: 768px) {
-
-    /* HEADER AJUSTE */
-    header {
-        flex-direction: row;
-        flex-wrap: wrap;
-        gap: 10px;
-        padding: 10px 15px;
+    .floating-buttons a {
+        width: 52px;
+        height: 52px;
+        font-size: 20px;
     }
-
-    /* LOGO */
-    .logo {
-        font-size: 18px;
-    }
-
-    /* NAV OCULTO POR DEFECTO */
-    .nav-links {
+    
+    /* Evitar que los flotantes tapen el botón de pagar del carrito si está abierto */
+    .cart-sidebar.active ~ .floating-buttons {
         display: none;
-        width: 100%;
-        flex-direction: column;
-        background: var(--card);
-        padding: 10px;
-        border-radius: 10px;
-        border: 1px solid var(--border);
+    }
+}
+
+/* --- 8. TABLET BREAKPOINT (768px - 1024px) --- */
+@media (min-width: 768px) {
+    section { padding: 60px 30px; }
+
+    #catalog-container, .catalog-grid, .grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 Columnas */
+        gap: 25px;
     }
 
-    /* NAV ACTIVO */
-    .nav-links.active {
+    .nav-links {
+        position: static;
+        height: auto;
+        width: auto;
         display: flex;
+        flex-direction: row;
+        background: transparent;
+        border: none;
     }
 
     .nav-links a {
-        padding: 10px;
-        border-bottom: 1px solid rgba(255,255,255,0.05);
+        padding: 0 15px;
+        font-size: 15px;
+        border: none;
     }
 
-    /* BOTONES HEADER */
-    .header-actions {
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-    }
-}
-
-/* ================= CART MOBILE FIX ================= */
-@media (max-width: 768px) {
-
-    .cart-sidebar {
-        width: 100%;
-        right: -100%;
-    }
-
-    .cart-sidebar.active {
-        right: 0;
-    }
-
-    #cart-items {
-        padding-bottom: 120px;
-    }
-}
-
-/* ================= CATALOGO RESPONSIVE ================= */
-@media (max-width: 768px) {
-
-    /* GRID PRINCIPAL */
-    .catalog-grid {
-        grid-template-columns: 1fr;
-        gap: 15px;
-    }
-
-    /* CARDS */
-    .card {
-        padding: 12px;
-        border-radius: 10px;
-    }
-
-    .card h4 {
-        font-size: 16px;
-    }
-
-    .card button {
-        font-size: 14px;
-        padding: 10px;
-    }
-}
-
-/* ================= TABLET ================= */
-@media (max-width: 1024px) {
-
-    .catalog-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-/* ================= CALCULADORA MOBILE ================= */
-@media (max-width: 768px) {
+    .menu-btn { display: none; }
 
     .calc-results {
-        grid-template-columns: 1fr;
-        gap: 10px;
-    }
-
-    .calc-pro {
-        padding: 40px 15px;
-    }
-
-    #calc-service {
-        width: 100%;
-        font-size: 14px;
-    }
-
-    .calc-results .box {
-        padding: 15px;
-    }
-
-    .calc-results h3 {
-        font-size: 18px;
+        grid-template-columns: repeat(3, 1fr);
     }
 }
 
-/* ================= RESEÑAS MOBILE ================= */
-@media (max-width: 768px) {
-
-    .reviews-grid {
-        grid-template-columns: 1fr;
-        gap: 10px;
+/* --- 9. DESKTOP BREAKPOINT (> 1024px) --- */
+@media (min-width: 1024px) {
+    #catalog-container, .catalog-grid, .grid {
+        grid-template-columns: repeat(4, 1fr); /* 4 Columnas en Desktop PRO */
     }
-
-    .review-card {
-        padding: 12px;
-        font-size: 14px;
-    }
-}
-
-/* ================= TOAST MOBILE ================= */
-@media (max-width: 768px) {
-
-    #toast-container {
-        left: 10px;
-        right: 10px;
-        bottom: 10px;
-    }
-
-    .toast {
-        font-size: 13px;
-        padding: 10px;
-    }
-}
-
-/* ================= FLOTANTES MOBILE FIX ================= */
-@media (max-width: 768px) {
-
-    .floating-buttons {
-        right: 10px;
-        bottom: 10px;
-        gap: 8px;
-    }
-
-    .floating-buttons a {
-        width: 50px;
-        height: 50px;
-        font-size: 11px;
-    }
-}
-
-/* ================= HERO MOBILE ================= */
-@media (max-width: 768px) {
 
     .hero {
-        padding: 40px 15px;
-        min-height: auto;
+        padding: 100px 0;
+        text-align: left;
+        display: flex;
+        align-items: center;
     }
 
-    .hero h1 {
-        font-size: 26px;
-        line-height: 1.2;
+    .hero-content {
+        max-width: 600px;
     }
 
-    .hero p {
-        font-size: 14px;
-        margin-top: 10px;
-    }
-
-    .btn-primary {
-        width: 100%;
-        text-align: center;
+    .reviews-grid {
+        grid-template-columns: repeat(3, 1fr);
     }
 }
 
-/* ================= MUNDIAL SECTION MOBILE ================= */
-@media (max-width: 768px) {
-
-    #mundial {
-        padding: 40px 15px;
-    }
-
-    #mundial h2 {
-        font-size: 20px;
-        text-align: center;
-    }
-
-    .radio-box,
-    .tv-box {
-        padding: 15px;
-        border-radius: 10px;
-        font-size: 14px;
-    }
-
-    audio {
-        width: 100%;
-    }
+/* --- 10. ULTRA-SMALL SCREENS (< 360px) --- */
+@media (max-width: 360px) {
+    h1 { font-size: 24px; }
+    .logo { font-size: 16px; }
+    .header-actions span { display: none; } /* Ocultar texto de carrito, dejar solo icono */
 }
 
-/* ================= TELEAMAZONAS BUTTON MOBILE ================= */
-@media (max-width: 768px) {
-
-    .tv-box a {
-        display: block;
-        width: 100%;
-        text-align: center;
-        padding: 12px;
-        font-size: 14px;
-    }
+/* --- 11. FIXES PARA ELEMENTOS ESPECIALES --- */
+/* Radio Player */
+.radio-box audio {
+    width: 100%;
+    margin-top: 15px;
 }
 
-/* ================= GENERAL SAFE FIX ================= */
+/* Teleamazonas iframe responsive */
+.tv-box iframe {
+    aspect-ratio: 16 / 9;
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+}
+
+/* Reseñas */
+.reviews-grid {
+    display: grid;
+    gap: 15px;
+}
+
+/* Animación suave para el carrito */
+.cart-sidebar.active {
+    box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+}
+
+/* Estilo para los Toasts en móvil */
 @media (max-width: 768px) {
-
-    section {
-        overflow-x: hidden;
-    }
-
-    * {
-        -webkit-tap-highlight-color: transparent;
+    #toast-container {
+        width: calc(100% - 30px);
+        left: 15px;
+        bottom: 80px; /* Arriba de los flotantes */
     }
 }
