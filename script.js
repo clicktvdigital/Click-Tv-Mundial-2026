@@ -112,14 +112,18 @@ function updateCartUI() {
     const count = document.getElementById("cart-count");
     const empty = document.getElementById("cart-empty");
     const totals = document.getElementById("cart-totals-section");
+    const subtotal = document.getElementById("cart-subtotal-local");
+    const total = document.getElementById("cart-total-local");
     
     if (!container) return;
     
     let html = "";
     let totalItems = 0;
+    let totalUSD = 0;
     
     cart.forEach(item => {
         totalItems += item.qty;
+        totalUSD += item.priceUSD * item.qty;
         
         html += `
             <div class="cart-item">
@@ -131,34 +135,43 @@ function updateCartUI() {
     
     container.innerHTML = html;
     
-    // ✅ CONTROL EMPTY STATE
+    // EMPTY STATE CONTROL PERFECTO
     if (cart.length === 0) {
+        
         if (empty) empty.style.display = "block";
         if (totals) totals.style.display = "none";
+        
     } else {
+        
         if (empty) empty.style.display = "none";
         if (totals) totals.style.display = "block";
+        
     }
     
-    // ✅ SAFE COUNT
+    // TOTALS (IMPORTANTE)
+    if (subtotal) subtotal.innerText = `$${totalUSD.toFixed(2)}`;
+    if (total) total.innerText = `$${totalUSD.toFixed(2)}`;
+    
+    // COUNTER SAFE
     if (count) count.innerText = totalItems;
 }
 // ================= DROPDOWN =================
 function addDropdownToCart(baseName, selectId) {
-
+    
     const select = document.getElementById(selectId);
     if (!select) return;
-
+    
     const opt = select.options[select.selectedIndex];
-    const price = parseFloat(opt.dataset.usd);
-
-    if (isNaN(price)) return;
-
+    if (!opt) return;
+    
+    const price = parseFloat(opt.dataset.usd || "0");
+    
+    if (isNaN(price) || price <= 0) return;
+    
     const label = opt.text.split('-')[0].trim();
-
+    
     addToCart(`${baseName} - ${label}`, price);
 }
-
 // ================= BUY NOW =================
 function buyNow(name, priceUSD) {
 
