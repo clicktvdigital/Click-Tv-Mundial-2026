@@ -309,3 +309,48 @@ section { padding: 60px 5%; width: 100%; box-sizing: border-box; }
 #toast-container { position: fixed; bottom: 20px; left: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
 .toast { background: var(--bg-card); color: white; padding: 12px 20px; border-radius: 8px; border-left: 4px solid var(--whatsapp); font-size: 13px; box-shadow: var(--shadow); animation: slideInLeft 0.5s; }
 @keyframes slideInLeft { from { transform: translateX(-100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+.cart-sidebar {
+    max-height: 100vh;
+    overflow-y: auto;
+    padding-bottom: 120px;
+}
+
+.cart-body {
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.remove-btn {
+    background: red;
+    color: white;
+    border: none;
+    padding: 5px 8px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.checkout-btn {
+    width: 100%;
+    padding: 14px;
+    background: #ffb800;
+    color: black;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    margin-top: 10px;
+    cursor: pointer;
+    font-size: 16px;
+}
+.checkout-btn{
+    width:100%;
+    padding:14px;
+    background:#25D366;
+    color:#000;
+    font-weight:700;
+    border-radius:10px;
+}

@@ -176,8 +176,12 @@ async function fetchWorldCupMatches() {
     const events = Array.isArray(window.worldcupMatches)
     ? window.worldcupMatches
     : [];
-    if (!events.length) {
-    container.innerHTML = `<div class="empty-matches">No hay partidos disponibles</div>`;
+    if (!events || events.length === 0) {
+    container.innerHTML = `
+        <div class="empty-matches">
+            ⚽ Cargando partidos del Mundial...
+        </div>
+    `;
     return;
 }
     let html = '';
@@ -206,16 +210,18 @@ function startCountdowns() {
     return;
 }
 
-        const time = el.dataset.time.includes(':')
-            ? el.dataset.time
-            : el.dataset.time + ":00";
+        const rawTime = el.dataset.time || "00:00:00";
+
+const time = rawTime.includes(':') ?
+    rawTime :
+    rawTime + ":00";
 
         const matchDate = new Date(`${el.dataset.date}T${time || "00:00:00"}`);
 
         const interval = setInterval(() => {
             const diff = matchDate - new Date();
 
-            if (isNaN(matchDate)) {
+            if (isNaN(matchDate.getTime())) {
                 el.innerHTML = 'HORARIO NO DISPONIBLE';
                 clearInterval(interval);
                 return;
@@ -236,4 +242,6 @@ function addDropdownToCart(baseName, selectId) {
     addToCart(`${baseName} - ${opt.text.split('-')[0].trim()}`, parseFloat(opt.getAttribute('data-usd')));
 }
 
-window.addEventListener('load', initApp);
+window.addEventListener('DOMContentLoaded', function() {
+    initApp();
+});
