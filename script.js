@@ -171,6 +171,23 @@ function filterProducts() {}
 function filterCategory() {}
 function updateDropdownPrice() {}
 
-window.addEventListener("DOMContentLoaded", ()=>{
-    calculateSavings();
+window.addEventListener("DOMContentLoaded", () => {
+    
+    // asegura calculadora
+    if (document.getElementById("calc-service")) {
+        calculateSavings();
+    }
+    
+    // asegura carrito visible
+    if (typeof updateCartUI === "function") {
+        updateCartUI();
+    }
+    
+});
+window.addEventListener("DOMContentLoaded", () => {
+
+    setTimeout(() => {
+        calculateSavings();
+    }, 300);
+
 });

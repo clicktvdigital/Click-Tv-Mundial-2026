@@ -493,3 +493,13 @@ section {
         grid-template-columns: 1fr;
     }
 }
+.cart-sidebar {
+    z-index: 9999 !important;
+}
+
+.floating-buttons {
+    position: fixed;
+    right: 15px;
+    bottom: 15px;
+    z-index: 99999;
+}
