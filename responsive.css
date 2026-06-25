@@ -1,14 +1,225 @@
+/* ========================================== */
+/* RESPONSIVE PRO (AMAZON STYLE UI) */
+/* ========================================== */
+
+/* ================= TABLET ================= */
 @media (max-width: 1024px) {
-    .grid { grid-template-columns: repeat(2, 1fr); }
+    
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 18px;
+    }
+    
+    .hero-stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+    
+    .nav-links {
+        gap: 12px;
+        font-size: 12px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .section-header h2 {
+        font-size: 2.2rem;
+    }
+    
+    .card {
+        padding: 20px 15px;
+    }
 }
 
+/* ================= MOBILE LARGE ================= */
 @media (max-width: 768px) {
-    .nav-links { display: none; }
-    .nav-links.active { display: flex; flex-direction: column; position: absolute; top: 100%; left: 0; width: 100%; background: #050505; padding: 20px; border-bottom: 1px solid var(--border); }
-    .hero h1 { font-size: 2.2rem; }
-    .cart-sidebar { width: 100%; }
+    
+    /* NAV */
+    .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: #050505;
+        flex-direction: column;
+        padding: 15px;
+        border-bottom: 1px solid var(--border);
+        z-index: 999;
+    }
+    
+    .nav-links.active {
+        display: flex;
+    }
+    
+    .menu-toggle {
+        display: block;
+    }
+    
+    /* GRID -> 1 COL */
+    .grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    /* HERO */
+    .hero {
+        min-height: auto;
+        padding: 40px 5%;
+    }
+    
+    .hero h1 {
+        font-size: 2rem;
+    }
+    
+    .hero p {
+        font-size: 14px;
+    }
+    
+    .hero-buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .btn {
+        width: 100%;
+    }
+    
+    /* HERO STATS */
+    .hero-stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        padding: 10px;
+    }
+    
+    .hero-stats b {
+        font-size: 1.4rem;
+    }
+    
+    /* SECTIONS */
+    section {
+        padding: 40px 5%;
+    }
+    
+    .section-header h2 {
+        font-size: 1.8rem;
+    }
+    
+    /* CARDS */
+    .card {
+        padding: 18px 15px;
+    }
+    
+    .local-price {
+        font-size: 1.6rem;
+    }
+    
+    /* CART */
+    .cart-sidebar {
+        width: 100%;
+        max-width: 100%;
+    }
+    
+    /* FLOATING BUTTONS */
+    .floating-buttons-container {
+        bottom: 15px;
+        right: 15px;
+    }
+    
+    .float-btn {
+        width: 45px;
+        height: 45px;
+        font-size: 18px;
+    }
 }
 
+/* ================= MOBILE SMALL ================= */
 @media (max-width: 480px) {
-    .hero h1 { font-size: 1.8rem; }
+    
+    /* HERO */
+    .hero h1 {
+        font-size: 1.6rem;
+        line-height: 1.2;
+    }
+    
+    .hero p {
+        font-size: 13px;
+    }
+    
+    .badge {
+        font-size: 10px;
+        padding: 5px 10px;
+    }
+    
+    /* HEADER */
+    .logo {
+        font-size: 20px;
+    }
+    
+    .header-actions {
+        gap: 10px;
+    }
+    
+    /* CARDS */
+    .card {
+        padding: 15px 12px;
+    }
+    
+    .card h3 {
+        font-size: 1.2rem;
+    }
+    
+    .card-desc {
+        font-size: 11px;
+    }
+    
+    .local-price {
+        font-size: 1.4rem;
+    }
+    
+    /* BUTTONS */
+    .btn {
+        font-size: 13px;
+        padding: 10px 14px;
+    }
+    
+    /* GRID GAP REDUCE */
+    .grid {
+        gap: 12px;
+    }
+    
+    /* CART */
+    .cart-sidebar {
+        padding: 15px;
+    }
+    
+    .cart-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+    
+    .cart-row {
+        font-size: 13px;
+    }
+}
+
+/* ================= VERY SMALL DEVICES ================= */
+@media (max-width: 360px) {
+    
+    .hero h1 {
+        font-size: 1.4rem;
+    }
+    
+    .section-header h2 {
+        font-size: 1.5rem;
+    }
+    
+    .btn {
+        font-size: 12px;
+    }
+    
+    .card {
+        padding: 12px;
+    }
 }
