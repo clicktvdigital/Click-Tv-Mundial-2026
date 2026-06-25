@@ -55,11 +55,80 @@ body { background: var(--bg); color: var(--text); overflow-x: hidden; scroll-beh
 .price { font-size: 24px; font-weight: 800; color: var(--gold); display: block; margin-bottom: 15px; }
 
 /* Calculator */
-.calculator-section { background: #0a0a0a; padding: 80px 0; }
-.calc-card { background: var(--card-bg); padding: 40px; border-radius: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; border: 1px solid var(--border); }
-.calc-display { display: flex; justify-content: space-between; text-align: center; }
-.highlight h3 { color: var(--primary); font-size: 2rem; }
-.saved h3 { color: #2ecc71; font-size: 2rem; }
+
+.calc-box {
+    background: #0b0b0b;
+    padding: 20px;
+    border-radius: 16px;
+    border: 1px solid rgba(255,255,255,0.08);
+    max-width: 700px;
+    margin: auto;
+}
+
+/* SELECT MEJORADO */
+.calc-box select {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    background: #111;
+    color: white;
+    border: 1px solid rgba(255,255,255,0.1);
+    margin-bottom: 20px;
+}
+
+/* GRID KPI */
+.calc-visual {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+/* CARDS */
+.calc-card {
+    background: #111;
+    padding: 18px;
+    border-radius: 14px;
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.08);
+    transition: 0.2s;
+}
+
+.calc-card:hover {
+    transform: translateY(-3px);
+}
+
+/* TEXTOS */
+.calc-card span {
+    font-size: 12px;
+    color: #aaa;
+}
+
+/* PRECIOS GRANDES */
+.calc-card h3 {
+    font-size: 26px;
+    margin-top: 8px;
+}
+
+/* COLORES KPI */
+.calc-card.red h3 { color: #ff4d4d; }
+.calc-card.blue h3 { color: #4da6ff; }
+.calc-card.green h3 { color: #2ecc71; }
+
+/* AHORRO MÁS PRO (CENTRO VISUAL) */
+.calc-card.green {
+    box-shadow: 0 0 20px rgba(46, 204, 113, 0.15);
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .calc-visual {
+        grid-template-columns: 1fr;
+    }
+
+    .calc-card h3 {
+        font-size: 22px;
+    }
+}
 
 /* Sidebar Cart */
 .cart-sidebar { position: fixed; top: 0; right: -100%; width: 380px; height: 100vh; background: #0a0a0a; z-index: 2000; transition: 0.4s cubic-bezier(0.77, 0, 0.175, 1); padding: 30px; display: flex; flex-direction: column; }
