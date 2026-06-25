@@ -23,12 +23,24 @@ const activities = [
 async function initApp() {
     try {
         await fetchExchangeRates();
-        await detectUserCountry();
-        await fetchWorldCupMatches();
-        startToastRotator();
-        simulateOnlineUsers();
+
+        // PROTEGIDO
+        detectUserCountry().catch(() => {
+            const el = document.getElementById('user-location');
+            if (el) el.innerText = 'Latinoamérica';
+        });
+
+        // PROTEGIDO
+        fetchWorldCupMatches().catch(() => {
+            console.warn("matches error");
+        });
+
+        if (typeof startToastRotator === "function") startToastRotator();
+        if (typeof simulateOnlineUsers === "function") simulateOnlineUsers();
+let cartRendering = false;
         updateCartUI();
         applyCurrencyUpdate();
+
     } catch(err) {
         console.error("ERROR INIT:", err);
     }
@@ -62,13 +74,25 @@ function formatMoney(amount, currency) {
     }
 }
 
+let currencyUpdating = false;
+
 function applyCurrencyUpdate() {
+    if (currencyUpdating) return;
+
+    currencyUpdating = true;
+
     currentRate = window.rates[currentCurrency] || 1;
+
     document.querySelectorAll('.local-price').forEach(el => {
         const usdPrice = parseFloat(el.getAttribute('data-usd'));
         el.innerText = formatMoney(usdPrice * currentRate, currentCurrency);
     });
+
     updateCartUI();
+
+    setTimeout(() => {
+        currencyUpdating = false;
+    }, 50);
 }
 
 function toggleMenu() {
@@ -88,18 +112,59 @@ function addToCart(name, priceUSD) {
 }
 
 function updateCartUI() {
+    if (cartRendering) return;
+    cartRendering = true;
+
     const itemsContainer = document.getElementById('cart-items');
     const totalsSection = document.getElementById('cart-totals-section');
-    if(!itemsContainer) return;
+    const subtotalEl = document.getElementById('cart-subtotal-local');
+    const totalEl = document.getElementById('cart-total-local');
+    const countEl = document.getElementById('cart-count');
+
+    if (!itemsContainer) {
+    cartRendering = false;
+    console.warn("Cart container no encontrado");
+    return;
+}
+
     itemsContainer.innerHTML = '';
+
+    if (cart.length === 0) {
+        itemsContainer.innerHTML = `
+            <div class="empty-cart">
+                🛒 Tu carrito está vacío
+            </div>
+        `;
+        if (totalsSection) totalsSection.style.display = 'none';
+
+        cartRendering = false;
+        return;
+    }
+
     let subtotalUSD = 0;
+
     cart.forEach(item => {
         subtotalUSD += item.priceUSD * item.qty;
-        itemsContainer.innerHTML += `<div class="cart-item"><h4>${item.name}</h4><p>x${item.qty}</p></div>`;
+
+        itemsContainer.innerHTML += `
+        <div class="cart-item">
+            <h4>${item.name}</h4>
+            <p>x${item.qty}</p>
+        </div>`;
     });
-    if(totalsSection) totalsSection.style.display = cart.length > 0 ? 'block' : 'none';
-    document.getElementById('cart-total-local').innerText = formatMoney(subtotalUSD * currentRate, currentCurrency);
-    document.getElementById('cart-count').innerText = cart.length;
+
+    if (totalsSection) totalsSection.style.display = 'block';
+
+    if (subtotalEl) subtotalEl.innerText =
+        formatMoney(subtotalUSD * currentRate, currentCurrency);
+
+    if (totalEl) totalEl.innerText =
+        formatMoney(subtotalUSD * currentRate, currentCurrency);
+
+    if (countEl) countEl.innerText =
+        cart.reduce((a, b) => a + b.qty, 0);
+
+    cartRendering = false;
 }
 
 const teamFlags = { Ecuador: "🇪🇨", Spain: "🇪🇸", Belgium: "🇧🇪", Uruguay: "🇺🇾", France: "🇫🇷" };
@@ -107,9 +172,11 @@ const teamFlags = { Ecuador: "🇪🇨", Spain: "🇪🇸", Belgium: "🇧🇪",
 async function fetchWorldCupMatches() {
     const container = document.getElementById('matches-container');
     if (!container) return;
-    const events = [
-        { strHomeTeam: "Ecuador", strAwayTeam: "Spain", dateEvent: "2026-06-17", strTime: "18:00:00" }
-    ];
+    const events = window.worldcupMatches || [];
+    if (!events.length) {
+    container.innerHTML = `<div class="empty-matches">No hay partidos disponibles</div>`;
+    return;
+}
     let html = '';
     events.forEach(m => {
         html += `
@@ -126,13 +193,21 @@ async function fetchWorldCupMatches() {
 }
 
 function startCountdowns(){
+    countdownIntervals.forEach(clearInterval);
+    countdownIntervals = [];
+
     document.querySelectorAll('.countdown').forEach(el=>{
-        const matchDate = new Date(`${el.dataset.date}T${el.dataset.time}Z`);
-        setInterval(() => {
+        if (!el.dataset.date || !el.dataset.time) return;
+
+const matchDate = new Date(`${el.dataset.date}T${el.dataset.time}`);
+
+        const interval = setInterval(() => {
             const diff = matchDate - new Date();
             if(diff <= 0) el.innerHTML = 'EN VIVO';
             else el.innerHTML = `⏳ Faltan ${Math.floor(diff/1000/60)} min`;
         }, 1000);
+
+        countdownIntervals.push(interval);
     });
 }
 
