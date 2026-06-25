@@ -2,7 +2,30 @@
 
 
 /* ================= RESET GENERAL ================= */
+* 
+:root {
+    --primary: #E50914;
+    --gold: #FFC107;
+    --bg: #050505;
+    --card: #111111;
+    --border: rgba(255,255,255,0.1);
+    --text: #ffffff;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+}
+
 * {
+    color: inherit;
+}
+
+.card {
+    background: var(--card);
+}
+
+{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
