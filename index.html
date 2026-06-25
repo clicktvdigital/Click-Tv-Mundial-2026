@@ -1,70 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- 🔥 SEO BASE -->
-    <title>CLICK TV MUNDIAL 2026 | Streaming Premium</title>
-    <meta name="description" content="Streaming Premium Mundial 2026 - IPTV, deportes y entretenimiento en vivo. Activación inmediata en LATAM.">
-    <meta name="keywords" content="IPTV, Mundial 2026, Streaming, DAZN, Paramount, DIRECTV GO, Disney+, Netflix">
-    <meta name="author" content="CLICK TV">
-    <meta name="robots" content="index, follow">
-
-    <!-- 🌐 URL CANÓNICA -->
-    <link rel="canonical" href="https://click-tv-mundial.vercel.app/">
-
-    <!-- 🎨 COLOR APP (IMPORTANTE PARA MÓVIL) -->
     <meta name="theme-color" content="#050505">
 
-    <!-- 📱 OPEN GRAPH (REDES SOCIALES) -->
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="CLICK TV MUNDIAL 2026">
-    <meta property="og:description" content="Streaming Premium Mundial 2026 en vivo">
-    <meta property="og:image" content="https://click-tv-mundial.vercel.app/banner.jpg">
-    <meta property="og:url" content="https://click-tv-mundial.vercel.app/">
+    <title>CLICK TV ULTRA PRO MAX</title>
 
-    <!-- 🐦 TWITTER -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="CLICK TV Mundial 2026">
-    <meta name="twitter:description" content="Streaming Premium Mundial 2026">
-    <meta name="twitter:image" content="https://click-tv-mundial.vercel.app/banner.jpg">
+    <meta name="description" content="Streaming IPTV + Mundial 2026 + Apps Premium">
+    <meta name="keywords" content="IPTV, Streaming, Netflix, Disney+, DAZN">
 
-    <!-- ⭐ ICONO -->
-    <link rel="icon" type="image/png" href="https://1000logos.net/wp-content/uploads/2023/05/World-Cup-2026-Logo.png">
-
-    <!-- 🔤 FONTS -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
-
-    <!-- 🧠 FONT AWESOME (OBLIGATORIO PARA ICONOS) -->
+    <!-- ICONOS (OBLIGATORIO) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    <!-- 🎨 TU CSS -->
-    <link rel="stylesheet" href="style.css">
+    <!-- FONTS -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
 
-    <!-- ⚠️ IMPORTANTE: NO PONGAS JS AQUÍ -->
+    <!-- TU CSS (NO SE TOCA) -->
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <!-- HEADER PRO -->
 <header class="header">
 
-    <!-- LOGO -->
     <a href="#inicio" class="logo">
-        <i class="fas fa-tv"></i>
-        <span>CLICK</span>TV <small>2026</small>
+        <i class="fas fa-tv"></i> CLICK<span>TV</span>
     </a>
 
-    <!-- NAV -->
-    <nav class="nav-links" id="nav-links">
-        <a href="#inicio">🏠 Inicio</a>
-        <a href="#streaming">🎬 Streaming</a>
-        <a href="#iptv">📺 IPTV</a>
-        <a href="#mundial">⚽ Partidos</a>
-        <a href="#pagos">💳 Pagos</a>
+    <nav class="nav-links">
+        <a href="#inicio">Inicio</a>
+        <a href="#streaming">Streaming</a>
+        <a href="#iptv">IPTV</a>
+        <a href="#mundial">Partidos</a>
+        <a href="#radio">Radio</a>
+        <a href="#pagos">Pagos</a>
     </nav>
 
-    <!-- ACCIONES -->
     <div class="header-actions">
+
+        <button class="cart-icon" onclick="toggleCart()">
+            <i class="fas fa-shopping-cart"></i>
+            <span id="cart-count">0</span>
+        </button>
+
+        <button class="menu-toggle" onclick="toggleMenu()">
+            <i class="fas fa-bars"></i>
+        </button>
+
+    </div>
+
+</header>
 
         <!-- CARRITO -->
         <button class="cart-icon" onclick="toggleCart()" aria-label="Carrito">
@@ -77,9 +62,7 @@
             <i class="fas fa-bars"></i>
         </button>
 
-    </div>
-
-</header>
+    
 
 <!-- CONTENIDO PRINCIPAL -->
 <main id="main-content">
