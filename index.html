@@ -2,187 +2,121 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CLICK TV | Streaming & IPTV Premium</title>
-    <!-- Google Fonts & Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CLICK TV | Streaming & IPTV Premium Mundial 2026</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Bebas+Neue&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="responsive.css">
 </head>
 <body>
 
-    <!-- Top Bar -->
+    <!-- Barra de Moneda -->
     <div class="top-bar">
-        <span><i class="fas fa-bolt"></i> ACTIVACIÓN INMEDIATA 24/7</span>
-        <div class="top-links">
-            <a href="https://t.me/streamid" target="_blank"><i class="fab fa-telegram"></i> Grupo Oficial</a>
+        <div class="container flex-between">
+            <span><i class="fas fa-globe"></i> Soporte LATAM 24/7</span>
+            <select id="currency-selector" onchange="updateCurrency()">
+                <option value="USD">🇺🇸 USD - Dólar</option>
+                <option value="PEN">🇵🇪 PEN - Sol</option>
+                <option value="COP">🇨🇴 COP - Peso</option>
+                <option value="CLP">🇨🇱 CLP - Peso</option>
+            </select>
         </div>
     </div>
 
-    <!-- Header -->
     <header class="main-header">
-        <div class="container header-flex">
+        <div class="container flex-between">
             <a href="#" class="logo">CLICK<span>TV</span></a>
-            
             <nav class="nav-menu" id="nav-menu">
-                <a href="#home">Inicio</a>
-                <a href="#catalog">Catálogo</a>
-                <a href="#calculator">Ahorro</a>
-                <a href="#sports">Deportes</a>
-                <a href="#contact">Soporte</a>
+                <a href="#inicio" onclick="toggleMenu()">Inicio</a>
+                <a href="#catalogo" onclick="toggleMenu()">Catálogo</a>
+                <a href="#ahorro" onclick="toggleMenu()">Calculadora</a>
+                <a href="#mundial" onclick="toggleMenu()">Mundial</a>
             </nav>
-
             <div class="header-actions">
-                <div class="search-box">
-                    <input type="text" id="searchInput" placeholder="Buscar plataforma...">
-                    <i class="fas fa-search"></i>
-                </div>
-                <button class="cart-trigger" onclick="toggleCart()">
-                    <i class="fas fa-shopping-cart"></i>
+                <button class="cart-btn" onclick="toggleCart()">
+                    <i class="fas fa-shopping-bag"></i>
                     <span id="cart-count">0</span>
                 </button>
-                <button class="menu-btn" onclick="toggleMenu()">
+                <button class="menu-toggle" onclick="toggleMenu()">
                     <i class="fas fa-bars"></i>
                 </button>
             </div>
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="hero" id="home">
-        <div class="hero-overlay"></div>
-        <div class="container hero-content">
-            <span class="badge">OFERTA DE TEMPORADA</span>
-            <h1>Todo el Streaming en un <span>Solo Lugar</span></h1>
-            <p>Accede a Netflix, Disney+, IPTV Ultra HD y Deportes en Vivo con activación automática y soporte garantizado.</p>
-            <div class="hero-btns">
-                <a href="#catalog" class="btn btn-primary">Ver Catálogo</a>
-                <a href="https://wa.me/593939166222" class="btn btn-outline">Consultar Personalizado</a>
+    <main>
+        <!-- Hero -->
+        <section class="hero" id="inicio">
+            <div class="hero-content container">
+                <span class="badge">OFERTA MUNDIALISTA ⚽</span>
+                <h1>EL MEJOR <span>STREAMING</span> EN TUS MANOS</h1>
+                <p>Cuentas Premium, IPTV Ultra HD y los 104 partidos del Mundial 2026 sin interrupciones.</p>
+                <div class="hero-btns">
+                    <a href="#catalogo" class="btn-primary">Ver Catálogo</a>
+                    <a href="https://wa.me/593939166222" class="btn-outline">Soporte WhatsApp</a>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Categories Filter -->
-    <section class="filters container">
-        <div class="filter-group">
-            <button class="filter-btn active" onclick="filterProducts('all', event)">Todos</button>
-<button class="filter-btn" onclick="filterProducts('streaming', event)">Streaming</button>
-<button class="filter-btn" onclick="filterProducts('iptv', event)">IPTV</button>
-<button class="filter-btn" onclick="filterProducts('apps', event)">Apps</button>
-<button class="filter-btn" onclick="filterProducts('sports', event)">Deportes</button>
-        </div>
-    </section>
+        <!-- Catálogo -->
+        <section class="catalog-section container" id="catalogo">
+            <div class="section-title">
+                <h2>Catálogo <span>Premium</span></h2>
+                <div class="filters">
+                    <button class="filter-btn active" onclick="filterCatalog('todos')">Todos</button>
+                    <button class="filter-btn" onclick="filterCatalog('streaming')">Streaming</button>
+                    <button class="filter-btn" onclick="filterCatalog('iptv')">IPTV</button>
+                    <button class="filter-btn" onclick="filterCatalog('apps')">Apps</button>
+                </div>
+            </div>
+            <div class="catalog-grid" id="catalog-container">
+                <!-- Se llena con catalogo.js -->
+            </div>
+        </section>
 
-    <!-- Catalog -->
-    <main class="container">
-        <div class="catalog-grid" id="catalog-container"></div>
-            <!-- JS Inject products here -->
-        </div>
+        <!-- Calculadora de Ahorro -->
+        <section class="savings container" id="ahorro">
+            <div class="calc-box">
+                <h3>Calculadora de <span>Ahorro</span></h3>
+                <p>Compara el precio oficial vs Click TV</p>
+                <select id="calc-service" onchange="calculateSavings()">
+                    <!-- Se llena dinámicamente -->
+                </select>
+                <div class="calc-results">
+                    <div class="res-item"><span>Oficial:</span> <b id="price-off">$0</b></div>
+                    <div class="res-item highlight"><span>Click TV:</span> <b id="price-click">$0</b></div>
+                    <div class="res-item saved"><span>Ahorras:</span> <b id="price-saved">$0</b></div>
+                </div>
+            </div>
+        </section>
     </main>
 
-    <!-- Savings Calculator -->
-    <section class="calculator-section" id="calculator">
-        <div class="container">
-            <div class="section-title">
-                <h2>Calculadora de <span>Ahorro</span></h2>
-                <p>Compara nuestros precios contra los precios oficiales de mercado.</p>
-            </div>
-            <div class="calc-card">
-                <div class="calc-inputs">
-                    <label>Selecciona Servicio:</label>
-                    <select id="calc-service" onchange="updateSavings()">
-                        <option value="15" data-official="25">Combo Plus (Disney + Star)</option>
-                        <option value="5" data-official="12">Netflix Premium (Perfil)</option>
-                        <option value="7" data-official="18">IPTV Ultra (1 Mes)</option>
-                        <option value="5" data-official="15">HBO Max (Cuenta)</option>
-                    </select>
-                </div>
-                <div class="calc-display">
-                    <div class="price-item">
-                        <span>Precio Oficial</span>
-                        <h3 id="official-price">$25.00</h3>
-                    </div>
-                    <div class="price-item highlight">
-                        <span>Precio Click TV</span>
-                        <h3 id="internal-price">$15.00</h3>
-                    </div>
-                    <div class="price-item saved">
-                        <span>Tú Ahorras</span>
-                        <h3 id="saved-price">$10.00</h3>
-                        <small id="saved-percent">40% OFF</small>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Extra: Live Media -->
-    <section class="extra-media container" id="sports">
-        <div class="media-card">
-            <h3><i class="fas fa-broadcast-tower"></i> Radio Diblu 88.9 FM</h3>
-            <audio controls preload="none">
-                <source src="https://streamingecuador.net:9002/stream" type="audio/mpeg">
-            </audio>
-        </div>
-        <div class="media-card">
-            <h3><i class="fas fa-tv"></i> Teleamazonas HD</h3>
-            <p>Sigue los eventos en vivo oficiales de Ecuador.</p>
-            <a href="https://www.teleamazonas.com/" target="_blank" class="btn btn-gold">Ver en Vivo</a>
-        </div>
-    </section>
-
-    <!-- Reviews -->
-    <section class="reviews container">
-        <div class="section-title">
-            <h2>Lo que dicen nuestros <span>Clientes</span></h2>
-        </div>
-        <div class="reviews-grid">
-            <div class="review-card">
-                <div class="stars">★★★★★</div>
-                <p>"La activación de IPTV Ultra fue en menos de 5 minutos. Calidad 4K real."</p>
-                <strong>- Ricardo O. (Quito)</strong>
-            </div>
-            <div class="review-card">
-                <div class="stars">★★★★★</div>
-                <p>"El mejor precio para Netflix. Llevo 6 meses y nunca se ha caído la cuenta."</p>
-                <strong>- Maria G. (Guayaquil)</strong>
-            </div>
-            <div class="review-card">
-                <div class="stars">★★★★★</div>
-                <p>"Soporte técnico muy amable. Me ayudaron a configurar mi Smart TV."</p>
-                <strong>- Juan P. (Cuenca)</strong>
-            </div>
-        </div>
-    </section>
-
-    <!-- Cart Sidebar -->
+    <!-- Carrito Sidebar -->
     <aside class="cart-sidebar" id="cart-sidebar">
         <div class="cart-header">
-            <h3>Tu Carrito</h3>
-            <button class="close-cart" onclick="toggleCart()"><i class="fas fa-times"></i></button>
+            <h3>Tu Pedido</h3>
+            <button onclick="toggleCart()">&times;</button>
         </div>
-        <div class="cart-items" id="cart-items">
-            <!-- JS items -->
-        </div>
+        <div class="cart-items" id="cart-items"></div>
         <div class="cart-footer">
             <div class="total-row">
                 <span>Total:</span>
                 <span id="cart-total">$0.00</span>
             </div>
-            <button class="btn btn-primary btn-full" onclick="checkoutWhatsApp()">
-                <i class="fab fa-whatsapp"></i> Finalizar por WhatsApp
+            <button class="btn-checkout" onclick="checkoutWhatsApp()">
+                <i class="fab fa-whatsapp"></i> Finalizar Pedido
             </button>
         </div>
     </aside>
 
-    <!-- Floating Buttons -->
-    <div class="floating-group">
-        <a href="https://wa.me/593939166222" class="float-btn wpp" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-        <a href="https://t.me/streamid" class="float-btn tg" title="Telegram"><i class="fab fa-telegram-plane"></i></a>
-        <button class="float-btn up" onclick="window.scrollTo(0,0)"><i class="fas fa-chevron-up"></i></button>
+    <!-- Flotantes -->
+    <div class="floating-btns">
+        <a href="https://wa.me/593939166222" class="f-btn wpp"><i class="fab fa-whatsapp"></i></a>
+        <a href="https://t.me/streamid" class="f-btn tg"><i class="fab fa-telegram-plane"></i></a>
     </div>
 
-    <!-- Scripts -->
-    <script src="script.js" defer></script>
+    <script src="catalogo.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
