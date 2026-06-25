@@ -285,32 +285,27 @@ header {
     transition: width 0.4s ease;
 }
 
+ 
 /* ================= CATALOGO ================= */
 #catalogo {
     padding: 60px 20px;
     background: #050505;
 }
 
-/* TITULO SECCION */
+/* TITULO */
 #catalogo h2 {
     text-align: center;
     font-size: 28px;
     margin-bottom: 30px;
 }
 
-/* ================= GRID ================= */
-.catalog-grid {
+/* ================= GRID REAL (IMPORTANTE) ================= */
+/* AHORA USA catalog-container en vez de catalog-grid */
+#catalog-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 20px;
-}
-
-/* TITULOS INTERNOS */
-.catalog-grid h3 {
-    grid-column: 1 / -1;
     margin-top: 20px;
-    color: var(--gold);
-    font-size: 18px;
 }
 
 /* ================= CARD ================= */
@@ -322,6 +317,7 @@ header {
     transition: 0.3s ease;
 }
 
+/* hover pro */
 .card:hover {
     transform: translateY(-5px);
     border-color: var(--gold);
@@ -333,35 +329,35 @@ header {
     font-size: 16px;
 }
 
-/* BOTONES */
+/* ================= BOTONES ================= */
 .card button {
-    margin-top: 10px;
+    margin-top: 8px;
     width: 100%;
     padding: 10px;
     border: none;
     border-radius: 8px;
     cursor: pointer;
     font-weight: bold;
+    transition: 0.2s;
 }
 
-/* BOTON CARRITO */
+/* carrito */
 .card button:first-of-type {
     background: var(--primary);
     color: #fff;
 }
 
-/* BOTON COMPRA */
+/* comprar */
 .card button:last-of-type {
     background: var(--gold);
     color: #000;
-    margin-top: 8px;
 }
 
-/* HOVER BOTONES */
+/* hover */
 .card button:hover {
     opacity: 0.9;
+    transform: scale(1.02);
 }
-
 /* ================= RESEÑAS ================= */
 .reviews {
     padding: 60px 20px;

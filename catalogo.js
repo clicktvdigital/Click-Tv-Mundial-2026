@@ -2,86 +2,131 @@
 
 const PRODUCTS = [
     
-    // ================= STREAMING =================
+    /* ================= STREAMING ================= */
     {
         name: "Netflix",
         plans: [
-            {label:"1 Mes", price:5},
-            {label:"3 Meses", price:12},
-            {label:"6 Meses", price:20}
+            { label: "1 Mes", price: 5 },
+            { label: "3 Meses", price: 12 },
+            { label: "6 Meses", price: 20 }
         ]
     },
     {
         name: "Disney+",
         plans: [
-            {label:"1 Mes", price:5},
-            {label:"3 Meses", price:12},
-            {label:"6 Meses", price:25}
+            { label: "1 Mes", price: 5 },
+            { label: "3 Meses", price: 10 }
         ]
     },
     {
         name: "Prime Video",
         plans: [
-            {label:"1 Mes", price:3},
-            {label:"3 Meses", price:8},
-            {label:"6 Meses", price:15}
+            { label: "1 Mes", price: 4 },
+            { label: "3 Meses", price: 8 }
+        ]
+    },
+    {
+        name: "Paramount+",
+        plans: [
+            { label: "1 Mes", price: 5 }
         ]
     },
     {
         name: "HBO Max",
         plans: [
-            {label:"1 Mes", price:6}
+            { label: "1 Mes", price: 6 }
         ]
     },
-
-    // ================= IPTV =================
+    {
+        name: "Apple TV+",
+        plans: [
+            { label: "1 Mes", price: 3 }
+        ]
+    },
+    
+    /* ================= IPTV ================= */
     {
         name: "IPTV Básico",
         plans: [
-            {label:"1 Dispositivo", price:3},
-            {label:"2 Dispositivos", price:5},
-            {label:"3 Dispositivos", price:7}
+            { label: "1 Dispositivo", price: 3 },
+            { label: "2 Dispositivos", price: 5 },
+            { label: "3 Dispositivos", price: 7 }
         ]
     },
     {
         name: "IPTV Ultra",
         plans: [
-            {label:"1 Dispositivo", price:7},
-            {label:"2 Dispositivos", price:14},
-            {label:"3 Dispositivos", price:21}
+            { label: "1 Dispositivo", price: 7 },
+            { label: "2 Dispositivos", price: 14 }
         ]
     },
-
-    // ================= APPS =================
+    {
+        name: "IPTV GX+",
+        plans: [
+            { label: "1 Mes", price: 5 }
+        ]
+    },
+    {
+        name: "IPTV Stella",
+        plans: [
+            { label: "1 Mes", price: 5 }
+        ]
+    },
+    
+    /* ================= APPS ================= */
     {
         name: "Canva Pro",
         plans: [
-            {label:"1 Mes", price:3},
-            {label:"1 Año", price:12}
+            { label: "1 Mes", price: 3 }
+        ]
+    },
+    {
+        name: "Duolingo Premium",
+        plans: [
+            { label: "1 Mes", price: 4 }
         ]
     },
     {
         name: "Crunchyroll",
         plans: [
-            {label:"1 Mes", price:3},
-            {label:"1 Año", price:25}
+            { label: "1 Mes", price: 3 }
         ]
     },
-
-    // ================= DEPORTES =================
+    
+    /* ================= DEPORTES ================= */
     {
         name: "DAZN",
         plans: [
-            {label:"1 Mes", price:5}
+            { label: "1 Mes", price: 5 }
         ]
     },
     {
         name: "NBA League Pass",
         plans: [
-            {label:"1 Mes", price:5}
+            { label: "1 Mes", price: 5 }
+        ]
+    },
+    {
+        name: "FIFA Mundial Pack",
+        plans: [
+            { label: "Pack Completo", price: 10 }
+        ]
+    },
+    
+    /* ================= MAYORISTAS ================= */
+    {
+        name: "Outlook Mayorista",
+        plans: [
+            { label: "Consulta", price: 2.75 }
+        ]
+    },
+    {
+        name: "Panel IPTV Revendedores",
+        plans: [
+            { label: "Consulta", price: 20 }
         ]
     }
-
+    
 ];
 
 /* ================= RENDER AUTOMATIC CATALOG ================= */
