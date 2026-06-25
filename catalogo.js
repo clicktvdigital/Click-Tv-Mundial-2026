@@ -1,7 +1,9 @@
 
+
 /**
- * CLICK TV - CORE CLEAN FINAL VERSION
- * Stable Ecommerce System (No Errors / Production Ready)
+ * CLICKTV ENGINE 4.0 PRO FINAL
+ * Stable Ecommerce System - Production Ready
+ * Optimized, Safe, Scalable
  */
 
 "use strict";
@@ -11,7 +13,7 @@ const WPP_NUMBER = "593939166222";
 
 let cart = JSON.parse(localStorage.getItem("clicktv_cart")) || [];
 
-/* ================= PRODUCTOS ================= */
+/* ================= PRODUCTS ================= */
 const PRODUCTS = [
     {
         name: "Netflix",
@@ -44,56 +46,71 @@ const PRODUCTS = [
     }
 ];
 
-/* ================= RENDER CATALOGO ================= */
+/* ================= UTILS SAFE ================= */
+const $ = (id) => document.getElementById(id);
+
+const safeNumber = (val, fallback = 0) =>
+    isNaN(parseFloat(val)) ? fallback : parseFloat(val);
+
+/* ================= INIT ================= */
+document.addEventListener("DOMContentLoaded", initApp);
+
+function initApp() {
+    renderCatalog();
+    updateCartUI();
+    initCalculator();
+
+    console.log("CLICKTV ENGINE 4.0 READY 🚀");
+}
+
+/* ================= CATALOG ================= */
 function renderCatalog() {
-    const container = document.getElementById("catalog-container");
+
+    const container = $("catalog-container");
     if (!container) return;
 
-    let html = "";
+    container.innerHTML = PRODUCTS.map(product => {
 
-    PRODUCTS.forEach(product => {
+        const plansHTML = product.plans.map(plan => `
+            <div class="plan">
+                <strong>${plan.label}</strong> - $${plan.price}
 
-        let plansHTML = "";
+                <div class="plan-actions">
+                    <button onclick="addToCart('${product.name} ${plan.label}', ${plan.price})">
+                        🛒 Carrito
+                    </button>
 
-        product.plans.forEach(plan => {
-            plansHTML += `
-                <div class="plan">
-                    <strong>${plan.label}</strong> - $${plan.price}
-                    <div>
-                        <button onclick="addToCart('${product.name} ${plan.label}', ${plan.price})">
-                            🛒 Carrito
-                        </button>
-
-                        <button onclick="buyNow('${product.name} ${plan.label}', ${plan.price})">
-                            💳 Comprar
-                        </button>
-                    </div>
+                    <button onclick="buyNow('${product.name} ${plan.label}', ${plan.price})">
+                        💳 Comprar
+                    </button>
                 </div>
-            `;
-        });
+            </div>
+        `).join("");
 
-        html += `
+        return `
             <div class="card">
                 <h3>${product.name}</h3>
                 ${plansHTML}
             </div>
         `;
-    });
-
-    container.innerHTML = html;
+    }).join("");
 }
 
-/* ================= CARRITO ================= */
+/* ================= CART ENGINE ================= */
 function addToCart(name, price) {
 
-    if (!name || isNaN(price)) return;
+    if (!name || !price) return;
 
-    let item = cart.find(p => p.name === name);
+    const item = cart.find(p => p.name === name);
 
     if (item) {
-        item.qty++;
+        item.qty += 1;
     } else {
-        cart.push({ name, price, qty: 1 });
+        cart.push({
+            name,
+            price: safeNumber(price),
+            qty: 1
+        });
     }
 
     saveCart();
@@ -103,34 +120,36 @@ function addToCart(name, price) {
 
 function updateCartUI() {
 
-    const box = document.getElementById("cart-items");
-    const count = document.getElementById("cart-count");
-    const totalEl = document.getElementById("cart-total-local");
+    const box = $("cart-items");
+    const count = $("cart-count");
+    const totalEl = $("cart-total-local") || $("cart-total");
 
     if (!box) return;
 
-    let html = "";
     let total = 0;
     let qty = 0;
 
-    cart.forEach((item, i) => {
+    box.innerHTML = cart.length
+        ? cart.map((item, i) => {
 
-        total += item.price * item.qty;
-        qty += item.qty;
+            total += item.price * item.qty;
+            qty += item.qty;
 
-        html += `
-            <div class="cart-item">
-                <span>${item.name} x${item.qty}</span>
-                <b>$${item.price}</b>
-                <button onclick="removeFromCart(${i})">X</button>
-            </div>
-        `;
-    });
+            return `
+                <div class="cart-item">
+                    <div>
+                        <b>${item.name}</b><br>
+                        <small>$${item.price} x ${item.qty}</small>
+                    </div>
 
-    box.innerHTML = html || "<p>Carrito vacío</p>";
+                    <button onclick="removeFromCart(${i})">✕</button>
+                </div>
+            `;
+        }).join("")
+        : "<p>🛒 Carrito vacío</p>";
 
     if (count) count.innerText = qty;
-    if (totalEl) totalEl.innerText = "$" + total.toFixed(2);
+    if (totalEl) totalEl.innerText = `$${total.toFixed(2)}`;
 }
 
 function removeFromCart(index) {
@@ -143,67 +162,69 @@ function saveCart() {
     localStorage.setItem("clicktv_cart", JSON.stringify(cart));
 }
 
+/* ================= CART UI ================= */
+function openCart() {
+    $("cart-sidebar")?.classList.add("active");
+}
+
+function toggleCart() {
+    $("cart-sidebar")?.classList.toggle("active");
+}
+
+function toggleMenu() {
+    $("nav-links")?.classList.toggle("active");
+}
+
 /* ================= WHATSAPP ================= */
 function buyNow(name, price) {
 
-    const msg = `🛒 CLICK TV\n\n📦 ${name}\n💰 $${price}`;
+    const msg = encodeURIComponent(
+        `🛒 CLICKTV ORDER\n\n📦 ${name}\n💰 $${price}`
+    );
 
     window.open(
-        `https://wa.me/${WPP_NUMBER}?text=${encodeURIComponent(msg)}`,
+        `https://wa.me/${WPP_NUMBER}?text=${msg}`,
         "_blank"
     );
 }
 
-/* ================= CALCULADORA ================= */
+/* ================= CALCULATOR ================= */
+function initCalculator() {
+
+    const select = $("calc-service");
+    if (!select) return;
+
+    calculateSavings();
+
+    select.addEventListener("change", calculateSavings);
+}
+
 function calculateSavings() {
 
-    const select = document.getElementById("calc-service");
+    const select = $("calc-service");
     if (!select) return;
 
     const opt = select.options[select.selectedIndex];
 
-    const official = parseFloat(opt.dataset.official || 0);
-    const click = parseFloat(opt.dataset.click || 0);
+    const official = safeNumber(opt?.dataset?.official);
+    const click = safeNumber(opt?.dataset?.click || opt?.value);
 
-    const save = official - click;
-    const percent = official ? Math.round((save / official) * 100) : 0;
+    if (!official) return;
 
-    const offEl = document.getElementById("calc-official");
-    const clickEl = document.getElementById("calc-click");
-    const saveEl = document.getElementById("calc-savings");
+    const saved = official - click;
+    const percent = Math.round((saved / official) * 100);
 
-    if (offEl) offEl.innerText = "$" + official;
-    if (clickEl) clickEl.innerText = "$" + click;
-    if (saveEl) saveEl.innerText = `$${save} (${percent}%)`;
+    setText("calc-official", `$${official.toFixed(2)}`);
+    setText("calc-click", `$${click.toFixed(2)}`);
+    setText("calc-savings", `$${saved.toFixed(2)} (${percent}%)`);
 }
 
-/* ================= UI ================= */
-function openCart() {
-    const c = document.getElementById("cart-sidebar");
-    if (c) c.classList.add("active");
+function setText(id, value) {
+    const el = $(id);
+    if (el) el.innerText = value;
 }
 
-function toggleCart() {
-    const c = document.getElementById("cart-sidebar");
-    if (c) c.classList.toggle("active");
-}
-
-function toggleMenu() {
-    const n = document.getElementById("nav-links");
-    if (n) n.classList.toggle("active");
-}
-
-/* ================= INIT ================= */
-document.addEventListener("DOMContentLoaded", () => {
-
-    renderCatalog();
-    updateCartUI();
-
-    const calc = document.getElementById("calc-service");
-    if (calc) {
-        calculateSavings();
-        calc.addEventListener("change", calculateSavings);
-    }
-
-    console.log("CLICK TV JS CLEAN LOADED");
+/* ================= ERROR SAFE ================= */
+window.addEventListener("error", (e) => {
+    console.error("CLICKTV ERROR:", e.message);
 });

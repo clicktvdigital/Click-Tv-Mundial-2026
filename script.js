@@ -1,26 +1,15 @@
 
+
 /**
- * CLICKTV ENGINE 3.0 FINAL
- * Stable Production Ecommerce System
- * FIXED: catalog, cart, calculator, filters
+ * CLICKTV ENGINE 4.0 FINAL
+ * Stable Production Ready System
  */
 
 "use strict";
 
 /* ================= STATE ================= */
 let cart = JSON.parse(localStorage.getItem("clicktv_cart")) || [];
-
-const WPP_NUMBER = "593939166222";
-
-/* ================= PRODUCTS ================= */
-const PRODUCTS = [
-    { id: 1, name: "Netflix Premium", price: 5, category: "streaming" },
-    { id: 2, name: "Disney+ Premium", price: 5, category: "streaming" },
-    { id: 3, name: "IPTV Ultra", price: 7, category: "iptv" },
-    { id: 4, name: "HBO Max", price: 6, category: "streaming" },
-    { id: 5, name: "Canva Pro", price: 3, category: "apps" },
-    { id: 6, name: "DAZN Sports", price: 6, category: "sports" }
-];
+const WPP = "593939166222";
 
 /* ================= INIT ================= */
 document.addEventListener("DOMContentLoaded", () => {
@@ -29,7 +18,17 @@ document.addEventListener("DOMContentLoaded", () => {
     updateSavings();
 });
 
-/* ================= RENDER CATALOG ================= */
+/* ================= PRODUCTS ================= */
+const PRODUCTS = [
+    { id: 1, name: "Netflix", price: 5, category: "streaming" },
+    { id: 2, name: "Disney+", price: 5, category: "streaming" },
+    { id: 3, name: "IPTV Ultra", price: 7, category: "iptv" },
+    { id: 4, name: "HBO Max", price: 6, category: "streaming" },
+    { id: 5, name: "Canva Pro", price: 3, category: "apps" },
+    { id: 6, name: "DAZN", price: 6, category: "sports" }
+];
+
+/* ================= RENDER ================= */
 function renderProducts(list) {
 
     const container = document.getElementById("catalog-container");
@@ -46,7 +45,7 @@ function renderProducts(list) {
     `).join("");
 }
 
-/* ================= FILTERS ================= */
+/* ================= FILTERS (FIXED) ================= */
 function filterProducts(category, e) {
 
     const buttons = document.querySelectorAll(".filter-btn");
@@ -79,14 +78,14 @@ function updateCartUI() {
 
     const box = document.getElementById("cart-items");
     const count = document.getElementById("cart-count");
-    const totalEl = document.getElementById("cart-total");
+    const total = document.getElementById("cart-total");
 
     if (!box) return;
 
-    let total = 0;
+    let sum = 0;
 
     box.innerHTML = cart.map((item, i) => {
-        total += item.price;
+        sum += item.price;
 
         return `
         <div class="cart-item">
@@ -99,11 +98,11 @@ function updateCartUI() {
     }).join("");
 
     if (count) count.innerText = cart.length;
-    if (totalEl) totalEl.innerText = `$${total.toFixed(2)}`;
+    if (total) total.innerText = `$${sum.toFixed(2)}`;
 }
 
-function removeFromCart(index) {
-    cart.splice(index, 1);
+function removeFromCart(i) {
+    cart.splice(i, 1);
     saveCart();
     updateCartUI();
 }
@@ -120,13 +119,14 @@ function toggleCart() {
     document.getElementById("cart-sidebar")?.classList.toggle("active");
 }
 
-/* ================= CALCULATOR ================= */
+/* ================= CALCULATOR SAFE ================= */
 function updateSavings() {
 
     const select = document.getElementById("calc-service");
     if (!select) return;
 
     const opt = select.options[select.selectedIndex];
+    if (!opt) return;
 
     const official = Number(opt.dataset.official || 0);
     const internal = Number(opt.value || 0);
@@ -144,17 +144,15 @@ function updateSavings() {
     set("official-price", `$${official.toFixed(2)}`);
     set("internal-price", `$${internal.toFixed(2)}`);
     set("saved-price", `$${saved.toFixed(2)}`);
-    set("saved-percent", `${percent}% AHORRO`);
+    set("saved-percent", `${percent}% OFF`);
 }
 
 /* ================= WHATSAPP ================= */
 function buyNow(name, price) {
 
-    const msg = encodeURIComponent(
-        `🛒 CLICKTV ORDER\n\n📦 ${name}\n💰 $${price}`
-    );
+    const msg = encodeURIComponent(`CLICKTV ORDER: ${name} - $${price}`);
 
-    window.open(`https://wa.me/${WPP_NUMBER}?text=${msg}`, "_blank");
+    window.open(`https://wa.me/${WPP}?text=${msg}`, "_blank");
 }
 
 function checkoutWhatsApp() {
@@ -168,11 +166,9 @@ function checkoutWhatsApp() {
         return `- ${i.name} ($${i.price})`;
     }).join("\n");
 
-    const msg = encodeURIComponent(
-        `🛒 CLICKTV ORDER\n\n${items}\n\nTOTAL: $${total}`
-    );
+    const msg = encodeURIComponent(`ORDER:\n\n${items}\n\nTOTAL: $${total}`);
 
-    window.open(`https://wa.me/${WPP_NUMBER}?text=${msg}`, "_blank");
+    window.open(`https://wa.me/${WPP}?text=${msg}`, "_blank");
 }
 
 /* ================= MENU ================= */

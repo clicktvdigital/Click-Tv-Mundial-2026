@@ -1,119 +1,104 @@
 
+
 /* ================================================================
-   RESPONSIVE PRO ENGINE - CLICK TV
-   Mobile First Strategy | UI/UX High Conversion
+   CLICKTV RESPONSIVE ENGINE 4.0 FINAL
+   Mobile First | SaaS UI | Production Ready
    ================================================================ */
 
-/* --- 1. GLOBAL CORE FIXES --- */
+/* ================= SAFE GLOBAL FIXES ================= */
 :root {
-    --safe-area-bottom: env(safe-area-inset-bottom);
-    --header-height: 70px;
+    --safe-bottom: env(safe-area-inset-bottom);
+    --header-h: 70px;
 }
 
 body {
     overflow-x: hidden;
-    width: 100%;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
 }
 
-/* Evitar desbordes críticos */
 img, video, iframe, audio {
     max-width: 100%;
     height: auto;
 }
 
-section {
-    padding: 40px 15px; /* Espaciado uniforme móvil */
-    max-width: 100vw;
-    box-sizing: border-box;
-}
+/* ================= TYPOGRAPHY FLUID ================= */
+h1 { font-size: clamp(24px, 6vw, 44px); font-weight: 900; line-height: 1.1; }
+h2 { font-size: clamp(20px, 4.5vw, 34px); font-weight: 700; }
+p  { font-size: 15px; line-height: 1.6; color: rgba(255,255,255,0.8); }
 
-/* --- 2. TYPOGRAPHY & TOUCH TARGETS --- */
-h1 { font-size: clamp(24px, 7vw, 42px); font-weight: 900; line-height: 1.1; }
-h2 { font-size: clamp(20px, 5vw, 32px); font-weight: 700; margin-bottom: 20px; }
-p { font-size: 16px; line-height: 1.6; color: rgba(255,255,255,0.8); }
-
-/* Optimización de botones para dedos (Touch Targets) */
-button, .btn-primary, .nav-links a, .float-btn {
-    min-height: 44px; /* Estándar Apple/Google */
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+/* ================= TOUCH OPTIMIZATION ================= */
+button, .btn, .filter-btn, .float-btn {
+    min-height: 44px;
+    min-width: 44px;
     cursor: pointer;
-    transition: transform 0.2s active;
+    transition: 0.2s ease;
 }
 
-button:active { transform: scale(0.96); }
+button:active {
+    transform: scale(0.96);
+}
 
-/* --- 3. HEADER & NAVIGATION (MOBILE FIRST) --- */
+/* ================= HEADER MOBILE ================= */
 header {
-    height: var(--header-height);
-    padding: 0 15px;
+    height: var(--header-h);
     display: flex;
     align-items: center;
     justify-content: space-between;
     position: sticky;
     top: 0;
     z-index: 1000;
-    background: var(--bg);
 }
 
-.nav-links {
+/* ================= NAV MOBILE FIRST ================= */
+.nav-menu {
     position: fixed;
-    top: var(--header-height);
+    top: var(--header-h);
     left: 0;
     width: 100%;
     height: 0;
-    background: var(--card);
-    flex-direction: column;
     overflow: hidden;
-    transition: height 0.3s ease-in-out;
-    border-bottom: 0 solid var(--border);
-}
-
-.nav-links.active {
-    height: calc(100vh - var(--header-height));
-    padding: 20px 0;
-    border-bottom: 1px solid var(--border);
     display: flex;
+    flex-direction: column;
+    background: var(--card-bg);
+    transition: 0.3s ease;
+    z-index: 999;
 }
 
-.nav-links a {
-    width: 100%;
+.nav-menu.active {
+    height: calc(100vh - var(--header-h));
+    padding: 20px 0;
+}
+
+.nav-menu a {
     padding: 15px 25px;
     font-size: 18px;
     border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 
-/* --- 4. PRODUCT CATALOG GRID (MOBILE FIRST) --- */
-#catalog-container, .catalog-grid, .grid {
+/* ================= GRID SYSTEM ================= */
+#catalog-container,
+.catalog-grid {
     display: grid;
-    grid-template-columns: 1fr; /* 1 Columna en móvil */
-    gap: 20px;
-    width: 100%;
+    grid-template-columns: 1fr;
+    gap: 18px;
 }
 
+/* ================= CARDS ================= */
+.product-card,
 .card {
     display: flex;
     flex-direction: column;
-    padding: 20px;
-    height: 100%;
+    padding: 18px;
 }
 
-.card button {
-    width: 100%;
-    margin-top: 10px;
-    font-weight: 700;
-}
-
-/* --- 5. CART SIDEBAR RESPONSIVE --- */
+/* ================= CART RESPONSIVE ================= */
 .cart-sidebar {
-    width: 100%; /* Full width en móvil */
-    max-width: 400px;
+    width: 100%;
+    max-width: 420px;
     right: -100%;
-    height: 100%;
-    padding-bottom: calc(20px + var(--safe-area-bottom));
+    transition: 0.4s ease;
+    padding-bottom: calc(20px + var(--safe-bottom));
 }
 
 @media (min-width: 768px) {
@@ -123,87 +108,82 @@ header {
     }
 }
 
-/* --- 6. CALCULATOR MOBILE OPTIMIZATION --- */
-.calc-results {
+/* ================= CALCULATOR ================= */
+.calc-card {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 12px;
+    gap: 15px;
 }
 
-.calc-pro select {
+.calc-card select {
     width: 100%;
-    height: 50px;
+    height: 48px;
     font-size: 16px;
-    margin-bottom: 20px;
+    border-radius: 10px;
 }
 
-/* --- 7. FLOATING BUTTONS (SAFE AREA FIX) --- */
-.floating-buttons {
+/* ================= FLOATING BUTTONS ================= */
+.floating-group {
+    position: fixed;
     right: 15px;
-    bottom: calc(15px + var(--safe-area-bottom));
-    gap: 12px;
+    bottom: calc(15px + var(--safe-bottom));
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 9999;
 }
 
-@media (max-width: 768px) {
-    .floating-buttons a {
-        width: 52px;
-        height: 52px;
-        font-size: 20px;
-    }
-    
-    /* Evitar que los flotantes tapen el botón de pagar del carrito si está abierto */
-    .cart-sidebar.active ~ .floating-buttons {
-        display: none;
-    }
+.float-btn {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
 }
 
-/* --- 8. TABLET BREAKPOINT (768px - 1024px) --- */
+/* ================= TABLET ================= */
 @media (min-width: 768px) {
-    section { padding: 60px 30px; }
 
-    #catalog-container, .catalog-grid, .grid {
-        grid-template-columns: repeat(2, 1fr); /* 2 Columnas */
-        gap: 25px;
+    #catalog-container,
+    .catalog-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
 
-    .nav-links {
+    .nav-menu {
         position: static;
         height: auto;
-        width: auto;
-        display: flex;
         flex-direction: row;
         background: transparent;
-        border: none;
     }
 
-    .nav-links a {
-        padding: 0 15px;
-        font-size: 15px;
+    .nav-menu a {
         border: none;
+        padding: 0 12px;
+        font-size: 14px;
     }
 
-    .menu-btn { display: none; }
+    .menu-btn {
+        display: none;
+    }
 
-    .calc-results {
+    .calc-card {
         grid-template-columns: repeat(3, 1fr);
     }
 }
 
-/* --- 9. DESKTOP BREAKPOINT (> 1024px) --- */
+/* ================= DESKTOP ================= */
 @media (min-width: 1024px) {
-    #catalog-container, .catalog-grid, .grid {
-        grid-template-columns: repeat(4, 1fr); /* 4 Columnas en Desktop PRO */
+
+    #catalog-container,
+    .catalog-grid {
+        grid-template-columns: repeat(4, 1fr);
     }
 
     .hero {
-        padding: 100px 0;
-        text-align: left;
         display: flex;
         align-items: center;
-    }
-
-    .hero-content {
-        max-width: 600px;
+        text-align: left;
     }
 
     .reviews-grid {
@@ -211,44 +191,28 @@ header {
     }
 }
 
-/* --- 10. ULTRA-SMALL SCREENS (< 360px) --- */
+/* ================= SMALL DEVICES ================= */
 @media (max-width: 360px) {
-    h1 { font-size: 24px; }
+    h1 { font-size: 22px; }
     .logo { font-size: 16px; }
-    .header-actions span { display: none; } /* Ocultar texto de carrito, dejar solo icono */
 }
 
-/* --- 11. FIXES PARA ELEMENTOS ESPECIALES --- */
-/* Radio Player */
+/* ================= FIX ELEMENTS ================= */
 .radio-box audio {
     width: 100%;
-    margin-top: 15px;
 }
 
-/* Teleamazonas iframe responsive */
 .tv-box iframe {
-    aspect-ratio: 16 / 9;
     width: 100%;
-    height: auto;
+    aspect-ratio: 16/9;
     border-radius: 12px;
 }
 
-/* Reseñas */
-.reviews-grid {
-    display: grid;
-    gap: 15px;
-}
-
-/* Animación suave para el carrito */
-.cart-sidebar.active {
-    box-shadow: -10px 0 30px rgba(0,0,0,0.5);
-}
-
-/* Estilo para los Toasts en móvil */
-@media (max-width: 768px) {
-    #toast-container {
-        width: calc(100% - 30px);
-        left: 15px;
-        bottom: 80px; /* Arriba de los flotantes */
-    }
+/* ================= TOAST FIX ================= */
+#toast-container {
+    position: fixed;
+    bottom: 80px;
+    left: 15px;
+    width: calc(100% - 30px);
+    z-index: 9999;
 }
