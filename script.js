@@ -1,284 +1,167 @@
-
 /**
- * CLICK TV - CORE ENGINE V2.0
- * Specialized for High Performance Streaming Ecommerce
+ * CLICK TV - Lógica de Negocio
  */
 
-"use strict";
+// Base de Datos de Productos
+const PRODUCTS = [
+    { id: 1, name: "Netflix Premium (Perfil)", price: 5.00, category: "streaming", tag: "HOT", icon: "fa-film" },
+    { id: 2, name: "Disney+ Premium (Perfil)", price: 5.00, category: "streaming", tag: "POPULAR", icon: "fa-magic" },
+    { id: 3, name: "IPTV Ultra HD (1 Mes)", price: 7.00, category: "iptv", tag: "TOP", icon: "fa-tv" },
+    { id: 4, name: "IPTV Básico (1 Mes)", price: 3.50, category: "iptv", tag: "OFERTA", icon: "fa-satellite-dish" },
+    { id: 5, name: "Combo Plus (Disney+Star)", price: 8.00, category: "streaming", tag: "MEJOR PRECIO", icon: "fa-layer-group" },
+    { id: 6, name: "Canva Pro Anual", price: 10.00, category: "apps", tag: "NUEVO", icon: "fa-palette" },
+    { id: 7, name: "Crunchyroll Fan", price: 3.00, category: "apps", tag: "HOT", icon: "fa-clapperboard" },
+    { id: 8, name: "HBO Max (Cuenta)", price: 5.00, category: "streaming", tag: "POPULAR", icon: "fa-tv" },
+    { id: 9, name: "NBA League Pass", price: 6.00, category: "sports", tag: "TEMPORADA", icon: "fa-basketball" },
+    { id: 10, name: "DAZN Sports Premium", price: 6.00, category: "sports", tag: "HOT", icon: "fa-football" },
+    { id: 11, name: "YouTube Premium", price: 4.50, category: "apps", tag: "TOP", icon: "fa-play" },
+    { id: 12, name: "Spotify Premium", price: 4.00, category: "apps", tag: "POPULAR", icon: "fa-music" }
+];
 
-// --- CONFIGURACIÓN GLOBAL ---
-const CONFIG = {
-    WPP_NUMBER: "593939166222",
-    CURRENCY: "USD",
-    IS_DEV: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1',
-    TOAST_INTERVAL: 6000,
-    ANIMATION_SPEED: 300
-};
+let cart = JSON.parse(localStorage.getItem('clicktv_cart')) || [];
+const WPP_NUMBER = "593939166222";
 
-let cart = [];
+// Inicialización
+document.addEventListener('DOMContentLoaded', () => {
+    renderProducts(PRODUCTS);
+    updateCartUI();
+    updateSavings();
 
-// --- UTILS & LOGGER ---
-const logger = {
-    log: (msg, data = "") => { if (CONFIG.IS_DEV) console.log(`[ClickTV LOG]: ${msg}`, data); },
-    error: (msg, err = "") => console.error(`[ClickTV ERROR]: ${msg}`, err)
-};
-
-// --- CORE SYSTEM: CARRITO ---
-
-/**
- * Agrega productos al carrito con validación de tipos
- */
-function addToCart(name, price) {
-    try {
-        if (!name || isNaN(parseFloat(price))) {
-            logger.error("Datos de producto inválidos en addToCart", { name, price });
-            return;
-        }
-        
-        const cleanPrice = parseFloat(price);
-        let item = cart.find(i => i.name === name);
-        
-        if (item) {
-            item.qty++;
-        } else {
-            cart.push({ name, price: cleanPrice, qty: 1 });
-        }
-        
-        logger.log(`Producto añadido: ${name}`);
-        syncUI();
-        openCart();
-    } catch (e) {
-        logger.error("Fallo crítico en addToCart", e);
-    }
-}
-
-/**
- * Sincroniza todos los elementos visuales del carrito
- */
-function syncUI() {
-    const box = document.getElementById("cart-items");
-    const count = document.getElementById("cart-count");
-    const totalEl = document.getElementById("cart-total-local"); // ID opcional para mostrar total
-    
-    if (!box) return;
-    
-    let html = "";
-    let totalQty = 0;
-    let totalPrice = 0;
-    
-    if (cart.length === 0) {
-        box.innerHTML = `<div class="cart-empty-msg" style="text-align:center; padding:20px; color:#888;">Tu carrito está vacío</div>`;
-        if (count) count.innerText = "0";
-        return;
-    }
-    
-    cart.forEach((item, index) => {
-        totalQty += item.qty;
-        totalPrice += (item.price * item.qty);
-        
-        html += `
-        <div class="cart-item" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; border-bottom:1px solid #eee; padding-bottom:5px;">
-            <div class="cart-info">
-                <div style="font-weight:bold; font-size:14px;">${item.name}</div>
-                <div style="font-size:12px; color:#666;">$${item.price.toFixed(2)} x ${item.qty}</div>
-            </div>
-            <div class="cart-actions" style="display:flex; gap:5px;">
-                <button onclick="removeFromCart(${index})" style="background:none; border:none; color:red; cursor:pointer;">✕</button>
-            </div>
-        </div>`;
+    // Buscador en tiempo real
+    document.getElementById('searchInput').addEventListener('input', (e) => {
+        const term = e.target.value.toLowerCase();
+        const filtered = PRODUCTS.filter(p => p.name.toLowerCase().includes(term));
+        renderProducts(filtered);
     });
+});
+
+// Renderizar Catálogo
+function renderProducts(array) {
+    const container = document.getElementById('catalog-container');
+    if(!container) return;
     
-    box.innerHTML = html;
-    if (count) count.innerText = totalQty;
-    if (totalEl) totalEl.innerText = `$${totalPrice.toFixed(2)}`;
+    container.innerHTML = array.map(p => `
+        <div class="product-card">
+            ${p.tag ? `<span class="product-tag">${p.tag}</span>` : ''}
+            <div class="card-info">
+                <i class="fas ${p.icon} fa-3x" style="color: var(--primary); margin-bottom: 15px;"></i>
+                <h3>${p.name}</h3>
+                <span class="price">$${p.price.toFixed(2)}</span>
+                <div class="card-btns">
+                    <button class="btn btn-primary btn-full" onclick="addToCart(${p.id})">
+                        <i class="fas fa-cart-plus"></i> Añadir
+                    </button>
+                    <button class="btn btn-gold btn-full" style="margin-top:8px" onclick="buyNow('${p.name}', ${p.price})">
+                        <i class="fab fa-whatsapp"></i> Comprar YA
+                    </button>
+                </div>
+            </div>
+        </div>
+    `).join('');
 }
 
-/**
- * Elimina un item o reduce su cantidad
- */
-function removeFromCart(index) {
-    if (cart[index]) {
-        if (cart[index].qty > 1) {
-            cart[index].qty--;
-        } else {
-            cart.splice(index, 1);
-        }
-        syncUI();
+// Filtrado
+function filterProducts(category) {
+    const btns = document.querySelectorAll('.filter-btn');
+    btns.forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+
+    if(category === 'all') return renderProducts(PRODUCTS);
+    const filtered = PRODUCTS.filter(p => p.category === category);
+    renderProducts(filtered);
+}
+
+// Lógica de Carrito
+function addToCart(id) {
+    const product = PRODUCTS.find(p => p.id === id);
+    if(product) {
+        cart.push(product);
+        localStorage.setItem('clicktv_cart', JSON.stringify(cart));
+        updateCartUI();
+        showToast(`Añadido: ${product.name}`);
     }
 }
 
-// --- NAVIGATION & UI CONTROLS ---
+function updateCartUI() {
+    const list = document.getElementById('cart-items');
+    const count = document.getElementById('cart-count');
+    const total = document.getElementById('cart-total');
+    
+    count.innerText = cart.length;
+    
+    let totalValue = 0;
+    list.innerHTML = cart.map((item, index) => {
+        totalValue += item.price;
+        return `
+            <div class="cart-item">
+                <div>
+                    <strong>${item.name}</strong><br>
+                    <small>$${item.price.toFixed(2)}</small>
+                </div>
+                <button onclick="removeFromCart(${index})" style="background:none; border:none; color:red; cursor:pointer;">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+        `;
+    }).join('');
+    
+    total.innerText = `$${totalValue.toFixed(2)}`;
+}
 
-function openCart() {
-    const sidebar = document.getElementById("cart-sidebar");
-    if (sidebar) sidebar.classList.add("active");
+function removeFromCart(index) {
+    cart.splice(index, 1);
+    localStorage.setItem('clicktv_cart', JSON.stringify(cart));
+    updateCartUI();
 }
 
 function toggleCart() {
-    const sidebar = document.getElementById("cart-sidebar");
-    if (sidebar) sidebar.classList.toggle("active");
+    document.getElementById('cart-sidebar').classList.toggle('active');
+}
+
+// Calculadora
+function updateSavings() {
+    const select = document.getElementById('calc-service');
+    const official = parseFloat(select.options[select.selectedIndex].dataset.official);
+    const internal = parseFloat(select.value);
+    
+    const saved = official - internal;
+    const percent = Math.round((saved / official) * 100);
+
+    document.getElementById('official-price').innerText = `$${official.toFixed(2)}`;
+    document.getElementById('internal-price').innerText = `$${internal.toFixed(2)}`;
+    document.getElementById('saved-price').innerText = `$${saved.toFixed(2)}`;
+    document.getElementById('saved-percent').innerText = `${percent}% AHORRO`;
+}
+
+// Checkout WhatsApp
+function buyNow(name, price) {
+    const msg = encodeURIComponent(`Hola Click TV! 👋 Deseo comprar de inmediato: *${name}* ($${price.toFixed(2)}). ¿Me dan los datos de pago?`);
+    window.open(`https://wa.me/${WPP_NUMBER}?text=${msg}`, '_blank');
+}
+
+function checkoutWhatsApp() {
+    if(cart.length === 0) return alert("Tu carrito está vacío");
+    
+    let itemsStr = cart.map(i => `- ${i.name} ($${i.price.toFixed(2)})`).join('%0A');
+    const total = document.getElementById('cart-total').innerText;
+    
+    const msg = `🛒 *NUEVO PEDIDO CLICK TV*%0A%0A${itemsStr}%0A%0A*TOTAL: ${total}*%0A%0A_Por favor enviarme instrucciones de pago._`;
+    window.open(`https://wa.me/${WPP_NUMBER}?text=${msg}`, '_blank');
+}
+
+// Utilitarios
+function showToast(msg) {
+    const toast = document.createElement('div');
+    toast.style.cssText = `
+        position: fixed; bottom: 20px; left: 20px; background: #333; color: #fff;
+        padding: 12px 25px; border-radius: 8px; z-index: 3000; box-shadow: var(--shadow);
+        border-left: 4px solid var(--primary); animation: slideIn 0.3s ease;
+    `;
+    toast.innerText = msg;
+    document.body.appendChild(toast);
+    setTimeout(() => { toast.remove(); }, 3000);
 }
 
 function toggleMenu() {
-    const nav = document.getElementById("nav-links");
-    if (nav) nav.classList.toggle("active");
+    document.getElementById('nav-menu').classList.toggle('active');
 }
-
-// --- CHECKOUT INTEGRATION ---
-
-/**
- * Compra directa (Botón Activar Ahora)
- */
-function buyNow(name, price) {
-    if (!name) return;
-    const cleanPrice = parseFloat(price).toFixed(2);
-    const msg = `🛒 *CLICK TV - PEDIDO DIRECTO*\n\n` +
-        `🚀 *Producto:* ${name}\n` +
-        `💰 *Precio:* $${cleanPrice} USD\n\n` +
-        `✅ Deseo activar este servicio ahora.`;
-    
-    const url = `https://wa.me/${CONFIG.WPP_NUMBER}?text=${encodeURIComponent(msg)}`;
-    window.open(url, "_blank");
-}
-
-/**
- * Checkout del carrito completo
- */
-function processCheckout() {
-    try {
-        if (cart.length === 0) {
-            alert("El carrito está vacío. Agrega productos antes de finalizar.");
-            return;
-        }
-        
-        let total = 0;
-        let msg = `🛒 *CLICK TV - CHECKOUT CARRITO*\n\n`;
-        
-        cart.forEach(item => {
-            const subtotal = item.price * item.qty;
-            total += subtotal;
-            msg += `▪ ${item.name} (x${item.qty}) - $${subtotal.toFixed(2)}\n`;
-        });
-        
-        msg += `\n💵 *TOTAL A PAGAR: $${total.toFixed(2)} USD*`;
-        msg += `\n\n📌 *Instrucciones:* Envía este mensaje para recibir los datos de pago y activación.`;
-        
-        window.open(`https://wa.me/${CONFIG.WPP_NUMBER}?text=${encodeURIComponent(msg)}`, "_blank");
-    } catch (e) {
-        logger.error("Error en proceso de Checkout", e);
-    }
-}
-
-// --- CALCULADORA DE AHORRO ---
-
-function calculateSavings() {
-    const select = document.getElementById("calc-service");
-    if (!select) return;
-    
-    const option = select.options[select.selectedIndex];
-    if (!option) return;
-    
-    const official = parseFloat(option.dataset.official) || 0;
-    const click = parseFloat(option.dataset.click) || 0;
-    
-    if (official === 0) return;
-    
-    const savings = official - click;
-    const percent = Math.round((savings / official) * 100);
-    
-    // Actualización segura de elementos
-    const elements = {
-        off: document.getElementById("calc-official"),
-        click: document.getElementById("calc-click"),
-        save: document.getElementById("calc-savings")
-    };
-    
-    if (elements.off) elements.off.innerText = `$${official.toFixed(2)}`;
-    if (elements.click) elements.click.innerText = `$${click.toFixed(2)}`;
-    if (elements.save) {
-        elements.save.innerHTML = `<span style="color:#2ecc71">$${savings.toFixed(2)}</span> <small>(${percent}% Ahorro)</small>`;
-    }
-}
-
-// --- SISTEMA DE TOASTS (LIVE ACTIVITY) ---
-
-const SOCIAL_DATA = {
-    cities: ["Quito", "Guayaquil", "Lima", "Bogotá", "Santiago", "CDMX", "Cuenca", "Manta", "Medellín"],
-    products: ["Netflix 4K", "Disney+ Premium", "IPTV Ultra HD", "DAZN Sports", "Paramount+", "Combo Mundial", "HBO Max"]
-};
-
-function showToast() {
-    const container = document.getElementById("toast-container");
-    if (!container) return;
-    
-    const city = SOCIAL_DATA.cities[Math.floor(Math.random() * SOCIAL_DATA.cities.length)];
-    const product = SOCIAL_DATA.products[Math.floor(Math.random() * SOCIAL_DATA.products.length)];
-    
-    const toast = document.createElement("div");
-    toast.className = "toast";
-    toast.style.cssText = `
-        background: rgba(0,0,0,0.85);
-        color: white;
-        padding: 12px 20px;
-        border-radius: 10px;
-        margin-top: 10px;
-        font-size: 13px;
-        border-left: 4px solid #2ecc71;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        animation: slideIn 0.5s forwards;
-    `;
-    
-    toast.innerHTML = `<i class="fas fa-check-circle" style="color:#2ecc71"></i> Cliente de <b>${city}</b> activó <b>${product}</b>`;
-    
-    container.appendChild(toast);
-    
-    setTimeout(() => {
-        toast.style.animation = "slideOut 0.5s forwards";
-        setTimeout(() => toast.remove(), 500);
-    }, 4500);
-}
-
-// --- INITIALIZATION ---
-
-document.addEventListener("DOMContentLoaded", () => {
-    logger.log("Sistema Inicializado");
-    
-    // 1. Inicializar Carrito (verificar persistencia si fuera necesario)
-    syncUI();
-    
-    // 2. Inicializar Calculadora
-    if (document.getElementById("calc-service")) {
-        calculateSavings();
-    }
-    
-    // 3. Setup de Toasts
-    if (!document.getElementById("toast-container")) {
-        const tc = document.createElement("div");
-        tc.id = "toast-container";
-        tc.style.cssText = "position:fixed; bottom:20px; left:20px; z-index:100000;";
-        document.body.appendChild(tc);
-    }
-    
-    // Ejecución de Toasts
-    setInterval(showToast, CONFIG.TOAST_INTERVAL);
-    
-    // 4. Debugging visual de carga
-    logger.log("DOM Ready y Componentes montados");
-});
-
-// --- SEGURIDAD GLOBAL ---
-
-window.addEventListener("error", (e) => {
-    logger.error("Excepción detectada:", e.message);
-});
-
-// Exponer funciones necesarias al objeto Window para compatibilidad con atributos onclick de HTML
-Object.assign(window, {
-    addToCart,
-    removeFromCart,
-    buyNow,
-    toggleCart,
-    toggleMenu,
-    calculateSavings,
-    processCheckout
-});
