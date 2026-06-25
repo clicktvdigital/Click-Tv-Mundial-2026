@@ -40,41 +40,43 @@ function addToCart(name, priceUSD) {
 }
 
 function updateCartUI() {
-
-    const container = document.getElementById("cart-items");
-    const count = document.getElementById("cart-count");
-    const empty = document.getElementById("cart-empty");
-    const totals = document.getElementById("cart-totals-section");
-
+    
+    let container = document.getElementById("cart-items");
+    let count = document.getElementById("cart-count");
+    let empty = document.getElementById("cart-empty");
+    let totals = document.getElementById("cart-totals-section");
+    let totalEl = document.getElementById("cart-total-local");
+    
     if (!container) return;
-
+    
     let html = "";
-    let totalItems = 0;
-
-    cart.forEach(item => {
-        totalItems += item.qty;
-
+    let total = 0;
+    let items = 0;
+    
+    cart.forEach(i => {
+        total += i.price * i.qty;
+        items += i.qty;
+        
         html += `
-            <div class="cart-item">
-                <b>${item.name}</b>
-                <span>x${item.qty}</span>
-            </div>
-        `;
+        <div class="cart-item">
+            <b>${i.name}</b>
+            <span>x${i.qty}</span>
+        </div>`;
     });
-
+    
     container.innerHTML = html;
-
-    if (count) count.innerText = totalItems;
-
+    
+    if (count) count.innerText = items;
+    if (totalEl) totalEl.innerText = `$${total.toFixed(2)}`;
+    
     if (cart.length === 0) {
-        if (empty) empty.style.display = "block";
-        if (totals) totals.style.display = "none";
+        empty && (empty.style.display = "block");
+        totals && (totals.style.display = "none");
     } else {
-        if (empty) empty.style.display = "none";
-        if (totals) totals.style.display = "block";
+        empty && (empty.style.display = "none");
+        totals && (totals.style.display = "block");
     }
 }
-
 // ================= BUY =================
 function buyNow(name, price) {
 
@@ -132,33 +134,29 @@ function toggleMenu() {
     document.getElementById("nav-links")?.classList.toggle("active");
 }
 
-function calculateSavings(){
-
+function calculateSavings() {
+    
     const select = document.getElementById("calc-service");
-    if(!select) return;
-
+    if (!select || !select.options) return;
+    
     const option = select.options[select.selectedIndex];
-    if(!option) return;
-
-    // 🔥 FIX: lectura segura SIEMPRE
+    if (!option) return;
+    
     const official = parseFloat(option.getAttribute("data-official"));
     const click = parseFloat(option.getAttribute("data-click"));
-
-    if(isNaN(official) || isNaN(click)) {
-        console.warn("Datos faltantes en option:", option);
-        return;
-    }
-
+    
+    if (isNaN(official) || isNaN(click)) return;
+    
     const savings = official - click;
     const percent = Math.round((savings / official) * 100);
-
+    
     const offEl = document.getElementById("calc-official");
     const clickEl = document.getElementById("calc-click");
     const saveEl = document.getElementById("calc-savings");
-
-    if(offEl) offEl.innerText = `$${official.toFixed(2)}`;
-    if(clickEl) clickEl.innerText = `$${click.toFixed(2)}`;
-    if(saveEl) saveEl.innerText = `$${savings.toFixed(2)} (${percent}%)`;
+    
+    if (offEl) offEl.innerText = `$${official.toFixed(2)}`;
+    if (clickEl) clickEl.innerText = `$${click.toFixed(2)}`;
+    if (saveEl) saveEl.innerText = `$${savings.toFixed(2)} (${percent}%)`;
 }
 function changeCurrency(cur) {
     currentCurrency = cur;
