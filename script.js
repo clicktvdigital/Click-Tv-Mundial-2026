@@ -137,26 +137,28 @@ function calculateSavings(){
     const select = document.getElementById("calc-service");
     if(!select) return;
 
-    const opt = select.options[select.selectedIndex];
-    if(!opt) return;
+    const option = select.options[select.selectedIndex];
+    if(!option) return;
 
-    const official = Number(opt.dataset.official);
-    const click = Number(opt.dataset.click);
+    // 🔥 FIX: lectura segura SIEMPRE
+    const official = parseFloat(option.getAttribute("data-official"));
+    const click = parseFloat(option.getAttribute("data-click"));
 
-    if(!official || !click) return;
+    if(isNaN(official) || isNaN(click)) {
+        console.warn("Datos faltantes en option:", option);
+        return;
+    }
 
     const savings = official - click;
     const percent = Math.round((savings / official) * 100);
 
-    document.getElementById("calc-official").innerText = `$${official}`;
-    document.getElementById("calc-click").innerText = `$${click}`;
-    document.getElementById("calc-savings").innerText = `$${savings} (${percent}%)`;
+    const offEl = document.getElementById("calc-official");
+    const clickEl = document.getElementById("calc-click");
+    const saveEl = document.getElementById("calc-savings");
 
-    // BARRA VISUAL
-    const bar = document.getElementById("bar-fill");
-    if(bar){
-        bar.style.width = percent + "%";
-    }
+    if(offEl) offEl.innerText = `$${official.toFixed(2)}`;
+    if(clickEl) clickEl.innerText = `$${click.toFixed(2)}`;
+    if(saveEl) saveEl.innerText = `$${savings.toFixed(2)} (${percent}%)`;
 }
 function changeCurrency(cur) {
     currentCurrency = cur;
