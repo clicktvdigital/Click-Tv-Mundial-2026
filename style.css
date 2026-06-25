@@ -441,41 +441,46 @@ button {
 }
 
 /* ================= FLOATING BUTTONS ================= */
+
 .floating-buttons {
     position: fixed;
-    right: 20px;
-    bottom: 20px;
+    right: 15px;
+    bottom: 15px;
     display: flex;
     flex-direction: column;
     gap: 10px;
-    z-index: 9999;
+    z-index: 99999;
 }
 
-/* BOTONES FLOTANTES */
-.floating-buttons a {
+/* BOTONES CIRCULARES LIMPIOS */
+.floating-buttons a,
+.floating-buttons button {
     width: 55px;
     height: 55px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #fff;
     text-decoration: none;
-    font-size: 12px;
-    font-weight: bold;
+    color: white;
+    font-size: 14px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.4);
 }
 
 /* WHATSAPP */
-.floating-buttons a:first-child {
-    background: var(--whatsapp);
+.floating-buttons a:nth-child(1) {
+    background: #25D366;
 }
 
 /* TELEGRAM */
-.floating-buttons a:last-child {
-    background: var(--telegram);
+.floating-buttons a:nth-child(2) {
+    background: #0088cc;
 }
 
+/* TOP BUTTON */
+.floating-buttons button {
+    background: #444;
+}
 /* ================= ANIMACIONES GLOBALES ================= */
 .card, .review-card {
     transition: all 0.3s ease;
@@ -614,4 +619,28 @@ button:hover {
     opacity: 0.9;
     transform: translateY(-2px);
     transition: 0.2s;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* cada línea de plan bien separada */
+.card button {
+    display: block;
+    width: 100%;
+}
+
+/* mejora visual de separación de texto */
+.card h4 {
+    margin-bottom: 8px;
+}
+
+/* separa precio + botones */
+.plan-line {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
 }
