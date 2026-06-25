@@ -220,7 +220,7 @@ function renderMatches() {
     `;
 }
 function toggleMenu() {
-    const menu = document.getElementById('nav-menu');
+    const menu = document.querySelector('.nav-menu');
     if (!menu) return;
     menu.classList.toggle('active');
 }
