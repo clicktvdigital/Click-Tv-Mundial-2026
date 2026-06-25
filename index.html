@@ -2,238 +2,567 @@
 <html lang="es">
 
 <head>
+
 <meta charset="UTF-8">
+
+<!-- RESPONSIVE REAL -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CLICK TV ULTRA 3.0</title>
 
-<link rel="stylesheet" href="style.css">
+<!-- TITULO -->
+<title>CLICK TV STREAMING MUNDIAL 2026 | IPTV + Streaming Premium LATAM</title>
+
+<!-- SEO -->
+<meta name="description" content="Streaming Premium + IPTV + Mundial 2026 LATAM">
+<meta name="keywords" content="IPTV, Streaming, Disney+, Netflix, DAZN, Mundial 2026">
+<meta name="author" content="CLICK TV">
+
+<!-- ICONOS -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-</head>
 
+<!-- GOOGLE FONTS -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+
+<!-- CSS PRINCIPAL -->
+<link rel="stylesheet" href="style.css">
+
+</head>
 <body>
 
-<!-- ================= ENGINE ================= -->
+<!-- ================= CORE SYSTEM ================= -->
 <script>
 
 let cart = [];
-const WPP = "593939166222";
+let WPP = "593939166222";
 
+/* ================= CART ================= */
 function addToCart(name, price){
 
-    const item = cart.find(i=>i.name===name);
+    if(!name || isNaN(price)) return;
 
-    if(item) item.qty++;
-    else cart.push({name, price, qty:1});
+    let item = cart.find(i => i.name === name);
 
-    renderCart();
-    document.getElementById("cart")?.classList.add("open");
+    if(item){
+        item.qty++;
+    } else {
+        cart.push({name, price, qty:1});
+    }
+
+    updateCart();
+    openCart();
 }
 
-function renderCart(){
+/* ================= UPDATE CART ================= */
+function updateCart(){
 
     const box = document.getElementById("cart-items");
     const count = document.getElementById("cart-count");
-    const empty = document.getElementById("cart-empty");
 
     if(!box) return;
 
-    box.innerHTML = "";
-    let totalItems = 0;
+    let html = "";
+    let totalQty = 0;
 
     cart.forEach(i=>{
-        totalItems += i.qty;
-        box.innerHTML += `<div class="item">${i.name} x${i.qty}</div>`;
+        totalQty += i.qty;
+        html += `
+        <div class="cart-item">
+            <b>${i.name}</b>
+            <span>x${i.qty}</span>
+        </div>`;
     });
 
-    if(count) count.innerText = totalItems;
-    if(empty) empty.style.display = cart.length ? "none" : "block";
+    box.innerHTML = html;
+
+    if(count) count.innerText = totalQty;
 }
 
-function toggleCart(){
-    document.getElementById("cart")?.classList.toggle("open");
-}
-
+/* ================= WHATSAPP BUY ================= */
 function buyNow(name, price){
 
-    const msg = `🛒 ORDER\n${name}\n$${price}`;
+    const msg = `🛒 CLICK TV ORDER\n\n📦 ${name}\n💰 $${price} USD`;
 
     window.open(
-        `https://wa.me/${WPP}?text=${encodeURIComponent(msg)}`,
+        `https://wa.me/${WPP}?text=` + encodeURIComponent(msg),
         "_blank"
     );
 }
 
-function calculateSavings(){
-
-    const s = document.getElementById("calc-service");
-    if(!s) return;
-
-    const o = +s.options[s.selectedIndex].dataset.o;
-    const c = +s.options[s.selectedIndex].dataset.c;
-
-    const save = o - c;
-    const percent = Math.round((save/o)*100);
-
-    document.getElementById("off").innerText = "$"+o;
-    document.getElementById("cli").innerText = "$"+c;
-    document.getElementById("sav").innerText = "$"+save+" ("+percent+"%)";
-
-    const bar = document.getElementById("bar");
-    if(bar) bar.style.width = percent + "%";
+/* ================= TOGGLE CART ================= */
+function openCart(){
+    document.getElementById("cart-sidebar")?.classList.add("active");
 }
 
-// ================= TOAST LIVE =================
-const cities = ["Quito","Lima","Bogotá","Santiago","México DF"];
-const products = ["Netflix","Disney+","IPTV","DAZN","Paramount+"];
-
-function toast(){
-
-    const box = document.getElementById("toast");
-
-    if(!box) return;
-
-    const city = cities[Math.floor(Math.random()*cities.length)];
-    const prod = products[Math.floor(Math.random()*products.length)];
-
-    const div = document.createElement("div");
-    div.className = "toast";
-    div.innerText = `🟢 ${city} compró ${prod}`;
-
-    box.appendChild(div);
-
-    setTimeout(()=>div.remove(),4000);
+function toggleCart(){
+    document.getElementById("cart-sidebar")?.classList.toggle("active");
 }
 
-setInterval(toast, 5000);
+/* ================= MENU ================= */
+function toggleMenu(){
+    document.getElementById("nav-links")?.classList.toggle("active");
+}
 
 </script>
 
-<!-- ================= CART ================= -->
-<div id="cart" class="cart">
+<!-- ================= TOP BAR ================= -->
+<div class="top-bar">
 
-<h3>🛒 Carrito</h3>
-<div id="cart-items"></div>
-<p id="cart-empty">Vacío</p>
+    <div class="top-info">
+        🌎 LATAM | 🔴 ONLINE: <b>257</b>
+    </div>
 
-<button onclick="alert('WhatsApp Checkout')">
-Finalizar compra
-</button>
+    <div class="top-actions">
+        <select onchange="alert('Moneda cambiada')">
+            <option>USD</option>
+            <option>PEN</option>
+            <option>COP</option>
+            <option>ARS</option>
+            <option>CLP</option>
+        </select>
+    </div>
 
 </div>
 
-<!-- ================= FLOATING ================= -->
-<div class="floating">
-<a href="https://wa.me/593939166222">WA</a>
-<a href="https://t.me/streamid">TG</a>
-</div>
+<!-- ================= CART SIDEBAR ================= -->
+<div id="cart-sidebar" class="cart-sidebar">
 
-<div id="toast"></div>
+    <div class="cart-header">
+        <h3>🛒 Tu Carrito</h3>
+        <button onclick="toggleCart()">✖</button>
+    </div>
+
+    <div id="cart-items"></div>
+
+    <div id="cart-empty" style="padding:10px;color:#aaa;">
+        Tu carrito está vacío
+    </div>
+
+</div>
 
 <!-- ================= HEADER ================= -->
-<header>
+<header class="main-header">
 
-<h2>CLICK TV ULTRA 3.0</h2>
+    <!-- LOGO -->
+    <a href="#inicio" class="logo">
+        CLICK<span>TV</span> 2026
+    </a>
 
-<button onclick="toggleCart()">
-🛒 <span id="cart-count">0</span>
-</button>
+    <!-- NAV -->
+    <nav id="nav-links" class="nav-links">
+
+        <a href="#inicio">Inicio</a>
+        <a href="#mundial">Mundial</a>
+        <a href="#catalogo">Catálogo</a>
+        <a href="#apps">Apps</a>
+        <a href="#deportes">Deportes</a>
+        <a href="#contacto">Contacto</a>
+
+    </nav>
+
+    <!-- ACTIONS -->
+    <div class="header-actions">
+
+        <!-- CART BUTTON -->
+        <button onclick="toggleCart()" class="cart-btn">
+            🛒 <span id="cart-count">0</span>
+        </button>
+
+        <!-- MENU MOBILE -->
+        <button onclick="toggleMenu()" class="menu-btn">
+            ☰
+        </button>
+
+    </div>
 
 </header>
 
 <!-- ================= HERO ================= -->
-<section class="hero">
+<section id="inicio" class="hero">
 
-<h1>Streaming Premium ULTRA</h1>
-<p>IPTV + Mundial + Apps</p>
+    <div class="hero-content">
 
-</section>
+        <h1>Streaming <span>Premium</span> Mundial 2026</h1>
 
-<!-- ================= RADIO ================= -->
-<section>
+        <p>
+            IPTV + Streaming + Deportes en vivo para toda Latinoamérica
+        </p>
 
-<h2>📻 Radio Mundial</h2>
-<audio controls>
-<source src="https://streamingecuador.net:9002/stream">
-</audio>
+        <a href="#catalogo" class="btn-primary">
+            Ver Catálogo
+        </a>
 
-<h3>📺 Teleamazonas</h3>
-<a href="https://www.teleamazonas.com/" target="_blank">Ver TV</a>
+    </div>
 
 </section>
 
-<!-- ================= CALCULADORA ================= -->
-<section>
+<!-- ================= MUNDIAL ================= -->
+<section id="mundial" class="mundial">
 
-<h2>📊 Calculadora PRO</h2>
+    <h2>🏆 Centro del Mundial FIFA 2026</h2>
 
-<select id="calc-service" onchange="calculateSavings()">
+    <p>Partidos en vivo, radio y cobertura oficial</p>
 
-<option data-o="25" data-c="15">DIRECTV GO</option>
-<option data-o="15" data-c="5">DAZN</option>
-<option data-o="10" data-c="5">Paramount+</option>
-<option data-o="22" data-c="5">Disney+</option>
+    <!-- ================= RADIO ================= -->
+    <div class="radio-box">
 
-</select>
+        <h3>🔴 Radio Deportiva en Vivo</h3>
 
-<div>
-<p>Oficial: <span id="off">$0</span></p>
-<p>Click: <span id="cli">$0</span></p>
-<p>Ahorro: <span id="sav">$0</span></p>
-</div>
+        <audio controls>
+            <source src="https://streamingecuador.net:9002/stream">
+        </audio>
 
-<div style="height:10px;background:#222;border-radius:10px;">
-<div id="bar" style="height:10px;width:0;background:#25D366;"></div>
-</div>
+    </div>
 
-</section>
+    <!-- ================= TELEAMAZONAS ================= -->
+    <div class="tv-box">
 
-<!-- ================= CATALOGO ================= -->
-<section>
+        <h3>📺 Teleamazonas EN VIVO</h3>
 
-<h2>🛒 Catálogo</h2>
+        <p>Canal informativo oficial Ecuador</p>
 
-<div>
+        <a href="https://www.teleamazonas.com/" target="_blank" class="btn-primary">
+            Ver Transmisión
+        </a>
 
-<div>
-<h3>Netflix</h3>
-<button onclick="addToCart('Netflix',5)">Carrito</button>
-<button onclick="buyNow('Netflix',5)">Comprar</button>
-</div>
-
-<div>
-<h3>Disney+</h3>
-<button onclick="addToCart('Disney+',5)">Carrito</button>
-<button onclick="buyNow('Disney+',5)">Comprar</button>
-</div>
-
-<div>
-<h3>IPTV Ultra</h3>
-<button onclick="addToCart('IPTV',7)">Carrito</button>
-<button onclick="buyNow('IPTV',7)">Comprar</button>
-</div>
-
-</div>
+    </div>
 
 </section>
 
-<!-- ================= APPS ================= -->
-<section><h2>Apps</h2></section>
+<!-- ================= CALCULADORA PRO ================= -->
+<section id="ahorro" class="calc-pro">
 
-<!-- ================= DEPORTES ================= -->
-<section><h2>Deportes</h2></section>
+    <h2>📊 Calculadora de Ahorro PRO</h2>
+
+    <p>Compara precio oficial vs Click TV en tiempo real</p>
+
+    <!-- SELECT MULTI SERVICIOS -->
+    <select id="calc-service" onchange="calculateSavings()">
+
+        <option data-official="25" data-click="15">DIRECTV GO</option>
+        <option data-official="15" data-click="5">DAZN</option>
+        <option data-official="10" data-click="5">Paramount+</option>
+        <option data-official="22" data-click="5">Disney+</option>
+        <option data-official="18" data-click="6">Netflix</option>
+        <option data-official="20" data-click="7">IPTV Ultra</option>
+        <option data-official="12" data-click="3">VIX</option>
+        <option data-official="30" data-click="10">HBO Max</option>
+
+    </select>
+
+    <!-- RESULTADOS -->
+    <div class="calc-results">
+
+        <div class="box red">
+            <span>Precio Oficial</span>
+            <h3 id="calc-official">$0</h3>
+        </div>
+
+        <div class="box blue">
+            <span>Click TV</span>
+            <h3 id="calc-click">$0</h3>
+        </div>
+
+        <div class="box green">
+            <span>Tu Ahorro</span>
+            <h3 id="calc-savings">$0</h3>
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ================= CALCULADORA JS ================= -->
+<script>
+
+function calculateSavings(){
+
+    const select = document.getElementById("calc-service");
+    if(!select) return;
+
+    const opt = select.options[select.selectedIndex];
+
+    const official = Number(opt.dataset.official);
+    const click = Number(opt.dataset.click);
+
+    if(isNaN(official) || isNaN(click)) return;
+
+    const savings = official - click;
+    const percent = Math.round((savings / official) * 100);
+
+    document.getElementById("calc-official").innerText = "$" + official;
+    document.getElementById("calc-click").innerText = "$" + click;
+    document.getElementById("calc-savings").innerText = "$" + savings + " (" + percent + "%)";
+}
+
+// auto load
+document.addEventListener("DOMContentLoaded", calculateSavings);
+
+</script>
+
+<!-- ================= CATALOGO COMPLETO ================= -->
+<section id="catalogo" class="catalogo">
+
+    <h2>🛒 Catálogo Completo Click TV</h2>
+
+    <div class="catalog-grid">
+
+        <!-- ================= STREAMING ================= -->
+        <h3>🎬 Streaming</h3>
+
+        <div class="card">
+            <h4>Netflix</h4>
+            <button onclick="addToCart('Netflix',5)">🛒 Carrito</button>
+            <button onclick="buyNow('Netflix',5)">💳 Comprar</button>
+        </div>
+
+        <div class="card">
+            <h4>Disney+</h4>
+            <button onclick="addToCart('Disney+',5)">🛒 Carrito</button>
+            <button onclick="buyNow('Disney+',5)">💳 Comprar</button>
+        </div>
+
+        <div class="card">
+            <h4>Paramount+</h4>
+            <button onclick="addToCart('Paramount+',5)">🛒 Carrito</button>
+            <button onclick="buyNow('Paramount+',5)">💳 Comprar</button>
+        </div>
+
+        <div class="card">
+            <h4>Prime Video</h4>
+            <button onclick="addToCart('Prime Video',4)">🛒 Carrito</button>
+            <button onclick="buyNow('Prime Video',4)">💳 Comprar</button>
+        </div>
+
+        <div class="card">
+            <h4>HBO Max</h4>
+            <button onclick="addToCart('HBO Max',6)">🛒 Carrito</button>
+            <button onclick="buyNow('HBO Max',6)">💳 Comprar</button>
+        </div>
+
+        <div class="card">
+            <h4>Apple TV</h4>
+            <button onclick="addToCart('Apple TV',3)">🛒 Carrito</button>
+            <button onclick="buyNow('Apple TV',3)">💳 Comprar</button>
+        </div>
+
+        <!-- ================= IPTV ================= -->
+        <h3>📺 IPTV</h3>
+
+        <div class="card">
+            <h4>IPTV Básico</h4>
+            <button onclick="addToCart('IPTV Básico',3)">🛒 Carrito</button>
+            <button onclick="buyNow('IPTV Básico',3)">💳 Comprar</button>
+        </div>
+
+        <div class="card">
+            <h4>IPTV Ultra</h4>
+            <button onclick="addToCart('IPTV Ultra',7)">🛒 Carrito</button>
+            <button onclick="buyNow('IPTV Ultra',7)">💳 Comprar</button>
+        </div>
+
+        <div class="card">
+            <h4>IPTV Premium Mundial</h4>
+            <button onclick="addToCart('IPTV Mundial',10)">🛒 Carrito</button>
+            <button onclick="buyNow('IPTV Mundial',10)">💳 Comprar</button>
+        </div>
+
+        <div class="card">
+            <h4>IPTV GX+</h4>
+            <button onclick="addToCart('GX IPTV',5)">🛒 Carrito</button>
+            <button onclick="buyNow('GX IPTV',5)">💳 Comprar</button>
+        </div>
+
+        <div class="card">
+            <h4>IPTV Stella</h4>
+            <button onclick="addToCart('Stella IPTV',5)">🛒 Carrito</button>
+            <button onclick="buyNow('Stella IPTV',5)">💳 Comprar</button>
+        </div>
+
+        <!-- ================= APPS ================= -->
+        <h3>🎓 Apps</h3>
+
+        <div class="card">
+            <h4>Canva Pro</h4>
+            <button onclick="addToCart('Canva Pro',3)">🛒 Carrito</button>
+            <button onclick="buyNow('Canva Pro',3)">💳 Comprar</button>
+        </div>
+
+        <div class="card">
+            <h4>Duolingo Premium</h4>
+            <button onclick="addToCart('Duolingo',4)">🛒 Carrito</button>
+            <button onclick="buyNow('Duolingo',4)">💳 Comprar</button>
+        </div>
+
+        <div class="card">
+            <h4>Crunchyroll</h4>
+            <button onclick="addToCart('Crunchyroll',3)">🛒 Carrito</button>
+            <button onclick="buyNow('Crunchyroll',3)">💳 Comprar</button>
+        </div>
+
+        <!-- ================= DEPORTES ================= -->
+        <h3>🏆 Deportes</h3>
+
+        <div class="card">
+            <h4>DAZN</h4>
+            <button onclick="addToCart('DAZN',5)">🛒 Carrito</button>
+            <button onclick="buyNow('DAZN',5)">💳 Comprar</button>
+        </div>
+
+        <div class="card">
+            <h4>NBA League Pass</h4>
+            <button onclick="addToCart('NBA',5)">🛒 Carrito</button>
+            <button onclick="buyNow('NBA',5)">💳 Comprar</button>
+        </div>
+
+        <div class="card">
+            <h4>FIFA Mundial Pack</h4>
+            <button onclick="addToCart('FIFA Pack',10)">🛒 Carrito</button>
+            <button onclick="buyNow('FIFA Pack',10)">💳 Comprar</button>
+        </div>
+
+        <!-- ================= MAYORISTAS ================= -->
+        <h3>💼 Mayoristas</h3>
+
+        <div class="card">
+            <h4>Outlook Mayorista</h4>
+            <button onclick="buyNow('Outlook Mayorista',2.75)">💳 Consultar</button>
+        </div>
+
+        <div class="card">
+            <h4>Panel IPTV Revendedores</h4>
+            <button onclick="buyNow('Panel IPTV',20)">💳 Consultar</button>
+        </div>
+
+    </div>
+
+</section>
 
 <!-- ================= RESEÑAS ================= -->
-<section>
+<section id="resenas" class="reviews">
 
-<h2>Reseñas</h2>
+    <h2>⭐ Reseñas de Clientes</h2>
 
-<p>⭐⭐⭐⭐⭐ Excelente servicio</p>
+    <div class="reviews-grid">
+
+        <div class="review-card">
+            <p>⭐⭐⭐⭐⭐ Excelente servicio, activación inmediata</p>
+            <small>Quito - Ecuador</small>
+        </div>
+
+        <div class="review-card">
+            <p>⭐⭐⭐⭐⭐ IPTV estable y sin cortes</p>
+            <small>Lima - Perú</small>
+        </div>
+
+        <div class="review-card">
+            <p>⭐⭐⭐⭐⭐ Disney+ y Netflix funcionan perfecto</p>
+            <small>Bogotá - Colombia</small>
+        </div>
+
+        <div class="review-card">
+            <p>⭐⭐⭐⭐⭐ Atención rápida por WhatsApp</p>
+            <small>Guayaquil - Ecuador</small>
+        </div>
+
+    </div>
 
 </section>
 
+<!-- ================= FLOATING BUTTONS ================= -->
+<div class="floating-buttons">
+
+    <a href="https://wa.me/593939166222" target="_blank" class="float-whatsapp">
+        WhatsApp
+    </a>
+
+    <a href="https://t.me/streamid" target="_blank" class="float-telegram">
+        Telegram
+    </a>
+
+</div>
+
+<!-- ================= TOAST LIVE ACTIVITY ================= -->
+<div id="toast-container"></div>
+
+<script>
+
+const cities = [
+    "Quito - Ecuador",
+    "Guayaquil - Ecuador",
+    "Lima - Perú",
+    "Bogotá - Colombia",
+    "Santiago - Chile",
+    "México DF - México"
+];
+
+const items = [
+    "Netflix",
+    "Disney+",
+    "IPTV Premium",
+    "DAZN",
+    "Paramount+",
+    "Crunchyroll"
+];
+
+function random(arr){
+    return arr[Math.floor(Math.random() * arr.length)];
+}
+
+function showToast(){
+
+    const container = document.getElementById("toast-container");
+    if(!container) return;
+
+    const city = random(cities);
+    const item = random(items);
+
+    const div = document.createElement("div");
+    div.className = "toast";
+    div.innerText = `🟢 Cliente de ${city} compró ${item}`;
+
+    container.appendChild(div);
+
+    setTimeout(()=> div.remove(), 4000);
+}
+
+setInterval(showToast, 5000);
+
+</script>
+
 <!-- ================= FOOTER ================= -->
-<footer>
-<p>© 2026 ULTRA 3.0</p>
+<footer class="footer">
+
+    <div class="footer-grid">
+
+        <div class="footer-box">
+            <h3>CLICK TV 2026</h3>
+            <p>Streaming Premium + IPTV para toda Latinoamérica</p>
+        </div>
+
+        <div class="footer-box">
+            <h4>Enlaces</h4>
+
+            <a href="#catalogo">Catálogo</a>
+            <a href="#mundial">Mundial</a>
+            <a href="#resenas">Reseñas</a>
+            <a href="#contacto">Contacto</a>
+
+        </div>
+
+        <div class="footer-box">
+            <h4>Soporte</h4>
+
+            <a href="https://wa.me/593939166222" target="_blank">WhatsApp</a>
+            <a href="https://t.me/streamid" target="_blank">Telegram</a>
+            <a href="https://www.teleamazonas.com/" target="_blank">Teleamazonas</a>
+
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+        <p>© 2026 Click TV Streaming — Todos los derechos reservados</p>
+    </div>
+
 </footer>
 
 </body>
