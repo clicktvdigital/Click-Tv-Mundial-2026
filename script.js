@@ -1,191 +1,215 @@
-// ================= CLICK TV ENGINE FIX =================
 
 let cart = [];
-let currentCurrency = "USD";
-let currentRate = 1;
+let WPP_NUMBER = "593939166222";
 
-window.rates = window.rates || { USD: 1 };
+/* ================= ADD TO CART ================= */
+function addToCart(name, price){
 
-const WPP_NUMBER = "593939166222";
+    if(!name || isNaN(price)) return;
 
-// ================= INIT =================
-window.addEventListener("DOMContentLoaded", () => {
-    initApp();
-});
+    let item = cart.find(i => i.name === name);
 
-function initApp() {
-    fetchExchangeRates();
-    updateCartUI();
+    if(item){
+        item.qty++;
+    } else {
+        cart.push({name, price, qty:1});
+    }
+
+    updateCart();
+    openCart();
 }
 
-// ================= EXCHANGE =================
-function fetchExchangeRates() {
-    window.rates = { USD: 1, PEN: 3.8, COP: 4000, ARS: 1000, CLP: 950, MXN: 17 };
-}
+/* ================= UPDATE CART ================= */
+function updateCart(){
 
-// ================= CART =================
-function addToCart(name, priceUSD) {
+    const box = document.getElementById("cart-items");
+    const count = document.getElementById("cart-count");
 
-    if (!name || isNaN(priceUSD)) return;
+    if(!box) return;
 
-    const item = cart.find(i => i.name === name);
-
-    if (item) item.qty++;
-    else cart.push({ name, priceUSD: Number(priceUSD), qty: 1 });
-
-    updateCartUI();
-
-    const sidebar = document.getElementById("cart-sidebar");
-    if (sidebar) sidebar.classList.add("active");
-}
-
-function updateCartUI() {
-    
-    let container = document.getElementById("cart-items");
-    let count = document.getElementById("cart-count");
-    let empty = document.getElementById("cart-empty");
-    let totals = document.getElementById("cart-totals-section");
-    let totalEl = document.getElementById("cart-total-local");
-    
-    if (!container) return;
-    
     let html = "";
-    let total = 0;
-    let items = 0;
-    
-    cart.forEach(i => {
-        total += i.price * i.qty;
-        items += i.qty;
-        
+    let totalQty = 0;
+
+    cart.forEach(i=>{
+        totalQty += i.qty;
+
         html += `
         <div class="cart-item">
             <b>${i.name}</b>
             <span>x${i.qty}</span>
         </div>`;
     });
-    
-    container.innerHTML = html;
-    
-    if (count) count.innerText = items;
-    if (totalEl) totalEl.innerText = `$${total.toFixed(2)}`;
-    
-    if (cart.length === 0) {
-        empty && (empty.style.display = "block");
-        totals && (totals.style.display = "none");
-    } else {
-        empty && (empty.style.display = "none");
-        totals && (totals.style.display = "block");
-    }
-}
-// ================= BUY =================
-function buyNow(name, price) {
 
-    const msg = `🛒 CLICK TV\n\n📦 ${name}\n💰 $${price} USD`;
+    box.innerHTML = html;
 
-    window.open(
-        `https://wa.me/${WPP_NUMBER}?text=${encodeURIComponent(msg)}`,
-        "_blank"
-    );
+    if(count) count.innerText = totalQty;
 }
 
-// ================= DROPDOWN =================
-function addDropdownToCart(base, selectId) {
-
-    const select = document.getElementById(selectId);
-    if (!select) return;
-
-    const opt = select.options[select.selectedIndex];
-    const price = parseFloat(opt.dataset.usd);
-
-    if (isNaN(price)) return;
-
-    const label = opt.text.split("-")[0].trim();
-
-    addToCart(`${base} - ${label}`, price);
+/* ================= OPEN CART ================= */
+function openCart(){
+    document.getElementById("cart-sidebar")?.classList.add("active");
 }
 
-// ================= CHECKOUT =================
-function processCheckout() {
-
-    if (!cart.length) return;
-
-    let text = "🛒 CLICK TV ORDER\n\n";
-    let total = 0;
-
-    cart.forEach(i => {
-        text += `📦 ${i.name} x${i.qty} = $${i.priceUSD * i.qty}\n`;
-        total += i.priceUSD * i.qty;
-    });
-
-    text += `\n💰 TOTAL: $${total} USD`;
-
-    window.open(
-        `https://wa.me/${WPP_NUMBER}?text=${encodeURIComponent(text)}`,
-        "_blank"
-    );
-}
-
-// ================= UI HELPERS =================
-function toggleCart() {
+/* ================= TOGGLE CART ================= */
+function toggleCart(){
     document.getElementById("cart-sidebar")?.classList.toggle("active");
 }
 
-function toggleMenu() {
-    document.getElementById("nav-links")?.classList.toggle("active");
+function buyNow(name, price){
+
+    const msg = `
+🛒 CLICK TV ORDER
+
+📦 Producto: ${name}
+💰 Precio: $${price} USD
+
+✔ Pedido automático
+`;
+
+    const url = `https://wa.me/${WPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+
+    window.open(url, "_blank");
 }
 
-function calculateSavings() {
-    
+/* ================= CHECKOUT CART ================= */
+function processCheckout(){
+
+    if(cart.length === 0){
+        alert("El carrito está vacío");
+        return;
+    }
+
+    let total = 0;
+    let msg = "🛒 CLICK TV CHECKOUT\n\n";
+
+    cart.forEach(i=>{
+        total += i.price * i.qty;
+        msg += `📦 ${i.name} x${i.qty} - $${i.price}\n`;
+    });
+
+    msg += `\n💰 TOTAL: $${total} USD`;
+
+    const url = `https://wa.me/${WPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+
+    window.open(url, "_blank");
+}
+
+/* ================= CALCULADORA DE AHORRO ================= */
+function calculateSavings(){
+
     const select = document.getElementById("calc-service");
-    if (!select || !select.options) return;
-    
+    if(!select) return;
+
     const option = select.options[select.selectedIndex];
-    if (!option) return;
-    
-    const official = parseFloat(option.getAttribute("data-official"));
-    const click = parseFloat(option.getAttribute("data-click"));
-    
-    if (isNaN(official) || isNaN(click)) return;
-    
+    if(!option) return;
+
+    const official = Number(option.dataset.official);
+    const click = Number(option.dataset.click);
+
+    if(isNaN(official) || isNaN(click)) return;
+
     const savings = official - click;
     const percent = Math.round((savings / official) * 100);
-    
+
     const offEl = document.getElementById("calc-official");
     const clickEl = document.getElementById("calc-click");
     const saveEl = document.getElementById("calc-savings");
-    
-    if (offEl) offEl.innerText = `$${official.toFixed(2)}`;
-    if (clickEl) clickEl.innerText = `$${click.toFixed(2)}`;
-    if (saveEl) saveEl.innerText = `$${savings.toFixed(2)} (${percent}%)`;
-}
-function changeCurrency(cur) {
-    currentCurrency = cur;
-    currentRate = window.rates[cur] || 1;
-    updateCartUI();
+
+    if(offEl) offEl.innerText = `$${official.toFixed(2)}`;
+    if(clickEl) clickEl.innerText = `$${click.toFixed(2)}`;
+    if(saveEl) saveEl.innerText = `$${savings.toFixed(2)} (${percent}%)`;
 }
 
-// placeholders para evitar errores HTML"
-function filterProducts() {}
-function filterCategory() {}
-function updateDropdownPrice() {}
+/* AUTO INICIO */
+document.addEventListener("DOMContentLoaded", ()=>{
+    calculateSavings();
+});
 
-window.addEventListener("DOMContentLoaded", () => {
-    
-    // asegura calculadora
-    if (document.getElementById("calc-service")) {
+const cities = [
+    "Quito - Ecuador",
+    "Guayaquil - Ecuador",
+    "Lima - Perú",
+    "Bogotá - Colombia",
+    "Santiago - Chile",
+    "México DF - México",
+    "Caracas - Venezuela"
+];
+
+const products = [
+    "Netflix",
+    "Disney+",
+    "IPTV Premium",
+    "DAZN",
+    "Paramount+",
+    "Crunchyroll",
+    "HBO Max",
+    "Prime Video"
+];
+
+/* ================= RANDOM HELPER ================= */
+function random(arr){
+    return arr[Math.floor(Math.random() * arr.length)];
+}
+
+/* ================= TOAST SYSTEM ================= */
+function showToast(){
+
+    const container = document.getElementById("toast-container");
+    if(!container) return;
+
+    const city = random(cities);
+    const product = random(products);
+
+    const msg = `🟢 Cliente de ${city} compró ${product}`;
+
+    const div = document.createElement("div");
+    div.className = "toast";
+    div.innerText = msg;
+
+    container.appendChild(div);
+
+    setTimeout(()=>{
+        div.remove();
+    }, 4000);
+}
+
+/* ================= AUTO RUN ================= */
+setInterval(showToast, 5000);
+
+/* ================= MENU MOBILE ================= */
+function toggleMenu(){
+    document.getElementById("nav-links")?.classList.toggle("active");
+}
+
+/* ================= INIT SYSTEM ================= */
+document.addEventListener("DOMContentLoaded", () => {
+
+    // inicializar carrito
+    updateCart();
+
+    // inicializar calculadora si existe
+    if(document.getElementById("calc-service")){
         calculateSavings();
     }
-    
-    // asegura carrito visible
-    if (typeof updateCartUI === "function") {
-        updateCartUI();
+
+    // asegurar toast container existe
+    if(!document.getElementById("toast-container")){
+        const div = document.createElement("div");
+        div.id = "toast-container";
+        document.body.appendChild(div);
     }
-    
-});
-window.addEventListener("DOMContentLoaded", () => {
-
-    setTimeout(() => {
-        calculateSavings();
-    }, 300);
 
 });
+
+/* ================= SAFE GUARDS (EVITAR CRASH) ================= */
+window.addEventListener("error", function(e){
+    console.log("JS Error Capturado:", e.message);
+});
+
+/* ================= EXPORT GLOBALS (SEGURIDAD UI) ================= */
+window.addToCart = addToCart;
+window.buyNow = buyNow;
+window.toggleCart = toggleCart;
+window.toggleMenu = toggleMenu;
+window.calculateSavings = calculateSavings;
+window.processCheckout = processCheckout;

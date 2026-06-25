@@ -1,225 +1,268 @@
-/* ========================================== */
-/* RESPONSIVE PRO (AMAZON STYLE UI) */
-/* ========================================== */
 
-/* ================= TABLET ================= */
-@media (max-width: 1024px) {
-    
-    .grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 18px;
-    }
-    
-    .hero-stats {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
-    }
-    
-    .nav-links {
-        gap: 12px;
-        font-size: 12px;
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-    
-    .section-header h2 {
-        font-size: 2.2rem;
-    }
-    
-    .card {
-        padding: 20px 15px;
-    }
+/* ================= MOBILE FIRST RESET ================= */
+body {
+    overflow-x: hidden;
 }
 
-/* ================= MOBILE LARGE ================= */
+/* EVITA DESBORDES EN TODA LA WEB */
+img, video, iframe {
+    max-width: 100%;
+}
+
+/* ================= GLOBAL MOBILE FIX ================= */
+section {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* ================= TEXTOS RESPONSIVE ================= */
+h1 {
+    font-size: clamp(22px, 5vw, 40px);
+}
+
+h2 {
+    font-size: clamp(18px, 4vw, 30px);
+}
+
+p {
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* ================= HEADER RESPONSIVE ================= */
 @media (max-width: 768px) {
-    
-    /* NAV */
+
+    /* HEADER AJUSTE */
+    header {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 10px;
+        padding: 10px 15px;
+    }
+
+    /* LOGO */
+    .logo {
+        font-size: 18px;
+    }
+
+    /* NAV OCULTO POR DEFECTO */
     .nav-links {
         display: none;
-        position: absolute;
-        top: 100%;
-        left: 0;
         width: 100%;
-        background: #050505;
         flex-direction: column;
-        padding: 15px;
-        border-bottom: 1px solid var(--border);
-        z-index: 999;
+        background: var(--card);
+        padding: 10px;
+        border-radius: 10px;
+        border: 1px solid var(--border);
     }
-    
+
+    /* NAV ACTIVO */
     .nav-links.active {
         display: flex;
     }
-    
-    .menu-toggle {
-        display: block;
+
+    .nav-links a {
+        padding: 10px;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
     }
-    
-    /* GRID -> 1 COL */
-    .grid {
+
+    /* BOTONES HEADER */
+    .header-actions {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+    }
+}
+
+/* ================= CART MOBILE FIX ================= */
+@media (max-width: 768px) {
+
+    .cart-sidebar {
+        width: 100%;
+        right: -100%;
+    }
+
+    .cart-sidebar.active {
+        right: 0;
+    }
+
+    #cart-items {
+        padding-bottom: 120px;
+    }
+}
+
+/* ================= CATALOGO RESPONSIVE ================= */
+@media (max-width: 768px) {
+
+    /* GRID PRINCIPAL */
+    .catalog-grid {
         grid-template-columns: 1fr;
         gap: 15px;
     }
-    
-    /* HERO */
-    .hero {
-        min-height: auto;
-        padding: 40px 5%;
-    }
-    
-    .hero h1 {
-        font-size: 2rem;
-    }
-    
-    .hero p {
-        font-size: 14px;
-    }
-    
-    .hero-buttons {
-        flex-direction: column;
-        width: 100%;
-    }
-    
-    .btn {
-        width: 100%;
-    }
-    
-    /* HERO STATS */
-    .hero-stats {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-        padding: 10px;
-    }
-    
-    .hero-stats b {
-        font-size: 1.4rem;
-    }
-    
-    /* SECTIONS */
-    section {
-        padding: 40px 5%;
-    }
-    
-    .section-header h2 {
-        font-size: 1.8rem;
-    }
-    
+
     /* CARDS */
     .card {
-        padding: 18px 15px;
+        padding: 12px;
+        border-radius: 10px;
     }
-    
-    .local-price {
-        font-size: 1.6rem;
+
+    .card h4 {
+        font-size: 16px;
     }
-    
-    /* CART */
-    .cart-sidebar {
+
+    .card button {
+        font-size: 14px;
+        padding: 10px;
+    }
+}
+
+/* ================= TABLET ================= */
+@media (max-width: 1024px) {
+
+    .catalog-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* ================= CALCULADORA MOBILE ================= */
+@media (max-width: 768px) {
+
+    .calc-results {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .calc-pro {
+        padding: 40px 15px;
+    }
+
+    #calc-service {
         width: 100%;
-        max-width: 100%;
+        font-size: 14px;
     }
-    
-    /* FLOATING BUTTONS */
-    .floating-buttons-container {
-        bottom: 15px;
-        right: 15px;
+
+    .calc-results .box {
+        padding: 15px;
     }
-    
-    .float-btn {
-        width: 45px;
-        height: 45px;
+
+    .calc-results h3 {
         font-size: 18px;
     }
 }
 
-/* ================= MOBILE SMALL ================= */
-@media (max-width: 480px) {
-    
-    /* HERO */
-    .hero h1 {
-        font-size: 1.6rem;
-        line-height: 1.2;
-    }
-    
-    .hero p {
-        font-size: 13px;
-    }
-    
-    .badge {
-        font-size: 10px;
-        padding: 5px 10px;
-    }
-    
-    /* HEADER */
-    .logo {
-        font-size: 20px;
-    }
-    
-    .header-actions {
+/* ================= RESEÑAS MOBILE ================= */
+@media (max-width: 768px) {
+
+    .reviews-grid {
+        grid-template-columns: 1fr;
         gap: 10px;
     }
-    
-    /* CARDS */
-    .card {
-        padding: 15px 12px;
-    }
-    
-    .card h3 {
-        font-size: 1.2rem;
-    }
-    
-    .card-desc {
-        font-size: 11px;
-    }
-    
-    .local-price {
-        font-size: 1.4rem;
-    }
-    
-    /* BUTTONS */
-    .btn {
-        font-size: 13px;
-        padding: 10px 14px;
-    }
-    
-    /* GRID GAP REDUCE */
-    .grid {
-        gap: 12px;
-    }
-    
-    /* CART */
-    .cart-sidebar {
-        padding: 15px;
-    }
-    
-    .cart-item {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 5px;
-    }
-    
-    .cart-row {
-        font-size: 13px;
+
+    .review-card {
+        padding: 12px;
+        font-size: 14px;
     }
 }
 
-/* ================= VERY SMALL DEVICES ================= */
-@media (max-width: 360px) {
-    
+/* ================= TOAST MOBILE ================= */
+@media (max-width: 768px) {
+
+    #toast-container {
+        left: 10px;
+        right: 10px;
+        bottom: 10px;
+    }
+
+    .toast {
+        font-size: 13px;
+        padding: 10px;
+    }
+}
+
+/* ================= FLOTANTES MOBILE FIX ================= */
+@media (max-width: 768px) {
+
+    .floating-buttons {
+        right: 10px;
+        bottom: 10px;
+        gap: 8px;
+    }
+
+    .floating-buttons a {
+        width: 50px;
+        height: 50px;
+        font-size: 11px;
+    }
+}
+
+/* ================= HERO MOBILE ================= */
+@media (max-width: 768px) {
+
+    .hero {
+        padding: 40px 15px;
+        min-height: auto;
+    }
+
     .hero h1 {
-        font-size: 1.4rem;
+        font-size: 26px;
+        line-height: 1.2;
     }
-    
-    .section-header h2 {
-        font-size: 1.5rem;
+
+    .hero p {
+        font-size: 14px;
+        margin-top: 10px;
     }
-    
-    .btn {
-        font-size: 12px;
+
+    .btn-primary {
+        width: 100%;
+        text-align: center;
     }
-    
-    .card {
+}
+
+/* ================= MUNDIAL SECTION MOBILE ================= */
+@media (max-width: 768px) {
+
+    #mundial {
+        padding: 40px 15px;
+    }
+
+    #mundial h2 {
+        font-size: 20px;
+        text-align: center;
+    }
+
+    .radio-box,
+    .tv-box {
+        padding: 15px;
+        border-radius: 10px;
+        font-size: 14px;
+    }
+
+    audio {
+        width: 100%;
+    }
+}
+
+/* ================= TELEAMAZONAS BUTTON MOBILE ================= */
+@media (max-width: 768px) {
+
+    .tv-box a {
+        display: block;
+        width: 100%;
+        text-align: center;
         padding: 12px;
+        font-size: 14px;
+    }
+}
+
+/* ================= GENERAL SAFE FIX ================= */
+@media (max-width: 768px) {
+
+    section {
+        overflow-x: hidden;
+    }
+
+    * {
+        -webkit-tap-highlight-color: transparent;
     }
 }
