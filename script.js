@@ -1,13 +1,42 @@
+const products = [];
 const WPP_NUMBER = "593939166222";
-let cart = JSON.parse(localStorage.getItem('clicktv_cart')) || [];
+let cart = [];
 let currentCurrency = 'USD';
-let rates = { USD: 1, PEN: 3.80, COP: 4000, ARS: 1000, CLP: 950, MXN: 17 };
+let currentRate = 1;
 let discountPercent = 0;
 
-function initApp() {
+async function initApp() {
+    try {
+        window.rates = { USD: 1, PEN: 3.80, COP: 4000, ARS: 1000, CLP: 950, MXN: 17 };
+        await detectUserCountry();
+        await fetchWorldCupMatches();
+        startToastRotator();
+        simulateOnlineUsers();
+        updateCartUI();
+        applyCurrencyUpdate();
+    } catch(err) {
+        console.error("ERROR INIT:", err);
+    }
+}
+
+async function detectUserCountry() {
+    const locationEl = document.getElementById('user-location');
+    try {
+        const res = await fetch('https://ipapi.co/json/');
+        const data = await res.json();
+        if(locationEl) locationEl.innerText = `🌎 ${data.country_name}`;
+    } catch (e) {
+        if(locationEl) locationEl.innerText = 'Latinoamérica';
+    }
+}
+
+function applyCurrencyUpdate() {
+    currentRate = window.rates[currentCurrency] || 1;
+    document.querySelectorAll('.local-price').forEach(el => {
+        const usdPrice = parseFloat(el.getAttribute('data-usd'));
+        el.innerText = `$${(usdPrice * currentRate).toFixed(2)} ${currentCurrency}`;
+    });
     updateCartUI();
-    fetchWorldCupMatches();
-    startOnlineCounter();
 }
 
 function toggleCart() {
@@ -16,14 +45,61 @@ function toggleCart() {
 
 function addToCart(name, priceUSD) {
     const existing = cart.find(i => i.name === name);
-    if (existing) {
-        existing.qty++;
-    } else {
-        cart.push({ name, priceUSD, qty: 1 });
-    }
-    saveCart();
+    if (existing) existing.qty++;
+    else cart.push({ name, priceUSD, qty: 1 });
     updateCartUI();
-    toggleCart(); // Abre el carrito al añadir
+    document.getElementById('cart-sidebar').classList.add('active');
+}
+
+function updateCartUI() {
+    const itemsContainer = document.getElementById('cart-items');
+    const totalsSection = document.getElementById('cart-totals-section');
+    if(!itemsContainer) return;
+    itemsContainer.innerHTML = '';
+    let subtotalUSD = 0;
+    cart.forEach(item => {
+        subtotalUSD += item.priceUSD * item.qty;
+        itemsContainer.innerHTML += `<div class="cart-item"><h4>${item.name}</h4><p>x${item.qty}</p></div>`;
+    });
+    if(totalsSection) totalsSection.style.display = cart.length > 0 ? 'block' : 'none';
+    document.getElementById('cart-total-local').innerText = `$${(subtotalUSD * currentRate).toFixed(2)} ${currentCurrency}`;
+    document.getElementById('cart-count').innerText = cart.length;
+}
+
+// FIX: Template Strings corregidos con backticks (`)
+async function fetchWorldCupMatches() {
+    const container = document.getElementById('matches-container');
+    if (!container) return;
+    const events = [
+        { strHomeTeam: "Ecuador", strAwayTeam: "Ivory Coast", dateEvent: "2026-06-17", strTime: "18:00:00" }
+    ];
+    let html = '';
+    events.forEach(m => {
+        html += `
+        <div class="match-card">
+            <div class="match-teams"><span>${m.strHomeTeam}</span> VS <span>${m.strAwayTeam}</span></div>
+            <div class="match-info"><span class="countdown" data-date="${m.dateEvent}" data-time="${m.strTime}"></span></div>
+        </div>`;
+    });
+    container.innerHTML = html;
+    startCountdowns();
+}
+
+function startCountdowns(){
+    document.querySelectorAll('.countdown').forEach(el=>{
+        const date = el.dataset.date;
+        const time = el.dataset.time;
+        const matchDate = new Date(`${date}T${time}Z`); // Corregido
+        setInterval(() => {
+            const diff = matchDate - new Date();
+            if(diff <= 0) el.innerHTML = 'EN VIVO';
+            else el.innerHTML = `⏳ Faltan ${Math.floor(diff/1000/60)} min`;
+        }, 1000);
+    });
+}
+
+function toggleMenu() {
+    document.getElementById('nav-links').classList.toggle('active');
 }
 
 function addDropdownToCart(baseName, selectId) {
@@ -32,78 +108,4 @@ function addDropdownToCart(baseName, selectId) {
     addToCart(`${baseName} - ${opt.text.split('-')[0].trim()}`, parseFloat(opt.getAttribute('data-usd')));
 }
 
-function saveCart() {
-    localStorage.setItem('clicktv_cart', JSON.stringify(cart));
-}
-
-function updateCartUI() {
-    const container = document.getElementById('cart-items');
-    const countEl = document.getElementById('cart-count');
-    const totalEl = document.getElementById('cart-total-local');
-    
-    if(!container) return;
-    
-    container.innerHTML = '';
-    let totalUSD = 0;
-    let qtyTotal = 0;
-
-    cart.forEach((item, index) => {
-        totalUSD += item.priceUSD * item.qty;
-        qtyTotal += item.qty;
-        container.innerHTML += `
-            <div class="cart-item" style="display:flex; justify-content:space-between; margin-bottom:15px; border-bottom:1px solid #222; padding-bottom:10px;">
-                <div>
-                    <h4 style="font-size:14px;">${item.name}</h4>
-                    <small>$${(item.priceUSD * rates[currentCurrency]).toFixed(2)} ${currentCurrency}</small>
-                </div>
-                <button onclick="removeItem(${index})" style="background:none; border:none; color:red;">❌</button>
-            </div>
-        `;
-    });
-
-    const finalTotal = totalUSD * (1 - discountPercent);
-    countEl.innerText = qtyTotal;
-    totalEl.innerText = `$${(finalTotal * rates[currentCurrency]).toFixed(2)} ${currentCurrency}`;
-}
-
-function removeItem(index) {
-    cart.splice(index, 1);
-    saveCart();
-    updateCartUI();
-}
-
-function processCheckout() {
-    if (cart.length === 0) return;
-    let message = `🚀 *NUEVO PEDIDO CLICK TV*%0A%0A`;
-    cart.forEach(i => message += `• ${i.name} (x${i.qty})%0A`);
-    message += `%0A💰 *Total:* ${document.getElementById('cart-total-local').innerText}`;
-    window.open(`https://wa.me/${WPP_NUMBER}?text=${message}`, '_blank');
-}
-
-// FIX: Fechas del Mundial corregidas con Backticks
-async function fetchWorldCupMatches() {
-    const container = document.getElementById('matches-container');
-    if (!container) return;
-    
-    const events = [
-        { home: "Ecuador", away: "Costa de Marfil", date: "2026-06-17", time: "18:00:00" },
-        { home: "España", away: "Egipto", date: "2026-06-17", time: "21:00:00" }
-    ];
-
-    container.innerHTML = events.map(m => `
-        <div class="match-card" style="background:#1a1a1a; padding:15px; border-radius:10px; margin-bottom:10px; text-align:center;">
-            <b>${m.home} vs ${m.away}</b><br>
-            <small>📅 ${m.date} - 🕒 ${m.time}</small>
-        </div>
-    `).join('');
-}
-
-function startOnlineCounter() {
-    setInterval(() => {
-        const count = 250 + Math.floor(Math.random() * 50);
-        const el = document.getElementById('online-count');
-        if(el) el.innerText = count;
-    }, 5000);
-}
-
-document.addEventListener('DOMContentLoaded', initApp);
+window.addEventListener('load', initApp);

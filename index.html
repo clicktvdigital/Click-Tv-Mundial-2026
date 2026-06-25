@@ -4,11 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#050505">
-    <title>CLICK TV MUNDIAL 2026 | Streaming Premium IPTV</title>
-    <meta name="description" content="Streaming Premium Mundial 2026: DIRECTV GO, Paramount+, DAZN, Disney+, IPTV.">
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <title>CLICK TV MUNDIAL 2026 | Streaming Premium IPTV</title>
+    <meta name="description" content="Click TV Mundial 2026: DIRECTV GO, Paramount+, DAZN, Disney+, IPTV Premium. Activación inmediata.">
+    <meta name="keywords" content="Mundial 2026 Ecuador, IPTV Ecuador, DAZN Ecuador, Paramount Ecuador, Streaming Ecuador">
+    <link rel="icon" type="image/png" href="https://1000logos.net/wp-content/uploads/2023/05/World-Cup-2026-Logo.png">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="responsive.css">
@@ -21,8 +26,9 @@
         <span class="separator">|</span>
         <span><i class="fas fa-signal"></i> <b id="online-count">257</b> conectados</span>
     </div>
+  
     <div class="top-actions">
-        <select id="currency-selector" onchange="currentCurrency=this.value; applyCurrencyUpdate();">
+        <select id="currency-selector" onchange="currentCurrency=this.value; applyCurrencyUpdate();" aria-label="Seleccionar moneda">
             <option value="USD">🇺🇸 USD - Dólar</option>
             <option value="PEN">🇵🇪 PEN - Sol</option>
             <option value="COP">🇨🇴 COP - Peso</option>
@@ -33,118 +39,76 @@
     </div>
 </div>
 
-<header class="shopify-header">
-    <a href="#" class="logo">CLICK<span>TV</span> <small>2026</small></a>
+<header>
+    <a href="#" class="logo"><i class="fas fa-tv logo-icon"></i> CLICK<span>TV</span> <small>2026</small></a>
     <nav class="nav-links" id="nav-links">
         <a href="#inicio">🏠 Inicio</a>
-        <a href="#mundial">⚽ Mundial</a>
+        <a href="#mundial">⚽ Mundial 2026</a>
         <a href="#streaming">🎬 Streaming</a>
         <a href="#iptv">📺 IPTV</a>
+        <a href="#musica">🎵 Música</a>
+        <a href="#apps">🎓 Apps Premium</a>
+        <a href="#deportes">🏆 Deportes</a>
+        <a href="#pagos">💳 Pagos</a>
+        <a href="#mayoristas">💼 Mayoristas</a>
         <a href="#contacto">💬 Contacto</a>
     </nav>
     <div class="header-actions">
-        <button class="cart-trigger" onclick="toggleCart()">
-            <i class="fas fa-shopping-bag"></i>
+        <button class="cart-icon" onclick="toggleCart()" aria-label="Abrir carrito">
+            <i class="fas fa-shopping-cart"></i>
             <span id="cart-count">0</span>
         </button>
-        <button class="menu-toggle" onclick="toggleMenu()"><i class="fas fa-bars"></i></button>
+        <button class="menu-toggle" onclick="toggleMenu()" aria-label="Menú">
+            <i class="fas fa-bars"></i>
+        </button>
     </div>
 </header>
 
 <section class="hero" id="inicio">
     <div class="hero-overlay"></div>
     <div class="hero-content">
-        <span class="badge">⚽ FIFA WORLD CUP 2026™</span>
+        <span class="badge">⚽ FIFA WORLD CUP 2026™ • MÉXICO / USA / CANADÁ</span>
         <h1>Streaming <span>Premium</span><br>Mundialista</h1>
         <p>Vive la pasión del fútbol en máxima calidad. Paramount+, DAZN, DIRECTV GO, Disney+ e IPTV.</p>
         <div class="hero-buttons">
-            <a href="#mundial" class="btn btn-primary"><i class="fas fa-broadcast-tower"></i> VER FIXTURE</a>
+            <a href="#mundial" class="btn btn-primary"><i class="fas fa-broadcast-tower"></i> ⚽ VER FIXTURE OFICIAL</a>
             <a href="#streaming" class="btn btn-gold"><i class="fas fa-shopping-bag"></i> VER CATÁLOGO</a>
+        </div>
+        <div class="hero-stats">
+            <div><b id="stat-clients">+5000</b><span>Clientes</span></div>
+            <div><b id="stat-activations">+12000</b><span>Activaciones</span></div>
+            <div><b id="stat-countries">14</b><span>Países</span></div>
+            <div><b>24/7</b><span>Soporte</span></div>
         </div>
     </div>
 </section>
 
-<!-- SECCIÓN MUNDIAL -->
 <section class="mundial-section" id="mundial">
     <div class="section-header">
+        <span class="section-badge">🏆 FIFA WORLD CUP 2026™</span>
         <h2>Centro del <span>Mundial</span></h2>
     </div>
-    <div class="radio-card">
-        <div class="radio-header">🔴 EN VIVO • RADIO DIBLU 88.9 FM</div>
-        <audio controls preload="none" style="width:100%;">
-            <source src="https://streamingecuador.net:9002/stream" type="audio/mpeg">
-        </audio>
-    </div>
+    <section class="radio-worldcup">
+        <div class="radio-card">
+            <div class="radio-header">🔴 EN VIVO • RADIO DIBLU 88.9 FM</div>
+            <audio controls preload="none" style="width:100%;">
+                <source src="https://streamingecuador.net:9002/stream" type="audio/mpeg">
+            </audio>
+        </div>
+    </section>
     <div class="matches-container" id="matches-container"></div>
 </section>
 
-<!-- CATÁLOGO COMPLETO REINTEGRADO -->
 <section class="products" id="streaming">
     <div class="section-header">
-        <span class="section-badge">🎬 STREAMING PREMIUM</span>
         <h2>Catálogo <span>Oficial</span></h2>
     </div>
     <div class="grid" id="streaming-grid">
-        <!-- Paramount+ -->
-        <div class="card brand-paramount">
-            <span class="card-badge">⚽ IDEAL MUNDIAL</span>
-            <div class="card-icon"><i class="fas fa-mountain"></i></div>
-            <h3>PARAMOUNT+</h3>
-            <p class="card-desc">Acceso a películas, series y deportes.</p>
-            <select class="plan-select" id="paramount-select" onchange="updateDropdownPrice(this)">
-                <option value="5" data-usd="5">1 Mes - $5 USD</option>
-            </select>
-            <div class="price-container">
-                <div class="local-price current-currency-label" data-usd="5">$5.00</div>
-            </div>
-            <div class="card-buttons">
-                <button class="btn btn-buy" onclick="buyNow('Paramount+ 1 Mes', 5)"><i class="fab fa-whatsapp"></i> Comprar</button>
-                <button class="btn btn-cart" onclick="addDropdownToCart('PARAMOUNT+', 'paramount-select')"><i class="fas fa-cart-plus"></i> + Carrito</button>
-            </div>
-        </div>
-
-        <!-- Disney+ Premium -->
-        <div class="card brand-disney">
-            <span class="card-badge">⭐ RECOMENDADO</span>
-            <div class="card-icon"><i class="fas fa-magic"></i></div>
-            <h3>DISNEY+ PREMIUM</h3>
-            <p class="card-desc">Todo Disney, Pixar, Marvel y ESPN.</p>
-            <select class="plan-select" id="disney-select" onchange="updateDropdownPrice(this)">
-                <option value="5" data-usd="5">1 Mes - $5 USD</option>
-            </select>
-            <div class="price-container">
-                <div class="local-price current-currency-label" data-usd="5">$5.00</div>
-            </div>
-            <div class="card-buttons">
-                <button class="btn btn-buy" onclick="buyNow('Disney+ Premium 1 Mes', 5)"><i class="fab fa-whatsapp"></i> Comprar</button>
-                <button class="btn btn-cart" onclick="addDropdownToCart('DISNEY+ PREMIUM', 'disney-select')"><i class="fas fa-cart-plus"></i> + Carrito</button>
-            </div>
-        </div>
-
-        <!-- DIRECTV GO -->
-        <div class="card brand-directv">
-            <span class="card-badge">💎 PREMIUM</span>
-            <div class="card-icon"><i class="fas fa-satellite-dish"></i></div>
-            <h3>DIRECTV GO</h3>
-            <p class="card-desc">104 partidos del Mundial 2026.</p>
-            <select class="plan-select" id="directv-select" onchange="updateDropdownPrice(this)">
-                <option value="15" data-usd="15">1 Dispositivo - $15 USD</option>
-                <option value="25" data-usd="25">Cuenta Completa - $25 USD</option>
-            </select>
-            <div class="price-container">
-                <div class="local-price current-currency-label" data-usd="15">$15.00</div>
-            </div>
-            <div class="card-buttons">
-                <button class="btn btn-buy" onclick="buyNowDropdown('DIRECTV GO', 'directv-select')"><i class="fab fa-whatsapp"></i> Comprar</button>
-                <button class="btn btn-cart" onclick="addDropdownToCart('DIRECTV GO', 'directv-select')"><i class="fas fa-cart-plus"></i> + Carrito</button>
-            </div>
-        </div>
-
         <!-- Netflix -->
         <div class="card brand-netflix">
             <span class="card-badge">🔥 MÁS VENDIDO</span>
             <div class="card-icon"><i class="fas fa-film"></i></div>
-            <h3>NETFLIX</h3>
+            <h3>NETFLIX COMPARTIDO</h3>
             <select class="plan-select" id="netflix-comp-select" onchange="updateDropdownPrice(this)">
                 <option value="4" data-usd="4">1 Mes - $4 USD</option>
                 <option value="12" data-usd="12">3 Meses - $12 USD</option>
@@ -157,77 +121,48 @@
                 <button class="btn btn-cart" onclick="addDropdownToCart('NETFLIX', 'netflix-comp-select')"><i class="fas fa-cart-plus"></i> + Carrito</button>
             </div>
         </div>
-    </div>
-</section>
-
-<!-- SECCIÓN IPTV -->
-<section class="products" id="iptv">
-    <div class="section-header">
-        <h2>IPTV <span>Premium</span></h2>
-    </div>
-    <div class="grid">
-        <div class="card brand-iptv featured">
+        <!-- Disney+ -->
+        <div class="card brand-disney">
             <span class="card-badge">⭐ RECOMENDADO</span>
-            <div class="card-icon"><i class="fas fa-satellite-dish"></i></div>
-            <h3>IPTV PREMIUM</h3>
-            <select class="plan-select" id="iptvp-select" onchange="updateDropdownPrice(this)">
-                <option value="5" data-usd="5">1 Dispositivo - $5 USD</option>
-                <option value="10" data-usd="10">2 Dispositivos - $10 USD</option>
+            <div class="card-icon"><i class="fas fa-magic"></i></div>
+            <h3>DISNEY+ PREMIUM</h3>
+            <select class="plan-select" id="disney-select" onchange="updateDropdownPrice(this)">
+                <option value="5" data-usd="5">1 Mes - $5 USD</option>
             </select>
             <div class="price-container">
                 <div class="local-price current-currency-label" data-usd="5">$5.00</div>
             </div>
             <div class="card-buttons">
-                <button class="btn btn-buy" onclick="buyNowDropdown('IPTV Premium', 'iptvp-select')"><i class="fab fa-whatsapp"></i> Comprar Ahora</button>
-                <button class="btn btn-cart" onclick="addDropdownToCart('IPTV PREMIUM', 'iptvp-select')"><i class="fas fa-cart-plus"></i> + Carrito</button>
+                <button class="btn btn-buy" onclick="buyNow('Disney+ Premium 1 Mes', 5)"><i class="fab fa-whatsapp"></i> Comprar</button>
+                <button class="btn btn-cart" onclick="addDropdownToCart('DISNEY+ PREMIUM', 'disney-select')"><i class="fas fa-cart-plus"></i> + Carrito</button>
             </div>
         </div>
     </div>
 </section>
 
-<section class="contact-section" id="contacto">
-    <div class="section-header">
-        <h2>Formulario <span>Contacto</span></h2>
-    </div>
-    <form class="contact-form" onsubmit="submitContactForm(event)">
-        <div class="form-row">
-            <input type="text" id="contact-name" placeholder="Nombre" required>
-            <input type="text" id="contact-phone" placeholder="Celular" required>
-        </div>
-        <textarea id="contact-msg" placeholder="Mensaje" required></textarea>
-        <button type="submit" class="btn btn-whatsapp" style="width:100%"><i class="fab fa-whatsapp"></i> ENVIAR</button>
-    </form>
-</section>
-
-<!-- CARRITO SIDEBAR (Shopify Style) -->
 <div class="cart-sidebar" id="cart-sidebar">
     <div class="cart-header">
-        <h3>🛒 Tu Pedido</h3>
-        <button onclick="toggleCart()" class="close-cart"><i class="fas fa-times"></i></button>
+        <h3>🛒 Tu Carrito</h3>
+        <button onclick="toggleCart()"><i class="fas fa-times"></i></button>
     </div>
-    <div id="cart-items" class="cart-body"></div>
-    <div class="cart-footer" id="cart-totals-section">
-        <div class="coupon-area">
-            <input type="text" id="coupon-code" placeholder="Cupón">
-            <button onclick="applyCoupon()">Validar</button>
-        </div>
-        <div class="cart-row total"><span>Total:</span><span id="cart-total-local">$0.00</span></div>
-        <button class="btn btn-whatsapp btn-block" onclick="processCheckout()">FINALIZAR POR WHATSAPP</button>
-        
-        <div class="bank-info">
-            <h4>Pichincha: 2205375908</h4>
-            <button onclick="copyToClipboard('2205375908')" class="btn-copy">Copiar Cuenta</button>
+    <div id="cart-items"></div>
+    <div class="cart-totals" id="cart-totals-section" style="display: none;">
+        <div class="cart-row"><span>Total:</span><span id="cart-total-local">$0.00</span></div>
+        <button class="btn btn-whatsapp btn-block" onclick="processCheckout()">Finalizar Pedido</button>
+        <div class="cart-bank-info">
+            <h4>Métodos de Pago</h4>
+            <p>Pichincha: 2205375908</p>
+            <p>Guayaquil: 0013647475</p>
         </div>
     </div>
 </div>
 
 <div class="floating-buttons-container">
     <a href="https://wa.me/593939166222" target="_blank" class="float-btn float-whatsapp"><i class="fab fa-whatsapp"></i></a>
-    <a href="https://t.me/streamid" target="_blank" class="float-btn float-telegram"><i class="fab fa-telegram-plane"></i></a>
 </div>
 
 <div id="toast-container"></div>
+<script src="./script.js"></script>
 
-<script src="script.js"></script>
 </body>
 </html>
