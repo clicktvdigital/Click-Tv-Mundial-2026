@@ -1,99 +1,270 @@
-/* ================= AMAZON PRO CART (CLEAN FIX) ================= */
 
+/* ========================================== */
+/* AMAZON PRO UI — CLEAN FINAL CSS */
+/* ========================================== */
+
+/* ================= VARIABLES ================= */
+:root {
+    --bg-dark: #050505;
+    --bg-card: #111111;
+    --primary: #E50914;
+    --gold: #FFC107;
+    --text: #fff;
+    --text-soft: #aaa;
+    --border: rgba(255,255,255,0.1);
+    --shadow: 0 10px 30px rgba(0,0,0,0.6);
+
+    --whatsapp: #25D366;
+    --telegram: #0088cc;
+}
+
+/* ================= RESET ================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background: var(--bg-dark);
+    color: var(--text);
+    overflow-x: hidden;
+    line-height: 1.5;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+/* ================= TOP BAR ================= */
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 5%;
+    font-size: 13px;
+    border-bottom: 1px solid var(--border);
+}
+
+/* ================= HEADER ================= */
+header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 5%;
+    background: rgba(5,5,5,0.9);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+}
+
+.logo {
+    font-weight: 800;
+    font-size: 22px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 18px;
+}
+
+.nav-links a {
+    font-size: 13px;
+    transition: 0.3s;
+}
+
+.nav-links a:hover {
+    color: var(--gold);
+}
+
+/* ================= HERO ================= */
+.hero {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 60px 5%;
+    background: #0a0a0a;
+}
+
+.hero h1 {
+    font-size: clamp(2rem, 5vw, 4rem);
+}
+
+.hero h1 span {
+    color: var(--gold);
+}
+
+.hero p {
+    color: var(--text-soft);
+    margin: 20px 0;
+}
+
+/* ================= BUTTONS ================= */
+.btn {
+    padding: 12px 18px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: #fff;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+}
+
+.btn-gold {
+    background: var(--gold);
+    color: #000;
+}
+
+/* ================= SECTIONS ================= */
+section {
+    padding: 60px 5%;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.section-header h2 {
+    font-size: 2rem;
+}
+
+.section-header h2 span {
+    color: var(--gold);
+}
+
+/* ================= GRID ================= */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 18px;
+}
+
+/* ================= CARDS ================= */
+.card {
+    background: var(--bg-card);
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+/* ================= PRICES ================= */
+.local-price {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: var(--gold);
+}
+
+/* ================= CART ================= */
 .cart-sidebar {
     position: fixed;
     top: 0;
     right: -420px;
     width: 360px;
     height: 100vh;
-    background: #0d0d0d;
-    color: #fff;
-    z-index: 9999;
+    background: #0b0b0b;
     padding: 20px;
+    transition: 0.3s;
     overflow-y: auto;
-    transition: right 0.3s ease;
-    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.6);
+    z-index: 9999;
 }
 
 .cart-sidebar.active {
     right: 0;
 }
 
-/* HEADER */
-.cart-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    padding-bottom: 15px;
-    margin-bottom: 15px;
-}
-
-.cart-header button {
-    background: transparent;
-    border: none;
-    color: white;
-    font-size: 20px;
-}
-
-/* ITEMS */
 .cart-item {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    background: #111;
-    padding: 12px;
+    background: #151515;
+    padding: 10px;
     margin-bottom: 10px;
     border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* EMPTY */
-#cart-empty {
-    text-align: center;
-    color: #888;
-    margin-top: 20px;
+/* ================= MOBILE ================= */
+.menu-toggle {
+    display: none;
 }
 
-/* TOTALS */
-.cart-totals {
-    background: #111;
-    padding: 15px;
-    border-radius: 10px;
-    margin-top: 15px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+@media (max-width: 1024px) {
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
-.cart-row {
-    display: flex;
-    justify-content: space-between;
-    margin: 8px 0;
+@media (max-width: 768px) {
+
+    .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: #000;
+        flex-direction: column;
+        padding: 15px;
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .cart-sidebar {
+        width: 100%;
+    }
+
+    .hero {
+        padding: 40px 5%;
+    }
+
+    .hero h1 {
+        font-size: 2rem;
+    }
 }
 
-.cart-row.total {
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    margin-top: 10px;
-    padding-top: 10px;
-    font-weight: bold;
-    color: #FFC107;
-    font-size: 18px;
-}
+@media (max-width: 480px) {
 
-/* CHECKOUT BUTTON */
-.checkout-btn {
-    width: 100%;
-    padding: 14px;
-    background: #25D366;
-    color: #000;
-    font-weight: bold;
-    border-radius: 10px;
-    border: none;
-    cursor: pointer;
-    margin-top: 10px;
-}
+    .hero h1 {
+        font-size: 1.6rem;
+    }
 
-/* SCROLL FIX */
-.cart-sidebar {
-    max-height: 100vh;
-    overflow-y: auto;
-}
+   
