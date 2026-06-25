@@ -316,8 +316,9 @@ header {
 #catalog-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 18px;
-    padding: 20px 0;
+    gap: 20px;
+    padding-bottom: 80px;
+    /* 👈 evita que botones flotantes tapen contenido */
 }
 
 /* ================= CARD ================= */
@@ -460,6 +461,7 @@ header {
 /* ================= FLOATING BUTTONS ================= */
 
 
+
 .floating-buttons {
     position: fixed;
     right: 15px;
@@ -467,9 +469,10 @@ header {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    z-index: 99999;
+    z-index: 999999;
 }
 
+/* BOTONES CIRCULARES */
 .floating-buttons a {
     width: 52px;
     height: 52px;
@@ -478,19 +481,16 @@ header {
     align-items: center;
     justify-content: center;
     color: white;
-    font-size: 18px;
+    text-decoration: none;
     box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-    transition: 0.2s;
 }
 
-.floating-buttons a:hover {
-    transform: scale(1.1);
-}
-
+/* WHATSAPP */
 .floating-buttons a:nth-child(1) {
     background: #25D366;
 }
 
+/* TELEGRAM */
 .floating-buttons a:nth-child(2) {
     background: #0088cc;
 }
@@ -634,26 +634,36 @@ button:hover {
     transition: 0.2s;
 }
 
+
 .card {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
 }
 
-/* cada línea de plan bien separada */
+/* CONTENEDOR DE BOTONES */
 .card button {
-    display: block;
     width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
 }
 
-/* mejora visual de separación de texto */
+/* BOTÓN CARRITO */
+.card button:first-of-type {
+    background: #E50914;
+    color: white;
+}
+
+/* BOTÓN COMPRAR */
+.card button:last-of-type {
+    background: #FFC107;
+    color: black;
+}
+
+/* SEPARACIÓN VISUAL POR BLOQUE */
 .card h4 {
     margin-bottom: 8px;
-}
-
-/* separa precio + botones */
-.plan-line {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
 }
