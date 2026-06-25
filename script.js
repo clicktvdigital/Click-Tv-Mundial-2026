@@ -61,12 +61,17 @@ function renderProducts(array) {
 }
 
 // Filtrado
-function filterProducts(category) {
+function filterProducts(category, e) {
+    
     const btns = document.querySelectorAll('.filter-btn');
     btns.forEach(b => b.classList.remove('active'));
-    event.target.classList.add('active');
-
-    if(category === 'all') return renderProducts(PRODUCTS);
+    
+    if (e && e.target) {
+        e.target.classList.add('active');
+    }
+    
+    if (category === 'all') return renderProducts(PRODUCTS);
+    
     const filtered = PRODUCTS.filter(p => p.category === category);
     renderProducts(filtered);
 }
@@ -83,31 +88,31 @@ function addToCart(id) {
 }
 
 function updateCartUI() {
+
     const list = document.getElementById('cart-items');
     const count = document.getElementById('cart-count');
     const total = document.getElementById('cart-total');
-    
-    count.innerText = cart.length;
-    
+
+    if (!list) return;
+
     let totalValue = 0;
+
     list.innerHTML = cart.map((item, index) => {
         totalValue += item.price;
-        return `
-            <div class="cart-item">
-                <div>
-                    <strong>${item.name}</strong><br>
-                    <small>$${item.price.toFixed(2)}</small>
-                </div>
-                <button onclick="removeFromCart(${index})" style="background:none; border:none; color:red; cursor:pointer;">
-                    <i class="fas fa-trash"></i>
-                </button>
-            </div>
-        `;
-    }).join('');
-    
-    total.innerText = `$${totalValue.toFixed(2)}`;
-}
 
+        return `
+        <div class="cart-item">
+            <div>
+                <strong>${item.name}</strong><br>
+                <small>$${item.price.toFixed(2)}</small>
+            </div>
+            <button onclick="removeFromCart(${index})">🗑</button>
+        </div>`;
+    }).join('');
+
+    if (count) count.innerText = cart.length;
+    if (total) total.innerText = `$${totalValue.toFixed(2)}`;
+}
 function removeFromCart(index) {
     cart.splice(index, 1);
     localStorage.setItem('clicktv_cart', JSON.stringify(cart));
@@ -120,19 +125,30 @@ function toggleCart() {
 
 // Calculadora
 function updateSavings() {
+
     const select = document.getElementById('calc-service');
-    const official = parseFloat(select.options[select.selectedIndex].dataset.official);
-    const internal = parseFloat(select.value);
-    
+    if (!select) return;
+
+    const opt = select.options[select.selectedIndex];
+
+    const official = parseFloat(opt?.dataset?.official || 0);
+    const internal = parseFloat(opt?.value || 0);
+
+    if (!official) return;
+
     const saved = official - internal;
     const percent = Math.round((saved / official) * 100);
 
-    document.getElementById('official-price').innerText = `$${official.toFixed(2)}`;
-    document.getElementById('internal-price').innerText = `$${internal.toFixed(2)}`;
-    document.getElementById('saved-price').innerText = `$${saved.toFixed(2)}`;
-    document.getElementById('saved-percent').innerText = `${percent}% AHORRO`;
-}
+    const off = document.getElementById('official-price');
+    const ins = document.getElementById('internal-price');
+    const sav = document.getElementById('saved-price');
+    const per = document.getElementById('saved-percent');
 
+    if (off) off.innerText = `$${official.toFixed(2)}`;
+    if (ins) ins.innerText = `$${internal.toFixed(2)}`;
+    if (sav) sav.innerText = `$${saved.toFixed(2)}`;
+    if (per) per.innerText = `${percent}% AHORRO`;
+}
 // Checkout WhatsApp
 function buyNow(name, price) {
     const msg = encodeURIComponent(`Hola Click TV! 👋 Deseo comprar de inmediato: *${name}* ($${price.toFixed(2)}). ¿Me dan los datos de pago?`);
