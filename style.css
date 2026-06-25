@@ -187,21 +187,17 @@ body { background: var(--bg); color: var(--text); overflow-x: hidden; scroll-beh
     .cart-sidebar { width: 100%; }
 }
 
-/* ================= RADIO CARD ================= */
+
+/* ================= RADIO + TELEAMAZONAS CARD ================= */
+
 .radio-box,
-
-.tv-live-box .btn {
-    display: inline-block;
-    padding: 12px 16px;
-    border-radius: 10px;
-    background: #FFC107;
-    color: black;
-    font-weight: bold;
-    transition: 0.2s;
-}
-
-.tv-live-box .btn:hover {
-    transform: scale(1.05);
+.tv-live-box {
+    background: linear-gradient(145deg, #0f0f0f, #0b0b0b);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 18px;
+    margin-top: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
 }
 
 /* TITULOS */
@@ -220,8 +216,24 @@ body { background: var(--bg); color: var(--text); overflow-x: hidden; scroll-beh
     margin-bottom: 10px;
 }
 
+/* AUDIO PLAYER */
 audio {
     width: 100%;
     border-radius: 10px;
     margin-top: 10px;
+}
+
+/* BOTÓN TELEAMAZONAS */
+.tv-live-box .btn {
+    display: inline-block;
+    padding: 12px 16px;
+    border-radius: 10px;
+    background: #FFC107;
+    color: black;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.tv-live-box .btn:hover {
+    transform: scale(1.05);
 }
