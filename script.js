@@ -1,3 +1,10 @@
+<script>
+window.onerror = function(message, source, lineno, colno, error) {
+    console.log("⚠️ Error capturado:", message);
+    return true; // evita crash total
+};
+</script>
+
 // Configuración de Backend (Supabase)
 const SUPABASE_URL = 'TU_SUPABASE_URL';
 const SUPABASE_KEY = 'TU_SUPABASE_KEY';
@@ -162,3 +169,55 @@ function renderComments() {
         </div>
     `).join('');
 }
+function updateDropdownPrice(select) {
+    const opt = select.options[select.selectedIndex];
+    const price = opt.getAttribute("data-usd");
+
+    const card = select.closest(".card");
+    if (!card) return;
+
+    const priceLabel = card.querySelector(".local-price");
+    if (priceLabel) {
+        priceLabel.innerText = `$${price}.00`;
+    }
+}
+function startOnlineCounter() {
+    const el = document.getElementById("online-count");
+    if (!el) return;
+
+    setInterval(() => {
+        let base = 540;
+        let random = Math.floor(Math.random() * 20);
+        el.innerText = base + random;
+    }, 4000);
+}
+function detectUserCountry() {
+    const el = document.getElementById("user-location");
+    if (!el) return;
+
+    fetch("https://ipapi.co/json/")
+        .then(res => res.json())
+        .then(data => {
+            el.innerText = data.country_name || "LATAM";
+        })
+        .catch(() => {
+            el.innerText = "LATAM";
+        });
+}
+function renderMatches() {
+    const container = document.getElementById("matches-container");
+    if (!container) return;
+
+    container.innerHTML = `
+        <div class="match-card">
+            <h3>⚽ Partido en vivo</h3>
+            <p>Actualización automática activada</p>
+        </div>
+    `;
+}
+document.addEventListener("DOMContentLoaded", () => {
+    try { updateCartUI(); } catch(e){}
+    try { detectUserCountry(); } catch(e){}
+    try { startOnlineCounter(); } catch(e){}
+    try { renderMatches(); } catch(e){}
+});

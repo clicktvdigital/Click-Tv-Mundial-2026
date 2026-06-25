@@ -115,7 +115,7 @@
         <div class="media-container">
             <div class="radio-card">
                 <h3><i class="fas fa-broadcast-tower"></i> Radio Diblu 88.9 FM</h3>
-                <audio controls preload="none">
+                <audio controls preload="none" playsinline>
                     <source src="https://streamingecuador.net:9002/stream" type="audio/mpeg">
                 </audio>
             </div>
@@ -170,8 +170,16 @@
     <a href="#inicio" class="fab-item top"><i class="fas fa-chevron-up"></i></a>
 </div>
 
-<!-- Scripts -->
+<!-- Scripts seguros (ORDEN CORRECTO) -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-<script src="script.js"></script>
+
+<script>
+window.addEventListener("load", function () {
+    console.log("🚀 CLICK TV SYSTEM LOADED SAFE MODE");
+});
+</script>
+
+<script src="script.js?v=shopify-safe"></script>
+    
 </body>
 </html>
