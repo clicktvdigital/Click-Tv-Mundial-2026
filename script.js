@@ -132,6 +132,31 @@ function toggleMenu() {
     document.getElementById("nav-links")?.classList.toggle("active");
 }
 
+// ================= CALCULADORA PRO =================
+function calculateSavings(){
+
+    const select = document.getElementById("calc-service");
+    if(!select) return;
+
+    const opt = select.options[select.selectedIndex];
+
+    const official = parseFloat(opt.dataset.official);
+    const click = parseFloat(opt.dataset.click);
+
+    if(isNaN(official) || isNaN(click)) return;
+
+    const savings = official - click;
+    const percent = Math.round((savings / official) * 100);
+
+    const offEl = document.getElementById("calc-official");
+    const clickEl = document.getElementById("calc-click");
+    const saveEl = document.getElementById("calc-savings");
+
+    if(offEl) offEl.innerText = `$${official}`;
+    if(clickEl) clickEl.innerText = `$${click}`;
+    if(saveEl) saveEl.innerText = `$${savings} (${percent}%)`;
+}
+
 function changeCurrency(cur) {
     currentCurrency = cur;
     currentRate = window.rates[cur] || 1;

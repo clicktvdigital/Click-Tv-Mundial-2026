@@ -366,3 +366,73 @@ section {
 .floating-buttons a:nth-child(2){
     background: #0088cc;
 }
+:root{
+    --bg:#050505;
+    --card:#111;
+    --gold:#FFC107;
+    --red:#E50914;
+    --blue:#0088cc;
+    --green:#25D366;
+}
+
+/* CALCULADORA */
+#ahorro{
+    background: var(--bg);
+    padding: 40px 20px;
+}
+
+.calc-results{
+    display:grid;
+    grid-template-columns: repeat(3,1fr);
+    gap:15px;
+    margin-top:20px;
+}
+
+.calc-results div{
+    background: var(--card);
+    padding:20px;
+    border-radius:12px;
+    text-align:center;
+    border:1px solid rgba(255,255,255,0.1);
+}
+
+.calc-results h3{
+    color: var(--gold);
+}
+
+/* BOTONES FLOTA */
+.floating-buttons{
+    position:fixed;
+    right:20px;
+    bottom:20px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    z-index:9999;
+}
+
+.floating-buttons a{
+    width:55px;
+    height:55px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:white;
+    text-decoration:none;
+}
+
+.floating-buttons a:nth-child(1){background:var(--green);}
+.floating-buttons a:nth-child(2){background:var(--blue);}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+    .calc-results{
+        grid-template-columns:1fr;
+    }
+
+    .floating-buttons{
+        right:10px;
+        bottom:10px;
+    }
+}
