@@ -36,15 +36,15 @@ a {
 }
 
 /* ================= TOP BAR ================= */
+
 .top-bar {
+    background: #0b0b0b;
+    padding: 10px 15px;
+    font-size: 13px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 20px;
-    background: #0b0b0b;
-    border-bottom: 1px solid var(--border);
-    font-size: 13px;
-    color: var(--soft);
 }
 
 /* ================= HEADER ================= */
@@ -293,77 +293,94 @@ header {
 }
 
 /* TITULO */
+
 #catalogo h2 {
     text-align: center;
-    font-size: 28px;
+    font-size: 32px;
+    font-weight: 800;
     margin-bottom: 30px;
+    color: #fff;
+}
+
+#catalogo h3 {
+    grid-column: 1 / -1;
+    font-size: 18px;
+    margin: 20px 0 10px;
+    color: #E50914;
+    font-weight: 700;
 }
 
 /* ================= GRID REAL (IMPORTANTE) ================= */
 /* AHORA USA catalog-container en vez de catalog-grid */
+
 #catalog-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 20px;
-    margin-top: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 18px;
+    padding: 20px 0;
 }
 
 /* ================= CARD ================= */
+
+/* ================= AMAZON PRO CARDS ================= */
 .card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 15px;
-    transition: 0.3s ease;
+    background: linear-gradient(145deg, #111, #0c0c0c);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 18px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    transition: all 0.25s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
-/* hover pro */
 .card:hover {
-    transform: translateY(-5px);
-    border-color: var(--gold);
+    transform: translateY(-6px);
+    border-color: #E50914;
+    box-shadow: 0 15px 35px rgba(229,9,20,0.25);
 }
 
 /* TITULO PRODUCTO */
 .card h4 {
-    margin-bottom: 10px;
-    font-size: 16px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
 }
 
+/* PRECIO TEXTO */
+.card span {
+    font-size: 14px;
+    color: #aaa;
+}
 
-/* ================= BOTONES LIMPIOS GLOBAL ================= */
-button {
-    font-family: inherit;
-    border: none;
+/* ================= BOTONES AMAZON STYLE ================= */
+.card button {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    font-weight: 600;
     cursor: pointer;
-    transition: all 0.25s ease;
+    border: none;
+    transition: all 0.2s ease;
 }
 
-/* ================= BOTON CARRITO ================= */
+/* BOTON CARRITO */
 .card button:first-of-type {
     background: linear-gradient(135deg, #E50914, #b00610);
     color: white;
-    padding: 10px;
-    border-radius: 10px;
-    margin-top: 8px;
-    font-weight: bold;
-    box-shadow: 0 4px 10px rgba(229,9,20,0.3);
 }
 
-/* ================= BOTON COMPRA ================= */
+/* BOTON COMPRA */
 .card button:last-of-type {
     background: linear-gradient(135deg, #FFC107, #ffb300);
     color: black;
-    padding: 10px;
-    border-radius: 10px;
-    margin-top: 6px;
-    font-weight: bold;
-    box-shadow: 0 4px 10px rgba(255,193,7,0.3);
 }
 
-/* ================= HOVER PRO ================= */
+/* HOVER BOTONES */
 .card button:hover {
-    transform: translateY(-2px) scale(1.02);
-    filter: brightness(1.05);
+    transform: scale(1.03);
+    opacity: 0.95;
 }
 /* ================= RESEÑAS ================= */
 .reviews {
@@ -442,6 +459,7 @@ button {
 
 /* ================= FLOATING BUTTONS ================= */
 
+
 .floating-buttons {
     position: fixed;
     right: 15px;
@@ -452,34 +470,29 @@ button {
     z-index: 99999;
 }
 
-/* BOTONES CIRCULARES LIMPIOS */
-.floating-buttons a,
-.floating-buttons button {
-    width: 55px;
-    height: 55px;
+.floating-buttons a {
+    width: 52px;
+    height: 52px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    text-decoration: none;
     color: white;
-    font-size: 14px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+    font-size: 18px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    transition: 0.2s;
 }
 
-/* WHATSAPP */
+.floating-buttons a:hover {
+    transform: scale(1.1);
+}
+
 .floating-buttons a:nth-child(1) {
     background: #25D366;
 }
 
-/* TELEGRAM */
 .floating-buttons a:nth-child(2) {
     background: #0088cc;
-}
-
-/* TOP BUTTON */
-.floating-buttons button {
-    background: #444;
 }
 /* ================= ANIMACIONES GLOBALES ================= */
 .card, .review-card {
