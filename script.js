@@ -1,5 +1,6 @@
-// ================= AMAZON PRO ENGINE (CLEAN VERSION) =================
+// ================= AMAZON PRO ENGINE (CLEAN FINAL) =================
 
+// ---------- GLOBAL STATE ----------
 let countdownIntervals = [];
 let cart = [];
 let currentCurrency = 'USD';
@@ -10,10 +11,10 @@ window.rates = window.rates || { USD: 1 };
 
 const WPP_NUMBER = "593939166222";
 
+// ---------- CURRENCY MAP ----------
 const currencyMap = {
-    'EC': 'USD', 'US': 'USD', 'SV': 'USD', 'PA': 'USD',
-    'PE': 'PEN', 'CO': 'COP', 'AR': 'ARS', 'CL': 'CLP',
-    'MX': 'MXN'
+    EC: 'USD', US: 'USD', SV: 'USD', PA: 'USD',
+    PE: 'PEN', CO: 'COP', AR: 'ARS', CL: 'CLP', MX: 'MXN'
 };
 
 // ================= INIT =================
@@ -26,7 +27,7 @@ async function initApp() {
             if (el) el.innerText = 'Latinoamérica';
         });
 
-        fetchWorldCupMatches().catch(console.error);
+        fetchWorldCupMatches();
 
         updateCartUI();
         applyCurrencyUpdate();
@@ -36,21 +37,30 @@ async function initApp() {
     }
 }
 
-// ================= EXCHANGE =================
+// ================= EXCHANGE RATES =================
 async function fetchExchangeRates() {
-    window.rates = { USD: 1, PEN: 3.80, COP: 4000, ARS: 1000, CLP: 950, MXN: 17 };
+    window.rates = {
+        USD: 1,
+        PEN: 3.80,
+        COP: 4000,
+        ARS: 1000,
+        CLP: 950,
+        MXN: 17
+    };
 }
 
+// ================= GEO (SAFE) =================
 function detectUserCountry() {
     return fetch('https://ipapi.co/json/')
         .then(r => r.json())
         .then(d => {
             const el = document.getElementById('user-location');
             if (el) el.innerText = `🌎 ${d.country_name}`;
-        });
+        })
+        .catch(() => {});
 }
 
-// ================= MONEY =================
+// ================= FORMAT MONEY =================
 function formatMoney(amount, currency) {
     const v = Number(amount);
 
@@ -65,34 +75,29 @@ function formatMoney(amount, currency) {
     }
 }
 
-// ================= CURRENCY =================
+// ================= CURRENCY ENGINE =================
 function applyCurrencyUpdate() {
-    
+
     if (currencyUpdating) return;
     currencyUpdating = true;
-    
-    if (!window.rates) {
-        window.rates = { USD: 1 };
-    }
-    
+
     currentRate = window.rates[currentCurrency] || 1;
-    
+
     document.querySelectorAll('.local-price').forEach(el => {
-        
         const usd = parseFloat(el.dataset.usd);
-        
-        if (isNaN(usd)) return;
-        
-        el.innerText = formatMoney(usd * currentRate, currentCurrency);
+        if (!isNaN(usd)) {
+            el.innerText = formatMoney(usd * currentRate, currentCurrency);
+        }
     });
-    
+
     updateCartUI();
-    
-    setTimeout(() => currencyUpdating = false, 100);
+
+    setTimeout(() => currencyUpdating = false, 80);
 }
 
 // ================= CART CORE =================
 function addToCart(name, priceUSD) {
+
     if (!name || isNaN(priceUSD)) return;
 
     const item = cart.find(i => i.name === name);
@@ -106,25 +111,26 @@ function addToCart(name, priceUSD) {
     if (sidebar) sidebar.classList.add('active');
 }
 
+// ================= CART UI =================
 function updateCartUI() {
-    
+
     const container = document.getElementById("cart-items");
     const count = document.getElementById("cart-count");
     const empty = document.getElementById("cart-empty");
     const totals = document.getElementById("cart-totals-section");
     const subtotal = document.getElementById("cart-subtotal-local");
     const total = document.getElementById("cart-total-local");
-    
+
     if (!container) return;
-    
+
     let html = "";
     let totalItems = 0;
     let totalUSD = 0;
-    
+
     cart.forEach(item => {
         totalItems += item.qty;
         totalUSD += item.priceUSD * item.qty;
-        
+
         html += `
             <div class="cart-item">
                 <b>${item.name}</b>
@@ -132,46 +138,43 @@ function updateCartUI() {
             </div>
         `;
     });
-    
+
     container.innerHTML = html;
-    
-    // EMPTY STATE CONTROL PERFECTO
+
+    // EMPTY STATE
     if (cart.length === 0) {
-        
         if (empty) empty.style.display = "block";
         if (totals) totals.style.display = "none";
-        
     } else {
-        
         if (empty) empty.style.display = "none";
         if (totals) totals.style.display = "block";
-        
     }
-    
-    // TOTALS (IMPORTANTE)
+
+    // TOTALS
     if (subtotal) subtotal.innerText = `$${totalUSD.toFixed(2)}`;
     if (total) total.innerText = `$${totalUSD.toFixed(2)}`;
-    
-    // COUNTER SAFE
+
+    // COUNT
     if (count) count.innerText = totalItems;
 }
-// ================= DROPDOWN =================
+
+// ================= DROPDOWN CART =================
 function addDropdownToCart(baseName, selectId) {
-    
+
     const select = document.getElementById(selectId);
     if (!select) return;
-    
+
     const opt = select.options[select.selectedIndex];
     if (!opt) return;
-    
-    const price = parseFloat(opt.dataset.usd || "0");
-    
-    if (isNaN(price) || price <= 0) return;
-    
+
+    const price = parseFloat(opt.dataset.usd);
+    if (isNaN(price)) return;
+
     const label = opt.text.split('-')[0].trim();
-    
+
     addToCart(`${baseName} - ${label}`, price);
 }
+
 // ================= BUY NOW =================
 function buyNow(name, priceUSD) {
 
@@ -189,6 +192,8 @@ function buyNowDropdown(baseName, selectId) {
     if (!select) return;
 
     const opt = select.options[select.selectedIndex];
+    if (!opt) return;
+
     const price = parseFloat(opt.dataset.usd);
     const label = opt.text.split('-')[0].trim();
 
@@ -204,8 +209,9 @@ function toggleCart() {
     document.getElementById('cart-sidebar')?.classList.toggle('active');
 }
 
-// ================= WORLD CUP (SAFE) =================
+// ================= WORLD CUP SAFE =================
 function fetchWorldCupMatches() {
+
     const container = document.getElementById('matches-container');
     if (!container) return;
 
@@ -226,4 +232,3 @@ function fetchWorldCupMatches() {
 
 // ================= START =================
 window.addEventListener('DOMContentLoaded', initApp);
-
