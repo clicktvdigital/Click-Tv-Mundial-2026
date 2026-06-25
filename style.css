@@ -337,3 +337,32 @@ section {
     left:20px;
     z-index:9999;
 }
+
+.floating-buttons{
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 99999;
+}
+
+.floating-buttons a{
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #25D366;
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+}
+
+.floating-buttons a:nth-child(2){
+    background: #0088cc;
+}
