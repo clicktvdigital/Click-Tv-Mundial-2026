@@ -744,7 +744,7 @@
     </div>
 
 </section>
-<!-- ================= AMAZON PRO: CONTACTO ================= -->
+<!-- ================= AMAZON PRO: CONTACTO (FIX CLEAN) ================= -->
 <section class="amazon-section contact" id="contacto">
 
     <div class="amazon-title">
@@ -754,7 +754,7 @@
 
     <form class="contact-form-pro"
           id="contact-form"
-          onsubmit="event.preventDefault();">
+          onsubmit="if(typeof submitContactForm==='function'){ submitContactForm(event); } else { event.preventDefault(); }">
 
         <div class="form-grid">
 
@@ -783,12 +783,11 @@
 
         </div>
 
-        <!-- BOTONES PRINCIPALES -->
         <div class="contact-actions">
 
             <button type="button"
                     class="btn-whatsapp"
-                    onclick="setContactMethod('whatsapp'); submitContactForm(event);">
+                    onclick="if(typeof setContactMethod==='function'){ setContactMethod('whatsapp'); submitContactForm(event); }">
 
                 <i class="fab fa-whatsapp"></i>
                 Enviar por WhatsApp
@@ -796,7 +795,7 @@
 
             <button type="button"
                     class="btn-telegram"
-                    onclick="setContactMethod('telegram'); submitContactForm(event);">
+                    onclick="if(typeof setContactMethod==='function'){ setContactMethod('telegram'); submitContactForm(event); }">
 
                 <i class="fab fa-telegram"></i>
                 Enviar por Telegram
@@ -807,8 +806,7 @@
     </form>
 
 </section>
-
-<!-- ================= AMAZON PRO FOOTER ================= -->
+<!-- ================= AMAZON PRO FOOTER (FIX CLEAN) ================= -->
 <footer class="amazon-footer">
 
     <div class="footer-grid">
@@ -859,11 +857,8 @@
 
     </div>
 
-    <!-- BOTTOM BAR -->
     <div class="footer-bottom">
-
         <p>© 2026 Click TV Streaming — Todos los derechos reservados</p>
-
     </div>
 
 </footer>
