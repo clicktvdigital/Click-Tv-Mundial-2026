@@ -354,3 +354,43 @@ section { padding: 60px 5%; width: 100%; box-sizing: border-box; }
     font-weight:700;
     border-radius:10px;
 }
+.cart-sidebar {
+    position: fixed;
+    top: 0;
+    right: -400px;
+    width: 360px;
+    height: 100%;
+    background: #0d0d0d;
+    color: #fff;
+    z-index: 9999;
+    padding: 20px;
+    overflow-y: auto;
+    transition: 0.3s ease;
+}
+
+.cart-sidebar.active {
+    right: 0;
+}
+
+.cart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cart-header button {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 20px;
+}
+
+.cart-totals {
+    margin-top: 20px;
+}
+
+.cart-row {
+    display: flex;
+    justify-content: space-between;
+    margin: 8px 0;
+}

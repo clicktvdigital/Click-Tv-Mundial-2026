@@ -70,7 +70,45 @@
     <link rel="stylesheet" href="responsive.css">
     
 </head>
+<!-- ================= CART SIDEBAR ================= -->
+<div class="cart-sidebar" id="cart-sidebar">
 
+    <div class="cart-header">
+        <h3>🛒 Tu Carrito</h3>
+
+        <button onclick="toggleCart()" aria-label="Cerrar">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+
+    <!-- ITEMS -->
+    <div id="cart-items"></div>
+
+    <!-- EMPTY STATE -->
+    <div id="cart-empty" style="text-align:center;color:#888;margin-top:20px;">
+        Tu carrito está vacío 🛒
+    </div>
+
+    <!-- TOTALS -->
+    <div class="cart-totals" id="cart-totals-section" style="display:none;">
+
+        <div class="cart-row">
+            <span>Subtotal:</span>
+            <span id="cart-subtotal-local">$0.00</span>
+        </div>
+
+        <div class="cart-row total">
+            <span>Total:</span>
+            <span id="cart-total-local">$0.00</span>
+        </div>
+
+        <button class="btn btn-whatsapp btn-block" onclick="processCheckout()">
+            <i class="fab fa-whatsapp"></i> Finalizar Pedido
+        </button>
+
+    </div>
+
+</div>
 <body>
 
 <!-- ===================== TOP BAR ===================== -->
