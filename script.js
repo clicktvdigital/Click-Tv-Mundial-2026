@@ -388,79 +388,26 @@ function mostrarToast(mensaje, tipo = "info") {
 const API_URL = "https://api.football-data.org/v4/matches";
 const API_KEY = "467c885c07fa49baa40ac78cf636f8b0";
 
-async function cargarPartidos() {
-  const box = document.getElementById("mundial-grid");
 
-  try {
-    const hoy = new Date().toISOString().split("T")[0];
-
-    const res = await fetch(`${API_URL}?dateFrom=${hoy}&dateTo=${hoy}`, {
-      headers: {
-        "X-Auth-Token": API_KEY
-      }
-    });
-
-    const data = await res.json();
-
-    if (!data || !data.matches) throw new Error("sin datos");
-
-    renderPartidos(data.matches);
-
-  } catch (error) {
-    console.log("API falló, usando modo offline");
-
-    // 🔥 FALLBACK LOCAL (ESTO EVITA EL ERROR)
-    renderPartidos([
-      {
-        home: "Noruega",
-        away: "Francia",
-        group: "I",
-        utcDate: "2026-06-26T20:00:00Z",
-        status: "SCHEDULED",
-        competition: { name: "World Cup 2026" }
-      },
-      {
-        home: "Senegal",
-        away: "Iraq",
-        group: "I",
-        utcDate: "2026-06-26T20:00:00Z",
-        status: "SCHEDULED",
-        competition: { name: "World Cup 2026" }
-      },
-      {
-        home: "España",
-        away: "Uruguay",
-        group: "H",
-        utcDate: "2026-06-26T23:00:00Z",
-        status: "SCHEDULED",
-        competition: { name: "World Cup 2026" }
-      }
-    ]);
-  }
-}
-
-function renderPartidos(matches) {
+function renderPartidos(data) {
   const box = document.getElementById("mundial-grid");
   if (!box) return;
 
   let html = "";
 
-  matches.forEach(grupo => {
-
-    const partidosHoy = grupo.partidos.filter(p => {
-      const fechaFinal = normalizarFecha(p.fecha, p.hora);
-      return fechaFinal && esHoyEcuador(fechaFinal);
-    });
-
-    if (partidosHoy.length === 0) return;
+  data.forEach(grupo => {
 
     html += `<h2>${grupo.grupo}</h2>`;
 
-    partidosHoy.forEach(p => {
+    grupo.partidos.forEach(p => {
 
-      const fechaFinal = normalizarFecha(p.fecha, p.hora);
+      if (!p.fechaUTC) return;
 
-      const horaEC = new Date(fechaFinal).toLocaleTimeString("es-EC", {
+      const fecha = new Date(p.fechaUTC);
+
+      if (isNaN(fecha)) return;
+
+      const horaEC = fecha.toLocaleTimeString("es-EC", {
         timeZone: "America/Guayaquil",
         hour: "2-digit",
         minute: "2-digit"
@@ -469,34 +416,13 @@ function renderPartidos(matches) {
       html += `
         <div class="match-card">
           <h3>${p.local} vs ${p.visitante}</h3>
-          <p>⏰ ${horaEC} (Ecuador)</p>
-          <p>📍 ${p.sede}</p>
+          <p>⏰ Ecuador: ${horaEC}</p>
+          <p>📍 ${p.sede || "Sin sede"}</p>
         </div>
       `;
     });
+
   });
 
-  box.innerHTML = html || "⚽ No hay partidos hoy en Ecuador";
-}
-function normalizarFecha(fecha, hora) {
-  if (!fecha) return null;
-
-  // si ya viene completa (UTC)
-  if (fecha.includes("T")) return fecha;
-
-  // si viene separada
-  if (hora) return `${fecha}T${hora}:00`;
-
-  return null;
-}
-function esHoyEcuador(fecha) {
-  const hoy = new Date().toLocaleDateString("en-CA", {
-    timeZone: "America/Guayaquil"
-  });
-
-  const f = new Date(fecha).toLocaleDateString("en-CA", {
-    timeZone: "America/Guayaquil"
-  });
-
-  return hoy === f;
+  box.innerHTML = html;
 }
