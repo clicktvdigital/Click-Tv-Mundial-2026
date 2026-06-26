@@ -1,240 +1,118 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>CLICK TV STREAMING MUNDIAL 2026</title>
-<meta name="description" content="Streaming, IPTV, Apps y Deportes para el Mundial 2026. Netflix, Disney+, HBO Max, IPTV 4K y más." />
-<link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CLICK TV MUNDIAL 2026 | Streaming Premium IPTV Mundial de Fútbol</title>
+    <meta name="description" content="Streaming Premium: Netflix, Disney+, IPTV Ultra 4K y más. Vive el Mundial 2026 con activación inmediata y pagos locales.">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="🏆 Click TV — Mundial FIFA 2026 en Vivo">
+    <meta property="og:url" content="https://click-tv-mundial.vercel.app/">
+    <meta property="og:image" content="https://click-tv-mundial.vercel.app/assets/img/banner.jpg">
+    
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- PayPal SDK -->
+    <script src="https://www.paypal.com/sdk/js?client-id=ASzNgRtmM63xQ0hRG9Lx47JyJKmva9nu4ij8ZsbAJRrAD1b1b0okUxnBtneq2xUmK6q9JuIHlXFR2T_-&currency=USD"></script>
 </head>
 <body>
 
-<!-- ============================== HEADER ============================== -->
-<header class="header">
-  <div class="header__inner">
-    <a href="#inicio" class="logo">
-      <span class="logo__icono">📡</span>
-      <span class="logo__texto">CLICK TV<span class="logo__sub">STREAMING MUNDIAL 2026</span></span>
-    </a>
-
-    <nav class="nav" id="nav-menu">
-      <a href="#catalogo" class="nav-link">Catálogo</a>
-      <a href="#mundial" class="nav-link">Mundial 2026</a>
-      <a href="#media" class="nav-link">En Vivo</a>
-      <a href="#resenas" class="nav-link">Reseñas</a>
-      <a href="#contacto" class="nav-link">Contacto</a>
-    </nav>
-
-    <div class="header__acciones">
-      <span class="pais-detectado" id="pais-detectado">📍 Detectando ubicación...</span>
-
-      <select class="selector-moneda" id="selector-moneda" aria-label="Seleccionar moneda">
-        <option value="USD">USD $</option>
-        <option value="EUR">EUR €</option>
-        <option value="MXN">MXN $</option>
-        <option value="COP">COP $</option>
-        <option value="PEN">PEN S/</option>
-        <option value="ARS">ARS $</option>
-        <option value="CLP">CLP $</option>
-      </select>
-
-      <button class="btn-icono" id="btn-abrir-carrito" aria-label="Abrir carrito">
-        🛒
-        <span class="contador-carrito" id="contador-carrito">0</span>
-      </button>
-
-      <button class="btn-icono btn-menu-movil" id="btn-menu-movil" aria-label="Abrir menú">☰</button>
+<div class="top-bar glass">
+    <div class="top-info">
+        <span id="user-location"><i class="fas fa-globe"></i> Detectando...</span>
+        <span id="user-currency"><i class="fas fa-coins"></i> USD</span>
+        <span id="online-users"><i class="fas fa-users"></i> 245 activos</span>
     </div>
-  </div>
+</div>
+
+<header class="main-header glass">
+    <a href="#" class="logo">CLICK<span>TV</span> 2026</a>
+    <nav class="nav-menu" id="nav-menu">
+        <a href="#inicio">Inicio</a>
+        <a href="#mundial">Mundial</a>
+        <a href="#streaming">Catálogo</a>
+        <a href="#pagos">Pagos</a>
+        <button onclick="toggleCart()" class="cart-btn-nav"><i class="fas fa-shopping-cart"></i> <span id="cart-count">0</span></button>
+    </nav>
+    <div class="menu-hamburguesa" onclick="toggleMobileMenu()">☰</div>
 </header>
 
-<!-- ============================== HERO ============================== -->
 <section class="hero" id="inicio">
-  <div class="hero__contenido">
-    <h1 class="hero__titulo">Todo el entretenimiento del mundo,<br />en un solo lugar</h1>
-    <p class="hero__subtitulo">
-      Streaming premium, IPTV 4K y el Mundial 2026 sin cortes. Activación inmediata, soporte real por WhatsApp.
-    </p>
-    <div class="hero__acciones">
-      <a href="#catalogo" class="btn btn-primario btn-grande">Ver catálogo 🚀</a>
-      <a href="#mundial" class="btn btn-secundario btn-grande">Mundial 2026 ⚽</a>
+    <div class="hero-content">
+        <h1>Mundial FIFA <span>2026</span></h1>
+        <p>Streaming Premium y TV Digital sin fronteras.</p>
+        <div class="hero-btns">
+            <a href="#mundial" class="btn btn-live">🔴 PARTIDOS DE HOY</a>
+            <a href="#streaming" class="btn btn-gold">VER CATÁLOGO</a>
+        </div>
     </div>
-  </div>
 </section>
 
-<!-- ============================== CATÁLOGO ============================== -->
-<section class="seccion" id="catalogo">
-  <div class="seccion__inner">
-    <h2 class="seccion__titulo">Catálogo de servicios</h2>
-    <p class="seccion__subtitulo">Elige tu plan favorito y actívalo en minutos</p>
-
-    <div class="filtros-categorias">
-      <button class="filtro-categoria activo" data-categoria="todos">Todos</button>
-      <button class="filtro-categoria" data-categoria="streaming">🎬 Streaming</button>
-      <button class="filtro-categoria" data-categoria="iptv">📡 IPTV</button>
-      <button class="filtro-categoria" data-categoria="apps">📱 Apps</button>
-      <button class="filtro-categoria" data-categoria="deportes">⚽ Deportes</button>
+<!-- Sección Mundial -->
+<section id="mundial" class="section">
+    <h2>🏆 Marcador en Vivo</h2>
+    <div id="matches-container" class="matches-grid">
+        <!-- JS Render -->
     </div>
-
-    <div class="catalogo-grid" id="catalogo-grid"></div>
-  </div>
+    <a href="#" id="fifa-link" target="_blank" class="btn-fifa">Ver Calendario Oficial FIFA</a>
 </section>
 
-<!-- ============================== MUNDIAL 2026 ============================== -->
-<section class="seccion seccion--alterna" id="mundial">
-  <div class="seccion__inner">
-    <h2 class="seccion__titulo">Mundial 2026 🏆</h2>
-    <p class="seccion__subtitulo">Horarios en Ecuador (GMT-5)</p>
-
-    <div class="partidos-hoy">
-      <h3 class="partidos-hoy__titulo">📅 Partidos de hoy</h3>
-      <div id="partidos-hoy"></div>
+<!-- Catálogo -->
+<section id="streaming" class="section">
+    <div class="filters">
+        <button onclick="filterCat('todos')">Todos</button>
+        <button onclick="filterCat('streaming')">Streaming</button>
+        <button onclick="filterCat('iptv')">IPTV</button>
     </div>
-
-    <div class="mundial-grid" id="mundial-grid"></div>
-  </div>
+    <div id="catalogo-grid" class="products-grid"></div>
 </section>
 
-<!-- ============================== MEDIA EN VIVO ============================== -->
-<section class="seccion" id="media">
-  <div class="seccion__inner">
-    <h2 class="seccion__titulo">Media en vivo 📺</h2>
-    <p class="seccion__subtitulo">Radio online, TV en vivo y deportes</p>
-
-    <div class="media-grid">
-      <div class="media-card">
-        <h3 class="media-card__titulo">📻 Radio Online</h3>
-        <audio controls class="media-card__audio">
-          <source src="" id="radio-source" type="audio/mpeg" />
-          Tu navegador no soporta audio HTML5.
-        </audio>
-        <p class="media-card__nota">Presiona play para escuchar nuestra radio en vivo.</p>
-      </div>
-
-      <div class="media-card">
-        <h3 class="media-card__titulo">📡 Teleamazonas en vivo</h3>
-        <p class="media-card__nota">Mira la señal en vivo de Teleamazonas directamente.</p>
-        <a href="#" id="link-teleamazonas" target="_blank" rel="noopener" class="btn btn-primario">Ver en vivo</a>
-      </div>
-
-      <div class="media-card">
-        <h3 class="media-card__titulo">⚽ Deportes en vivo</h3>
-        <p class="media-card__nota">Activa tu IPTV o app deportiva y disfruta el Mundial 2026 sin cortes.</p>
-        <a href="#catalogo" class="btn btn-secundario">Ver planes deportivos</a>
-      </div>
+<!-- Carrito Lateral -->
+<div id="cart-sidebar" class="cart-sidebar glass">
+    <div class="cart-header">
+        <h3>Tu Carrito</h3>
+        <span class="close-cart" onclick="toggleCart()">×</span>
     </div>
-  </div>
-</section>
-
-<!-- ============================== RESEÑAS ============================== -->
-<section class="seccion seccion--alterna" id="resenas">
-  <div class="seccion__inner">
-    <h2 class="seccion__titulo">Lo que dicen nuestros clientes ⭐</h2>
-    <p class="seccion__subtitulo">Miles de usuarios en toda Latinoamérica confían en nosotros</p>
-
-    <div class="resenas-grid" id="resenas-grid"></div>
-
-    <div class="form-resena-wrapper">
-      <h3 class="form-resena__titulo">Déjanos tu reseña</h3>
-      <form id="form-resena" class="form-resena">
-        <input type="text" id="resena-nombre" placeholder="Tu nombre" required />
-        <input type="text" id="resena-pais" placeholder="Tu país" required />
-        <select id="resena-estrellas">
-          <option value="5">⭐⭐⭐⭐⭐</option>
-          <option value="4">⭐⭐⭐⭐</option>
-          <option value="3">⭐⭐⭐</option>
-          <option value="2">⭐⭐</option>
-          <option value="1">⭐</option>
-        </select>
-        <textarea id="resena-comentario" placeholder="Cuéntanos tu experiencia..." required></textarea>
-        <button type="submit" class="btn btn-primario">Publicar reseña</button>
-      </form>
+    <div id="cart-items" class="cart-items"></div>
+    
+    <div class="cart-checkout-area">
+        <div class="coupon-box">
+            <input type="text" id="coupon-input" placeholder="Cupón">
+            <button onclick="applyDiscount()">Aplicar</button>
+        </div>
+        <div id="cart-summary" class="cart-summary">
+            <!-- Totales JS -->
+        </div>
+        
+        <div class="payment-methods">
+            <h4>Pagar con:</h4>
+            <div id="paypal-button-container"></div>
+            <button onclick="payWithDeuna()" class="btn-deuna">💰 Pagar con DEUNA</button>
+            <button onclick="payWithPayphone()" class="btn-payphone">💳 Pagar con PayPhone</button>
+            <div class="transfer-info">
+                <p>Transferencia Banco Pichincha: <strong id="copy-pichincha">2205375908</strong> <i class="fas fa-copy" onclick="copyText('2205375908')"></i></p>
+            </div>
+        </div>
     </div>
-  </div>
-</section>
+</div>
 
-<!-- ============================== CONTACTO / FOOTER ============================== -->
-<footer class="footer" id="contacto">
-  <div class="footer__inner">
-    <div class="footer__col">
-      <span class="logo">
-        <span class="logo__icono">📡</span>
-        <span class="logo__texto">CLICK TV<span class="logo__sub">STREAMING MUNDIAL 2026</span></span>
-      </span>
-      <p class="footer__desc">Tu plataforma de streaming, IPTV y deportes favorita en Latinoamérica.</p>
-    </div>
+<!-- Botones Flotantes -->
+<div class="floating-container">
+    <a id="btn-telegram" class="float-btn float-tg"><i class="fab fa-telegram-plane"></i></a>
+    <a id="btn-whatsapp-grupo" class="float-btn float-wa-grp"><i class="fas fa-users"></i></a>
+    <a id="btn-whatsapp" class="float-btn float-wa"><i class="fab fa-whatsapp"></i></a>
+    <a id="btn-soporte" class="float-btn float-help"><i class="fas fa-headset"></i></a>
+    <button id="btn-scroll-top" class="float-btn float-up"><i class="fas fa-chevron-up"></i></button>
+</div>
 
-    <div class="footer__col">
-      <h4 class="footer__titulo">Contáctanos</h4>
-      <p>💬 WhatsApp: +593939166222</p>
-      <p>📧 clicktvdigital@gmail.com</p>
-      <p>📱 Telegram: @streamid</p>
-    </div>
+<!-- Actividad Reciente -->
+<div id="activity-toast" class="activity-toast glass"></div>
 
-    <div class="footer__col">
-      <h4 class="footer__titulo">Enlaces</h4>
-      <a href="#catalogo">Catálogo</a>
-      <a href="#mundial">Mundial 2026</a>
-      <a href="#resenas">Reseñas</a>
-    </div>
-  </div>
-  <p class="footer__copy">© <span id="anio-actual"></span> Click TV Streaming Mundial. Todos los derechos reservados.</p>
-</footer>
-
-<!-- ============================== CARRITO LATERAL ============================== -->
-<div class="carrito-overlay" id="carrito-overlay"></div>
-<aside class="panel-carrito" id="panel-carrito">
-  <div class="panel-carrito__header">
-    <h3>🛒 Tu carrito</h3>
-    <button id="btn-cerrar-carrito" class="btn-icono" aria-label="Cerrar carrito">✕</button>
-  </div>
-
-  <div class="panel-carrito__items" id="carrito-items"></div>
-
-  <div class="panel-carrito__cupon">
-    <input type="text" id="input-cupon" placeholder="Código de cupón" />
-    <button id="btn-aplicar-cupon" class="btn btn-secundario">Aplicar</button>
-  </div>
-  <p class="cupon-info" id="cupon-info"></p>
-
-  <div class="panel-carrito__totales">
-    <div class="fila-total"><span>Subtotal</span><span id="carrito-subtotal">$0.00</span></div>
-    <div class="fila-total"><span>Descuento</span><span id="carrito-descuento">- $0.00</span></div>
-    <div class="fila-total fila-total--grande"><span>Total</span><span id="carrito-total">$0.00</span></div>
-  </div>
-
-  <button id="btn-finalizar-compra" class="btn btn-primario btn-grande">Finalizar compra</button>
-
-  <div class="seccion-pagos" id="seccion-pagos">
-    <p class="seccion-pagos__titulo">Elige tu método de pago:</p>
-    <button class="btn-pago" data-metodo="paypal">💳 PayPal</button>
-    <button class="btn-pago" data-metodo="payphone">📱 Payphone</button>
-    <button class="btn-pago" data-metodo="transferencia">🏦 Transferencia bancaria</button>
-    <button class="btn-pago" data-metodo="whatsapp">💬 WhatsApp Checkout</button>
-  </div>
-</aside>
-
-<!-- ============================== FLOATING BUTTONS ============================== -->
-<a href="#" id="btn-whatsapp-flotante" class="flotante flotante--whatsapp" target="_blank" rel="noopener" aria-label="WhatsApp">💬</a>
-<a href="#" id="btn-telegram-flotante" class="flotante flotante--telegram" target="_blank" rel="noopener" aria-label="Telegram">📨</a>
-<button id="btn-scroll-top" class="flotante flotante--scroll" aria-label="Subir al inicio">⬆️</button>
-
-<!-- ============================== TOASTS ============================== -->
-<div class="toast-contenedor" id="toast-contenedor"></div>
-
-<!-- ============================== SCRIPTS ============================== -->
 <script src="data.js"></script>
 <script src="catalogo.js"></script>
 <script src="script.js"></script>
-<script>
-  // Configurar enlaces dinámicos que dependen de CONFIG (data.js)
-  document.addEventListener("DOMContentLoaded", () => {
-    document.getElementById("btn-whatsapp-flotante").href = `https://wa.me/${CONFIG.whatsappNumero}?text=${encodeURIComponent("Hola, quiero información sobre los planes de Click TV Streaming.")}`;
-    document.getElementById("btn-telegram-flotante").href = `https://t.me/${CONFIG.telegramUsuario}`;
-    document.getElementById("link-teleamazonas").href = CONFIG.teleamazonasUrl;
-    document.getElementById("radio-source").src = CONFIG.radioStreamUrl;
-    document.querySelector(".media-card__audio").load();
-  });
-</script>
 </body>
 </html>

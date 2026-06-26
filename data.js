@@ -1,268 +1,160 @@
-/* ==========================================================================
-   CLICK TV STREAMING MUNDIAL 2026 — data.js
-   Fuente de datos: productos, reseñas, partidos del mundial, tasas de cambio
-   ========================================================================== */
+let cart = JSON.parse(localStorage.getItem('click_cart')) || [];
+let activeDiscount = 0;
 
-// ---------------------------------------------------------------------------
-// PRODUCTOS
-// ---------------------------------------------------------------------------
-const PRODUCTOS = [
-  // ---------- STREAMING ----------
-  {
-    id: "netflix",
-    nombre: "Netflix Premium",
-    categoria: "streaming",
-    icono: "🎬",
-    descripcion: "4 pantallas · Full HD/4K · Perfiles ilimitados",
-    planes: [
-      { tipo: "Mensual", precio: 4.5 },
-      { tipo: "Trimestral", precio: 12 }
-    ]
-  },
-  {
-    id: "disney",
-    nombre: "Disney+ Premium",
-    categoria: "streaming",
-    icono: "🏰",
-    descripcion: "Marvel, Star Wars, Pixar y National Geographic",
-    planes: [
-      { tipo: "Mensual", precio: 4 },
-      { tipo: "Trimestral", precio: 10.5 }
-    ]
-  },
-  {
-    id: "hbo",
-    nombre: "HBO Max",
-    categoria: "streaming",
-    icono: "🎭",
-    descripcion: "Series originales, estrenos de cine y documentales",
-    planes: [
-      { tipo: "Mensual", precio: 4 },
-      { tipo: "Trimestral", precio: 11 }
-    ]
-  },
-  {
-    id: "prime",
-    nombre: "Amazon Prime Video",
-    categoria: "streaming",
-    icono: "📦",
-    descripcion: "Series exclusivas, cine y eventos en vivo",
-    planes: [
-      { tipo: "Mensual", precio: 3.5 },
-      { tipo: "Trimestral", precio: 9.5 }
-    ]
-  },
-  {
-    id: "paramount",
-    nombre: "Paramount+",
-    categoria: "streaming",
-    icono: "⭐",
-    descripcion: "Cine, series y deportes en exclusiva",
-    planes: [
-      { tipo: "Mensual", precio: 3.5 },
-      { tipo: "Trimestral", precio: 9 }
-    ]
-  },
-  // ---------- IPTV ----------
-  {
-    id: "iptv-full",
-    nombre: "IPTV Full HD Mundial",
-    categoria: "iptv",
-    icono: "📡",
-    descripcion: "+15,000 canales y VOD · Latino, USA, Europa",
-    planes: [
-      { tipo: "Mensual", precio: 8 },
-      { tipo: "Trimestral", precio: 20 }
-    ]
-  },
-  {
-    id: "iptv-4k",
-    nombre: "IPTV 4K Premium",
-    categoria: "iptv",
-    icono: "📺",
-    descripcion: "Canales 4K, deportes PPV y series estreno",
-    planes: [
-      { tipo: "Mensual", precio: 10 },
-      { tipo: "Trimestral", precio: 26 }
-    ]
-  },
-  {
-    id: "iptv-sports",
-    nombre: "IPTV Deportes Total",
-    categoria: "iptv",
-    icono: "🥇",
-    descripcion: "Todas las ligas + Mundial 2026 sin cortes",
-    planes: [
-      { tipo: "Mensual", precio: 9 },
-      { tipo: "Trimestral", precio: 23 }
-    ]
-  },
-  // ---------- APPS ----------
-  {
-    id: "spotify",
-    nombre: "Spotify Premium",
-    categoria: "apps",
-    icono: "🎧",
-    descripcion: "Música sin anuncios, descargas y audio offline",
-    planes: [
-      { tipo: "Mensual", precio: 3 },
-      { tipo: "Trimestral", precio: 8 }
-    ]
-  },
-  {
-    id: "youtube",
-    nombre: "YouTube Premium",
-    categoria: "apps",
-    icono: "▶️",
-    descripcion: "Sin anuncios, YouTube Music incluido",
-    planes: [
-      { tipo: "Mensual", precio: 3.5 },
-      { tipo: "Trimestral", precio: 9 }
-    ]
-  },
-  {
-    id: "canva",
-    nombre: "Canva Pro",
-    categoria: "apps",
-    icono: "🎨",
-    descripcion: "Plantillas premium, fondos removibles y más",
-    planes: [
-      { tipo: "Mensual", precio: 3 },
-      { tipo: "Trimestral", precio: 7.5 }
-    ]
-  },
-  {
-    id: "office",
-    nombre: "Microsoft 365",
-    categoria: "apps",
-    icono: "💼",
-    descripcion: "Word, Excel, PowerPoint y 1TB en la nube",
-    planes: [
-      { tipo: "Mensual", precio: 4 },
-      { tipo: "Trimestral", precio: 10 }
-    ]
-  },
-  // ---------- DEPORTES ----------
-  {
-    id: "dazn",
-    nombre: "DAZN Total",
-    categoria: "deportes",
-    icono: "🥊",
-    descripcion: "Boxeo, fútbol internacional y combate",
-    planes: [
-      { tipo: "Mensual", precio: 6 },
-      { tipo: "Trimestral", precio: 16 }
-    ]
-  },
-  {
-    id: "espn",
-    nombre: "ESPN Premium",
-    categoria: "deportes",
-    icono: "🏈",
-    descripcion: "Liga local, NFL, NBA y Mundial 2026",
-    planes: [
-      { tipo: "Mensual", precio: 5.5 },
-      { tipo: "Trimestral", precio: 14.5 }
-    ]
-  },
-  {
-    id: "fubo",
-    nombre: "FuboTV Sports",
-    categoria: "deportes",
-    icono: "⚽",
-    descripcion: "Más de 100 canales deportivos en vivo",
-    planes: [
-      { tipo: "Mensual", precio: 7 },
-      { tipo: "Trimestral", precio: 18 }
-    ]
-  }
-];
+document.addEventListener('DOMContentLoaded', () => {
+    initApp();
+});
 
-// ---------------------------------------------------------------------------
-// RESEÑAS (iniciales)
-// ---------------------------------------------------------------------------
-const RESENAS = [
-  { nombre: "Carlos Mendoza", pais: "Ecuador 🇪🇨", estrellas: 5, comentario: "Excelente servicio, la IPTV nunca se corta ni en los partidos del Mundial. Recomendado 100%." },
-  { nombre: "Valentina Rojas", pais: "Colombia 🇨🇴", estrellas: 5, comentario: "Pedí Netflix y Disney+ juntos, llegó todo en minutos por WhatsApp. Muy profesionales." },
-  { nombre: "Diego Fernández", pais: "Argentina 🇦🇷", estrellas: 4, comentario: "Buena calidad de imagen en 4K, el soporte responde rápido. Le doy 4 estrellas por el precio en pesos." },
-  { nombre: "María José Pérez", pais: "México 🇲🇽", estrellas: 5, comentario: "La mejor IPTV que he probado, tiene canales de deportes que no encontraba en otros lados." },
-  { nombre: "Luis Castillo", pais: "Perú 🇵🇪", estrellas: 5, comentario: "Compré el combo deportes y vi todo el Mundial sin lag. Totalmente recomendado." },
-  { nombre: "Camila Torres", pais: "Chile 🇨🇱", estrellas: 4, comentario: "Todo funcionó bien, solo tardó un poco la activación pero el soporte fue amable." },
-  { nombre: "Andrés Salazar", pais: "Ecuador 🇪🇨", estrellas: 5, comentario: "Uso Spotify y HBO Max hace 6 meses, nunca he tenido problemas con la renovación." },
-  { nombre: "Fernanda López", pais: "Venezuela 🇻🇪", estrellas: 5, comentario: "El cupón de descuento me ayudó muchísimo, excelente atención por WhatsApp." },
-  { nombre: "Roberto Gómez", pais: "España 🇪🇸", estrellas: 4, comentario: "Calidad muy buena para ver fútbol europeo y el Mundial 2026, lo recomiendo." },
-  { nombre: "Sofía Ramírez", pais: "Estados Unidos 🇺🇸", estrellas: 5, comentario: "Increíble servicio al cliente, resolvieron mi duda en minutos. Volveré a comprar." }
-];
+function initApp() {
+    renderCatalogo();
+    updateCartCounter();
+    inicializarBotonesFlotantes();
+    detectCountry();
+    fetchMundial();
+    renderActivity();
+    
+    // Configurar enlaces estáticos
+    document.getElementById('fifa-link').href = CONFIG.fifaCalendarioUrl;
+}
 
-// ---------------------------------------------------------------------------
-// MUNDIAL 2026 — Fase de grupos (horario Ecuador GMT-5, datos ilustrativos)
-// ---------------------------------------------------------------------------
-const MUNDIAL_2026 = [
-  {
-    grupo: "Grupo I",
-    partidos: [
-      { local: "Noruega", visitante: "Francia", fechaUTC: "2026-06-26T21:00:00Z", sede: "Boston" },
-      { local: "Senegal", visitante: "Irak", fechaUTC: "2026-06-26T21:00:00Z", sede: "Toronto" }
-    ]
-  },
-  {
-    grupo: "Grupo H",
-    partidos: [
-      { local: "Uruguay", visitante: "España", fechaUTC: "2026-06-26T02:00:00Z", sede: "Guadalajara" },
-      { local: "Cabo Verde", visitante: "Arabia Saudita", fechaUTC: "2026-06-26T02:00:00Z", sede: "Houston" }
-    ]
-  },
-  {
-    grupo: "Grupo G",
-    partidos: [
-      { local: "Nueva Zelanda", visitante: "Bélgica", fechaUTC: "2026-06-26T05:00:00Z", sede: "Seattle" },
-      { local: "Egipto", visitante: "Irán", fechaUTC: "2026-06-26T05:00:00Z", sede: "Vancouver" }
-    ]
-  }
-];
+function inicializarBotonesFlotantes() {
+    document.getElementById("btn-whatsapp").href = CONFIG.whatsappLink;
+    document.getElementById("btn-whatsapp-grupo").href = CONFIG.whatsappGrupo;
+    document.getElementById("btn-telegram").href = CONFIG.telegramLink;
+    
+    const msgSoporte = encodeURIComponent("Hola, necesito soporte técnico con mi servicio Click TV.");
+    document.getElementById("btn-soporte").href = `${CONFIG.whatsappLink}?text=${msgSoporte}`;
 
-// ---------------------------------------------------------------------------
-// TASAS DE CAMBIO (base USD) — valores ilustrativos para conversión simulada
-// ---------------------------------------------------------------------------
-const TASAS_CAMBIO = {
-  USD: { simbolo: "$", tasa: 1 },
-  EUR: { simbolo: "€", tasa: 0.92 },
-  MXN: { simbolo: "MX$", tasa: 18.5 },
-  COP: { simbolo: "COL$", tasa: 4100 },
-  PEN: { simbolo: "S/", tasa: 3.75 },
-  ARS: { simbolo: "AR$", tasa: 950 },
-  CLP: { simbolo: "CL$", tasa: 930 }
-};
+    window.onscroll = function() {
+        if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+            document.getElementById("btn-scroll-top").style.display = "flex";
+        } else {
+            document.getElementById("btn-scroll-top").style.display = "none";
+        }
+    };
+    
+    document.getElementById("btn-scroll-top").onclick = () => window.scrollTo({top: 0, behavior: 'smooth'});
+}
 
-// ---------------------------------------------------------------------------
-// CUPONES DE DESCUENTO
-// ---------------------------------------------------------------------------
-const CUPONES = {
-  SAVE10: { porcentaje: 10, descripcion: "10% de descuento general" },
-  WELCOME: { porcentaje: 15, descripcion: "15% de descuento de bienvenida" },
-  IPTV50: { porcentaje: 20, descripcion: "20% de descuento exclusivo en IPTV" }
-};
+/* --- LÓGICA DE CARRITO --- */
+function addToCart(id) {
+    const p = PRODUCTOS.find(prod => prod.id === id);
+    const select = document.getElementById(`select-${id}`);
+    const planIdx = select.selectedIndex;
+    const plan = p.planes[planIdx];
 
-// ---------------------------------------------------------------------------
-// CONFIGURACIÓN GENERAL
-// ---------------------------------------------------------------------------
-const CONFIG = {
-  whatsappNumero: "593939166222", // Reemplazar con número real (formato sin +)
-  telegramUsuario: "streamid",
-  radioStreamUrl: "https://stream.zeno.fm/f3wvbbqmdg8uv", // radio online embebida demo
-  teleamazonasUrl: "https://www.teleamazonas.com/envivo/"
-};
-function getAllMatches() {
-  let all = [];
+    if(plan.precio === 0) {
+        buyNow(id);
+        return;
+    }
 
-  groups.forEach(g => {
-    g.matches.forEach(m => {
-      all.push({
-        ...m,
-        group: g.name
-      });
+    cart.push({ ...p, planSelected: plan.tipo, price: plan.precio, uniqueId: Date.now() });
+    saveCart();
+    toggleCart(true);
+    renderCart();
+    showToast(`Agregado: ${p.nombre}`);
+}
+
+function renderCart() {
+    const container = document.getElementById('cart-items');
+    container.innerHTML = '';
+    
+    let subtotal = 0;
+    cart.forEach((item, index) => {
+        subtotal += item.price;
+        container.innerHTML += `
+            <div class="cart-item">
+                <span>${item.nombre} (${item.planSelected})</span>
+                <span>$${item.price} <i class="fas fa-trash" onclick="removeFromCart(${index})"></i></span>
+            </div>
+        `;
     });
-  });
 
-  return all;
+    const desc = subtotal * (activeDiscount / 100);
+    const iva = (subtotal - desc) * CONFIG.ivaPorcentaje;
+    const totalConIva = subtotal - desc + iva;
+    
+    // Total PayPal con fórmula solicitada
+    const totalPaypal = (totalConIva + CONFIG.paypalComisionFija) / (1 - CONFIG.paypalComisionPorcentaje);
+
+    document.getElementById('cart-summary').innerHTML = `
+        <p>Subtotal: $${subtotal.toFixed(2)}</p>
+        <p>Descuento (${activeDiscount}%): -$${desc.toFixed(2)}</p>
+        <p>IVA (${CONFIG.ivaPorcentaje * 100}%): $${iva.toFixed(2)}</p>
+        <h3 class="total-green">Total: $${totalConIva.toFixed(2)} USD</h3>
+        <small>Total con comisión PayPal: $${totalPaypal.toFixed(2)} USD</small>
+    `;
+
+    renderPaypal(totalPaypal.toFixed(2));
+}
+
+function renderPaypal(amount) {
+    document.getElementById('paypal-button-container').innerHTML = '';
+    paypal.Buttons({
+        createOrder: (data, actions) => {
+            return actions.order.create({
+                purchase_units: [{ amount: { value: amount } }]
+            });
+        },
+        onApprove: (data, actions) => {
+            return actions.order.capture().then(details => {
+                showToast("¡Pago exitoso, " + details.payer.name.given_name + "!");
+                cart = [];
+                saveCart();
+                renderCart();
+                window.open(`${CONFIG.whatsappLink}?text=${encodeURIComponent("Pago PayPal confirmado ID: " + data.orderID)}`, '_blank');
+            });
+        }
+    }).render('#paypal-button-container');
+}
+
+/* --- MUNDIAL API --- */
+async function fetchMundial() {
+    const container = document.getElementById('matches-container');
+    try {
+        const response = await fetch(CONFIG.footballDataApiUrl, {
+            headers: { 'X-Auth-Token': CONFIG.footballDataApiToken }
+        });
+        const data = await response.json();
+        if(!data.matches || data.matches.length === 0) throw new Error();
+        
+        container.innerHTML = data.matches.slice(0, 4).map(m => `
+            <div class="match-card glass">
+                <p>${m.homeTeam.name} vs ${m.awayTeam.name}</p>
+                <small>${new Date(m.utcDate).toLocaleString()}</small>
+            </div>
+        `).join('');
+    } catch (e) {
+        container.innerHTML = '<p class="empty-msg">⚽ Información próximamente disponible</p>';
+    }
+}
+
+/* --- UTILIDADES --- */
+function showToast(msg) {
+    const t = document.createElement('div');
+    t.className = 'toast-msg glass';
+    t.innerText = msg;
+    document.body.appendChild(t);
+    setTimeout(() => t.remove(), 3000);
+}
+
+function saveCart() {
+    localStorage.setItem('click_cart', JSON.stringify(cart));
+    updateCartCounter();
+}
+
+function updateCartCounter() {
+    document.getElementById('cart-count').innerText = cart.length;
+}
+
+function toggleCart(force) {
+    const side = document.getElementById('cart-sidebar');
+    if(force) side.classList.add('active');
+    else side.classList.toggle('active');
+    if(side.classList.contains('active')) renderCart();
+}
+
+function copyText(txt) {
+    navigator.clipboard.writeText(txt);
+    showToast("Copiado al portapapeles");
 }

@@ -1,238 +1,67 @@
 /* ==========================================================================
-   CLICK TV STREAMING MUNDIAL 2026 — catalogo.js
-   Renderizado del catálogo de productos, filtros por categoría y reseñas
+   CONFIGURACIÓN GLOBAL OBLIGATORIA
    ========================================================================== */
+const CONFIG = {
+    whatsappNumero: "593939166222",
+    whatsappLocal: "0939166222",
+    whatsappLink: "https://wa.me/593939166222",
+    whatsappGrupo: "https://chat.whatsapp.com/CNWqZ0AhHhKDb1VKp1LqNu?s=sw&p=a&mlu=1",
+    
+    telegramUsuario: "streamid",
+    telegramLink: "https://t.me/streamid",
+    telegramReferenciaWeb: "https://web.telegram.org/k/#@streamid",
+    
+    catalogoUrl: "https://click-tv-mundial.vercel.app/#streaming",
+    correoEmpresa: "clicktvdigital@gmail.com",
+    correoValidacion: "clicktvprivado@gmail.com",
+    
+    bancoPichincha: "2205375908",
+    bancoGuayaquil: "0013647475",
+    
+    deunaUrl: "https://pagar.deuna.app/H92p/U2FsdGVkX1+d5ztHtEqOvWZoCPyapr0gLHqVfd5bPEnxFHTZK9YHPAshlvR6BD3wG3A1HJIxJsdqS/ac5gip07gMGakILWEtHrLHQwCiL6Z/SAeuNxx4UZlxsyvCLBJjtcSCj7/jZoDAyB7FNrWMdr7WIw0EUeiv1Cdbs0Xtw4VfcP9tlvf4dRXGPzF65Wjr+YC1aZpkCI5gHp6qXtIAfA==",
+    payphoneUrl: "https://ppls.me/izAAuu8fptGHF6uZBV9L4Q",
+    paypalUrl: "https://paypal.me/richardontaneda",
+    
+    // SDK Credential
+    paypalClientIdLive: "ASzNgRtmM63xQ0hRG9Lx47JyJKmva9nu4ij8ZsbAJRrAD1b1b0okUxnBtneq2xUmK6q9JuIHlXFR2T_-",
+    
+    // API Football
+    footballDataApiUrl: "https://api.football-data.org/v4/matches",
+    footballDataApiToken: "467c885c07fa49baa40ac78cf636f8b0",
+    fifaCalendarioUrl: "https://www.fifa.com/es/tournaments/mens/worldcup/canadamexicousa2026/scores-fixtures",
+    
+    // Media
+    radioStreamUrl: "https://stream.zeno.fm/f3wvbbqmdg8uv",
+    teleamazonasUrl: "https://www.teleamazonas.com/envivo/",
+    
+    // Finanzas
+    ivaPorcentaje: 0.15,
+    paypalComisionPorcentaje: 0.054,
+    paypalComisionFija: 0.30
+};
 
-let categoriaActiva = "todos";
+const PRODUCTOS = [
+    { id: 'paramount', nombre: 'Paramount+', categoria: 'streaming', icono: '🎬', planes: [{ tipo: '1 Mes', precio: 5 }], etiqueta: '⚽ IDEAL' },
+    { id: 'disney-prem', nombre: 'Disney+ Premium', categoria: 'streaming', icono: '🟣', planes: [{ tipo: '1 Mes', precio: 9 }], etiqueta: '⭐ RECOMENDADO' },
+    { id: 'disney-std', nombre: 'Disney Estándar', categoria: 'streaming', icono: '🔵', planes: [{ tipo: '1 Mes', precio: 5 }], etiqueta: 'S/ ESPN' },
+    { id: 'netflix-comp', nombre: 'Netflix Compartido', categoria: 'streaming', icono: '🔴', planes: [
+        { tipo: '1 Mes', precio: 4 }, { tipo: '3 Meses', precio: 12 }, { tipo: '6 Meses', precio: 24 }, { tipo: '12 Meses', precio: 48 }
+    ], etiqueta: '🔥 MÁS VENDIDO' },
+    { id: 'netflix-extra', nombre: 'Netflix Perfil Extra', categoria: 'streaming', icono: '🟡', planes: [
+        { tipo: '1 Mes', precio: 6 }, { tipo: '3 Meses', precio: 18 }, { tipo: '6 Meses', precio: 36 }, { tipo: '12 Meses', precio: 72 }
+    ], etiqueta: '💎 PREMIUM' },
+    { id: 'iptv-prem', nombre: 'IPTV Premium', categoria: 'iptv', icono: '📺', planes: [
+        { tipo: '1 Disp', precio: 5 }, { tipo: '2 Disp', precio: 10 }, { tipo: '3 Disp', precio: 15 }
+    ], etiqueta: '⭐ RECOMENDADO' },
+    { id: 'iptv-ultra', nombre: 'IPTV Ultra', categoria: 'iptv', icono: '🚀', planes: [
+        { tipo: '1 Disp', precio: 7 }, { tipo: '2 Disp', precio: 14 }, { tipo: '3 Disp', precio: 21 }
+    ], etiqueta: '🔥 MÁS VENDIDO' },
+    { id: 'spotify', nombre: 'Spotify Premium', categoria: 'musica', icono: '🎵', planes: [
+        { tipo: '3 Meses', precio: 5 }, { tipo: '6 Meses', precio: 10 }, { tipo: '12 Meses', precio: 15 }
+    ] },
+    { id: 'canva', nombre: 'Canva Pro', categoria: 'apps', icono: '🎓', planes: [{ tipo: 'Consultar', precio: 0 }], etiqueta: 'Bajo Pedido' }
+];
 
-// ---------------------------------------------------------------------------
-// RENDER CATÁLOGO
-// ---------------------------------------------------------------------------
-function renderCatalogo() {
-  const contenedor = document.getElementById("catalogo-grid");
-  if (!contenedor) return;
-
-  const productosFiltrados =
-    categoriaActiva === "todos"
-      ? PRODUCTOS
-      : PRODUCTOS.filter((p) => p.categoria === categoriaActiva);
-
-  if (productosFiltrados.length === 0) {
-    contenedor.innerHTML = `<p class="catalogo-vacio">No hay productos en esta categoría.</p>`;
-    return;
-  }
-
-  contenedor.innerHTML = productosFiltrados
-    .map((producto) => crearTarjetaProducto(producto))
-    .join("");
-
-  // Vincular eventos de planes (cambiar precio mostrado) y botones
-  productosFiltrados.forEach((producto) => {
-    const select = document.getElementById(`plan-${producto.id}`);
-    if (select) {
-      select.addEventListener("change", () => actualizarPrecioTarjeta(producto.id));
-    }
-  });
-}
-
-function crearTarjetaProducto(producto) {
-  const planOptions = producto.planes
-    .map(
-      (plan, i) =>
-        `<option value="${i}">${plan.tipo} — ${formatearPrecio(plan.precio)}</option>`
-    )
-    .join("");
-
-  return `
-    <article class="card-producto" data-id="${producto.id}">
-      <div class="card-producto__icono">${producto.icono}</div>
-      <h3 class="card-producto__nombre">${producto.nombre}</h3>
-      <p class="card-producto__desc">${producto.descripcion}</p>
-
-      <label class="card-producto__label" for="plan-${producto.id}">Plan</label>
-      <select class="card-producto__select" id="plan-${producto.id}">
-        ${planOptions}
-      </select>
-
-      <p class="card-producto__precio" id="precio-${producto.id}">
-        ${formatearPrecio(producto.planes[0].precio)}
-      </p>
-
-      <div class="card-producto__acciones">
-        <button class="btn btn-primario" onclick="agregarDesdeCarta('${producto.id}')">
-          🛒 Agregar al carrito
-        </button>
-        <button class="btn btn-whatsapp" onclick="comprarPorWhatsapp('${producto.id}')">
-          💬 Comprar por WhatsApp
-        </button>
-      </div>
-    </article>
-  `;
-}
-
-function actualizarPrecioTarjeta(productoId) {
-  const producto = PRODUCTOS.find((p) => p.id === productoId);
-  const select = document.getElementById(`plan-${productoId}`);
-  const precioEl = document.getElementById(`precio-${productoId}`);
-  if (!producto || !select || !precioEl) return;
-  const plan = producto.planes[select.value];
-  precioEl.textContent = formatearPrecio(plan.precio);
-}
-
-function agregarDesdeCarta(productoId) {
-  const producto = PRODUCTOS.find((p) => p.id === productoId);
-  const select = document.getElementById(`plan-${productoId}`);
-  if (!producto || !select) return;
-  const plan = producto.planes[select.value];
-  agregarAlCarrito(producto, plan);
-}
-
-function comprarPorWhatsapp(productoId) {
-  const producto = PRODUCTOS.find((p) => p.id === productoId);
-  const select = document.getElementById(`plan-${productoId}`);
-  if (!producto || !select) return;
-  const plan = producto.planes[select.value];
-  const mensaje = encodeURIComponent(
-    `Hola, quiero comprar *${producto.nombre}* — Plan ${plan.tipo} (${formatearPrecio(
-      plan.precio
-    )}). ¿Me ayudan con el proceso?`
-  );
-  window.open(`https://wa.me/${CONFIG.whatsappNumero}?text=${mensaje}`, "_blank");
-}
-
-// ---------------------------------------------------------------------------
-// FILTROS DE CATEGORÍA
-// ---------------------------------------------------------------------------
-function inicializarFiltros() {
-  const botones = document.querySelectorAll(".filtro-categoria");
-  botones.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      botones.forEach((b) => b.classList.remove("activo"));
-      btn.classList.add("activo");
-      categoriaActiva = btn.dataset.categoria;
-      renderCatalogo();
-    });
-  });
-}
-
-// ---------------------------------------------------------------------------
-// RESEÑAS
-// ---------------------------------------------------------------------------
-let listaResenas = [];
-
-function cargarResenas() {
-  const guardadas = localStorage.getItem("clicktv_resenas_extra");
-  const extra = guardadas ? JSON.parse(guardadas) : [];
-  listaResenas = [...RESENAS, ...extra];
-  renderResenas();
-}
-
-function renderResenas() {
-  const contenedor = document.getElementById("resenas-grid");
-  if (!contenedor) return;
-
-  contenedor.innerHTML = listaResenas
-    .map(
-      (r) => `
-      <article class="card-resena">
-        <div class="card-resena__estrellas">${"⭐".repeat(r.estrellas)}${"☆".repeat(
-        5 - r.estrellas
-      )}</div>
-        <p class="card-resena__comentario">"${escapeHtml(r.comentario)}"</p>
-        <p class="card-resena__autor">${escapeHtml(r.nombre)} · ${escapeHtml(r.pais)}</p>
-      </article>
-    `
-    )
-    .join("");
-}
-
-function agregarResena(evento) {
-  evento.preventDefault();
-  const nombre = document.getElementById("resena-nombre").value.trim();
-  const pais = document.getElementById("resena-pais").value.trim();
-  const estrellas = parseInt(document.getElementById("resena-estrellas").value, 10);
-  const comentario = document.getElementById("resena-comentario").value.trim();
-
-  if (!nombre || !pais || !comentario) {
-    mostrarToast("Completa todos los campos de la reseña.", "error");
-    return;
-  }
-
-  const nuevaResena = { nombre, pais, estrellas, comentario };
-  listaResenas.push(nuevaResena);
-
-  const guardadas = localStorage.getItem("clicktv_resenas_extra");
-  const extra = guardadas ? JSON.parse(guardadas) : [];
-  extra.push(nuevaResena);
-  localStorage.setItem("clicktv_resenas_extra", JSON.stringify(extra));
-
-  renderResenas();
-  evento.target.reset();
-  mostrarToast("¡Gracias por tu reseña! 🌟", "exito");
-}
-
-function escapeHtml(texto) {
-  const div = document.createElement("div");
-  div.textContent = texto;
-  return div.innerHTML;
-}
-
-// ---------------------------------------------------------------------------
-// MUNDIAL 2026 — Render de grupos y partidos
-// ---------------------------------------------------------------------------
-function renderMundial() {
-  const contenedor = document.getElementById("mundial-grid");
-  if (!contenedor) return;
-
-  contenedor.innerHTML = MUNDIAL_2026.map(
-    (grupo) => `
-      <article class="card-grupo">
-        <h3 class="card-grupo__titulo">${grupo.grupo}</h3>
-        ${grupo.partidos
-          .map(
-            (p) => `
-          <div class="partido">
-            <span class="partido__equipos">${p.local} 🆚 ${p.visitante}</span>
-            <span class="partido__info">${formatearFecha(p.fecha)} · ${p.hora} (Ecuador) · ${p.sede}</span>
-          </div>
-        `
-          )
-          .join("")}
-      </article>
-    `
-  ).join("");
-
-  renderPartidosDelDia();
-}
-
-function renderPartidosDelDia() {
-  const contenedor = document.getElementById("partidos-hoy");
-  if (!contenedor) return;
-
-  const hoy = new Date().toISOString().split("T")[0];
-  const todos = MUNDIAL_2026.flatMap((g) =>
-    g.partidos.map((p) => ({ ...p, grupo: g.grupo }))
-  );
-  const partidosHoy = todos.filter((p) => p.fecha === hoy);
-
-  if (partidosHoy.length === 0) {
-    contenedor.innerHTML = `<p class="partidos-hoy__vacio">No hay partidos programados para hoy. Revisa el calendario completo por grupos. ⚽</p>`;
-    return;
-  }
-
-  contenedor.innerHTML = partidosHoy
-    .map(
-      (p) => `
-      <div class="partido partido--destacado">
-        <span class="partido__equipos">${p.local} 🆚 ${p.visitante}</span>
-        <span class="partido__info">${p.grupo} · ${p.hora} (Ecuador) · ${p.sede}</span>
-      </div>
-    `
-    )
-    .join("");
-}
-
-function formatearFecha(fechaISO) {
-  const fecha = new Date(fechaISO + "T00:00:00");
-  return fecha.toLocaleDateString("es-EC", { day: "2-digit", month: "short", year: "numeric" });
-}
+const CUPONES = {
+    "CLICKTVMUNDIAL": { porcentaje: 5, descripcion: "5% de descuento especial Mundial 2026" }
+};
