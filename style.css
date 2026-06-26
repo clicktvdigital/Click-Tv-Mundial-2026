@@ -768,8 +768,9 @@ img {
 }
 
 /* ---------------------------------------------------------------------------
-   BOTONES FLOTANTES
+   BOTONES FLOTANTES (TODOS A LA DERECHA)
 --------------------------------------------------------------------------- */
+
 .flotante {
   position: fixed;
   width: 52px;
@@ -785,30 +786,39 @@ img {
   z-index: 150;
   transition: transform var(--transicion), opacity var(--transicion);
 }
+
 .flotante:hover {
   transform: scale(1.1);
 }
 
+/* CONTENEDOR LÓGICO (DERECHA) */
+
+/* WhatsApp */
 .flotante--whatsapp {
   background: var(--verde-whatsapp);
-  bottom: 1.5rem;
-  left: 1.5rem;
+  right: 1.5rem;
+  bottom: 8.5rem;   /* 👈 arriba del scroll */
   color: #06250f;
 }
+
+/* Telegram */
 .flotante--telegram {
   background: #229ed9;
-  bottom: 6rem;
-  left: 1.5rem;
+  right: 1.5rem;
+  bottom: 14rem;   /* 👈 más arriba */
   color: #fff;
 }
+
+/* Scroll */
 .flotante--scroll {
   background: var(--rojo-acento);
-  bottom: 1.5rem;
   right: 1.5rem;
+  bottom: 1.5rem;
   color: #fff;
   opacity: 0;
   pointer-events: none;
 }
+
 .flotante--scroll.visible {
   opacity: 1;
   pointer-events: auto;
