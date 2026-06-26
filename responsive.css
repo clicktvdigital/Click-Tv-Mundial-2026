@@ -1,21 +1,49 @@
-@media (max-width: 992px) {
+@media (max-width: 1024px) {
     .nav-menu {
-        position: fixed; top: 0; left: -100%; width: 100%; height: 100vh;
-        background: #000; flex-direction: column; justify-content: center;
+        position: fixed;
+        right: -100%;
+        top: 0;
+        bottom: 0;
+        width: 280px;
+        background: var(--bg-light);
+        flex-direction: column;
+        padding: 80px 30px;
         transition: 0.4s;
+        z-index: 999;
     }
-    .nav-menu.active { left: 0; }
-    .nav-menu a { font-size: 24px; margin: 15px 0; }
+    
+    .nav-menu.active {
+        right: 0;
+    }
+
+    .nav-menu a {
+        display: block;
+        margin: 20px 0;
+        font-size: 18px;
+    }
 }
 
 @media (max-width: 768px) {
-    .hero { height: auto; padding: 100px 0 60px; }
-    .catalog-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+    .hero h1 { font-size: 2.8rem; }
+    .catalog-grid { grid-template-columns: 1fr; }
     .cart-sidebar { width: 100%; }
-    .hero h1 { font-size: 2.5rem; }
+    
+    .floating-group {
+        bottom: 20px;
+        right: 15px;
+    }
+    
+    .pay-card {
+        margin-bottom: 15px;
+    }
 }
 
 @media (max-width: 480px) {
-    .catalog-grid { grid-template-columns: 1fr; }
-    .filters { overflow-x: auto; white-space: nowrap; padding-bottom: 10px; }
+    .hero-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .top-info { display: none; }
 }

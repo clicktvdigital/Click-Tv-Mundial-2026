@@ -1,48 +1,131 @@
-function filterCat(cat) {
-    renderCatalogo(cat);
-}
+"use strict";
 
-function renderCatalogo(cat = 'todos') {
-    const grid = document.getElementById('catalogo-grid');
-    grid.innerHTML = '';
-    
-    const filtered = cat === 'todos' ? PRODUCTOS : PRODUCTOS.filter(p => p.categoria === cat);
-    
-    filtered.forEach(p => {
-        const card = document.createElement('div');
-        card.className = 'product-card';
-        
-        // Determinar primer precio
-        const precioBase = p.planes[0].precio;
-        const displayPrecio = precioBase === 0 ? 'Consultar' : `$${precioBase} USD`;
+const WPP_PHONE = "593939166222";
+let cart = [];
+let discount = 0;
+let exchangeRate = 1; // Base USD
 
-        card.innerHTML = `
-            ${p.etiqueta ? `<span class="badge-prod">${p.etiqueta}</span>` : ''}
-            <div class="card-icon">${p.icono}</div>
-            <h3>${p.nombre}</h3>
-            <select id="select-${p.id}" class="plan-select" onchange="updatePrice('${p.id}')">
-                ${p.planes.map((plan, idx) => `<option value="${idx}" data-price="${plan.precio}">${plan.tipo}</option>`).join('')}
-            </select>
-            <div class="price-tag" id="price-${p.id}">${displayPrecio}</div>
-            <button onclick="buyNow('${p.id}')" class="btn-buy">🟢 Comprar Ahora</button>
-            <button onclick="addToCart('${p.id}')" class="btn-cart-add">🛒 Añadir al Carrito</button>
-        `;
-        grid.appendChild(card);
+// PAYPAL CONFIG
+const PAYPAL_FEES = { percent: 0.054, fixed: 0.30 };
+
+document.addEventListener('DOMContentLoaded', () => {
+    initApp();
+    detectCountry();
+    renderCatalog();
+    updateOnlineUsers();
+});
+
+function initApp() {
+    // Escuchadores de eventos
+    document.getElementById('currency-selector').addEventListener('change', (e) => {
+        changeCurrency(e.target.value);
     });
 }
 
-function updatePrice(id) {
-    const select = document.getElementById(`select-${id}`);
-    const price = select.options[select.selectedIndex].dataset.price;
-    document.getElementById(`price-${id}`).innerText = price == 0 ? 'Consultar' : `$${price} USD`;
+async function detectCountry() {
+    try {
+        const res = await fetch('https://ipapi.co/json/');
+        const data = await res.json();
+        document.getElementById('detected-country').innerText = data.country_name;
+        // Auto-select currency based on country could go here
+    } catch (e) {
+        console.log("Error detectando país");
+    }
 }
 
-function buyNow(id) {
-    const p = PRODUCTOS.find(prod => prod.id === id);
-    const select = document.getElementById(`select-${id}`);
-    const plan = p.planes[select.selectedIndex].tipo;
-    const precio = p.planes[select.selectedIndex].precio;
+function renderCatalog() {
+    const wrapper = document.getElementById('catalog-wrapper');
+    // Lógica para agrupar por categorías y renderizar
+    // ... (Loop PRODUCT_DATA)
+}
+
+// LÓGICA DEL CARRITO
+function addToCart(productId, planIndex) {
+    const product = PRODUCT_DATA.find(p => p.id === productId);
+    const item = {
+        ...product,
+        selectedPlan: product.options[planIndex],
+        finalPrice: calculatePrice(product.price, planIndex)
+    };
+    cart.push(item);
+    updateCartUI();
+    showToast(`🟢 ${product.name} añadido al carrito`);
+}
+
+function updateCartUI() {
+    const container = document.getElementById('cart-items-container');
+    const count = document.getElementById('cart-count');
     
-    const text = `Hola, deseo comprar ${p.nombre} - ${plan} por $${precio} USD.`;
-    window.open(`${CONFIG.whatsappLink}?text=${encodeURIComponent(text)}`, '_blank');
+    count.innerText = cart.length;
+    // Renderizado de items...
+    
+    calculateTotals();
+}
+
+function calculateTotals() {
+    let subtotal = cart.reduce((acc, item) => acc + item.finalPrice, 0);
+    let totalDiscount = subtotal * discount;
+    let final = subtotal - totalDiscount;
+
+    document.getElementById('cart-subtotal').innerText = `$${subtotal.toFixed(2)} USD`;
+    document.getElementById('cart-total').innerText = `$${final.toFixed(2)} USD`;
+
+    renderPayPalButton(final);
+}
+
+// INTEGRACIÓN PAYPAL CALCULADA
+function renderPayPalButton(amount) {
+    const container = document.getElementById('paypal-button-container');
+    container.innerHTML = ''; // Limpiar previo
+
+    const iva = amount * 0.15;
+    const baseWithIVA = amount + iva;
+    const totalPayPal = (baseWithIVA + PAYPAL_FEES.fixed) / (1 - PAYPAL_FEES.percent);
+
+    paypal.Buttons({
+        createOrder: (data, actions) => {
+            return actions.order.create({
+                purchase_units: [{
+                    amount: { value: totalPayPal.toFixed(2) },
+                    description: "Compra Click TV Mundial 2026"
+                }]
+            });
+        },
+        onApprove: (data, actions) => {
+            return actions.order.capture().then(details => {
+                alert('Pago realizado con éxito por ' + details.payer.name.given_name);
+                cart = [];
+                updateCartUI();
+                // Redirigir o enviar WPP
+            });
+        }
+    }).render('#paypal-button-container');
+}
+
+// WHATSAPP CHECKOUT
+function sendWppCart() {
+    let msg = "Hola Click TV, deseo adquirir:\n";
+    cart.forEach(item => {
+        msg += `• ${item.name} (${item.selectedPlan})\n`;
+    });
+    msg += `\nTotal: ${document.getElementById('cart-total').innerText}`;
+    window.open(`https://wa.me/${WPP_PHONE}?text=${encodeURIComponent(msg)}`);
+}
+
+// FOOTBALL API
+async function fetchMatches() {
+    const token = '467c885c07fa49baa40ac78cf636f8b0';
+    try {
+        const res = await fetch('https://api.football-data.org/v4/competitions/WC/matches', {
+            headers: { 'X-Auth-Token': token }
+        });
+        const data = await res.json();
+        // Lógica de renderizado de partidos...
+    } catch (e) {
+        document.getElementById('matches-grid').innerHTML = `
+            <div class="api-fallback">
+                <p>⚽ Información próximamente disponible</p>
+                <a href="https://www.fifa.com/es/tournaments/mens/worldcup/canadamexicousa2026/scores-fixtures" class="btn-fifa" target="_blank">Ver Calendario Oficial FIFA</a>
+            </div>`;
+    }
 }

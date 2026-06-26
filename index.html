@@ -3,116 +3,250 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#050505">
+    
+    <!-- SEO BÁSICO -->
     <title>CLICK TV MUNDIAL 2026 | Streaming Premium IPTV Mundial de Fútbol</title>
-    <meta name="description" content="Streaming Premium: Netflix, Disney+, IPTV Ultra 4K y más. Vive el Mundial 2026 con activación inmediata y pagos locales.">
-    
-    <!-- Open Graph -->
-    <meta property="og:title" content="🏆 Click TV — Mundial FIFA 2026 en Vivo">
-    <meta property="og:url" content="https://click-tv-mundial.vercel.app/">
-    <meta property="og:image" content="https://click-tv-mundial.vercel.app/assets/img/banner.jpg">
-    
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="responsive.css">
+    <meta name="description" content="Disfruta del Mundial 2026 con Click TV. Cuentas Premium de Netflix, Disney+, Paramount+, IPTV Ultra HD y más. Activación inmediata en toda Latinoamérica.">
+    <meta name="keywords" content="Mundial 2026, IPTV Premium, Cuentas Streaming, Disney Plus, Netflix barato, Ver futbol en vivo, Click TV">
+    <meta name="author" content="Click TV Streaming">
+    <link rel="canonical" href="https://tu-dominio.com">
+
+    <!-- OPEN GRAPH (Facebook / WhatsApp) -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="🏆 CLICK TV MUNDIAL 2026 | Streaming Premium">
+    <meta property="og:description" content="Activación inmediata de servicios Premium IPTV y Streaming. ¡Listos para el Mundial 2026!">
+    <meta property="og:image" content="assets/og-image.jpg">
+    <meta property="og:url" content="https://tu-dominio.com">
+
+    <!-- TWITTER CARDS -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="CLICK TV MUNDIAL 2026">
+    <meta name="twitter:description" content="Líderes en Streaming e IPTV en LATAM.">
+    <meta name="twitter:image" content="assets/og-image.jpg">
+
+    <!-- FAVICON -->
+    <link rel="icon" type="image/png" href="assets/favicon.png">
+
+    <!-- FUENTES Y ICONOS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
-    <!-- PayPal SDK -->
+    <!-- ESTILOS -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="responsive.css">
+
+    <!-- PAYPAL SDK LIVE -->
     <script src="https://www.paypal.com/sdk/js?client-id=ASzNgRtmM63xQ0hRG9Lx47JyJKmva9nu4ij8ZsbAJRrAD1b1b0okUxnBtneq2xUmK6q9JuIHlXFR2T_-&currency=USD"></script>
+
+    <!-- SCHEMA JSON-LD -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Store",
+      "name": "Click TV Mundial 2026",
+      "description": "Streaming Premium e IPTV para el Mundial 2026",
+      "url": "https://tu-dominio.com",
+      "telephone": "+593939166222",
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "EC"
+      }
+    }
+    </script>
 </head>
 <body>
 
-<div class="top-bar glass">
-    <div class="top-info">
-        <span id="user-location"><i class="fas fa-globe"></i> Detectando...</span>
-        <span id="user-currency"><i class="fas fa-coins"></i> USD</span>
-        <span id="online-users"><i class="fas fa-users"></i> 245 activos</span>
-    </div>
-</div>
-
-<header class="main-header glass">
-    <a href="#" class="logo">CLICK<span>TV</span> 2026</a>
-    <nav class="nav-menu" id="nav-menu">
-        <a href="#inicio">Inicio</a>
-        <a href="#mundial">Mundial</a>
-        <a href="#streaming">Catálogo</a>
-        <a href="#pagos">Pagos</a>
-        <button onclick="toggleCart()" class="cart-btn-nav"><i class="fas fa-shopping-cart"></i> <span id="cart-count">0</span></button>
-    </nav>
-    <div class="menu-hamburguesa" onclick="toggleMobileMenu()">☰</div>
-</header>
-
-<section class="hero" id="inicio">
-    <div class="hero-content">
-        <h1>Mundial FIFA <span>2026</span></h1>
-        <p>Streaming Premium y TV Digital sin fronteras.</p>
-        <div class="hero-btns">
-            <a href="#mundial" class="btn btn-live">🔴 PARTIDOS DE HOY</a>
-            <a href="#streaming" class="btn btn-gold">VER CATÁLOGO</a>
-        </div>
-    </div>
-</section>
-
-<!-- Sección Mundial -->
-<section id="mundial" class="section">
-    <h2>🏆 Marcador en Vivo</h2>
-    <div id="matches-container" class="matches-grid">
-        <!-- JS Render -->
-    </div>
-    <a href="#" id="fifa-link" target="_blank" class="btn-fifa">Ver Calendario Oficial FIFA</a>
-</section>
-
-<!-- Catálogo -->
-<section id="streaming" class="section">
-    <div class="filters">
-        <button onclick="filterCat('todos')">Todos</button>
-        <button onclick="filterCat('streaming')">Streaming</button>
-        <button onclick="filterCat('iptv')">IPTV</button>
-    </div>
-    <div id="catalogo-grid" class="products-grid"></div>
-</section>
-
-<!-- Carrito Lateral -->
-<div id="cart-sidebar" class="cart-sidebar glass">
-    <div class="cart-header">
-        <h3>Tu Carrito</h3>
-        <span class="close-cart" onclick="toggleCart()">×</span>
-    </div>
-    <div id="cart-items" class="cart-items"></div>
-    
-    <div class="cart-checkout-area">
-        <div class="coupon-box">
-            <input type="text" id="coupon-input" placeholder="Cupón">
-            <button onclick="applyDiscount()">Aplicar</button>
-        </div>
-        <div id="cart-summary" class="cart-summary">
-            <!-- Totales JS -->
-        </div>
-        
-        <div class="payment-methods">
-            <h4>Pagar con:</h4>
-            <div id="paypal-button-container"></div>
-            <button onclick="payWithDeuna()" class="btn-deuna">💰 Pagar con DEUNA</button>
-            <button onclick="payWithPayphone()" class="btn-payphone">💳 Pagar con PayPhone</button>
-            <div class="transfer-info">
-                <p>Transferencia Banco Pichincha: <strong id="copy-pichincha">2205375908</strong> <i class="fas fa-copy" onclick="copyText('2205375908')"></i></p>
+    <!-- HEADER INFORMATIVO -->
+    <div class="top-bar">
+        <div class="container">
+            <div class="top-info">
+                <span><i class="fas fa-map-marker-alt"></i> <span id="detected-country">Ecuador</span></span>
+                <span><i class="fas fa-users"></i> <b id="online-users">154</b> Conectados</span>
+            </div>
+            <div class="currency-box">
+                <select id="currency-selector" aria-label="Cambiar moneda">
+                    <option value="USD">🇺🇸 USD</option>
+                    <option value="PEN">🇵🇪 PEN</option>
+                    <option value="COP">🇨🇴 COP</option>
+                    <option value="ARS">🇦🇷 ARS</option>
+                    <option value="MXN">🇲🇽 MXN</option>
+                </select>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Botones Flotantes -->
-<div class="floating-container">
-    <a id="btn-telegram" class="float-btn float-tg"><i class="fab fa-telegram-plane"></i></a>
-    <a id="btn-whatsapp-grupo" class="float-btn float-wa-grp"><i class="fas fa-users"></i></a>
-    <a id="btn-whatsapp" class="float-btn float-wa"><i class="fab fa-whatsapp"></i></a>
-    <a id="btn-soporte" class="float-btn float-help"><i class="fas fa-headset"></i></a>
-    <button id="btn-scroll-top" class="float-btn float-up"><i class="fas fa-chevron-up"></i></button>
-</div>
+    <!-- NAVEGACIÓN -->
+    <header class="main-header glass">
+        <div class="container">
+            <a href="#" class="logo">CLICK<span>TV</span></a>
+            
+            <nav class="nav-menu" id="nav-menu">
+                <a href="#inicio"><i class="fas fa-home"></i> Inicio</a>
+                <a href="#mundial"><i class="fas fa-futbol"></i> Mundial 2026</a>
+                <a href="#streaming"><i class="fas fa-play"></i> Streaming</a>
+                <a href="#iptv"><i class="fas fa-tv"></i> IPTV</a>
+                <a href="#musica"><i class="fas fa-music"></i> Música</a>
+                <a href="#apps"><i class="fas fa-graduation-cap"></i> Apps</a>
+                <a href="#pagos"><i class="fas fa-credit-card"></i> Pagos</a>
+                <a href="#contacto"><i class="fas fa-comment"></i> Contacto</a>
+            </nav>
 
-<!-- Actividad Reciente -->
-<div id="activity-toast" class="activity-toast glass"></div>
+            <div class="header-actions">
+                <div class="cart-trigger" onclick="toggleCart()">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span id="cart-count">0</span>
+                </div>
+                <div class="menu-toggle" onclick="toggleMobileMenu()">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+        </div>
+    </header>
 
-<script src="data.js"></script>
-<script src="catalogo.js"></script>
-<script src="script.js"></script>
+    <main>
+        <!-- HERO SECTION -->
+        <section class="hero" id="inicio">
+            <div class="hero-overlay"></div>
+            <div class="container hero-content">
+                <span class="badge-new">ESTRENANDO PLATAFORMA 2026</span>
+                <h1>EL MUNDIAL <span>COMO NUNCA</span> LO VISTE</h1>
+                <p>La mejor calidad en IPTV y Streaming Premium. Activación en 5 minutos.</p>
+                <div class="hero-buttons">
+                    <a href="#mundial" class="btn-live"><i class="fas fa-circle"></i> EN VIVO - PARTIDOS HOY</a>
+                    <a href="#streaming" class="btn-catalog">VER CATÁLOGO</a>
+                </div>
+                <div class="hero-tv-links">
+                    <a href="https://www.teleamazonas.com/" target="_blank" class="tv-link"><i class="fas fa-external-link-alt"></i> Teleamazonas</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ESTADÍSTICAS -->
+        <section class="stats-bar">
+            <div class="container">
+                <div class="stat-item"><b>14</b> Países</div>
+                <div class="stat-item"><b>⚡</b> Activación Inmediata</div>
+                <div class="stat-item"><b>🛡️</b> Soporte 24/7</div>
+                <div class="stat-item"><b>⚽</b> Mundial 2026</div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN MUNDIAL -->
+        <section class="mundial-container" id="mundial">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Centro del <span>Mundial 2026</span></h2>
+                    <p>Sigue el fixture oficial en tiempo real</p>
+                </div>
+                
+                <div class="matches-filter">
+                    <button class="m-filter active" data-day="yesterday">Ayer</button>
+                    <button class="m-filter" data-day="today">Hoy</button>
+                    <button class="m-filter" data-day="tomorrow">Mañana</button>
+                </div>
+
+                <div id="matches-grid" class="matches-grid">
+                    <!-- Se carga vía JS -->
+                </div>
+
+                <div class="radio-box glass">
+                    <h3><i class="fas fa-broadcast-tower"></i> Radio Deportiva en Vivo</h3>
+                    <audio controls preload="none">
+                        <source src="https://streamingecuador.net:9002/stream" type="audio/mpeg">
+                        Tu navegador no soporta audio.
+                    </audio>
+                </div>
+            </div>
+        </section>
+
+        <!-- CATÁLOGO -->
+        <section class="catalog" id="streaming">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Catálogo <span>Oficial</span></h2>
+                </div>
+                
+                <!-- El catálogo se inyecta dinámicamente desde Catalogo.js -->
+                <div id="catalog-wrapper"></div>
+            </div>
+        </section>
+
+        <!-- RESEÑAS -->
+        <section class="reviews container">
+            <div class="review-slider" id="review-slider">
+                <!-- Se carga vía JS -->
+            </div>
+        </section>
+
+        <!-- MÉTODOS DE PAGO -->
+        <section class="payments container" id="pagos">
+            <div class="section-title">
+                <h2>Métodos de <span>Pago</span></h2>
+            </div>
+            <div class="payment-grid">
+                <div class="pay-card glass">
+                    <img src="assets/pichincha.png" alt="Pichincha">
+                    <p>Banco Pichincha</p>
+                    <b>2205375908</b>
+                    <button class="btn-copy" onclick="copyText('2205375908')"><i class="fas fa-copy"></i> Copiar</button>
+                </div>
+                <div class="pay-card glass">
+                    <img src="assets/guayaquil.png" alt="Guayaquil">
+                    <p>Banco Guayaquil</p>
+                    <b>0013647475</b>
+                    <button class="btn-copy" onclick="copyText('0013647475')"><i class="fas fa-copy"></i> Copiar</button>
+                </div>
+            </div>
+            <div class="transfer-alert glass">
+                <p>⚠️ <b>IMPORTANTE:</b> Al transferir agrega: <br> <span>clicktvprivado@gmail.com</span></p>
+                <button onclick="copyText('clicktvprivado@gmail.com')">Copiar Correo</button>
+            </div>
+        </section>
+    </main>
+
+    <!-- CARRITO SIDEBAR -->
+    <aside class="cart-sidebar" id="cart-sidebar">
+        <div class="cart-header">
+            <h3>🛒 Mi Carrito</h3>
+            <button onclick="toggleCart()"><i class="fas fa-times"></i></button>
+        </div>
+        <div id="cart-items-container">
+            <!-- Items -->
+        </div>
+        <div class="cart-totals">
+            <div class="coupon-box">
+                <input type="text" id="coupon-input" placeholder="Código: CLICKTVMUNDIAL">
+                <button onclick="applyCoupon()">Aplicar</button>
+            </div>
+            <div class="total-line">Subtotal: <span id="cart-subtotal">$0.00</span></div>
+            <div class="total-line">Descuento: <span id="cart-discount">$0.00</span></div>
+            <div class="total-line main">Total Final: <span id="cart-total">$0.00</span></div>
+        </div>
+        
+        <div id="paypal-button-container"></div>
+        
+        <button class="btn-wpp-checkout" onclick="sendWppCart()">
+            <i class="fab fa-whatsapp"></i> Finalizar por WhatsApp
+        </button>
+    </aside>
+
+    <!-- BOTONES FLOTANTES -->
+    <div class="floating-group">
+        <a href="https://wa.me/593939166222" class="float-btn wpp" target="_blank"><i class="fab fa-whatsapp"></i></a>
+        <a href="https://t.me/streamid" class="float-btn tg" target="_blank"><i class="fab fa-telegram-plane"></i></a>
+        <a href="https://wa.me/593939166222?text=Soporte+Tecnico" class="float-btn support" target="_blank"><i class="fas fa-headset"></i></a>
+        <div class="float-btn scroll-up" onclick="window.scrollTo(0,0)"><i class="fas fa-chevron-up"></i></div>
+    </div>
+
+    <!-- NOTIFICACIONES TOAST -->
+    <div id="toast-container"></div>
+
+    <!-- SCRIPTS -->
+    <script src="data.js"></script>
+    <script src="Catalogo.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
