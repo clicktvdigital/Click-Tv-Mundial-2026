@@ -389,40 +389,54 @@ const API_URL = "https://api.football-data.org/v4/matches";
 const API_KEY = "467c885c07fa49baa40ac78cf636f8b0";
 
 
-function renderPartidos(data) {
+async function cargarPartidos() {
+  try {
+    const res = await fetch(API_URL, {
+      headers: {
+        "X-Auth-Token": API_KEY
+      }
+    });
+
+    const data = await res.json();
+
+    renderPartidosAPI(data.matches);
+
+  } catch (e) {
+    console.log("Error API:", e);
+  }
+}
+function renderPartidosAPI(matches) {
   const box = document.getElementById("mundial-grid");
   if (!box) return;
 
   let html = "";
 
-  data.forEach(grupo => {
+  matches.forEach(m => {
 
-    html += `<h2>${grupo.grupo}</h2>`;
+    const fecha = new Date(m.utcDate);
 
-    grupo.partidos.forEach(p => {
+    if (isNaN(fecha)) return;
 
-      if (!p.fechaUTC) return;
-
-      const fecha = new Date(p.fechaUTC);
-
-      if (isNaN(fecha)) return;
-
-      const horaEC = fecha.toLocaleTimeString("es-EC", {
-        timeZone: "America/Guayaquil",
-        hour: "2-digit",
-        minute: "2-digit"
-      });
-
-      html += `
-        <div class="match-card">
-          <h3>${p.local} vs ${p.visitante}</h3>
-          <p>⏰ Ecuador: ${horaEC}</p>
-          <p>📍 ${p.sede || "Sin sede"}</p>
-        </div>
-      `;
+    const horaEC = fecha.toLocaleTimeString("es-EC", {
+      timeZone: "America/Guayaquil",
+      hour: "2-digit",
+      minute: "2-digit"
     });
 
+    const estado = m.status;
+
+    html += `
+      <div class="match-card">
+        <div class="status">${estado}</div>
+
+        <h3>${m.homeTeam?.name || "?"} vs ${m.awayTeam?.name || "?"}</h3>
+
+        <p>⏰ Ecuador: ${horaEC}</p>
+
+        <p>🏆 ${m.competition?.name || ""}</p>
+      </div>
+    `;
   });
 
-  box.innerHTML = html;
+  box.innerHTML = html || "⚽ Sin partidos disponibles";
 }
