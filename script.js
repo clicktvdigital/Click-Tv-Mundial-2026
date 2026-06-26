@@ -385,3 +385,62 @@ function mostrarToast(mensaje, tipo = "info") {
     setTimeout(() => toast.remove(), 300);
   }, 3500);
 }
+const API_URL = "https://api.football-data.org/v4/matches";
+const API_KEY = "467c885c07fa49baa40ac78cf636f8b0";
+
+async function cargarPartidos() {
+  try {
+    const hoy = new Date().toISOString().split("T")[0];
+
+    const res = await fetch(`${API_URL}?dateFrom=${hoy}&dateTo=${hoy}`, {
+      headers: {
+        "X-Auth-Token": API_KEY
+      }
+    });
+
+    const data = await res.json();
+    renderPartidos(data.matches);
+
+  } catch (error) {
+    console.log("ERROR API:", error);
+
+    const box = document.getElementById("mundial-grid");
+    if (box) {
+      box.innerHTML = "⚠️ No se pudieron cargar partidos hoy";
+    }
+  }
+}
+
+function renderPartidos(matches) {
+  const box = document.getElementById("mundial-grid");
+  if (!box) return;
+
+  box.innerHTML = matches.map(m => {
+
+    const horaEC = new Date(m.utcDate).toLocaleTimeString("es-EC", {
+      timeZone: "America/Guayaquil",
+      hour: "2-digit",
+      minute: "2-digit"
+    });
+
+    return `
+      <div class="match-card">
+        <div class="status">⚽ ${m.status}</div>
+
+        <h3>${m.homeTeam.name} vs ${m.awayTeam.name}</h3>
+
+        <p>⏰ Ecuador: ${horaEC}</p>
+
+        <span>🏆 ${m.competition.name}</span>
+      </div>
+    `;
+  }).join("");
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  cargarPartidos();
+
+  setInterval(() => {
+    cargarPartidos();
+  }, 60000);
+});
