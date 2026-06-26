@@ -88,6 +88,16 @@ function inicializarUI() {
   const anio = document.getElementById("anio-actual");
   if (anio) anio.textContent = new Date().getFullYear();
 
+  // Teleamazonas en vivo
+  const btnTeleamazonas = document.getElementById("btn-teleamazonas");
+
+  if (btnTeleamazonas && typeof CONFIG !== "undefined") {
+    btnTeleamazonas.href = CONFIG.teleamazonasUrl;
+    btnTeleamazonas.target = "_blank";
+    btnTeleamazonas.rel = "noopener noreferrer";
+  }
+}
+
   const usuarios = document.getElementById("usuarios-conectados");
   if (usuarios) usuarios.textContent = `${Math.floor(Math.random() * 39) + 38}`;
 }
@@ -120,7 +130,7 @@ function inicializarPagosRapidos() {
   const paypalme = document.getElementById("link-paypalme");
   const catalogo = document.getElementById("link-catalogo-oficial");
   const fifa = document.getElementById("link-fifa-calendario");
-  const teleamazonas = document.getElementById("link-teleamazonas");
+  const teleamazonas = document.getElementById("btn-teleamazonas");
 
   if (deuna) configurarLinkExterno(deuna, CONFIG.deunaUrl);
   if (payphone) configurarLinkExterno(payphone, CONFIG.payphoneUrl);

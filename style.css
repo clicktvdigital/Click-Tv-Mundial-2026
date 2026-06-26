@@ -933,3 +933,85 @@ audio {
   gap: 16px;
   flex-wrap: wrap;
 }
+/* ==============================
+   TELEAMAZONAS EN VIVO
+============================== */
+
+.teleamazonas-card {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 18px;
+  padding: 16px 18px;
+  border-radius: 22px;
+  text-decoration: none;
+  color: #ffffff;
+  background: linear-gradient(135deg, rgba(0, 255, 102, 0.18), rgba(0, 230, 118, 0.05));
+  border: 1px solid rgba(0, 255, 102, 0.35);
+  box-shadow: 0 12px 35px rgba(0, 255, 102, 0.14);
+  backdrop-filter: blur(14px);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.teleamazonas-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(0, 255, 102, 0.8);
+  box-shadow: 0 18px 45px rgba(0, 255, 102, 0.25);
+}
+
+.teleamazonas-card__icon {
+  width: 54px;
+  height: 54px;
+  min-width: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
+  font-size: 1.7rem;
+  background: linear-gradient(135deg, #00ff66, #00e676);
+  color: #050505;
+  box-shadow: 0 10px 25px rgba(0, 255, 102, 0.35);
+}
+
+.teleamazonas-card__info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.teleamazonas-card__label {
+  width: fit-content;
+  padding: 4px 9px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  color: #050505;
+  background: #00ff66;
+}
+
+.teleamazonas-card__info strong {
+  font-size: 1.25rem;
+  line-height: 1.1;
+  color: #ffffff;
+}
+
+.teleamazonas-card__info small {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.teleamazonas-card__arrow {
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: #050505;
+  background: #00ff66;
+  font-weight: 900;
+}
