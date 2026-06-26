@@ -413,17 +413,15 @@ function renderPartidos(data) {
 
   data.forEach(grupo => {
 
-    const partidosHoy = grupo.partidos.filter(p =>
-      esHoyEcuador(p.fechaUTC)
-    );
-
-    if (partidosHoy.length === 0) return;
-
     html += `<h2>${grupo.grupo}</h2>`;
 
-    partidosHoy.forEach(p => {
+    grupo.partidos.forEach(p => {
 
-      const horaEC = new Date(p.fechaUTC).toLocaleTimeString("es-EC", {
+      const fecha = new Date(p.fechaUTC);
+
+      if (isNaN(fecha)) return;
+
+      const horaEC = fecha.toLocaleTimeString("es-EC", {
         timeZone: "America/Guayaquil",
         hour: "2-digit",
         minute: "2-digit"
@@ -440,38 +438,5 @@ function renderPartidos(data) {
 
   });
 
-  box.innerHTML = html || "⚽ No hay partidos hoy";
-}
-function obtenerProximosPartidos() {
-  const ahora = new Date();
-
-  let todos = [];
-
-  MUNDIAL_2026.forEach(g => {
-    g.partidos.forEach(p => {
-      const fecha = new Date(p.fechaUTC || `${p.fecha}T${p.hora}:00`);
-
-      if (fecha > ahora) {
-        todos.push({ ...p, grupo: g.grupo });
-      }
-    });
-  });
-
-  return todos.slice(0, 5); // próximos 5
-}
-let partidosHoy = obtenerPartidosDeHoy();
-
-if (partidosHoy.length === 0) {
-  partidosHoy = obtenerProximosPartidos();
-}
-function esHoyEcuador(fechaUTC) {
-  const ahoraEC = new Date().toLocaleDateString("en-CA", {
-    timeZone: "America/Guayaquil"
-  });
-
-  const fechaEC = new Date(fechaUTC).toLocaleDateString("en-CA", {
-    timeZone: "America/Guayaquil"
-  });
-
-  return ahoraEC === fechaEC;
+  box.innerHTML = html;
 }

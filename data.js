@@ -247,8 +247,8 @@ const CUPONES = {
 // CONFIGURACIÓN GENERAL
 // ---------------------------------------------------------------------------
 const CONFIG = {
-  whatsappNumero: "593999999999", // Reemplazar con número real (formato sin +)
-  telegramUsuario: "clicktvstreaming",
+  whatsappNumero: "593939166222", // Reemplazar con número real (formato sin +)
+  telegramUsuario: "streamid",
   radioStreamUrl: "https://stream.zeno.fm/f3wvbbqmdg8uv", // radio online embebida demo
   teleamazonasUrl: "https://www.teleamazonas.com/envivo/"
 };
