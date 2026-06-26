@@ -447,69 +447,56 @@ function renderPartidos(matches) {
 
   matches.forEach(grupo => {
 
+    const partidosHoy = grupo.partidos.filter(p => {
+      const fechaFinal = normalizarFecha(p.fecha, p.hora);
+      return fechaFinal && esHoyEcuador(fechaFinal);
+    });
+
+    if (partidosHoy.length === 0) return;
+
     html += `<h2>${grupo.grupo}</h2>`;
 
-    grupo.partidos.forEach(p => {
+    partidosHoy.forEach(p => {
 
-      // 🔥 NORMALIZAR FECHA (IMPORTANTE)
-      const fechaBase = p.fechaUTC || (p.fecha && p.hora ? `${p.fecha}T${p.hora}:00` : null);
+      const fechaFinal = normalizarFecha(p.fecha, p.hora);
 
-      if (!fechaBase) {
-        html += `
-          <div class="match-card error">
-            ⚠️ Partido sin fecha válida
-          </div>
-        `;
-        return;
-      }
-
-      const fecha = new Date(fechaBase);
-
-      if (isNaN(fecha.getTime())) {
-        html += `
-          <div class="match-card error">
-            ⚠️ Fecha inválida
-          </div>
-        `;
-        return;
-      }
-
-      // ⏰ Hora Ecuador
-      const horaEC = fecha.toLocaleTimeString("es-EC", {
+      const horaEC = new Date(fechaFinal).toLocaleTimeString("es-EC", {
         timeZone: "America/Guayaquil",
         hour: "2-digit",
         minute: "2-digit"
       });
 
-      // ⚽ DATOS SEGUROS
-      const local = p.local || "Equipo A";
-      const visitante = p.visitante || "Equipo B";
-      const sede = p.sede || "Sin sede";
-
-      // 🔥 ESTADO SIMPLE
-      const ahora = new Date();
-      const diffHoras = (fecha - ahora) / (1000 * 60 * 60);
-
-      let estado = "";
-
-      if (diffHoras > 1) estado = `🟡 FALTAN ${Math.round(diffHoras)}H`;
-      else if (diffHoras > 0) estado = `🔵 POR INICIAR`;
-      else if (diffHoras > -2) estado = `🔴 EN VIVO`;
-      else estado = `⚫ FINALIZADO`;
-
       html += `
         <div class="match-card">
-          <div class="status">${estado}</div>
-
-          <h3>${local} vs ${visitante}</h3>
-
-          <p>⏰ Ecuador: ${horaEC}</p>
-
-          <p>📍 ${sede}</p>
+          <h3>${p.local} vs ${p.visitante}</h3>
+          <p>⏰ ${horaEC} (Ecuador)</p>
+          <p>📍 ${p.sede}</p>
         </div>
       `;
     });
   });
 
-  box.innerHTML = html;
+  box.innerHTML = html || "⚽ No hay partidos hoy en Ecuador";
+}
+function normalizarFecha(fecha, hora) {
+  if (!fecha) return null;
+
+  // si ya viene completa (UTC)
+  if (fecha.includes("T")) return fecha;
+
+  // si viene separada
+  if (hora) return `${fecha}T${hora}:00`;
+
+  return null;
+}
+function esHoyEcuador(fecha) {
+  const hoy = new Date().toLocaleDateString("en-CA", {
+    timeZone: "America/Guayaquil"
+  });
+
+  const f = new Date(fecha).toLocaleDateString("en-CA", {
+    timeZone: "America/Guayaquil"
+  });
+
+  return hoy === f;
 }
