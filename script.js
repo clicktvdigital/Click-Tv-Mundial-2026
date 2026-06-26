@@ -405,40 +405,42 @@ async function cargarPartidos() {
     console.log("Error API:", e);
   }
 }
-function renderPartidosAPI(matches) {
+function renderPartidos(data) {
   const box = document.getElementById("mundial-grid");
   if (!box) return;
 
   let html = "";
 
-  matches.forEach(m => {
+  data.forEach(grupo => {
 
-    const fecha = new Date(m.utcDate);
+    const partidosHoy = grupo.partidos.filter(p =>
+      esHoyEcuador(p.fechaUTC)
+    );
 
-    if (isNaN(fecha)) return;
+    if (partidosHoy.length === 0) return;
 
-    const horaEC = fecha.toLocaleTimeString("es-EC", {
-      timeZone: "America/Guayaquil",
-      hour: "2-digit",
-      minute: "2-digit"
+    html += `<h2>${grupo.grupo}</h2>`;
+
+    partidosHoy.forEach(p => {
+
+      const horaEC = new Date(p.fechaUTC).toLocaleTimeString("es-EC", {
+        timeZone: "America/Guayaquil",
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+
+      html += `
+        <div class="match-card">
+          <h3>${p.local} vs ${p.visitante}</h3>
+          <p>⏰ ${horaEC} (Ecuador)</p>
+          <p>📍 ${p.sede}</p>
+        </div>
+      `;
     });
 
-    const estado = m.status;
-
-    html += `
-      <div class="match-card">
-        <div class="status">${estado}</div>
-
-        <h3>${m.homeTeam?.name || "?"} vs ${m.awayTeam?.name || "?"}</h3>
-
-        <p>⏰ Ecuador: ${horaEC}</p>
-
-        <p>🏆 ${m.competition?.name || ""}</p>
-      </div>
-    `;
   });
 
-  box.innerHTML = html || "⚽ Sin partidos disponibles";
+  box.innerHTML = html || "⚽ No hay partidos hoy";
 }
 function obtenerProximosPartidos() {
   const ahora = new Date();
@@ -462,6 +464,14 @@ let partidosHoy = obtenerPartidosDeHoy();
 if (partidosHoy.length === 0) {
   partidosHoy = obtenerProximosPartidos();
 }
-if (partidosHoy.length === 0) {
-  partidosHoy = obtenerProximosPartidos();
+function esHoyEcuador(fechaUTC) {
+  const ahoraEC = new Date().toLocaleDateString("en-CA", {
+    timeZone: "America/Guayaquil"
+  });
+
+  const fechaEC = new Date(fechaUTC).toLocaleDateString("en-CA", {
+    timeZone: "America/Guayaquil"
+  });
+
+  return ahoraEC === fechaEC;
 }
