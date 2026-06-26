@@ -199,45 +199,24 @@ const RESENAS = [
 // ---------------------------------------------------------------------------
 const MUNDIAL_2026 = [
   {
-    grupo: "Grupo A",
+    grupo: "Grupo I",
     partidos: [
-      { local: "México", visitante: "Polonia", fecha: "2026-06-11", hora: "15:00", sede: "Ciudad de México" },
-      { local: "Argentina", visitante: "Arabia Saudita", fecha: "2026-06-12", hora: "10:00", sede: "Guadalajara" }
+      { local: "Noruega", visitante: "Francia", fechaUTC: "2026-06-26T21:00:00Z", sede: "Boston" },
+      { local: "Senegal", visitante: "Irak", fechaUTC: "2026-06-26T21:00:00Z", sede: "Toronto" }
     ]
   },
   {
-    grupo: "Grupo B",
+    grupo: "Grupo H",
     partidos: [
-      { local: "Estados Unidos", visitante: "Gales", fecha: "2026-06-13", hora: "13:00", sede: "Los Ángeles" },
-      { local: "Inglaterra", visitante: "Irán", fecha: "2026-06-13", hora: "16:00", sede: "Nueva York" }
+      { local: "Uruguay", visitante: "España", fechaUTC: "2026-06-26T02:00:00Z", sede: "Guadalajara" },
+      { local: "Cabo Verde", visitante: "Arabia Saudita", fechaUTC: "2026-06-26T02:00:00Z", sede: "Houston" }
     ]
   },
   {
-    grupo: "Grupo C",
+    grupo: "Grupo G",
     partidos: [
-      { local: "Brasil", visitante: "Serbia", fecha: "2026-06-14", hora: "11:00", sede: "Toronto" },
-      { local: "Suiza", visitante: "Camerún", fecha: "2026-06-14", hora: "14:00", sede: "Vancouver" }
-    ]
-  },
-  {
-    grupo: "Grupo D",
-    partidos: [
-      { local: "Francia", visitante: "Australia", fecha: "2026-06-15", hora: "10:00", sede: "Houston" },
-      { local: "Ecuador", visitante: "Países Bajos", fecha: "2026-06-15", hora: "13:00", sede: "Atlanta" }
-    ]
-  },
-  {
-    grupo: "Grupo E",
-    partidos: [
-      { local: "España", visitante: "Costa Rica", fecha: "2026-06-16", hora: "12:00", sede: "Miami" },
-      { local: "Alemania", visitante: "Japón", fecha: "2026-06-16", hora: "15:00", sede: "Boston" }
-    ]
-  },
-  {
-    grupo: "Grupo F",
-    partidos: [
-      { local: "Bélgica", visitante: "Canadá", fecha: "2026-06-17", hora: "11:00", sede: "Seattle" },
-      { local: "Croacia", visitante: "Marruecos", fecha: "2026-06-17", hora: "14:00", sede: "Kansas City" }
+      { local: "Nueva Zelanda", visitante: "Bélgica", fechaUTC: "2026-06-26T05:00:00Z", sede: "Seattle" },
+      { local: "Egipto", visitante: "Irán", fechaUTC: "2026-06-26T05:00:00Z", sede: "Vancouver" }
     ]
   }
 ];
