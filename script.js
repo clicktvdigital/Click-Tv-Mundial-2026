@@ -439,38 +439,41 @@ async function cargarPartidos() {
   }
 }
 
-function renderPartidosHoy() {
+function renderPartidos(matches) {
   const box = document.getElementById("mundial-grid");
   if (!box) return;
 
-  const partidos = obtenerPartidosDeHoy();
+  box.innerHTML = matches.map(m => {
 
-  if (partidos.length === 0) {
-    box.innerHTML = `
-      <div class="empty">
-        ⚽ No hay partidos programados para hoy (Ecuador)
-      </div>
-    `;
-    return;
-  }
+    const fecha = m.fechaUTC || m.fecha;
 
-  box.innerHTML = partidos.map(m => {
+    if (!fecha) {
+      return `
+        <div class="match-card error">
+          ⚠️ Datos inválidos del partido
+        </div>
+      `;
+    }
 
-    const horaEC = new Date(m.fechaUTC).toLocaleTimeString("es-EC", {
+    const horaEC = new Date(fecha).toLocaleTimeString("es-EC", {
       timeZone: "America/Guayaquil",
       hour: "2-digit",
       minute: "2-digit"
     });
 
+    const local = m.local || "??";
+    const visitante = m.visitante || "??";
+    const sede = m.sede || "Sin sede";
+
     return `
       <div class="match-card">
-        <div class="status">🔥 HOY - ${m.grupo}</div>
+        <div class="status">⚽ Partido</div>
 
-        <h3>${m.local} vs ${m.visitante}</h3>
+        <h3>${local} vs ${visitante}</h3>
 
-        <p>⏰ ${horaEC} (Ecuador)</p>
+        <p>⏰ Ecuador: ${horaEC}</p>
 
-        <span>🏆 Mundial 2026</span>
+        <p>📍 ${sede}</p>
       </div>
     `;
   }).join("");
