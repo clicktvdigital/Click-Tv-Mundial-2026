@@ -1,49 +1,228 @@
-@media (max-width: 1024px) {
-    .nav-menu {
-        position: fixed;
-        right: -100%;
-        top: 0;
-        bottom: 0;
-        width: 280px;
-        background: var(--bg-light);
-        flex-direction: column;
-        padding: 80px 30px;
-        transition: 0.4s;
-        z-index: 999;
-    }
-    
-    .nav-menu.active {
-        right: 0;
-    }
+/* ========================================================================== 
+   CLICK TV STREAMING MUNDIAL 2026 — responsive.css
+   Ajustes mobile, tablet, escritorio y anti scroll horizontal
+   ========================================================================== */
 
-    .nav-menu a {
-        display: block;
-        margin: 20px 0;
-        font-size: 18px;
-    }
+@media (max-width: 1120px) {
+  .nav-menu {
+    gap: 4px;
+  }
+
+  .nav-link {
+    padding: 9px 10px;
+    font-size: .84rem;
+  }
+
+  .catalogo-grid,
+  .mundial-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .payments-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
-@media (max-width: 768px) {
-    .hero h1 { font-size: 2.8rem; }
-    .catalog-grid { grid-template-columns: 1fr; }
-    .cart-sidebar { width: 100%; }
-    
-    .floating-group {
-        bottom: 20px;
-        right: 15px;
-    }
-    
-    .pay-card {
-        margin-bottom: 15px;
-    }
+@media (max-width: 920px) {
+  .navbar {
+    height: 68px;
+  }
+
+  .menu-toggle {
+    display: grid;
+    place-items: center;
+  }
+
+  .nav-menu {
+    position: fixed;
+    top: 106px;
+    left: 16px;
+    right: 16px;
+    z-index: 1200;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    padding: 16px;
+    border-radius: 22px;
+    border: 1px solid var(--line);
+    background: rgba(5, 5, 5, .94);
+    backdrop-filter: blur(18px);
+    box-shadow: 0 25px 80px rgba(0,0,0,.42);
+    transform: translateY(-16px);
+    opacity: 0;
+    pointer-events: none;
+    transition: .25s ease;
+  }
+
+  .nav-menu.abierto {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .nav-link {
+    background: rgba(255,255,255,.05);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+  }
+
+  .hero {
+    min-height: auto;
+  }
+
+  .hero__grid,
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero__panel {
+    order: -1;
+  }
 }
 
-@media (max-width: 480px) {
-    .hero-buttons {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-    }
-    
-    .top-info { display: none; }
+@media (max-width: 720px) {
+  .container {
+    width: min(100% - 22px, var(--max));
+  }
+
+  .topbar {
+    justify-content: flex-start;
+    gap: 10px;
+    font-size: .78rem;
+  }
+
+  .brand small {
+    display: none;
+  }
+
+  .cart-btn {
+    padding: 10px 12px;
+  }
+
+  .section {
+    padding: 58px 0;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.35rem, 12vw, 3.9rem);
+  }
+
+  .hero__actions,
+  .quick-links,
+  .contact-actions,
+  .cart-actions,
+  .plan-row__actions {
+    width: 100%;
+  }
+
+  .hero__actions .btn,
+  .quick-links .btn,
+  .contact-actions .btn,
+  .cart-actions .btn,
+  .plan-row__actions .btn {
+    width: 100%;
+  }
+
+  .catalogo-grid,
+  .mundial-cards,
+  .payments-grid,
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .filter-tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .filter-btn {
+    padding: 12px 10px;
+    font-size: .86rem;
+  }
+
+  .product-card,
+  .payment-card,
+  .glass-card {
+    padding: 16px;
+  }
+
+  .product-card__top {
+    align-items: center;
+  }
+
+  .plan-row__info {
+    display: grid;
+  }
+
+  .plan-row__info span {
+    text-align: left;
+  }
+
+  .panel-carrito {
+    width: 100vw;
+    padding-bottom: 94px;
+  }
+
+  .floating-actions {
+    right: 10px;
+    bottom: 12px;
+    gap: 8px;
+  }
+
+  .float-btn {
+    width: 46px;
+    height: 46px;
+    border-radius: 15px;
+  }
+
+  .toast-contenedor {
+    bottom: 14px;
+  }
+
+  .footer__content {
+    display: grid;
+  }
+}
+
+@media (max-width: 420px) {
+  .nav-menu {
+    grid-template-columns: 1fr;
+    top: 118px;
+  }
+
+  .filter-tabs {
+    grid-template-columns: 1fr;
+  }
+
+  .product-card__top {
+    display: grid;
+  }
+
+  .carrito-item {
+    grid-template-columns: auto 1fr;
+  }
+
+  .carrito-item__borrar {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+
+  .input-row {
+    display: grid;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+  }
 }

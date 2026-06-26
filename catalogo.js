@@ -1,30 +1,106 @@
-const PRODUCT_DATA = [
-    {
-        id: "p1",
-        category: "streaming",
-        name: "Paramount+",
-        price: 5.00,
-        tag: "IDEAL PARA EL MUNDIAL",
-        img: "assets/paramount.png",
-        options: ["1 Mes"]
-    },
-    {
-        id: "p2",
-        category: "streaming",
-        name: "Disney+ Premium",
-        price: 9.00,
-        tag: "⭐ RECOMENDADO",
-        img: "assets/disney.png",
-        options: ["1 Mes"]
-    },
-    {
-        id: "p3",
-        category: "iptv",
-        name: "IPTV Ultra HD",
-        price: 7.00,
-        tag: "💎 PREMIUM",
-        img: "assets/iptv-ultra.png",
-        options: ["1 Disp $7", "2 Disp $14", "3 Disp $21"]
-    },
-    // ... Agregar el resto de productos aquí siguiendo el mismo formato
-];
+/* ========================================================================== 
+   CLICK TV STREAMING MUNDIAL 2026 — catalogo.js
+   Render de catálogo, filtros y botones de compra
+   ========================================================================== */
+
+const CATEGORIAS = {
+  todos: "Todos",
+  streaming: "🎬 Streaming",
+  iptv: "📺 IPTV",
+  musica: "🎵 Música",
+  apps: "🎓 Premium Apps",
+  deportes: "⚽ Deportes"
+};
+
+let categoriaCatalogoActual = "todos";
+
+function inicializarFiltros() {
+  const botones = document.querySelectorAll("[data-categoria]");
+  botones.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      categoriaCatalogoActual = btn.dataset.categoria || "todos";
+      botones.forEach((b) => b.classList.remove("activo"));
+      btn.classList.add("activo");
+      renderCatalogo();
+    });
+  });
+}
+
+function renderCatalogo() {
+  const contenedor = document.getElementById("catalogo-grid");
+  if (!contenedor || typeof PRODUCTOS === "undefined") return;
+
+  const productosFiltrados = categoriaCatalogoActual === "todos"
+    ? PRODUCTOS
+    : PRODUCTOS.filter((producto) => producto.categoria === categoriaCatalogoActual);
+
+  if (productosFiltrados.length === 0) {
+    contenedor.innerHTML = `
+      <div class="empty-state">
+        <h3>Sin productos disponibles</h3>
+        <p>Pronto agregaremos más opciones a esta categoría.</p>
+      </div>
+    `;
+    return;
+  }
+
+  contenedor.innerHTML = productosFiltrados.map((producto) => crearCardProducto(producto)).join("");
+}
+
+function crearCardProducto(producto) {
+  const etiquetas = (producto.etiquetas || [])
+    .map((etiqueta) => `<span class="product-badge">${etiqueta}</span>`)
+    .join("");
+
+  const planes = producto.planes
+    .map((plan, index) => crearPlanProducto(producto, plan, index))
+    .join("");
+
+  return `
+    <article class="product-card" data-producto="${producto.id}">
+      <div class="product-card__top">
+        <span class="product-card__icon">${producto.icono}</span>
+        <div>
+          <h3>${producto.nombre}</h3>
+          <p>${producto.descripcion}</p>
+        </div>
+      </div>
+
+      <div class="product-card__badges">${etiquetas}</div>
+
+      <div class="planes-lista">
+        ${planes}
+      </div>
+    </article>
+  `;
+}
+
+function crearPlanProducto(producto, plan, index) {
+  const precioTexto = plan.consultar ? "Consultar disponibilidad" : `$${Number(plan.precio).toFixed(2)} USD`;
+  const btnComprar = plan.consultar ? "💬 Consultar" : "🟢 Comprar Ahora";
+
+  return `
+    <div class="plan-row">
+      <div class="plan-row__info">
+        <strong>${plan.tipo}</strong>
+        <span>${precioTexto}</span>
+      </div>
+      <div class="plan-row__actions">
+        <button class="btn btn--primary btn--mini" onclick="comprarAhora('${producto.id}', ${index})">${btnComprar}</button>
+        <button class="btn btn--outline btn--mini" onclick="agregarPlanAlCarrito('${producto.id}', ${index})">🛒 Añadir</button>
+      </div>
+    </div>
+  `;
+}
+
+function obtenerProductoPorId(productoId) {
+  return PRODUCTOS.find((producto) => producto.id === productoId);
+}
+
+function obtenerPlanProducto(productoId, planIndex) {
+  const producto = obtenerProductoPorId(productoId);
+  if (!producto) return null;
+  const plan = producto.planes[planIndex];
+  if (!plan) return null;
+  return { producto, plan };
+}
