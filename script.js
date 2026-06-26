@@ -440,3 +440,28 @@ function renderPartidosAPI(matches) {
 
   box.innerHTML = html || "⚽ Sin partidos disponibles";
 }
+function obtenerProximosPartidos() {
+  const ahora = new Date();
+
+  let todos = [];
+
+  MUNDIAL_2026.forEach(g => {
+    g.partidos.forEach(p => {
+      const fecha = new Date(p.fechaUTC || `${p.fecha}T${p.hora}:00`);
+
+      if (fecha > ahora) {
+        todos.push({ ...p, grupo: g.grupo });
+      }
+    });
+  });
+
+  return todos.slice(0, 5); // próximos 5
+}
+let partidosHoy = obtenerPartidosDeHoy();
+
+if (partidosHoy.length === 0) {
+  partidosHoy = obtenerProximosPartidos();
+}
+if (partidosHoy.length === 0) {
+  partidosHoy = obtenerProximosPartidos();
+}
