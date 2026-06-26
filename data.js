@@ -273,3 +273,17 @@ const CONFIG = {
   radioStreamUrl: "https://stream.zeno.fm/f3wvbbqmdg8uv", // radio online embebida demo
   teleamazonasUrl: "https://www.teleamazonas.com/envivo/"
 };
+function getAllMatches() {
+  let all = [];
+
+  groups.forEach(g => {
+    g.matches.forEach(m => {
+      all.push({
+        ...m,
+        group: g.name
+      });
+    });
+  });
+
+  return all;
+}

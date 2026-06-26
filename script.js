@@ -443,32 +443,40 @@ function renderPartidos(matches) {
   const box = document.getElementById("mundial-grid");
   if (!box) return;
 
+  if (!matches || matches.length === 0) {
+    box.innerHTML = "⚠️ No hay partidos disponibles";
+    return;
+  }
+
   box.innerHTML = matches.map(m => {
 
-    const horaEC = new Date(m.utcDate).toLocaleTimeString("es-EC", {
-      timeZone: "America/Guayaquil",
-      hour: "2-digit",
-      minute: "2-digit"
-    });
+    // 🔥 SOPORTE API O DATA LOCAL
+    const home = m.homeTeam?.name || m.home;
+    const away = m.awayTeam?.name || m.away;
+
+    const dateRaw = m.utcDate || m.dateUTC || m.date;
+
+    const horaEC = dateRaw
+      ? new Date(dateRaw).toLocaleTimeString("es-EC", {
+          timeZone: "America/Guayaquil",
+          hour: "2-digit",
+          minute: "2-digit"
+        })
+      : "Sin hora";
+
+    const status = m.status || "PROGRAMADO";
+    const competition = m.competition?.name || m.group || "Mundial 2026";
 
     return `
       <div class="match-card">
-        <div class="status">⚽ ${m.status}</div>
+        <div class="status">⚽ ${status}</div>
 
-        <h3>${m.homeTeam.name} vs ${m.awayTeam.name}</h3>
+        <h3>${home} vs ${away}</h3>
 
         <p>⏰ Ecuador: ${horaEC}</p>
 
-        <span>🏆 ${m.competition.name}</span>
+        <span>🏆 ${competition}</span>
       </div>
     `;
   }).join("");
 }
-
-document.addEventListener("DOMContentLoaded", () => {
-  cargarPartidos();
-
-  setInterval(() => {
-    cargarPartidos();
-  }, 60000);
-});
