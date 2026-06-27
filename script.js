@@ -46,23 +46,31 @@ function inicializarUI() {
     btnMenu.addEventListener("click", () => navMenu.classList.toggle("abierto"));
   }
 
+  // Carrito
   document.getElementById("btn-abrir-carrito")?.addEventListener("click", abrirCarrito);
   document.getElementById("btn-cerrar-carrito")?.addEventListener("click", cerrarCarrito);
   document.getElementById("btn-continuar-comprando")?.addEventListener("click", cerrarCarrito);
   document.getElementById("carrito-overlay")?.addEventListener("click", cerrarCarrito);
+
+  // Cupón
   document.getElementById("btn-aplicar-cupon")?.addEventListener("click", aplicarCupon);
+
+  // Checkout
   document.getElementById("btn-finalizar-compra")?.addEventListener("click", finalizarCompra);
   document.getElementById("btn-enviar-comprobante")?.addEventListener("click", enviarComprobanteWhatsApp);
   document.getElementById("btn-enviar-pedido")?.addEventListener("click", enviarPedidoWhatsApp);
 
+  // Botones de pago
   document.querySelectorAll(".btn-pago").forEach((btn) => {
     btn.addEventListener("click", () => procesarPago(btn.dataset.metodo));
   });
 
+  // Botones copiar
   document.querySelectorAll("[data-copy]").forEach((btn) => {
     btn.addEventListener("click", () => copiarTexto(btn.dataset.copy, btn.dataset.label || "Dato copiado"));
   });
 
+  // Selector de moneda
   document.getElementById("selector-moneda")?.addEventListener("change", (e) => {
     monedaActual = e.target.value;
     localStorage.setItem(CLAVE_MONEDA, monedaActual);
@@ -71,7 +79,9 @@ function inicializarUI() {
     mostrarToast(`Moneda cambiada a ${monedaActual}`, "info");
   });
 
+  // Scroll arriba
   const btnScrollTop = document.getElementById("btn-scroll-top");
+
   window.addEventListener("scroll", () => {
     if (window.scrollY > 400) {
       btnScrollTop?.classList.add("visible");
@@ -79,30 +89,56 @@ function inicializarUI() {
       btnScrollTop?.classList.remove("visible");
     }
   });
-  btnScrollTop?.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
 
+  btnScrollTop?.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+
+  // Cerrar menú móvil al tocar una opción
   document.querySelectorAll(".nav-link").forEach((link) => {
     link.addEventListener("click", () => navMenu?.classList.remove("abierto"));
   });
 
+  // Año dinámico en footer
   const anio = document.getElementById("anio-actual");
   if (anio) anio.textContent = new Date().getFullYear();
+
+  // Usuarios conectados
+  const usuarios = document.getElementById("usuarios-conectados");
+  if (usuarios) usuarios.textContent = `${Math.floor(Math.random() * 39) + 38}`;
+
+  // Radio en vivo
+  const radioPlayer = document.getElementById("radio-player");
+
+  if (radioPlayer && typeof CONFIG !== "undefined" && CONFIG.radioStreamUrl) {
+    radioPlayer.src = CONFIG.radioStreamUrl;
+    radioPlayer.load();
+  }
 
   // Teleamazonas en vivo
   const btnTeleamazonas = document.getElementById("btn-teleamazonas");
 
-  if (btnTeleamazonas && typeof CONFIG !== "undefined") {
+  if (btnTeleamazonas && typeof CONFIG !== "undefined" && CONFIG.teleamazonasUrl) {
     btnTeleamazonas.href = CONFIG.teleamazonasUrl;
     btnTeleamazonas.target = "_blank";
     btnTeleamazonas.rel = "noopener noreferrer";
   }
+
+  // Botones flotantes
+  inicializarBotonesFlotantes();
 }
 
-  const usuarios = document.getElementById("usuarios-conectados");
-  if (usuarios) usuarios.textContent = `${Math.floor(Math.random() * 39) + 38}`;
+function configurarLinkExterno(elemento, url) {
+  if (!elemento || !url) return;
+
+  elemento.href = url;
+  elemento.target = "_blank";
+  elemento.rel = "noopener noreferrer";
 }
 
 function inicializarBotonesFlotantes() {
+  if (typeof CONFIG === "undefined") return;
+
   const wa = document.getElementById("btn-whatsapp");
   const grupo = document.getElementById("btn-whatsapp-grupo");
   const tg = document.getElementById("btn-telegram");
@@ -116,12 +152,6 @@ function inicializarBotonesFlotantes() {
     const msg = encodeURIComponent("Hola, necesito soporte técnico con mi servicio Click TV.");
     configurarLinkExterno(soporte, `${CONFIG.whatsappLink}?text=${msg}`);
   }
-}
-
-function configurarLinkExterno(el, href) {
-  el.href = href;
-  el.target = "_blank";
-  el.rel = "noopener noreferrer";
 }
 
 function inicializarPagosRapidos() {
