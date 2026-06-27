@@ -31,7 +31,7 @@ const CONFIG = {
   fifaCalendarioUrl: "https://www.fifa.com/es/tournaments/mens/worldcup/canadamexicousa2026/scores-fixtures",
 
   radioStreamUrl: "https://stream.zeno.fm/f3wvbbqmdg8uv",
-  teleamazonasUrl: "https://www.teleamazonas.com/envivo/",
+  teleamazonasUrl: "https://www.teleamazonas.com/teleamazonas-en-vivo/",
 
   ivaPorcentaje: 0.15,
   paypalComisionPorcentaje: 0.054,
