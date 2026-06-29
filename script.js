@@ -567,6 +567,7 @@ function agregarAlCarrito(producto, plan) {
   if (existente) {
     existente.cantidad += 1;
     existente.ivaIncluido = existente.ivaIncluido || Boolean(plan.ivaIncluido);
+    existente.bloquearDescuento = existente.bloquearDescuento || Boolean(plan.bloquearDescuento);
   } else {
     carrito.push({
       itemId,
@@ -577,6 +578,7 @@ function agregarAlCarrito(producto, plan) {
       precio: Number(plan.precio),
       cantidad: 1,
       ivaIncluido: Boolean(plan.ivaIncluido),
+      bloquearDescuento: Boolean(plan.bloquearDescuento),
       dispositivos: plan.dispositivos || null
     });
   }
@@ -646,7 +648,7 @@ function renderCarrito() {
         <span class="carrito-item__icono">${item.icono}</span>
         <div class="carrito-item__info">
           <p class="carrito-item__nombre">${item.nombre}</p>
-          <p class="carrito-item__plan">${item.plan} · ${formatearPrecio(item.precio)}${item.ivaIncluido ? " · IVA incluido" : ""}</p>
+          <p class="carrito-item__plan">${item.plan} · ${formatearPrecio(item.precio)}${item.ivaIncluido ? " · Precio final" : ""}${item.bloquearDescuento ? " · Sin cupón" : ""}</p>
           ${item.dispositivos ? `
             <label class="mini-label">Dispositivos
               <input type="number" min="1" max="10" value="${item.dispositivos}" onchange="modificarDispositivos('${item.itemId}', this.value)">
@@ -674,20 +676,28 @@ function renderCarrito() {
   const elCuponInfo = document.getElementById("cupon-info");
   if (elCuponInfo) {
     elCuponInfo.textContent = cuponAplicado
-      ? `Cupón aplicado: ${cuponAplicado.codigo} (${cuponAplicado.porcentaje}% de descuento)`
+      ? `Cupón aplicado: ${cuponAplicado.codigo} (${cuponAplicado.porcentaje}% de descuento). No aplica a recargas o combos oficiales de operadora.`
       : "";
   }
 }
 
 function calcularTotales() {
   const subtotal = carrito.reduce((acc, item) => acc + Number(item.precio) * Number(item.cantidad), 0);
-  const descuento = cuponAplicado ? subtotal * (Number(cuponAplicado.porcentaje) / 100) : 0;
+  const subtotalDescontable = carrito.reduce((acc, item) => {
+    if (item.bloquearDescuento) return acc;
+    return acc + Number(item.precio) * Number(item.cantidad);
+  }, 0);
+  const descuento = cuponAplicado ? subtotalDescontable * (Number(cuponAplicado.porcentaje) / 100) : 0;
   const base = Math.max(subtotal - descuento, 0);
   const subtotalGravado = carrito.reduce((acc, item) => {
     if (item.ivaIncluido) return acc;
     return acc + Number(item.precio) * Number(item.cantidad);
   }, 0);
-  const descuentoGravado = subtotal > 0 ? descuento * (subtotalGravado / subtotal) : 0;
+  const subtotalGravadoDescontable = carrito.reduce((acc, item) => {
+    if (item.ivaIncluido || item.bloquearDescuento) return acc;
+    return acc + Number(item.precio) * Number(item.cantidad);
+  }, 0);
+  const descuentoGravado = cuponAplicado ? subtotalGravadoDescontable * (Number(cuponAplicado.porcentaje) / 100) : 0;
   const baseGravada = Math.max(subtotalGravado - descuentoGravado, 0);
   const iva = baseGravada * CONFIG.ivaPorcentaje;
   const total = base + iva;
@@ -865,7 +875,7 @@ function actualizarDetallePagoCarrito() {
 function generarResumenPedido() {
   const resumen = carrito.map((item) => `• ${item.nombre} (${item.plan}) x${item.cantidad}`).join("\n");
   const totales = calcularTotales();
-  return `Hola, quiero finalizar mi compra:\n${resumen}\n\nMétodo elegido: ${obtenerNombreMetodoPago(metodoPagoActual)}\nSubtotal: $${totales.subtotal.toFixed(2)} USD\nDescuento: $${totales.descuento.toFixed(2)} USD\nIVA 15% cuando aplica: $${totales.iva.toFixed(2)} USD\nTotal: $${totales.total.toFixed(2)} USD${cuponAplicado ? `\nCupón: ${cuponAplicado.codigo}` : ""}\n\nPor favor confirmar disponibilidad y pasos para activar.`;
+  return `Hola, quiero finalizar mi compra:\n${resumen}\n\nMétodo elegido: ${obtenerNombreMetodoPago(metodoPagoActual)}\nSubtotal: $${totales.subtotal.toFixed(2)} USD\nDescuento aplicado: $${totales.descuento.toFixed(2)} USD\nIVA 15% cuando aplica: $${totales.iva.toFixed(2)} USD\nTotal: $${totales.total.toFixed(2)} USD${cuponAplicado ? `\nCupón: ${cuponAplicado.codigo} (no aplica a recargas o combos oficiales de operadora)` : ""}\n\nPor favor confirmar disponibilidad y pasos para activar.`;
 }
 
 function enviarPedidoWhatsApp() {

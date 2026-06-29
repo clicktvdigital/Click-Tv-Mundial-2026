@@ -370,30 +370,109 @@ const PRODUCTOS = [
   {
     id: "aumento-gigas-proneet",
     nombre: "Aumento de gigas PRONEET VPN",
-    categoria: "internet",
+    categoria: "proneet",
     icono: "📶",
-    descripcion: "Aumento de megas para Android en Ecuador. Compatible con Tuenti, Movistar y Claro. No disponible para CNT.",
-    etiquetas: ["🚀 INTERNET MÓVIL", "🇪🇨 ECUADOR", "⚡ ACTIVACIÓN RÁPIDA"],
+    descripcion: "Aumento de megas para Android en Ecuador. Disponible para Claro, Movistar y Tuenti. No disponible para CNT.",
+    etiquetas: ["🚀 AUMENTO DE MEGAS", "✅ ACEPTA CUPÓN", "⚡ ACTIVACIÓN RÁPIDA"],
     planes: [
-      { tipo: "Movistar sin saldo · hasta 200 MB diarios", precio: 0, consultar: true },
-      { tipo: "Movistar ilimitado · requiere plan compatible", precio: 0, consultar: true },
-      { tipo: "Tuenti · hasta 20 GB extras al mes", precio: 0, consultar: true },
-      { tipo: "Claro combos · hasta 36 GB extras", precio: 0, consultar: true }
+      { tipo: "PRONEET VPN Claro · aumento de megas", precio: 5, ivaIncluido: true },
+      { tipo: "PRONEET VPN Movistar · aumento de megas", precio: 5, ivaIncluido: true },
+      { tipo: "PRONEET VPN Tuenti · aumento de megas", precio: 5, ivaIncluido: true }
     ]
   },
   {
-    id: "recargas-combos-operador",
-    nombre: "Recargas y combos por operador",
-    categoria: "internet",
-    icono: "📱",
-    descripcion: "Recargas normales, combos y gestión de activación para Movistar, Claro, CNT y Tuenti. Valores finales con IVA incluido.",
-    etiquetas: ["💸 RECARGAS", "✅ IVA INCLUIDO", "📲 AL INSTANTE"],
+    id: "claro-paquetes-megas",
+    nombre: "Claro Paquetes Megas",
+    categoria: "recargas",
+    icono: "🔴",
+    descripcion: "Paquetes de megas Claro Ecuador según tabla enviada. Valores finales para activación por paquete.",
+    etiquetas: ["🔴 CLARO", "📶 PAQUETES MEGAS", "🚫 SIN CUPÓN"],
     planes: [
-      { tipo: "Gestión combo ilimitado · 1 mes", precio: 4, ivaIncluido: true },
-      { tipo: "Recarga normal Movistar", precio: 0, consultar: true },
-      { tipo: "Recarga normal Claro", precio: 0, consultar: true },
-      { tipo: "Recarga normal CNT", precio: 0, consultar: true },
-      { tipo: "Recarga normal Tuenti", precio: 0, consultar: true }
+      { tipo: "1 GB · vigencia 1 día", precio: 1.05, ivaIncluido: true, bloquearDescuento: true },
+      { tipo: "Redes ilimitadas · vigencia 1 día", precio: 1.50, ivaIncluido: true, bloquearDescuento: true },
+      { tipo: "2 GB · vigencia 2 días", precio: 2.05, ivaIncluido: true, bloquearDescuento: true },
+      { tipo: "5 GB · vigencia 3 días", precio: 2.50, ivaIncluido: true, bloquearDescuento: true },
+      { tipo: "7 GB · vigencia 3 días", precio: 3.10, ivaIncluido: true, bloquearDescuento: true },
+      { tipo: "9 GB · vigencia 7 días", precio: 3.50, ivaIncluido: true, bloquearDescuento: true },
+      { tipo: "10 GB · vigencia 10 días", precio: 4.00, ivaIncluido: true, bloquearDescuento: true },
+      { tipo: "8 GB · vigencia 15 días", precio: 5.15, ivaIncluido: true, bloquearDescuento: true },
+      { tipo: "10 GB · vigencia 15 días", precio: 5.50, ivaIncluido: true, bloquearDescuento: true },
+      { tipo: "12 GB · vigencia 25 días", precio: 8.00, ivaIncluido: true, bloquearDescuento: true },
+      { tipo: "16 GB · vigencia 30 días", precio: 10.50, ivaIncluido: true, bloquearDescuento: true },
+      { tipo: "19 GB · vigencia 30 días", precio: 12.50, ivaIncluido: true, bloquearDescuento: true },
+      { tipo: "22 GB · vigencia 30 días", precio: 15.50, ivaIncluido: true, bloquearDescuento: true },
+      { tipo: "27 GB · vigencia 30 días", precio: 20.50, ivaIncluido: true, bloquearDescuento: true }
+    ]
+  },
+  {
+    id: "movistar-combos",
+    nombre: "Movistar Combos Prepago",
+    categoria: "recargas",
+    icono: "🔵",
+    descripcion: "Combos Movistar Ecuador con precios finales publicados por operador. No aplican cupón de descuento.",
+    etiquetas: ["🔵 MOVISTAR", "📲 COMBOS", "🚫 SIN CUPÓN"],
+    planes: [
+      { tipo: "1 GB · vigencia 1 día", precio: 1.05, ivaIncluido: true, bloquearDescuento: true },
+      { tipo: "5 GB · vigencia 7 días", precio: 3.00, ivaIncluido: true, bloquearDescuento: true },
+      { tipo: "6 GB · vigencia 15 días", precio: 5.00, ivaIncluido: true, bloquearDescuento: true },
+      { tipo: "8 GB · vigencia 20 días", precio: 7.00, ivaIncluido: true, bloquearDescuento: true },
+      { tipo: "8 GB · vigencia 30 días", precio: 8.00, ivaIncluido: true, bloquearDescuento: true },
+      { tipo: "10 GB · vigencia 30 días", precio: 9.00, ivaIncluido: true, bloquearDescuento: true },
+      { tipo: "14 GB · vigencia 30 días", precio: 10.25, ivaIncluido: true, bloquearDescuento: true },
+      { tipo: "19 GB · vigencia 30 días", precio: 15.50, ivaIncluido: true, bloquearDescuento: true },
+      { tipo: "Recarga normal Movistar · monto a confirmar", precio: 0, consultar: true }
+    ]
+  },
+  {
+    id: "tuenti-recargas-combos",
+    nombre: "Tuenti Recargas y Combos",
+    categoria: "recargas",
+    icono: "🩵",
+    descripcion: "Recargas y combos Tuenti Ecuador. Los precios finales de combos no aceptan cupón.",
+    etiquetas: ["🩵 TUENTI", "💸 RECARGAS", "🚫 SIN CUPÓN"],
+    planes: [
+      { tipo: "Recarga normal Tuenti $1", precio: 1.00, ivaIncluido: true, bloquearDescuento: true },
+      { tipo: "Recarga normal Tuenti $4", precio: 4.00, ivaIncluido: true, bloquearDescuento: true },
+      { tipo: "Recarga normal Tuenti $8", precio: 8.00, ivaIncluido: true, bloquearDescuento: true },
+      { tipo: "Combo 1/2 GB · vigencia 15 días", precio: 1.00, ivaIncluido: true, bloquearDescuento: true },
+      { tipo: "Combo 3 GB · vigencia 15 días", precio: 4.00, ivaIncluido: true, bloquearDescuento: true },
+      { tipo: "Combo 5 GB · vigencia 30 días", precio: 7.00, ivaIncluido: true, bloquearDescuento: true },
+      { tipo: "Combo 8 GB + 2 GB TikTok/Instagram · vigencia 30 días", precio: 8.00, ivaIncluido: true, bloquearDescuento: true }
+    ]
+  },
+  {
+    id: "cnt-paquetes-prepago",
+    nombre: "CNT Paquetes Prepago",
+    categoria: "recargas",
+    icono: "🟣",
+    descripcion: "Paquetes CNT Ecuador con precios finales. No aplican cupón de descuento.",
+    etiquetas: ["🟣 CNT", "📲 PAQUETES", "🚫 SIN CUPÓN"],
+    planes: [
+      { tipo: "Paquete Plus · vigencia 1 día", precio: 1.00, ivaIncluido: true, bloquearDescuento: true },
+      { tipo: "Paquete Plus · vigencia 3 días", precio: 2.00, ivaIncluido: true, bloquearDescuento: true },
+      { tipo: "Paquete Plus · vigencia 7 días", precio: 3.00, ivaIncluido: true, bloquearDescuento: true },
+      { tipo: "Paquete Plus · vigencia 30 días", precio: 5.00, ivaIncluido: true, bloquearDescuento: true },
+      { tipo: "Paquete Plus · vigencia 30 días", precio: 6.00, ivaIncluido: true, bloquearDescuento: true },
+      { tipo: "Paquete Plus · vigencia 30 días", precio: 10.00, ivaIncluido: true, bloquearDescuento: true },
+      { tipo: "Paquete Plus · vigencia 30 días", precio: 15.00, ivaIncluido: true, bloquearDescuento: true },
+      { tipo: "Paquete Plus · vigencia 30 días", precio: 20.00, ivaIncluido: true, bloquearDescuento: true },
+      { tipo: "Apps prepago · 1 GB para app · vigencia 1 día", precio: 1.00, ivaIncluido: true, bloquearDescuento: true },
+      { tipo: "Herramientas colaboración · 5 GB", precio: 5.00, ivaIncluido: true, bloquearDescuento: true },
+      { tipo: "Recarga normal CNT · monto a confirmar", precio: 0, consultar: true }
+    ]
+  },
+  {
+    id: "recargas-ilimitadas-operador",
+    nombre: "Recargas ilimitadas por operador",
+    categoria: "recargas",
+    icono: "♾️",
+    descripcion: "Gestión de recarga ilimitada o combo ilimitado por operador. Precio final sin IVA adicional y sin cupón.",
+    etiquetas: ["♾️ ILIMITADAS", "✅ PRECIO FINAL", "🚫 SIN CUPÓN"],
+    planes: [
+      { tipo: "Recarga ilimitada Claro · 1 mes", precio: 4.00, ivaIncluido: true, bloquearDescuento: true },
+      { tipo: "Recarga ilimitada Movistar · 1 mes", precio: 4.00, ivaIncluido: true, bloquearDescuento: true },
+      { tipo: "Recarga ilimitada Tuenti · 1 mes", precio: 4.00, ivaIncluido: true, bloquearDescuento: true },
+      { tipo: "Recarga ilimitada CNT · 1 mes", precio: 4.00, ivaIncluido: true, bloquearDescuento: true }
     ]
   }
 ];
@@ -414,8 +493,11 @@ const ACTIVIDAD_RECIENTE = [
   "🟢 Cliente de Santiago - Chile adquirió DAZN",
   "🟢 Cliente de México activó Netflix Perfil Extra",
   "🟢 Cliente de Perú solicitó IBO Player",
-  "🟢 Cliente de Quito consultó aumento de gigas",
-  "🟢 Cliente de Guayaquil solicitó recarga móvil"
+  "🟢 Cliente de Quito activó PRONEET VPN",
+  "🟢 Cliente de Guayaquil solicitó recarga móvil",
+  "🟢 Cliente de Cuenca activó paquete Claro Megas",
+  "🟢 Cliente de Ambato compró combo Movistar",
+  "🟢 Cliente de Manta compró combo Tuenti"
 ];
 
 // Respaldo local del fixture oficial si la API no devuelve datos del Mundial.
