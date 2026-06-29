@@ -85,6 +85,10 @@
 }
 
 @media (max-width: 720px) {
+  body {
+    padding-bottom: 78px;
+  }
+
   .container {
     width: min(100% - 22px, var(--max));
   }
@@ -164,23 +168,32 @@
 
   .panel-carrito {
     width: 100vw;
-    padding-bottom: 94px;
+    padding-bottom: 118px;
   }
 
   .floating-actions {
+    left: 10px;
     right: 10px;
-    bottom: 12px;
+    bottom: calc(10px + env(safe-area-inset-bottom));
+    display: flex;
+    justify-content: center;
     gap: 8px;
+    padding: 8px;
+    border-radius: 20px;
+    background: rgba(5, 5, 5, .72);
+    border: 1px solid rgba(255,255,255,.1);
+    backdrop-filter: blur(16px);
   }
 
   .float-btn {
-    width: 46px;
-    height: 46px;
-    border-radius: 15px;
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+    box-shadow: none;
   }
 
   .toast-contenedor {
-    bottom: 14px;
+    bottom: calc(86px + env(safe-area-inset-bottom));
   }
 
   .footer__content {
@@ -223,12 +236,30 @@
     grid-template-columns: 1fr;
   }
 
-  .teleamazonas-tabs {
-    grid-template-columns: 1fr;
+  .media-box,
+  .teleamazonas-player-card {
+    padding: 14px;
   }
 
   .teleamazonas-player-card__head {
     align-items: flex-start;
+    gap: 10px;
+  }
+
+  .teleamazonas-card__icon {
+    width: 46px;
+    height: 46px;
+    min-width: 46px;
+    border-radius: 15px;
+    font-size: 1.35rem;
+  }
+
+  .teleamazonas-player-card__head strong {
+    font-size: 1.05rem;
+  }
+
+  .teleamazonas-player-card__head small {
+    font-size: .82rem;
   }
 }
 

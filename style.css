@@ -1456,38 +1456,6 @@ textarea {
   border-color: rgba(0, 255, 102, 0.75);
 }
 
-.teleamazonas-frame-wrap {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  min-height: 220px;
-  overflow: hidden;
-  border-radius: 18px;
-  background: rgba(0, 0, 0, 0.38);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.teleamazonas-frame-wrap--page {
-  aspect-ratio: auto;
-  height: min(72vh, 680px);
-  min-height: 520px;
-}
-
-.teleamazonas-frame-loaded,
-.teleamazonas-iframe {
-  width: 100%;
-  height: 100%;
-}
-
-.teleamazonas-iframe {
-  display: block;
-  border: 0;
-}
-
-.teleamazonas-iframe--page {
-  background: #050505;
-}
-
 .teleamazonas-embed-note {
   margin: 10px 2px 0;
   color: rgba(255, 255, 255, 0.68);
@@ -1495,32 +1463,28 @@ textarea {
   line-height: 1.45;
 }
 
-.teleamazonas-loading {
+.teleamazonas-locked-card {
   width: 100%;
-  height: 100%;
-  min-height: 220px;
   display: grid;
-  place-items: center;
-  gap: 10px;
+  gap: 12px;
   padding: 18px;
-  color: rgba(255, 255, 255, 0.72);
+  border-radius: 18px;
+  color: rgba(255, 255, 255, 0.76);
   text-align: center;
+  background:
+    radial-gradient(circle at top left, rgba(0, 255, 102, 0.18), transparent 34%),
+    rgba(0, 0, 0, 0.34);
+  border: 1px solid rgba(0, 255, 102, 0.2);
 }
 
-.teleamazonas-loading--error {
-  align-content: center;
-}
-
-.teleamazonas-loading--error strong {
+.teleamazonas-locked-card strong {
   color: #ffffff;
+  font-size: 1rem;
+  line-height: 1.35;
 }
 
-.teleamazonas-loading--error span {
-  display: block;
-  max-width: 420px;
-  line-height: 1.45;
-}
-
-.teleamazonas-loading--error .btn {
-  margin-top: 8px;
+.teleamazonas-locked-card span {
+  max-width: 520px;
+  margin: 0 auto;
+  line-height: 1.5;
 }

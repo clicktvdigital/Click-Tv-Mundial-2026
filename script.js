@@ -120,12 +120,7 @@ function inicializarUI() {
   const anio = document.getElementById("anio-actual");
   if (anio) anio.textContent = new Date().getFullYear();
 
-  // Radio La Red en vivo
-  const radioPlayer = document.getElementById("radio-player");
-  if (radioPlayer && typeof CONFIG !== "undefined" && CONFIG.radioStreamUrl) {
-    radioPlayer.src = CONFIG.radioStreamUrl;
-  }
-
+  inicializarRadioLaRed();
   inicializarTeleamazonasPlayer();
 
   // Botones flotantes
@@ -176,28 +171,36 @@ function inicializarPagosRapidos() {
 }
 
 function inicializarTeleamazonasPlayer() {
-  const contenedor = document.getElementById("teleamazonas-player");
-  if (!contenedor || typeof CONFIG === "undefined" || !CONFIG.teleamazonasUrl) return;
-  cargarTeleamazonasPagina();
+  const linkOficial = document.getElementById("teleamazonas-link-oficial");
+  if (!linkOficial || typeof CONFIG === "undefined" || !CONFIG.teleamazonasUrl) return;
+  configurarLinkExterno(linkOficial, CONFIG.teleamazonasUrl);
 }
 
-function cargarTeleamazonasPagina() {
-  const contenedor = document.getElementById("teleamazonas-player");
-  if (!contenedor || typeof CONFIG === "undefined" || !CONFIG.teleamazonasUrl) return;
+function inicializarRadioLaRed() {
+  const radioPlayer = document.getElementById("radio-player");
+  if (!radioPlayer || typeof CONFIG === "undefined" || !CONFIG.radioStreamUrl) return;
 
-  const iframe = document.createElement("iframe");
-  iframe.className = "teleamazonas-iframe teleamazonas-iframe--page";
-  iframe.src = CONFIG.teleamazonasUrl;
-  iframe.title = "Teleamazonas en vivo";
-  iframe.allow = "autoplay; fullscreen; encrypted-media; picture-in-picture";
-  iframe.allowFullscreen = true;
-  iframe.loading = "eager";
-  iframe.referrerPolicy = "strict-origin-when-cross-origin";
-  iframe.frameBorder = "0";
+  radioPlayer.preload = "auto";
+  radioPlayer.src = CONFIG.radioStreamUrl;
+  radioPlayer.load();
 
-  contenedor.className = "teleamazonas-frame-loaded teleamazonas-frame-loaded--page";
-  contenedor.innerHTML = "";
-  contenedor.appendChild(iframe);
+  const prepararRadio = () => {
+    radioPlayer.load();
+    document.removeEventListener("touchstart", prepararRadio);
+    document.removeEventListener("click", prepararRadio);
+    document.removeEventListener("keydown", prepararRadio);
+  };
+
+  document.addEventListener("touchstart", prepararRadio, { once: true, passive: true });
+  document.addEventListener("click", prepararRadio, { once: true });
+  document.addEventListener("keydown", prepararRadio, { once: true });
+
+  radioPlayer.addEventListener("error", () => {
+    setTimeout(() => {
+      radioPlayer.src = `${CONFIG.radioStreamUrl}?t=${Date.now()}`;
+      radioPlayer.load();
+    }, 1500);
+  });
 }
 
 // ---------------------------------------------------------------------------

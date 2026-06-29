@@ -20,6 +20,8 @@
 
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%2300FF66'/%3E%3Ctext x='50' y='60' text-anchor='middle' font-size='42'%3E%E2%9A%BD%3C/text%3E%3C/svg%3E">
   <link rel="preconnect" href="https://www.paypal.com">
+  <link rel="preconnect" href="https://icecast.radiolared.com.ec" crossorigin>
+  <link rel="dns-prefetch" href="//icecast.radiolared.com.ec">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="responsive.css">
 
@@ -154,7 +156,7 @@
           <div class="media-box">
             <h3>📻 La Red 102.1 FM en vivo</h3>
             <p class="radio-note">Programación deportiva en vivo dentro de Click Tv Streaming.</p>
-            <audio id="radio-player" class="lared-audio-player" controls preload="none">
+            <audio id="radio-player" class="lared-audio-player" controls preload="auto">
               <source src="https://icecast.radiolared.com.ec/radiolared" type="audio/mpeg">
               Tu navegador no permite reproducir esta radio.
             </audio>
@@ -165,15 +167,19 @@
               <div>
                 <span class="teleamazonas-card__label">EN VIVO</span>
                 <strong>Teleamazonas en vivo</strong>
-                <small>Página oficial incrustada dentro de Click Tv Streaming</small>
+                <small>Señal oficial disponible desde Teleamazonas</small>
               </div>
             </div>
 
-            <div class="teleamazonas-frame-wrap teleamazonas-frame-wrap--page">
-              <div id="teleamazonas-player" class="teleamazonas-loading">Cargando señal...</div>
+            <div id="teleamazonas-player" class="teleamazonas-locked-card">
+              <strong>Teleamazonas no permite incrustar su señal en otros sitios.</strong>
+              <span>Por eso el navegador muestra “rechazó la conexión”. Para ver la transmisión sin error, abre la señal oficial.</span>
+              <a id="teleamazonas-link-oficial" class="btn btn--primary btn--full" href="https://www.teleamazonas.com/teleamazonas-en-vivo/" target="_blank" rel="noopener noreferrer">
+                🔴 Ver señal oficial
+              </a>
             </div>
             <p class="teleamazonas-embed-note">
-              Si el reproductor tarda, espera unos segundos. La señal se carga desde la página oficial de Teleamazonas.
+              Nota: esta restricción viene del sitio oficial, no de Click Tv Streaming.
             </p>
           </div>
         </div>
