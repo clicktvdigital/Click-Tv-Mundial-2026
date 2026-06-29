@@ -120,6 +120,12 @@ function inicializarUI() {
   const anio = document.getElementById("anio-actual");
   if (anio) anio.textContent = new Date().getFullYear();
 
+  // Radio La Red en vivo
+  const radioPlayer = document.getElementById("radio-player");
+  if (radioPlayer && typeof CONFIG !== "undefined" && CONFIG.radioStreamUrl) {
+    radioPlayer.src = CONFIG.radioStreamUrl;
+  }
+
   // Teleamazonas en vivo
   const btnTeleamazonas = document.getElementById("btn-teleamazonas");
 

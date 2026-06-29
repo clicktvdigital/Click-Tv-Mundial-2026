@@ -154,14 +154,10 @@
           <div class="media-box">
             <h3>📻 La Red 102.1 FM en vivo</h3>
             <p class="radio-note">Programación deportiva en vivo dentro de Click Tv Streaming.</p>
-            <iframe
-              class="lared-radio-frame"
-              src="https://www.lared.com.ec/streaming/"
-              title="La Red 102.1 FM en vivo"
-              loading="lazy"
-              allow="autoplay; encrypted-media"
-              referrerpolicy="no-referrer-when-downgrade"
-            ></iframe>
+            <audio id="radio-player" class="lared-audio-player" controls preload="none">
+              <source src="https://icecast.radiolared.com.ec/radiolared" type="audio/mpeg">
+              Tu navegador no permite reproducir esta radio.
+            </audio>
           </div>
           <a 
   id="btn-teleamazonas" 
