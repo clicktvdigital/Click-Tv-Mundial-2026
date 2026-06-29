@@ -16,6 +16,7 @@ let paypalRenderizado = false;
 let indiceActividad = 0;
 let indiceResena = 0;
 let metodoPagoActual = "transferencia";
+let usuariosConectados = 48;
 
 // ---------------------------------------------------------------------------
 // INICIALIZACIÓN
@@ -34,10 +35,12 @@ document.addEventListener("DOMContentLoaded", () => {
   inicializarPagosRapidos();
   inicializarUbicacion();
   actualizarTasasCambio();
+  actualizarUsuariosConectados();
   actualizarContadorCarrito();
 
   setInterval(renderActividadReciente, 4500);
   setInterval(rotarResenas, 6000);
+  setInterval(actualizarUsuariosConectados, 6500);
 });
 
 function inicializarUI() {
@@ -105,10 +108,6 @@ function inicializarUI() {
   // Año dinámico en footer
   const anio = document.getElementById("anio-actual");
   if (anio) anio.textContent = new Date().getFullYear();
-
-  // Usuarios conectados
-  const usuarios = document.getElementById("usuarios-conectados");
-  if (usuarios) usuarios.textContent = `${Math.floor(Math.random() * 39) + 38}`;
 
   // Radio en vivo
   const radioPlayer = document.getElementById("radio-player");
@@ -218,6 +217,8 @@ function inicializarUbicacion() {
     setTimeout(mostrarModalUbicacion, 900);
   }
 
+  detectarUbicacionPorIP();
+
   if (localStorage.getItem(CLAVE_MONEDA)) {
     if (elPais) elPais.textContent = `🌎 Moneda: ${monedaActual}`;
     return;
@@ -267,6 +268,37 @@ function seleccionarMoneda(moneda, pais = "") {
   actualizarDetallePagoCarrito();
 }
 
+async function detectarUbicacionPorIP() {
+  if (!CONFIG.ipGeoUrl) return;
+
+  try {
+    const respuesta = await fetch(CONFIG.ipGeoUrl);
+    if (!respuesta.ok) throw new Error(`IP Geo HTTP ${respuesta.status}`);
+
+    const datos = await respuesta.json();
+    const ciudad = datos?.city || "";
+    const pais = datos?.country_name || datos?.country || "";
+    const codigoPais = datos?.country_code || "";
+    const ubicacion = formatearUbicacion(ciudad, pais);
+
+    if (ubicacion) {
+      const elPais = document.getElementById("pais-detectado");
+      if (elPais) elPais.textContent = `🌎 ${ubicacion}`;
+    }
+
+    if (!localStorage.getItem(CLAVE_MONEDA) && codigoPais) {
+      sugerirMonedaPorPais(ubicacion || pais, codigoPais, true, false);
+    }
+  } catch (error) {
+    console.warn("No se pudo detectar ubicación por IP.", error);
+  }
+}
+
+function formatearUbicacion(ciudad, pais) {
+  const partes = [ciudad, pais].filter(Boolean);
+  return partes.join(", ");
+}
+
 async function actualizarTasasCambio() {
   if (!CONFIG.exchangeRateApiUrl) return;
 
@@ -298,6 +330,11 @@ function detectarPais() {
   const btnModalUbicacion = document.getElementById("btn-modal-activar-ubicacion");
   if (!elPais) return;
 
+  if (!window.isSecureContext) {
+    mostrarToast("El GPS solo se activa en HTTPS. Usa Vercel o selecciona tu país manualmente.", "error");
+    return;
+  }
+
   if (!navigator.geolocation) {
     elPais.textContent = "🌎 Ubicación no disponible";
     mostrarToast("Tu navegador no permite ubicación. Selecciona tu país manualmente.", "info");
@@ -321,12 +358,14 @@ function detectarPais() {
         const respuesta = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`);
         const datos = await respuesta.json();
         const pais = datos?.address?.country || "Ubicación detectada";
+        const ciudad = datos?.address?.city || datos?.address?.town || datos?.address?.village || datos?.address?.municipality || datos?.address?.state || "";
         const codigoPais = datos?.address?.country_code?.toUpperCase() || "";
-        elPais.textContent = `🌎 ${pais}`;
-        sugerirMonedaPorPais(pais, codigoPais, true);
+        const ubicacion = formatearUbicacion(ciudad, pais) || pais;
+        elPais.textContent = `🌎 ${ubicacion}`;
+        sugerirMonedaPorPais(ubicacion, codigoPais, true);
         cerrarModalUbicacion();
       } catch {
-        elPais.textContent = "🌎 País detectado";
+        elPais.textContent = "🌎 Ubicación GPS detectada";
       }
       if (btnUbicacion) {
         btnUbicacion.disabled = false;
@@ -349,11 +388,11 @@ function detectarPais() {
       }
       mostrarToast("No se activó la ubicación. Puedes elegir la moneda manualmente.", "info");
     },
-    { enableHighAccuracy: false, timeout: 7000, maximumAge: 600000 }
+    { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
   );
 }
 
-function sugerirMonedaPorPais(pais, codigoPais = "", forzar = false) {
+function sugerirMonedaPorPais(pais, codigoPais = "", forzar = false, mostrarMensaje = true) {
   if (localStorage.getItem(CLAVE_MONEDA) && !forzar) return;
   const monedaPorCodigo = MONEDA_POR_PAIS?.[codigoPais];
   const encontrada = monedaPorCodigo
@@ -362,7 +401,7 @@ function sugerirMonedaPorPais(pais, codigoPais = "", forzar = false) {
 
   if (!encontrada || !TASAS_CAMBIO[encontrada[0]]) return;
   seleccionarMoneda(encontrada[0], pais);
-  mostrarToast(`Moneda sugerida: ${encontrada[0]}`, "exito");
+  if (mostrarMensaje) mostrarToast(`Moneda sugerida: ${encontrada[0]}`, "exito");
 }
 
 // ---------------------------------------------------------------------------
@@ -788,7 +827,7 @@ async function renderMundial() {
 
   try {
     const partidosAPI = await obtenerPartidosFootballData();
-    const partidos = normalizarPartidos(partidosAPI);
+    const partidos = normalizarPartidos(partidosAPI).filter(tieneEquiposReales);
     const html = renderizarBloquesMundial(partidos);
     box.innerHTML = html || renderizarRespaldoMundial();
   } catch (error) {
@@ -822,6 +861,11 @@ function normalizarPartidos(matches) {
     estado: traducirEstadoPartido(m.status),
     marcador: crearMarcador(m.score)
   })).filter((m) => m.fechaUTC);
+}
+
+function tieneEquiposReales(partido) {
+  const texto = `${partido.local} ${partido.visitante}`.toLowerCase();
+  return !/(equipo|ganador|grupo|third|runner|tbd|por confirmar)/i.test(texto);
 }
 
 function normalizarPartidosLocales(grupos) {
@@ -994,6 +1038,15 @@ function renderActividadReciente() {
   if (!box || !ACTIVIDAD_RECIENTE?.length) return;
   box.textContent = ACTIVIDAD_RECIENTE[indiceActividad % ACTIVIDAD_RECIENTE.length];
   indiceActividad++;
+}
+
+function actualizarUsuariosConectados() {
+  const usuarios = document.getElementById("usuarios-conectados");
+  if (!usuarios) return;
+
+  const variacion = Math.floor(Math.random() * 7) - 3;
+  usuariosConectados = Math.min(92, Math.max(38, usuariosConectados + variacion));
+  usuarios.textContent = usuariosConectados;
 }
 
 // ---------------------------------------------------------------------------

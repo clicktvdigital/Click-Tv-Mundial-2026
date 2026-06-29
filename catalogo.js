@@ -89,7 +89,7 @@ function crearCardProducto(producto) {
 }
 
 function crearPlanProducto(producto, plan, index) {
-  const precioTexto = plan.consultar ? "Consultar disponibilidad" : formatearPrecio(plan.precio);
+  const precioTexto = plan.consultar ? "Cotiza por WhatsApp" : formatearPrecio(plan.precio);
   const btnComprar = plan.consultar ? "💬 Consultar" : "🟢 Comprar Ahora";
 
   return `

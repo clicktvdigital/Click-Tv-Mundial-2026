@@ -33,6 +33,7 @@ const CONFIG = {
   radioStreamUrl: "https://stream.zeno.fm/f3wvbbqmdg8uv",
   teleamazonasUrl: "https://www.teleamazonas.com/teleamazonas-en-vivo/",
   exchangeRateApiUrl: "https://open.er-api.com/v6/latest/USD",
+  ipGeoUrl: "https://ipapi.co/json/",
 
   ivaPorcentaje: 0.15,
   paypalComisionPorcentaje: 0.054,
@@ -385,57 +386,57 @@ const MUNDIAL_2026 = [
     partidos: [
       {
         grupo: "Lunes 29 de junio",
-        local: "Ganador Grupo E",
-        visitante: "3.º de A/B/C/D/F",
-        fechaUTC: "2026-06-29T12:00:00-05:00",
-        horaLocalTexto: "Horario por confirmar",
-        sede: "Boston Stadium",
-        marcador: "Partido 74"
+        local: "Brasil",
+        visitante: "Japón",
+        fechaUTC: "2026-06-29T17:00:00Z",
+        horaLocalTexto: "12:00 Ecuador",
+        sede: "NRG Stadium / Houston Stadium",
+        marcador: "Dieciseisavos de final"
       },
       {
         grupo: "Lunes 29 de junio",
-        local: "Ganador Grupo F",
-        visitante: "2.º Grupo C",
-        fechaUTC: "2026-06-29T13:00:00-05:00",
-        horaLocalTexto: "Horario por confirmar",
-        sede: "Estadio Monterrey",
-        marcador: "Partido 75"
+        local: "Alemania",
+        visitante: "Paraguay",
+        fechaUTC: "2026-06-29T20:30:00Z",
+        horaLocalTexto: "15:30 Ecuador",
+        sede: "Gillette Stadium / Boston Stadium",
+        marcador: "Dieciseisavos de final"
       },
       {
         grupo: "Lunes 29 de junio",
-        local: "Ganador Grupo C",
-        visitante: "2.º Grupo F",
-        fechaUTC: "2026-06-29T14:00:00-05:00",
-        horaLocalTexto: "Horario por confirmar",
-        sede: "Houston Stadium",
-        marcador: "Partido 76"
+        local: "Países Bajos",
+        visitante: "Marruecos",
+        fechaUTC: "2026-06-30T01:00:00Z",
+        horaLocalTexto: "20:00 Ecuador",
+        sede: "Estadio BBVA Bancomer / Monterrey Stadium",
+        marcador: "Dieciseisavos de final"
       },
       {
         grupo: "Martes 30 de junio",
-        local: "Ganador Grupo I",
-        visitante: "3.º de C/D/F/G/H",
-        fechaUTC: "2026-06-30T12:00:00-05:00",
-        horaLocalTexto: "Horario por confirmar",
+        local: "Costa de Marfil",
+        visitante: "Noruega",
+        fechaUTC: "2026-06-30T17:00:00Z",
+        horaLocalTexto: "12:00 Ecuador",
         sede: "New York New Jersey Stadium",
-        marcador: "Partido 77"
+        marcador: "Dieciseisavos de final"
       },
       {
         grupo: "Martes 30 de junio",
-        local: "2.º Grupo E",
-        visitante: "2.º Grupo I",
-        fechaUTC: "2026-06-30T13:00:00-05:00",
-        horaLocalTexto: "Horario por confirmar",
+        local: "Francia",
+        visitante: "Suecia",
+        fechaUTC: "2026-06-30T21:00:00Z",
+        horaLocalTexto: "16:00 Ecuador",
         sede: "Dallas Stadium",
-        marcador: "Partido 78"
+        marcador: "Dieciseisavos de final"
       },
       {
         grupo: "Martes 30 de junio",
-        local: "Ganador Grupo A",
-        visitante: "3.º de C/E/F/H/I",
-        fechaUTC: "2026-06-30T14:00:00-05:00",
-        horaLocalTexto: "Horario por confirmar",
+        local: "México",
+        visitante: "Ecuador",
+        fechaUTC: "2026-07-01T01:00:00Z",
+        horaLocalTexto: "20:00 Ecuador",
         sede: "Mexico City Stadium",
-        marcador: "Partido 79"
+        marcador: "Dieciseisavos de final"
       }
     ]
   }
