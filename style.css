@@ -640,6 +640,14 @@ audio {
   padding: 18px;
 }
 
+.match-card__topline {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
 .match-card h4 {
   margin: 9px 0 12px;
   font-size: 1.05rem;
@@ -652,6 +660,41 @@ audio {
 .match-card p {
   margin: 7px 0;
   color: var(--muted);
+}
+
+.match-scorebox {
+  min-width: 78px;
+  padding: 8px 10px;
+  border-radius: 14px;
+  text-align: center;
+  background: rgba(0,0,0,.28);
+  border: 1px solid rgba(0,255,102,.22);
+}
+
+.match-scorebox span {
+  display: block;
+  color: var(--muted);
+  font-size: .68rem;
+  font-weight: 850;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+
+.match-scorebox strong {
+  display: block;
+  margin-top: 2px;
+  color: var(--green-3);
+  font-size: 1.05rem;
+}
+
+.match-countdown {
+  display: inline-flex;
+  padding: 7px 10px;
+  border-radius: 999px;
+  background: rgba(0,255,102,.08);
+  border: 1px solid rgba(0,255,102,.16);
+  color: var(--green-3) !important;
+  font-weight: 850;
 }
 
 .status {

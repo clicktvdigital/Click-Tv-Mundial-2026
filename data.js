@@ -391,7 +391,7 @@ const MUNDIAL_2026 = [
         fechaUTC: "2026-06-29T17:00:00Z",
         horaLocalTexto: "12:00 Ecuador",
         sede: "NRG Stadium / Houston Stadium",
-        marcador: "Dieciseisavos de final"
+        etapa: "Dieciseisavos de final"
       },
       {
         grupo: "Lunes 29 de junio",
@@ -400,7 +400,7 @@ const MUNDIAL_2026 = [
         fechaUTC: "2026-06-29T20:30:00Z",
         horaLocalTexto: "15:30 Ecuador",
         sede: "Gillette Stadium / Boston Stadium",
-        marcador: "Dieciseisavos de final"
+        etapa: "Dieciseisavos de final"
       },
       {
         grupo: "Lunes 29 de junio",
@@ -409,7 +409,7 @@ const MUNDIAL_2026 = [
         fechaUTC: "2026-06-30T01:00:00Z",
         horaLocalTexto: "20:00 Ecuador",
         sede: "Estadio BBVA Bancomer / Monterrey Stadium",
-        marcador: "Dieciseisavos de final"
+        etapa: "Dieciseisavos de final"
       },
       {
         grupo: "Martes 30 de junio",
@@ -418,7 +418,7 @@ const MUNDIAL_2026 = [
         fechaUTC: "2026-06-30T17:00:00Z",
         horaLocalTexto: "12:00 Ecuador",
         sede: "New York New Jersey Stadium",
-        marcador: "Dieciseisavos de final"
+        etapa: "Dieciseisavos de final"
       },
       {
         grupo: "Martes 30 de junio",
@@ -427,7 +427,7 @@ const MUNDIAL_2026 = [
         fechaUTC: "2026-06-30T21:00:00Z",
         horaLocalTexto: "16:00 Ecuador",
         sede: "Dallas Stadium",
-        marcador: "Dieciseisavos de final"
+        etapa: "Dieciseisavos de final"
       },
       {
         grupo: "Martes 30 de junio",
@@ -436,7 +436,7 @@ const MUNDIAL_2026 = [
         fechaUTC: "2026-07-01T01:00:00Z",
         horaLocalTexto: "20:00 Ecuador",
         sede: "Mexico City Stadium",
-        marcador: "Dieciseisavos de final"
+        etapa: "Dieciseisavos de final"
       }
     ]
   }

@@ -41,6 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setInterval(renderActividadReciente, 4500);
   setInterval(rotarResenas, 6000);
   setInterval(actualizarUsuariosConectados, 6500);
+  setInterval(() => renderMundial(true), 30000);
 });
 
 function inicializarUI() {
@@ -496,7 +497,13 @@ function comprarAhora(productoId, planIndex) {
   if (!data) return mostrarToast("Producto no disponible.", "error");
 
   const { producto, plan } = data;
-  const precio = plan.consultar ? "consultar disponibilidad" : `$${Number(plan.precio).toFixed(2)} USD`;
+  if (plan.consultar) {
+    const mensajeConsulta = encodeURIComponent(`Hola, deseo consultar disponibilidad de ${producto.nombre}.`);
+    window.open(`${CONFIG.whatsappLink}?text=${mensajeConsulta}`, "_blank", "noopener,noreferrer");
+    return;
+  }
+
+  const precio = `$${Number(plan.precio).toFixed(2)} USD`;
   const mensaje = encodeURIComponent(`Hola, deseo comprar ${producto.nombre} ${plan.tipo} por ${precio}.`);
   window.open(`${CONFIG.whatsappLink}?text=${mensaje}`, "_blank", "noopener,noreferrer");
 }
@@ -819,11 +826,13 @@ function mostrarConfirmacionPago(mensaje) {
 // ---------------------------------------------------------------------------
 // MUNDIAL 2026
 // ---------------------------------------------------------------------------
-async function renderMundial() {
+async function renderMundial(silencioso = false) {
   const box = document.getElementById("mundial-grid");
   if (!box) return;
 
-  box.innerHTML = `<div class="loading-card">⚽ Cargando información del Mundial 2026...</div>`;
+  if (!silencioso) {
+    box.innerHTML = `<div class="loading-card">⚽ Cargando información del Mundial 2026...</div>`;
+  }
 
   try {
     const partidosAPI = await obtenerPartidosFootballData();
@@ -858,6 +867,7 @@ function normalizarPartidos(matches) {
     visitante: m.awayTeam?.name || m.awayTeam?.shortName || "Equipo visitante",
     fechaUTC: m.utcDate,
     sede: m.venue || "Sede por confirmar",
+    statusRaw: m.status || "",
     estado: traducirEstadoPartido(m.status),
     marcador: crearMarcador(m.score)
   })).filter((m) => m.fechaUTC);
@@ -880,7 +890,8 @@ function normalizarPartidosLocales(grupos) {
         sede: p.sede || "Sede por confirmar",
         estado: obtenerEstadoPorFecha(p.fechaUTC),
         horaLocalTexto: p.horaLocalTexto || "",
-        marcador: p.marcador || ""
+        marcador: p.marcador || "",
+        etapa: p.etapa || grupo.grupo || "Mundial 2026"
       });
     });
   });
@@ -936,18 +947,76 @@ function crearCardPartido(p) {
   const fecha = new Date(p.fechaUTC);
   const fechaTexto = fecha.toLocaleDateString("es-EC", { timeZone: "America/Guayaquil", weekday: "short", day: "2-digit", month: "short" });
   const horaTexto = p.horaLocalTexto || fecha.toLocaleTimeString("es-EC", { timeZone: "America/Guayaquil", hour: "2-digit", minute: "2-digit" });
+  const estadoTiempo = obtenerTextoTiempoPartido(p);
+  const scoreTexto = p.marcador || "VS";
 
   return `
     <article class="match-card">
-      <span class="status">${p.estado || obtenerEstadoPorFecha(p.fechaUTC)}</span>
+      <div class="match-card__topline">
+        <span class="status">${estadoTiempo.estado}</span>
+        <div class="match-scorebox">
+          <span>Score</span>
+          <strong>${scoreTexto}</strong>
+        </div>
+      </div>
       <p class="match-group">${p.grupo}</p>
       <h4>${p.local} <span>vs</span> ${p.visitante}</h4>
+      <p class="match-countdown">${estadoTiempo.detalle}</p>
       <p>📅 ${fechaTexto}</p>
       <p>⏰ ${horaTexto} (Ecuador)</p>
       <p>📍 ${p.sede}</p>
-      ${p.marcador ? `<p class="match-score">${p.marcador}</p>` : ""}
+      ${p.etapa ? `<p class="match-score">${p.etapa}</p>` : ""}
     </article>
   `;
+}
+
+function obtenerTextoTiempoPartido(partido) {
+  const raw = String(partido.statusRaw || "").toUpperCase();
+  if (["LIVE", "IN_PLAY"].includes(raw)) {
+    return { estado: "🔴 EN VIVO", detalle: "Partido en vivo ahora" };
+  }
+  if (raw === "PAUSED") {
+    return { estado: "⏸️ Descanso", detalle: "Partido en descanso" };
+  }
+  if (raw === "FINISHED") {
+    return { estado: "⚫ Finalizado", detalle: "Partido finalizado" };
+  }
+
+  const inicio = new Date(partido.fechaUTC);
+  if (isNaN(inicio.getTime())) {
+    return { estado: partido.estado || "⚽ Programado", detalle: "Horario por confirmar" };
+  }
+
+  const ahora = new Date();
+  const diffMs = inicio.getTime() - ahora.getTime();
+  const finEstimado = new Date(inicio.getTime() + 120 * 60 * 1000);
+
+  if (diffMs > 0) {
+    return { estado: "🟡 Programado", detalle: `Faltan ${formatearTiempoRestante(diffMs)}` };
+  }
+
+  if (ahora <= finEstimado) {
+    return { estado: "🔴 EN VIVO", detalle: "Partido en vivo ahora" };
+  }
+
+  return { estado: "⚫ Finalizado", detalle: "Partido finalizado" };
+}
+
+function formatearTiempoRestante(ms) {
+  const totalMinutos = Math.max(1, Math.ceil(ms / 60000));
+  const dias = Math.floor(totalMinutos / 1440);
+  const horas = Math.floor((totalMinutos % 1440) / 60);
+  const minutos = totalMinutos % 60;
+
+  if (dias > 0) {
+    return horas > 0 ? `${dias} día${dias === 1 ? "" : "s"} y ${horas} hora${horas === 1 ? "" : "s"}` : `${dias} día${dias === 1 ? "" : "s"}`;
+  }
+
+  if (horas > 0) {
+    return minutos > 0 ? `${horas} hora${horas === 1 ? "" : "s"} y ${minutos} min` : `${horas} hora${horas === 1 ? "" : "s"}`;
+  }
+
+  return `${minutos} min`;
 }
 
 function renderMundialFallback() {
@@ -997,11 +1066,12 @@ function traducirEstadoPartido(status) {
 }
 
 function crearMarcador(score) {
-  if (!score?.fullTime) return "";
-  const home = score.fullTime.home;
-  const away = score.fullTime.away;
+  if (!score) return "";
+  const fuente = score.fullTime || score.regularTime || score.halfTime || {};
+  const home = fuente.home;
+  const away = fuente.away;
   if (home === null || away === null || home === undefined || away === undefined) return "";
-  return `Resultado: ${home} - ${away}`;
+  return `${home} - ${away}`;
 }
 
 // ---------------------------------------------------------------------------
