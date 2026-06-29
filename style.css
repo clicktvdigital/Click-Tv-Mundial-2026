@@ -493,6 +493,20 @@ audio {
   width: 100%;
 }
 
+.radio-note {
+  margin: 0 0 12px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.lared-radio-frame {
+  width: 100%;
+  min-height: 360px;
+  border: 1px solid rgba(0,255,102,.18);
+  border-radius: 16px;
+  background: rgba(0,0,0,.22);
+}
+
 .radio-play-btn {
   margin-top: 10px;
 }
@@ -805,6 +819,46 @@ audio {
   align-items: center;
 }
 
+.contact-form,
+.review-form {
+  display: grid;
+  gap: 12px;
+}
+
+.contact-form {
+  margin-top: 18px;
+  padding: 18px;
+  border-radius: 18px;
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(0,255,102,.16);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.contact-form label,
+.review-form label {
+  display: grid;
+  gap: 7px;
+  color: var(--muted);
+  font-weight: 750;
+}
+
+textarea {
+  width: 100%;
+  resize: vertical;
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,.08);
+  color: var(--white);
+  border-radius: 14px;
+  padding: 12px;
+  outline: none;
+  font: inherit;
+}
+
 .resenas-slider {
   position: relative;
   min-height: 210px;
@@ -1113,6 +1167,70 @@ audio {
 
 .cart-payment__detail .btn {
   margin-top: 8px;
+}
+
+.cart-reviews {
+  margin-top: 14px;
+  padding: 16px;
+  border-radius: 18px;
+  background: rgba(255,255,255,.05);
+  border: 1px solid var(--line);
+}
+
+.cart-reviews__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.cart-reviews__head h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.cart-reviews__head span {
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: rgba(0,255,102,.12);
+  color: var(--green-3);
+  font-size: .72rem;
+  font-weight: 900;
+}
+
+.cart-reviews__list {
+  display: grid;
+  gap: 10px;
+  max-height: 250px;
+  overflow-y: auto;
+  padding-right: 4px;
+  margin-bottom: 14px;
+}
+
+.cart-review-card {
+  padding: 12px;
+  border-radius: 15px;
+  background: rgba(0,0,0,.23);
+  border: 1px solid rgba(255,255,255,.08);
+}
+
+.cart-review-card strong,
+.cart-review-card span {
+  display: block;
+}
+
+.cart-review-card span {
+  color: var(--green-3);
+  font-size: .82rem;
+  font-weight: 800;
+  margin-top: 2px;
+}
+
+.cart-review-card p {
+  margin: 8px 0 0;
+  color: var(--muted);
+  line-height: 1.45;
 }
 
 .floating-actions {

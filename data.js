@@ -30,7 +30,8 @@ const CONFIG = {
   footballDataApiToken: "467c885c07fa49baa40ac78cf636f8b0",
   fifaCalendarioUrl: "https://www.fifa.com/es/tournaments/mens/worldcup/canadamexicousa2026/scores-fixtures",
 
-  radioStreamUrl: "https://stream.zeno.fm/f3wvbbqmdg8uv",
+  radioStreamUrl: "",
+  laredStreamingUrl: "https://www.lared.com.ec/streaming/",
   teleamazonasUrl: "https://www.teleamazonas.com/teleamazonas-en-vivo/",
   exchangeRateApiUrl: "https://open.er-api.com/v6/latest/USD",
   ipGeoUrl: "https://ipapi.co/json/",

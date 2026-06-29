@@ -152,9 +152,16 @@
           </div>
 
           <div class="media-box">
-            <h3>📻 Radio en vivo</h3>
-            <audio id="radio-player" controls preload="auto" autoplay></audio>
-            <button id="btn-radio-play" class="btn btn--outline btn--full radio-play-btn" type="button">▶️ Activar radio</button>
+            <h3>📻 La Red 102.1 FM en vivo</h3>
+            <p class="radio-note">Programación deportiva en vivo dentro de Click Tv Streaming.</p>
+            <iframe
+              class="lared-radio-frame"
+              src="https://www.lared.com.ec/streaming/"
+              title="La Red 102.1 FM en vivo"
+              loading="lazy"
+              allow="autoplay; encrypted-media"
+              referrerpolicy="no-referrer-when-downgrade"
+            ></iframe>
           </div>
           <a 
   id="btn-teleamazonas" 
@@ -225,8 +232,38 @@
           <span class="eyebrow">💬 Contacto</span>
           <h2>Activa tu servicio hoy</h2>
           <p>Respondemos al instante. No te quedes sin tu cuenta para disfrutar tus contenidos favoritos.</p>
+          <form id="form-contacto-internacional" class="contact-form">
+            <div class="form-grid">
+              <label>Nombre y apellido
+                <input id="contacto-nombre" type="text" placeholder="Ej: Carlos Pérez" required>
+              </label>
+              <label>País
+                <select id="contacto-pais" required>
+                  <option value="">Seleccionar país</option>
+                  <option value="Ecuador">Ecuador</option>
+                  <option value="Perú">Perú</option>
+                  <option value="Colombia">Colombia</option>
+                  <option value="Argentina">Argentina</option>
+                  <option value="México">México</option>
+                  <option value="Chile">Chile</option>
+                  <option value="España">España</option>
+                  <option value="Brasil">Brasil</option>
+                  <option value="Bolivia">Bolivia</option>
+                  <option value="Venezuela">Venezuela</option>
+                  <option value="Estados Unidos">Estados Unidos</option>
+                  <option value="Otro país">Otro país</option>
+                </select>
+              </label>
+            </div>
+            <label>Número de teléfono
+              <input id="contacto-telefono" type="tel" placeholder="Ej: +593 939166222" required>
+            </label>
+            <label>Mensaje
+              <textarea id="contacto-mensaje" rows="4" placeholder="Hola, deseo información sobre..." required></textarea>
+            </label>
+            <button class="btn btn--primary btn--full" type="submit">📲 Enviar consulta por WhatsApp</button>
+          </form>
           <div class="contact-actions">
-            <a class="btn btn--primary" href="https://wa.me/593939166222" target="_blank" rel="noopener noreferrer">📲 WhatsApp pedidos</a>
             <a class="btn btn--outline" href="https://t.me/streamid" target="_blank" rel="noopener noreferrer">💬 Telegram</a>
           </div>
         </div>
@@ -287,6 +324,34 @@
         <div id="paypal-button-container-carrito"></div>
         <div id="confirmacion-pago"></div>
       </div>
+    </div>
+
+    <div class="cart-reviews">
+      <div class="cart-reviews__head">
+        <h3>⭐ Reseñas de clientes</h3>
+        <span>Verificadas</span>
+      </div>
+      <div id="carrito-resenas-lista" class="cart-reviews__list"></div>
+
+      <form id="form-resena-carrito" class="review-form">
+        <label>Tu nombre
+          <input id="resena-nombre" type="text" placeholder="Ej: Cliente de Lima" required>
+        </label>
+        <label>País / ciudad
+          <input id="resena-pais" type="text" placeholder="Ej: Lima - Perú" required>
+        </label>
+        <label>Calificación
+          <select id="resena-estrellas" required>
+            <option value="5">⭐⭐⭐⭐⭐ Excelente</option>
+            <option value="4">⭐⭐⭐⭐ Muy bueno</option>
+            <option value="3">⭐⭐⭐ Bueno</option>
+          </select>
+        </label>
+        <label>Comentario
+          <textarea id="resena-comentario" rows="3" placeholder="Cuéntanos cómo fue tu experiencia..." required></textarea>
+        </label>
+        <button class="btn btn--outline btn--full" type="submit">⭐ Dejar reseña</button>
+      </form>
     </div>
 
     <div class="cart-actions">

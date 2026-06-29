@@ -8,6 +8,7 @@ const CLAVE_MONEDA = "clicktv_moneda";
 const CLAVE_CUPON = "clicktv_cupon";
 const CLAVE_VENTAS = "clicktv_ventas";
 const CLAVE_GEO_MODAL = "clicktv_geo_modal_visto";
+const CLAVE_RESENAS_CLIENTES = "clicktv_resenas_clientes";
 
 let carrito = [];
 let monedaActual = "USD";
@@ -72,6 +73,8 @@ function inicializarUI() {
   document.getElementById("btn-finalizar-compra")?.addEventListener("click", finalizarCompra);
   document.getElementById("btn-enviar-comprobante")?.addEventListener("click", enviarComprobanteWhatsApp);
   document.getElementById("btn-enviar-pedido")?.addEventListener("click", enviarPedidoWhatsApp);
+  document.getElementById("form-resena-carrito")?.addEventListener("submit", registrarResenaCarrito);
+  document.getElementById("form-contacto-internacional")?.addEventListener("submit", enviarContactoInternacional);
 
   // Botones de pago
   document.querySelectorAll(".btn-pago").forEach((btn) => {
@@ -117,19 +120,6 @@ function inicializarUI() {
   const anio = document.getElementById("anio-actual");
   if (anio) anio.textContent = new Date().getFullYear();
 
-  // Radio en vivo
-  const radioPlayer = document.getElementById("radio-player");
-  const btnRadioPlay = document.getElementById("btn-radio-play");
-
-  if (radioPlayer && typeof CONFIG !== "undefined" && CONFIG.radioStreamUrl) {
-    radioPlayer.src = CONFIG.radioStreamUrl;
-    radioPlayer.autoplay = true;
-    radioPlayer.load();
-    intentarAutoplayRadio();
-  }
-
-  btnRadioPlay?.addEventListener("click", activarRadioManual);
-
   // Teleamazonas en vivo
   const btnTeleamazonas = document.getElementById("btn-teleamazonas");
 
@@ -142,6 +132,7 @@ function inicializarUI() {
   // Botones flotantes
   inicializarBotonesFlotantes();
   actualizarDetallePagoCarrito();
+  renderResenasCarrito();
 }
 
 function configurarLinkExterno(elemento, url) {
@@ -185,38 +176,6 @@ function inicializarPagosRapidos() {
   if (fifa) configurarLinkExterno(fifa, CONFIG.fifaCalendarioUrl);
   if (teleamazonas) configurarLinkExterno(teleamazonas, CONFIG.teleamazonasUrl);
 
-  const radio = document.getElementById("radio-player");
-  if (radio) radio.src = CONFIG.radioStreamUrl;
-}
-
-async function intentarAutoplayRadio() {
-  const radio = document.getElementById("radio-player");
-  const btn = document.getElementById("btn-radio-play");
-  if (!radio) return;
-
-  try {
-    radio.muted = false;
-    await radio.play();
-    btn?.classList.add("oculto");
-  } catch {
-    btn?.classList.remove("oculto");
-  }
-}
-
-async function activarRadioManual() {
-  const radio = document.getElementById("radio-player");
-  const btn = document.getElementById("btn-radio-play");
-  if (!radio) return;
-
-  try {
-    radio.muted = false;
-    radio.volume = 1;
-    await radio.play();
-    btn?.classList.add("oculto");
-    mostrarToast("Radio activada correctamente.", "exito");
-  } catch {
-    mostrarToast("El navegador bloqueó la radio. Toca reproducir desde el control del audio.", "info");
-  }
 }
 
 // ---------------------------------------------------------------------------
@@ -1181,22 +1140,109 @@ function crearMarcador(score) {
 // ---------------------------------------------------------------------------
 // RESEÑAS Y ACTIVIDAD
 // ---------------------------------------------------------------------------
+function obtenerResenasCliente() {
+  try {
+    return JSON.parse(localStorage.getItem(CLAVE_RESENAS_CLIENTES) || "[]");
+  } catch {
+    return [];
+  }
+}
+
+function obtenerTodasLasResenas() {
+  return [...(RESENAS || []), ...obtenerResenasCliente()];
+}
+
 function cargarResenas() {
   const contenedor = document.getElementById("resenas-slider");
   if (!contenedor) return;
-  contenedor.innerHTML = RESENAS.map((r, i) => crearResena(r, i)).join("");
+  contenedor.innerHTML = obtenerTodasLasResenas().map((r, i) => crearResena(r, i)).join("");
   rotarResenas();
+  renderResenasCarrito();
 }
 
 function crearResena(resena, index) {
   return `
     <article class="resena-card ${index === 0 ? "activa" : ""}">
-      <div class="estrellas">${"★".repeat(resena.estrellas)}</div>
-      <h3>${resena.nombre}</h3>
-      <p class="resena-pais">${resena.pais}</p>
-      <p>${resena.comentario}</p>
+      <div class="estrellas">${"★".repeat(Number(resena.estrellas) || 5)}</div>
+      <h3>${escaparHTML(resena.nombre)}</h3>
+      <p class="resena-pais">${escaparHTML(resena.pais)}</p>
+      <p>${escaparHTML(resena.comentario)}</p>
     </article>
   `;
+}
+
+function renderResenasCarrito() {
+  const contenedor = document.getElementById("carrito-resenas-lista");
+  if (!contenedor) return;
+
+  const resenas = obtenerTodasLasResenas().slice(-5).reverse();
+
+  contenedor.innerHTML = resenas.map((resena) => `
+    <article class="cart-review-card">
+      <div class="estrellas">${"★".repeat(Number(resena.estrellas) || 5)}</div>
+      <strong>${escaparHTML(resena.nombre)}</strong>
+      <span>${escaparHTML(resena.pais)}</span>
+      <p>${escaparHTML(resena.comentario)}</p>
+    </article>
+  `).join("");
+}
+
+function registrarResenaCarrito(evento) {
+  evento.preventDefault();
+
+  const nombre = document.getElementById("resena-nombre")?.value.trim();
+  const pais = document.getElementById("resena-pais")?.value.trim();
+  const estrellas = Number(document.getElementById("resena-estrellas")?.value || 5);
+  const comentario = document.getElementById("resena-comentario")?.value.trim();
+
+  if (!nombre || !pais || !comentario) {
+    mostrarToast("Completa tu nombre, país y comentario.", "error");
+    return;
+  }
+
+  const nuevaResena = {
+    nombre,
+    pais,
+    estrellas,
+    comentario,
+    fecha: new Date().toISOString()
+  };
+
+  const resenasCliente = obtenerResenasCliente();
+  resenasCliente.push(nuevaResena);
+  localStorage.setItem(CLAVE_RESENAS_CLIENTES, JSON.stringify(resenasCliente.slice(-20)));
+
+  renderResenasCarrito();
+  cargarResenas();
+  evento.target.reset();
+
+  const mensaje = encodeURIComponent(
+    `Nueva reseña Click Tv Streaming:\n\nNombre: ${nombre}\nPaís/Ciudad: ${pais}\nCalificación: ${"⭐".repeat(estrellas)}\nComentario: ${comentario}`
+  );
+  window.open(`${CONFIG.whatsappLink}?text=${mensaje}`, "_blank", "noopener,noreferrer");
+  mostrarToast("Gracias por dejar tu reseña.", "exito");
+}
+
+function enviarContactoInternacional(evento) {
+  evento.preventDefault();
+
+  const nombre = document.getElementById("contacto-nombre")?.value.trim();
+  const pais = document.getElementById("contacto-pais")?.value.trim();
+  const telefono = document.getElementById("contacto-telefono")?.value.trim();
+  const mensajeCliente = document.getElementById("contacto-mensaje")?.value.trim();
+
+  if (!nombre || !pais || !telefono || !mensajeCliente) {
+    mostrarToast("Completa todos los datos de contacto.", "error");
+    return;
+  }
+
+  const mensaje = encodeURIComponent(
+    `Hola, deseo información de Click Tv Streaming.\n\nNombre: ${nombre}\nPaís: ${pais}\nTeléfono: ${telefono}\nMensaje: ${mensajeCliente}`
+  );
+
+  window.open(`${CONFIG.whatsappLink}?text=${mensaje}`, "_blank", "noopener,noreferrer");
+  mostrarToast("Consulta enviada por WhatsApp.", "exito");
+  evento.target.reset();
 }
 
 function rotarResenas() {
@@ -1254,6 +1300,15 @@ function mostrarToast(mensaje, tipo = "info") {
 function actualizarTexto(id, texto) {
   const el = document.getElementById(id);
   if (el) el.textContent = texto;
+}
+
+function escaparHTML(valor) {
+  return String(valor ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
 
 function normalizarTexto(texto) {
