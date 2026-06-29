@@ -256,9 +256,10 @@
     <div class="cupon-box">
       <label for="input-cupon">Cupón</label>
       <div class="input-row">
-        <input id="input-cupon" type="text" placeholder="CLICKTVMUNDIAL">
+        <input id="input-cupon" type="text" placeholder="Ej: CLICK TV MUNDIAL">
         <button id="btn-aplicar-cupon" class="btn btn--primary">Aplicar</button>
       </div>
+      <small class="cupon-ayuda">Puedes escribirlo en mayúsculas, minúsculas, con espacios o seguido.</small>
       <p id="cupon-info" class="cupon-info"></p>
     </div>
 
@@ -267,6 +268,26 @@
       <p><span>Descuento</span><strong id="carrito-descuento">- $0.00 USD</strong></p>
       <p><span>IVA 15%</span><strong id="carrito-iva">$0.00 USD</strong></p>
       <p class="total"><span>Total final</span><strong id="carrito-total">$0.00 USD</strong></p>
+    </div>
+
+    <div class="cart-payment">
+      <div class="cart-payment__head">
+        <span>💳</span>
+        <div>
+          <h3>Elige tu método de pago</h3>
+          <p>Selecciona una opción y continúa con el pago o envía tu pedido por WhatsApp.</p>
+        </div>
+      </div>
+
+      <div class="cart-payment__methods" aria-label="Métodos de pago del carrito">
+        <button class="btn-pago activo" data-metodo="transferencia">🏦 Transferencia</button>
+        <button class="btn-pago" data-metodo="deuna">💰 DEUNA</button>
+        <button class="btn-pago" data-metodo="payphone">💳 PayPhone</button>
+        <button class="btn-pago" data-metodo="paypalme">🅿️ PayPal</button>
+        <button class="btn-pago btn-pago--wide" data-metodo="whatsapp">📲 Enviar por WhatsApp</button>
+      </div>
+
+      <div id="carrito-pago-detalle" class="cart-payment__detail"></div>
     </div>
 
     <div class="cart-actions">

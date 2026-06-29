@@ -811,7 +811,8 @@ audio {
 }
 
 .cupon-box,
-.cart-summary {
+.cart-summary,
+.cart-payment {
   margin-top: 14px;
   padding: 16px;
   border-radius: 18px;
@@ -833,6 +834,13 @@ audio {
   font-weight: 800;
 }
 
+.cupon-ayuda {
+  display: block;
+  margin-top: 8px;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
 .cart-summary p {
   display: flex;
   justify-content: space-between;
@@ -851,6 +859,102 @@ audio {
   border-top: 1px solid var(--line);
   color: var(--white);
   font-size: 1.12rem;
+}
+
+.cart-payment {
+  background:
+    linear-gradient(135deg, rgba(0,255,102,.1), rgba(255,255,255,.045)),
+    rgba(255,255,255,.05);
+  border-color: rgba(0,255,102,.2);
+}
+
+.cart-payment__head {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  margin-bottom: 14px;
+}
+
+.cart-payment__head > span {
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  background: rgba(0,255,102,.14);
+}
+
+.cart-payment__head h3 {
+  margin: 0 0 4px;
+  font-size: 1.02rem;
+}
+
+.cart-payment__head p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.45;
+  font-size: .9rem;
+}
+
+.cart-payment__methods {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 9px;
+}
+
+.btn-pago {
+  min-height: 44px;
+  padding: 11px 12px;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 14px;
+  background: rgba(0,0,0,.24);
+  color: var(--white);
+  cursor: pointer;
+  font-weight: 850;
+  text-align: center;
+  transition: .2s ease;
+}
+
+.btn-pago:hover,
+.btn-pago.activo {
+  background: linear-gradient(135deg, var(--green), var(--green-2));
+  color: #001a09;
+  border-color: rgba(0,255,102,.7);
+  box-shadow: 0 14px 30px rgba(0,255,102,.16);
+  transform: translateY(-1px);
+}
+
+.btn-pago--wide {
+  grid-column: 1 / -1;
+}
+
+.cart-payment__detail {
+  margin-top: 12px;
+  padding: 14px;
+  border-radius: 16px;
+  background: rgba(0,0,0,.26);
+  border: 1px solid rgba(255,255,255,.08);
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.cart-payment__detail strong {
+  display: block;
+  color: var(--white);
+  margin-bottom: 8px;
+}
+
+.cart-payment__detail p {
+  margin: 8px 0;
+}
+
+.cart-payment__detail b {
+  color: var(--green-3);
+}
+
+.cart-payment__detail .btn {
+  margin-top: 8px;
 }
 
 .floating-actions {

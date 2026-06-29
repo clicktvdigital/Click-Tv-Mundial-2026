@@ -214,6 +214,10 @@
   .input-row {
     display: grid;
   }
+
+  .cart-payment__methods {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

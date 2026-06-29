@@ -14,6 +14,7 @@ let cuponAplicado = null;
 let paypalRenderizado = false;
 let indiceActividad = 0;
 let indiceResena = 0;
+let metodoPagoActual = "transferencia";
 
 // ---------------------------------------------------------------------------
 // INICIALIZACIÓN
@@ -126,6 +127,7 @@ function inicializarUI() {
 
   // Botones flotantes
   inicializarBotonesFlotantes();
+  actualizarDetallePagoCarrito();
 }
 
 function configurarLinkExterno(elemento, url) {
@@ -368,11 +370,12 @@ function renderCarrito() {
   actualizarTexto("carrito-iva", formatearPrecio(totales.iva));
   actualizarTexto("carrito-total", formatearPrecio(totales.total));
   actualizarTexto("paypal-total", `$${totales.totalPaypal.toFixed(2)} USD`);
+  actualizarDetallePagoCarrito();
 
   const elCuponInfo = document.getElementById("cupon-info");
   if (elCuponInfo) {
     elCuponInfo.textContent = cuponAplicado
-      ? `Cupón aplicado: ${cuponAplicado.codigo} (${cuponAplicado.porcentaje}% off)`
+      ? `Cupón aplicado: ${cuponAplicado.codigo} (${cuponAplicado.porcentaje}% de descuento)`
       : "";
   }
 }
@@ -424,15 +427,16 @@ function vaciarCarrito() {
 function aplicarCupon() {
   const input = document.getElementById("input-cupon");
   if (!input) return;
-  const codigo = input.value.trim().toUpperCase();
+  const codigo = normalizarCuponCodigo(input.value);
 
   if (!codigo) return mostrarToast("Ingresa un código de cupón.", "error");
 
   const cupon = CUPONES[codigo];
-  if (!cupon) return mostrarToast("Cupón inválido o expirado.", "error");
+  if (!cupon) return mostrarToast("Cupón inválido. Puedes escribirlo con espacios o en minúsculas.", "error");
 
   cuponAplicado = { codigo, porcentaje: cupon.porcentaje };
   localStorage.setItem(CLAVE_CUPON, JSON.stringify(cuponAplicado));
+  input.value = codigo;
   renderCarrito();
   mostrarToast(`Cupón ${codigo} aplicado: ${cupon.descripcion}`, "exito");
 }
@@ -442,16 +446,28 @@ function aplicarCupon() {
 // ---------------------------------------------------------------------------
 function finalizarCompra() {
   if (carrito.length === 0) return mostrarToast("Tu carrito está vacío.", "error");
-  document.getElementById("seccion-pagos")?.scrollIntoView({ behavior: "smooth", block: "start" });
-  mostrarToast("Selecciona un método de pago para continuar.", "info");
+  procesarPago(metodoPagoActual, true);
 }
 
-function procesarPago(metodo) {
-  if (["whatsapp"].includes(metodo) && carrito.length === 0) {
+function procesarPago(metodo, ejecutar = false) {
+  metodoPagoActual = metodo || "transferencia";
+
+  document.querySelectorAll(".btn-pago").forEach((btn) => {
+    btn.classList.toggle("activo", btn.dataset.metodo === metodoPagoActual);
+  });
+
+  actualizarDetallePagoCarrito();
+
+  if (!ejecutar) {
+    mostrarToast(`Método seleccionado: ${obtenerNombreMetodoPago(metodoPagoActual)}`, "info");
+    return;
+  }
+
+  if (carrito.length === 0) {
     return mostrarToast("Agrega productos antes de enviar el pedido.", "error");
   }
 
-  switch (metodo) {
+  switch (metodoPagoActual) {
     case "whatsapp":
       enviarPedidoWhatsApp();
       break;
@@ -465,12 +481,69 @@ function procesarPago(metodo) {
       window.open(CONFIG.paypalUrl, "_blank", "noopener,noreferrer");
       break;
     case "transferencia":
-      document.getElementById("bloque-transferencia")?.scrollIntoView({ behavior: "smooth", block: "center" });
-      mostrarToast("Usa los datos bancarios y envía el comprobante por WhatsApp.", "info");
+      mostrarToast("Copia los datos bancarios y envía el comprobante por WhatsApp.", "info");
       break;
     default:
       mostrarToast("Método de pago no disponible.", "error");
   }
+}
+
+function obtenerNombreMetodoPago(metodo) {
+  const nombres = {
+    transferencia: "Transferencia bancaria",
+    deuna: "DEUNA",
+    payphone: "PayPhone",
+    paypalme: "PayPal",
+    whatsapp: "WhatsApp"
+  };
+  return nombres[metodo] || "Método de pago";
+}
+
+function actualizarDetallePagoCarrito() {
+  const detalle = document.getElementById("carrito-pago-detalle");
+  if (!detalle || typeof CONFIG === "undefined") return;
+
+  const totales = calcularTotales();
+  const total = `$${totales.total.toFixed(2)} USD`;
+  const totalPaypal = `$${totales.totalPaypal.toFixed(2)} USD`;
+
+  const detalles = {
+    transferencia: `
+      <strong>Transferencia bancaria</strong>
+      <p>Total a pagar: <b>${total}</b></p>
+      <p>Banco Pichincha: <b>${CONFIG.bancoPichincha}</b></p>
+      <button class="btn btn--outline btn--full" onclick="copiarTexto('${CONFIG.bancoPichincha}', 'Banco Pichincha copiado')">Copiar Pichincha</button>
+      <p>Banco Guayaquil: <b>${CONFIG.bancoGuayaquil}</b></p>
+      <button class="btn btn--outline btn--full" onclick="copiarTexto('${CONFIG.bancoGuayaquil}', 'Banco Guayaquil copiado')">Copiar Guayaquil</button>
+      <p>Luego envía tu comprobante por WhatsApp para validar tu pedido.</p>
+    `,
+    deuna: `
+      <strong>DEUNA</strong>
+      <p>Total referencial: <b>${total}</b></p>
+      <p>Paga desde el enlace oficial y luego envía el comprobante por WhatsApp.</p>
+      <a class="btn btn--primary btn--full" href="${CONFIG.deunaUrl}" target="_blank" rel="noopener noreferrer">Pagar con DEUNA</a>
+    `,
+    payphone: `
+      <strong>PayPhone</strong>
+      <p>Total referencial: <b>${total}</b></p>
+      <p>Abre el enlace de PayPhone y confirma el pago.</p>
+      <a class="btn btn--primary btn--full" href="${CONFIG.payphoneUrl}" target="_blank" rel="noopener noreferrer">Pagar con PayPhone</a>
+    `,
+    paypalme: `
+      <strong>PayPal</strong>
+      <p>Total con comisión PayPal estimada: <b>${totalPaypal}</b></p>
+      <p>Usa PayPal.Me o el checkout automático de la sección pagos.</p>
+      <a class="btn btn--primary btn--full" href="${CONFIG.paypalUrl}" target="_blank" rel="noopener noreferrer">Pagar con PayPal.Me</a>
+    `,
+    whatsapp: `
+      <strong>Pedido por WhatsApp</strong>
+      <p>Total a confirmar: <b>${total}</b></p>
+      <p>Envía el resumen del carrito por WhatsApp para recibir atención directa.</p>
+      <button class="btn btn--primary btn--full" onclick="enviarPedidoWhatsApp()">Enviar pedido por WhatsApp</button>
+    `
+  };
+
+  detalle.innerHTML = detalles[metodoPagoActual] || detalles.transferencia;
 }
 
 function generarResumenPedido() {
@@ -815,4 +888,12 @@ function normalizarTexto(texto) {
     .replace(/[\u0300-\u036f]/g, "")
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/(^-|-$)/g, "");
+}
+
+function normalizarCuponCodigo(texto) {
+  return String(texto)
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toUpperCase()
+    .replace(/[^A-Z0-9]/g, "");
 }
