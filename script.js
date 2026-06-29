@@ -177,65 +177,27 @@ function inicializarPagosRapidos() {
 
 function inicializarTeleamazonasPlayer() {
   const contenedor = document.getElementById("teleamazonas-player");
-  if (!contenedor || typeof CONFIG === "undefined" || !CONFIG.teleamazonasSignals) return;
-
-  document.querySelectorAll("[data-tele-senal]").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      document.querySelectorAll("[data-tele-senal]").forEach((item) => item.classList.remove("activo"));
-      btn.classList.add("activo");
-      cargarTeleamazonasSignal(btn.dataset.teleSenal || "quito");
-    });
-  });
-
-  cargarTeleamazonasSignal("quito");
+  if (!contenedor || typeof CONFIG === "undefined" || !CONFIG.teleamazonasUrl) return;
+  cargarTeleamazonasPagina();
 }
 
-async function cargarTeleamazonasSignal(senal = "quito") {
+function cargarTeleamazonasPagina() {
   const contenedor = document.getElementById("teleamazonas-player");
-  const senalSegura = CONFIG.teleamazonasSignals?.[senal] ? senal : "quito";
-  const signal = CONFIG.teleamazonasSignals?.[senalSegura] || CONFIG.teleamazonasSignals?.quito;
-  if (!contenedor || !signal) return;
+  if (!contenedor || typeof CONFIG === "undefined" || !CONFIG.teleamazonasUrl) return;
 
-  contenedor.className = "teleamazonas-loading";
-  contenedor.innerHTML = `Cargando señal ${escaparHTML(signal.label)}...`;
+  const iframe = document.createElement("iframe");
+  iframe.className = "teleamazonas-iframe teleamazonas-iframe--page";
+  iframe.src = CONFIG.teleamazonasUrl;
+  iframe.title = "Teleamazonas en vivo";
+  iframe.allow = "autoplay; fullscreen; encrypted-media; picture-in-picture";
+  iframe.allowFullscreen = true;
+  iframe.loading = "eager";
+  iframe.referrerPolicy = "strict-origin-when-cross-origin";
+  iframe.frameBorder = "0";
 
-  try {
-    const params = new URLSearchParams();
-    Object.values(CONFIG.teleamazonasSignals).forEach((item) => {
-      params.set(item.queryKey, item.mediaId);
-    });
-
-    const respuesta = await fetch(`${CONFIG.teleamazonasSignatureUrl}?${params.toString()}`, {
-      credentials: "omit"
-    });
-
-    if (!respuesta.ok) throw new Error(`Teleamazonas HTTP ${respuesta.status}`);
-
-    const tokens = await respuesta.json();
-    const accessToken = tokens?.[signal.tokenKey];
-    if (!accessToken) throw new Error("No llego token de Teleamazonas");
-
-    const iframe = document.createElement("iframe");
-    iframe.className = "teleamazonas-iframe";
-    iframe.src = `https://mdstrm.com/live-stream/${signal.mediaId}?access_token=${encodeURIComponent(accessToken)}&type=dvr&player=${CONFIG.teleamazonasPlayerId}`;
-    iframe.title = `Teleamazonas ${signal.label} en vivo`;
-    iframe.allow = "encrypted-media; autoplay; fullscreen";
-    iframe.allowFullscreen = true;
-    iframe.loading = "lazy";
-    iframe.frameBorder = "0";
-
-    contenedor.className = "teleamazonas-frame-loaded";
-    contenedor.innerHTML = "";
-    contenedor.appendChild(iframe);
-  } catch (error) {
-    console.warn("No se pudo cargar Teleamazonas integrado:", error);
-    contenedor.className = "teleamazonas-loading teleamazonas-loading--error";
-    contenedor.innerHTML = `
-      <strong>Señal no disponible dentro de esta página</strong>
-      <span>Teleamazonas puede limitar el token del reproductor por dominio. Intenta nuevamente en unos segundos.</span>
-      <button class="btn btn--outline btn--full" type="button" onclick="cargarTeleamazonasSignal('${senalSegura}')">Reintentar señal</button>
-    `;
-  }
+  contenedor.className = "teleamazonas-frame-loaded teleamazonas-frame-loaded--page";
+  contenedor.innerHTML = "";
+  contenedor.appendChild(iframe);
 }
 
 // ---------------------------------------------------------------------------

@@ -1467,6 +1467,12 @@ textarea {
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+.teleamazonas-frame-wrap--page {
+  aspect-ratio: auto;
+  height: min(72vh, 680px);
+  min-height: 520px;
+}
+
 .teleamazonas-frame-loaded,
 .teleamazonas-iframe {
   width: 100%;
@@ -1476,6 +1482,17 @@ textarea {
 .teleamazonas-iframe {
   display: block;
   border: 0;
+}
+
+.teleamazonas-iframe--page {
+  background: #050505;
+}
+
+.teleamazonas-embed-note {
+  margin: 10px 2px 0;
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 0.86rem;
+  line-height: 1.45;
 }
 
 .teleamazonas-loading {
