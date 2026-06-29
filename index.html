@@ -159,23 +159,26 @@
               Tu navegador no permite reproducir esta radio.
             </audio>
           </div>
-          <a 
-  id="btn-teleamazonas" 
-  class="teleamazonas-card" 
-  href="https://www.teleamazonas.com/teleamazonas-en-vivo/" 
-  target="_blank" 
-  rel="noopener noreferrer"
->
-  <div class="teleamazonas-card__icon">📡</div>
+          <div class="teleamazonas-player-card">
+            <div class="teleamazonas-player-card__head">
+              <span class="teleamazonas-card__icon">📡</span>
+              <div>
+                <span class="teleamazonas-card__label">EN VIVO</span>
+                <strong>Teleamazonas en vivo</strong>
+                <small>Reproductor integrado dentro de Click Tv Streaming</small>
+              </div>
+            </div>
 
-  <div class="teleamazonas-card__info">
-    <span class="teleamazonas-card__label">EN VIVO</span>
-    <strong>Ver Teleamazonas</strong>
-    <small>Transmisión oficial en vivo</small>
-  </div>
+            <div class="teleamazonas-tabs" aria-label="Señales Teleamazonas">
+              <button class="teleamazonas-tab activo" type="button" data-tele-senal="quito">Quito</button>
+              <button class="teleamazonas-tab" type="button" data-tele-senal="guayaquil">Guayaquil</button>
+              <button class="teleamazonas-tab" type="button" data-tele-senal="otros">Nacional</button>
+            </div>
 
-  <div class="teleamazonas-card__arrow">➜</div>
-</a>
+            <div class="teleamazonas-frame-wrap">
+              <div id="teleamazonas-player" class="teleamazonas-loading">Cargando señal...</div>
+            </div>
+          </div>
         </div>
       </div>
     </section>

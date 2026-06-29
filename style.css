@@ -1394,3 +1394,116 @@ textarea {
   background: #00ff66;
   font-weight: 900;
 }
+
+.teleamazonas-player-card {
+  width: 100%;
+  margin-top: 18px;
+  padding: 16px;
+  border-radius: 22px;
+  color: #ffffff;
+  background: linear-gradient(135deg, rgba(0, 255, 102, 0.15), rgba(255, 255, 255, 0.045));
+  border: 1px solid rgba(0, 255, 102, 0.28);
+  box-shadow: 0 12px 35px rgba(0, 255, 102, 0.12);
+  backdrop-filter: blur(14px);
+}
+
+.teleamazonas-player-card__head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.teleamazonas-player-card__head strong {
+  display: block;
+  margin-top: 6px;
+  font-size: 1.2rem;
+  line-height: 1.15;
+  color: #ffffff;
+}
+
+.teleamazonas-player-card__head small {
+  display: block;
+  margin-top: 3px;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.9rem;
+}
+
+.teleamazonas-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.teleamazonas-tab {
+  min-height: 42px;
+  padding: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  color: #ffffff;
+  background: rgba(0, 0, 0, 0.24);
+  font-weight: 900;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+.teleamazonas-tab:hover,
+.teleamazonas-tab.activo {
+  transform: translateY(-1px);
+  color: #031107;
+  background: linear-gradient(135deg, #00ff66, #00e676);
+  border-color: rgba(0, 255, 102, 0.75);
+}
+
+.teleamazonas-frame-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  min-height: 220px;
+  overflow: hidden;
+  border-radius: 18px;
+  background: rgba(0, 0, 0, 0.38);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.teleamazonas-frame-loaded,
+.teleamazonas-iframe {
+  width: 100%;
+  height: 100%;
+}
+
+.teleamazonas-iframe {
+  display: block;
+  border: 0;
+}
+
+.teleamazonas-loading {
+  width: 100%;
+  height: 100%;
+  min-height: 220px;
+  display: grid;
+  place-items: center;
+  gap: 10px;
+  padding: 18px;
+  color: rgba(255, 255, 255, 0.72);
+  text-align: center;
+}
+
+.teleamazonas-loading--error {
+  align-content: center;
+}
+
+.teleamazonas-loading--error strong {
+  color: #ffffff;
+}
+
+.teleamazonas-loading--error span {
+  display: block;
+  max-width: 420px;
+  line-height: 1.45;
+}
+
+.teleamazonas-loading--error .btn {
+  margin-top: 8px;
+}

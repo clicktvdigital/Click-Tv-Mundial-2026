@@ -222,6 +222,14 @@
   .cart-payment__methods {
     grid-template-columns: 1fr;
   }
+
+  .teleamazonas-tabs {
+    grid-template-columns: 1fr;
+  }
+
+  .teleamazonas-player-card__head {
+    align-items: flex-start;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

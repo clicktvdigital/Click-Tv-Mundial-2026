@@ -33,6 +33,13 @@ const CONFIG = {
   radioStreamUrl: "https://icecast.radiolared.com.ec/radiolared",
   laredStreamingUrl: "https://www.lared.com.ec/streaming/",
   teleamazonasUrl: "https://www.teleamazonas.com/teleamazonas-en-vivo/",
+  teleamazonasSignatureUrl: "https://www.teleamazonas.com/mediastream/signature",
+  teleamazonasPlayerId: "6945b9bca18f515cff51c75b",
+  teleamazonasSignals: {
+    quito: { label: "Quito", tokenKey: "tabQuito", queryKey: "live_quito", mediaId: "6a0cd90eb3852427fcded197" },
+    guayaquil: { label: "Guayaquil", tokenKey: "tabGuayaquil", queryKey: "live_guayaquil", mediaId: "6a0dedcb6c7d568efdc8e0d9" },
+    otros: { label: "Nacional", tokenKey: "tabOtros", queryKey: "live_otros", mediaId: "6a233703aa86429263ce17ec" }
+  },
   exchangeRateApiUrl: "https://open.er-api.com/v6/latest/USD",
   ipGeoUrl: "https://ipapi.co/json/",
 
