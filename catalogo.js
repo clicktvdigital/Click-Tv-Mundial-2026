@@ -9,6 +9,7 @@ const CATEGORIAS = {
   iptv: "📺 IPTV",
   musica: "🎵 Música",
   apps: "🎓 Premium Apps",
+  internet: "📶 Internet móvil",
   deportes: "⚽ Deportes"
 };
 
@@ -104,15 +105,18 @@ function crearPlanProducto(producto, plan, index) {
     `;
   }
 
-  const precioTexto = formatearPrecio(plan.precio);
+  const precioTexto = plan.ivaIncluido
+    ? `${formatearPrecio(plan.precio)} · IVA incluido`
+    : formatearPrecio(plan.precio);
   const btnComprar = "🟢 Comprar ahora";
 
   return `
-    <div class="plan-row">
+    <div class="plan-row ${plan.ivaIncluido ? "plan-row--iva-incluido" : ""}">
       <div class="plan-row__info">
         <strong>${plan.tipo}</strong>
         <span>${precioTexto}</span>
       </div>
+      ${plan.ivaIncluido ? `<p class="plan-row__note">Precio final: no se suma IVA adicional en el carrito.</p>` : ""}
       <div class="plan-row__actions">
         <button class="btn btn--primary btn--mini" onclick="comprarAhora('${producto.id}', ${index})">${btnComprar}</button>
         <button class="btn btn--outline btn--mini" onclick="agregarPlanAlCarrito('${producto.id}', ${index})">🛒 Añadir</button>

@@ -366,6 +366,35 @@ const PRODUCTOS = [
     descripcion: "DAZN, Disney+ ESPN, Paramount+, NBA, UFC, ECDF y Zapping Pro. Consulta disponibilidad.",
     etiquetas: ["⚽ IDEAL PARA EL MUNDIAL", "🔥 MÁS VENDIDO"],
     planes: [{ tipo: "Consultar disponibilidad", precio: 0, consultar: true }]
+  },
+  {
+    id: "aumento-gigas-proneet",
+    nombre: "Aumento de gigas PRONEET VPN",
+    categoria: "internet",
+    icono: "📶",
+    descripcion: "Aumento de megas para Android en Ecuador. Compatible con Tuenti, Movistar y Claro. No disponible para CNT.",
+    etiquetas: ["🚀 INTERNET MÓVIL", "🇪🇨 ECUADOR", "⚡ ACTIVACIÓN RÁPIDA"],
+    planes: [
+      { tipo: "Movistar sin saldo · hasta 200 MB diarios", precio: 0, consultar: true },
+      { tipo: "Movistar ilimitado · requiere plan compatible", precio: 0, consultar: true },
+      { tipo: "Tuenti · hasta 20 GB extras al mes", precio: 0, consultar: true },
+      { tipo: "Claro combos · hasta 36 GB extras", precio: 0, consultar: true }
+    ]
+  },
+  {
+    id: "recargas-combos-operador",
+    nombre: "Recargas y combos por operador",
+    categoria: "internet",
+    icono: "📱",
+    descripcion: "Recargas normales, combos y gestión de activación para Movistar, Claro, CNT y Tuenti. Valores finales con IVA incluido.",
+    etiquetas: ["💸 RECARGAS", "✅ IVA INCLUIDO", "📲 AL INSTANTE"],
+    planes: [
+      { tipo: "Gestión combo ilimitado · 1 mes", precio: 4, ivaIncluido: true },
+      { tipo: "Recarga normal Movistar", precio: 0, consultar: true },
+      { tipo: "Recarga normal Claro", precio: 0, consultar: true },
+      { tipo: "Recarga normal CNT", precio: 0, consultar: true },
+      { tipo: "Recarga normal Tuenti", precio: 0, consultar: true }
+    ]
   }
 ];
 
@@ -384,7 +413,9 @@ const ACTIVIDAD_RECIENTE = [
   "🟢 Cliente de Guayaquil - Ecuador activó IPTV Ultra",
   "🟢 Cliente de Santiago - Chile adquirió DAZN",
   "🟢 Cliente de México activó Netflix Perfil Extra",
-  "🟢 Cliente de Perú solicitó IBO Player"
+  "🟢 Cliente de Perú solicitó IBO Player",
+  "🟢 Cliente de Quito consultó aumento de gigas",
+  "🟢 Cliente de Guayaquil solicitó recarga móvil"
 ];
 
 // Respaldo local del fixture oficial si la API no devuelve datos del Mundial.

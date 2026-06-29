@@ -117,6 +117,22 @@
     font-size: clamp(2.35rem, 12vw, 3.9rem);
   }
 
+  .master-search {
+    grid-template-columns: 1fr;
+    border-radius: 22px;
+    padding: 12px;
+  }
+
+  .master-search > span {
+    display: none;
+  }
+
+  .master-search input {
+    min-height: 42px;
+    padding: 0 4px;
+    text-align: center;
+  }
+
   .hero__actions,
   .quick-links,
   .contact-actions,

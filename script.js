@@ -122,6 +122,7 @@ function inicializarUI() {
 
   inicializarRadioLaRed();
   inicializarTeleamazonasPlayer();
+  inicializarBuscadorMaestro();
 
   // Botones flotantes
   inicializarBotonesFlotantes();
@@ -206,6 +207,60 @@ function inicializarRadioLaRed() {
       radioPlayer.load();
     }, 1500);
   });
+}
+
+function inicializarBuscadorMaestro() {
+  const input = document.getElementById("buscador-maestro");
+  const boton = document.getElementById("btn-buscar-maestro");
+  if (!input || !boton) return;
+
+  const ejecutarBusqueda = () => buscarServicioMaestro(input.value);
+
+  boton.addEventListener("click", ejecutarBusqueda);
+  input.addEventListener("keydown", (evento) => {
+    if (evento.key === "Enter") {
+      evento.preventDefault();
+      ejecutarBusqueda();
+    }
+  });
+}
+
+function buscarServicioMaestro(consulta) {
+  const termino = normalizarTexto(consulta || "");
+  if (!termino) {
+    mostrarToast("Escribe el servicio que deseas buscar.", "info");
+    return;
+  }
+
+  const producto = PRODUCTOS.find((item) => {
+    const texto = [
+      item.nombre,
+      item.descripcion,
+      item.categoria,
+      ...(item.etiquetas || []),
+      ...(item.planes || []).map((plan) => plan.tipo)
+    ].join(" ");
+    return normalizarTexto(texto).includes(termino);
+  });
+
+  if (!producto) {
+    document.getElementById("streaming")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    mostrarToast("No encontré ese servicio. Revisa el catálogo o consulta por WhatsApp.", "info");
+    return;
+  }
+
+  if (typeof seleccionarCategoriaCatalogo === "function") {
+    seleccionarCategoriaCatalogo(producto.categoria || "todos");
+  }
+
+  setTimeout(() => {
+    const card = document.querySelector(`[data-producto="${producto.id}"]`);
+    card?.scrollIntoView({ behavior: "smooth", block: "center" });
+    card?.classList.add("product-card--highlight");
+    setTimeout(() => card?.classList.remove("product-card--highlight"), 2200);
+  }, 80);
+
+  mostrarToast(`Servicio encontrado: ${producto.nombre}`, "exito");
 }
 
 // ---------------------------------------------------------------------------
@@ -511,6 +566,7 @@ function agregarAlCarrito(producto, plan) {
 
   if (existente) {
     existente.cantidad += 1;
+    existente.ivaIncluido = existente.ivaIncluido || Boolean(plan.ivaIncluido);
   } else {
     carrito.push({
       itemId,
@@ -520,6 +576,7 @@ function agregarAlCarrito(producto, plan) {
       plan: plan.tipo,
       precio: Number(plan.precio),
       cantidad: 1,
+      ivaIncluido: Boolean(plan.ivaIncluido),
       dispositivos: plan.dispositivos || null
     });
   }
@@ -589,7 +646,7 @@ function renderCarrito() {
         <span class="carrito-item__icono">${item.icono}</span>
         <div class="carrito-item__info">
           <p class="carrito-item__nombre">${item.nombre}</p>
-          <p class="carrito-item__plan">${item.plan} · ${formatearPrecio(item.precio)}</p>
+          <p class="carrito-item__plan">${item.plan} · ${formatearPrecio(item.precio)}${item.ivaIncluido ? " · IVA incluido" : ""}</p>
           ${item.dispositivos ? `
             <label class="mini-label">Dispositivos
               <input type="number" min="1" max="10" value="${item.dispositivos}" onchange="modificarDispositivos('${item.itemId}', this.value)">
@@ -626,7 +683,13 @@ function calcularTotales() {
   const subtotal = carrito.reduce((acc, item) => acc + Number(item.precio) * Number(item.cantidad), 0);
   const descuento = cuponAplicado ? subtotal * (Number(cuponAplicado.porcentaje) / 100) : 0;
   const base = Math.max(subtotal - descuento, 0);
-  const iva = base * CONFIG.ivaPorcentaje;
+  const subtotalGravado = carrito.reduce((acc, item) => {
+    if (item.ivaIncluido) return acc;
+    return acc + Number(item.precio) * Number(item.cantidad);
+  }, 0);
+  const descuentoGravado = subtotal > 0 ? descuento * (subtotalGravado / subtotal) : 0;
+  const baseGravada = Math.max(subtotalGravado - descuentoGravado, 0);
+  const iva = baseGravada * CONFIG.ivaPorcentaje;
   const total = base + iva;
   const totalPaypal = total > 0
     ? (total + CONFIG.paypalComisionFija) / (1 - CONFIG.paypalComisionPorcentaje)
@@ -802,7 +865,7 @@ function actualizarDetallePagoCarrito() {
 function generarResumenPedido() {
   const resumen = carrito.map((item) => `• ${item.nombre} (${item.plan}) x${item.cantidad}`).join("\n");
   const totales = calcularTotales();
-  return `Hola, quiero finalizar mi compra:\n${resumen}\n\nMétodo elegido: ${obtenerNombreMetodoPago(metodoPagoActual)}\nSubtotal: $${totales.subtotal.toFixed(2)} USD\nDescuento: $${totales.descuento.toFixed(2)} USD\nIVA 15%: $${totales.iva.toFixed(2)} USD\nTotal: $${totales.total.toFixed(2)} USD${cuponAplicado ? `\nCupón: ${cuponAplicado.codigo}` : ""}\n\nPor favor confirmar disponibilidad y pasos para activar.`;
+  return `Hola, quiero finalizar mi compra:\n${resumen}\n\nMétodo elegido: ${obtenerNombreMetodoPago(metodoPagoActual)}\nSubtotal: $${totales.subtotal.toFixed(2)} USD\nDescuento: $${totales.descuento.toFixed(2)} USD\nIVA 15% cuando aplica: $${totales.iva.toFixed(2)} USD\nTotal: $${totales.total.toFixed(2)} USD${cuponAplicado ? `\nCupón: ${cuponAplicado.codigo}` : ""}\n\nPor favor confirmar disponibilidad y pasos para activar.`;
 }
 
 function enviarPedidoWhatsApp() {

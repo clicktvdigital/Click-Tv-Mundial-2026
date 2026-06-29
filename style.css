@@ -403,9 +403,56 @@ select option {
   max-width: 860px;
 }
 
+.hero__content {
+  text-align: center;
+}
+
+.hero__content .eyebrow,
+.hero__content .activity-pill,
+.hero__content h1,
+.hero__content p {
+  margin-inline: auto;
+}
+
 .hero p {
   font-size: 1.08rem;
   max-width: 670px;
+}
+
+.master-search {
+  width: min(680px, 100%);
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 10px;
+  margin: 22px auto 18px;
+  padding: 8px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(0,255,102,.18);
+  box-shadow: 0 18px 55px rgba(0,255,102,.1);
+}
+
+.master-search > span {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(0,255,102,.12);
+}
+
+.master-search input {
+  min-width: 0;
+  border: 0;
+  outline: none;
+  color: var(--white);
+  background: transparent;
+  font-weight: 750;
+}
+
+.master-search input::placeholder {
+  color: rgba(255,255,255,.48);
 }
 
 .hero__actions,
@@ -417,6 +464,10 @@ select option {
   gap: 12px;
   flex-wrap: wrap;
   align-items: center;
+}
+
+.hero__content .hero__actions {
+  justify-content: center;
 }
 
 .btn {
@@ -626,6 +677,17 @@ audio {
   border-color: rgba(0,255,102,.32);
 }
 
+.product-card--highlight {
+  border-color: rgba(0,255,102,.8) !important;
+  box-shadow: 0 0 0 4px rgba(0,255,102,.14), var(--shadow);
+  animation: productPulse 1.05s ease-in-out 2;
+}
+
+@keyframes productPulse {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
 .product-card__top {
   display: flex;
   gap: 14px;
@@ -687,6 +749,11 @@ audio {
 .plan-row--consultar {
   border-color: rgba(0,255,102,.18);
   background: rgba(0,255,102,.055);
+}
+
+.plan-row--iva-incluido {
+  border-color: rgba(0,230,255,.18);
+  background: rgba(0,230,255,.045);
 }
 
 .plan-row__info {
@@ -1369,6 +1436,13 @@ textarea {
   box-shadow: 0 10px 26px rgba(0,0,0,.25);
   cursor: pointer;
   transition: .22s ease;
+}
+
+.float-btn svg {
+  width: 25px;
+  height: 25px;
+  display: block;
+  fill: currentColor;
 }
 
 .float-btn:hover {
