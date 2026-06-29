@@ -166,6 +166,10 @@ a {
   position: relative;
 }
 
+.section--compact {
+  padding: 64px 0;
+}
+
 .section--dark {
   background: rgba(0, 0, 0, 0.28);
   border-block: 1px solid var(--line);
@@ -466,6 +470,8 @@ select option {
 .product-card,
 .payment-card,
 .stat-card,
+.step-card,
+.faq-card,
 .match-card,
 .resena-card,
 .empty-state,
@@ -475,6 +481,56 @@ select option {
   border-radius: var(--radius);
   box-shadow: var(--shadow);
   backdrop-filter: blur(18px);
+}
+
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.step-card {
+  padding: 20px;
+}
+
+.step-card > span {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 14px;
+  border-radius: 15px;
+  color: #001a09;
+  background: linear-gradient(135deg, var(--green), var(--green-2));
+  font-weight: 950;
+}
+
+.step-card h3,
+.faq-card h3 {
+  margin: 0 0 8px;
+}
+
+.step-card p,
+.faq-card p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.trust-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.trust-strip span {
+  padding: 10px 13px;
+  border-radius: 999px;
+  color: var(--green-3);
+  background: rgba(0,255,102,.08);
+  border: 1px solid rgba(0,255,102,.18);
+  font-weight: 850;
 }
 
 .hero__panel {
@@ -628,6 +684,11 @@ audio {
   border: 1px solid rgba(255,255,255,.07);
 }
 
+.plan-row--consultar {
+  border-color: rgba(0,255,102,.18);
+  background: rgba(0,255,102,.055);
+}
+
 .plan-row__info {
   display: flex;
   justify-content: space-between;
@@ -639,6 +700,13 @@ audio {
   color: var(--green-3);
   font-weight: 900;
   text-align: right;
+}
+
+.plan-row__note {
+  margin: -2px 0 0;
+  color: var(--muted);
+  font-size: .82rem;
+  line-height: 1.45;
 }
 
 .mundial-grid {
@@ -745,6 +813,16 @@ audio {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 14px;
+}
+
+.faq-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+.faq-card {
+  padding: 18px;
 }
 
 .stat-card {
@@ -1023,12 +1101,49 @@ textarea {
 
 .cupon-box,
 .cart-summary,
-.cart-payment {
+.cart-payment,
+.cart-trust {
   margin-top: 14px;
   padding: 16px;
   border-radius: 18px;
   background: rgba(255,255,255,.05);
   border: 1px solid var(--line);
+}
+
+.cart-trust {
+  background:
+    linear-gradient(135deg, rgba(0,255,102,.09), rgba(255,255,255,.04)),
+    rgba(255,255,255,.05);
+  border-color: rgba(0,255,102,.18);
+}
+
+.cart-trust strong {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--white);
+}
+
+.cart-trust p {
+  margin: 0 0 10px;
+  color: var(--muted);
+  line-height: 1.45;
+  font-size: .9rem;
+}
+
+.cart-trust div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.cart-trust span {
+  padding: 6px 8px;
+  border-radius: 999px;
+  color: var(--green-3);
+  background: rgba(0,255,102,.08);
+  border: 1px solid rgba(0,255,102,.16);
+  font-size: .76rem;
+  font-weight: 850;
 }
 
 .input-row {

@@ -89,8 +89,23 @@ function crearCardProducto(producto) {
 }
 
 function crearPlanProducto(producto, plan, index) {
-  const precioTexto = plan.consultar ? "Cotiza por WhatsApp" : formatearPrecio(plan.precio);
-  const btnComprar = plan.consultar ? "💬 Consultar" : "🟢 Comprar Ahora";
+  if (plan.consultar) {
+    return `
+      <div class="plan-row plan-row--consultar">
+        <div class="plan-row__info">
+          <strong>${plan.tipo}</strong>
+          <span>Sujeto a disponibilidad</span>
+        </div>
+        <p class="plan-row__note">Confirma stock y condiciones antes de pagar.</p>
+        <div class="plan-row__actions">
+          <button class="btn btn--primary btn--mini btn--full" onclick="comprarAhora('${producto.id}', ${index})">💬 Consultar disponibilidad</button>
+        </div>
+      </div>
+    `;
+  }
+
+  const precioTexto = formatearPrecio(plan.precio);
+  const btnComprar = "🟢 Comprar ahora";
 
   return `
     <div class="plan-row">

@@ -161,12 +161,17 @@ function inicializarPagosRapidos() {
   const paypalme = document.getElementById("link-paypalme");
   const catalogo = document.getElementById("link-catalogo-oficial");
   const fifa = document.getElementById("link-fifa-calendario");
+  const renovar = document.getElementById("link-renovar-servicio");
 
   if (deuna) configurarLinkExterno(deuna, CONFIG.deunaUrl);
   if (payphone) configurarLinkExterno(payphone, CONFIG.payphoneUrl);
   if (paypalme) configurarLinkExterno(paypalme, CONFIG.paypalUrl);
   if (catalogo) configurarLinkExterno(catalogo, CONFIG.catalogoUrl);
   if (fifa) configurarLinkExterno(fifa, CONFIG.fifaCalendarioUrl);
+  if (renovar) {
+    const mensaje = encodeURIComponent("Hola, deseo renovar mi servicio Click Tv Streaming.");
+    configurarLinkExterno(renovar, `${CONFIG.whatsappLink}?text=${mensaje}`);
+  }
 
 }
 
@@ -562,7 +567,7 @@ function comprarAhora(productoId, planIndex) {
 
   const { producto, plan } = data;
   if (plan.consultar) {
-    const mensajeConsulta = encodeURIComponent(`Hola, deseo consultar disponibilidad de ${producto.nombre}.`);
+    const mensajeConsulta = encodeURIComponent(`Hola, deseo consultar disponibilidad de ${producto.nombre} (${plan.tipo}). ¿Me confirma stock, precio y condiciones antes de pagar?`);
     window.open(`${CONFIG.whatsappLink}?text=${mensajeConsulta}`, "_blank", "noopener,noreferrer");
     return;
   }
@@ -797,7 +802,7 @@ function actualizarDetallePagoCarrito() {
 function generarResumenPedido() {
   const resumen = carrito.map((item) => `• ${item.nombre} (${item.plan}) x${item.cantidad}`).join("\n");
   const totales = calcularTotales();
-  return `Hola, quiero finalizar mi compra:\n${resumen}\n\nSubtotal: $${totales.subtotal.toFixed(2)} USD\nDescuento: $${totales.descuento.toFixed(2)} USD\nIVA 15%: $${totales.iva.toFixed(2)} USD\nTotal: $${totales.total.toFixed(2)} USD${cuponAplicado ? `\nCupón: ${cuponAplicado.codigo}` : ""}`;
+  return `Hola, quiero finalizar mi compra:\n${resumen}\n\nMétodo elegido: ${obtenerNombreMetodoPago(metodoPagoActual)}\nSubtotal: $${totales.subtotal.toFixed(2)} USD\nDescuento: $${totales.descuento.toFixed(2)} USD\nIVA 15%: $${totales.iva.toFixed(2)} USD\nTotal: $${totales.total.toFixed(2)} USD${cuponAplicado ? `\nCupón: ${cuponAplicado.codigo}` : ""}\n\nPor favor confirmar disponibilidad y pasos para activar.`;
 }
 
 function enviarPedidoWhatsApp() {

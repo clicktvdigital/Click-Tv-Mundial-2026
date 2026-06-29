@@ -14,7 +14,9 @@
   }
 
   .catalogo-grid,
-  .mundial-cards {
+  .mundial-cards,
+  .steps-grid,
+  .faq-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 
@@ -133,9 +135,19 @@
 
   .catalogo-grid,
   .mundial-cards,
+  .steps-grid,
+  .faq-grid,
   .payments-grid,
   .stats-grid {
     grid-template-columns: 1fr;
+  }
+
+  .section--compact {
+    padding: 50px 0;
+  }
+
+  .trust-strip {
+    display: grid;
   }
 
   .filter-tabs {
