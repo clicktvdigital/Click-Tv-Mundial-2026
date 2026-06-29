@@ -26,7 +26,7 @@ const CONFIG = {
   paypalUrl: "https://paypal.me/richardontaneda",
   paypalClientIdLive: "ASzNgRtmM63xQ0hRG9Lx47JyJKmva9nu4ij8ZsbAJRrAD1b1b0okUxnBtneq2xUmK6q9JuIHlXFR2T_-",
 
-  footballDataApiUrl: "https://api.football-data.org/v4/matches",
+  footballDataApiUrl: "https://api.football-data.org/v4/competitions/WC/matches",
   footballDataApiToken: "467c885c07fa49baa40ac78cf636f8b0",
   fifaCalendarioUrl: "https://www.fifa.com/es/tournaments/mens/worldcup/canadamexicousa2026/scores-fixtures",
 
@@ -378,6 +378,65 @@ const ACTIVIDAD_RECIENTE = [
   "🟢 Cliente de Perú solicitó IBO Player"
 ];
 
-// Datos locales de respaldo: solo se muestran como respaldo si coinciden con la fecha configurada.
-// Para producción se recomienda obtener el calendario desde una API/backend o desde fuente oficial.
-const MUNDIAL_2026 = [];
+// Respaldo local del fixture oficial si la API no devuelve datos del Mundial.
+const MUNDIAL_2026 = [
+  {
+    grupo: "Dieciseisavos de final",
+    partidos: [
+      {
+        grupo: "Lunes 29 de junio",
+        local: "Ganador Grupo E",
+        visitante: "3.º de A/B/C/D/F",
+        fechaUTC: "2026-06-29T12:00:00-05:00",
+        horaLocalTexto: "Horario por confirmar",
+        sede: "Boston Stadium",
+        marcador: "Partido 74"
+      },
+      {
+        grupo: "Lunes 29 de junio",
+        local: "Ganador Grupo F",
+        visitante: "2.º Grupo C",
+        fechaUTC: "2026-06-29T13:00:00-05:00",
+        horaLocalTexto: "Horario por confirmar",
+        sede: "Estadio Monterrey",
+        marcador: "Partido 75"
+      },
+      {
+        grupo: "Lunes 29 de junio",
+        local: "Ganador Grupo C",
+        visitante: "2.º Grupo F",
+        fechaUTC: "2026-06-29T14:00:00-05:00",
+        horaLocalTexto: "Horario por confirmar",
+        sede: "Houston Stadium",
+        marcador: "Partido 76"
+      },
+      {
+        grupo: "Martes 30 de junio",
+        local: "Ganador Grupo I",
+        visitante: "3.º de C/D/F/G/H",
+        fechaUTC: "2026-06-30T12:00:00-05:00",
+        horaLocalTexto: "Horario por confirmar",
+        sede: "New York New Jersey Stadium",
+        marcador: "Partido 77"
+      },
+      {
+        grupo: "Martes 30 de junio",
+        local: "2.º Grupo E",
+        visitante: "2.º Grupo I",
+        fechaUTC: "2026-06-30T13:00:00-05:00",
+        horaLocalTexto: "Horario por confirmar",
+        sede: "Dallas Stadium",
+        marcador: "Partido 78"
+      },
+      {
+        grupo: "Martes 30 de junio",
+        local: "Ganador Grupo A",
+        visitante: "3.º de C/E/F/H/I",
+        fechaUTC: "2026-06-30T14:00:00-05:00",
+        horaLocalTexto: "Horario por confirmar",
+        sede: "Mexico City Stadium",
+        marcador: "Partido 79"
+      }
+    ]
+  }
+];

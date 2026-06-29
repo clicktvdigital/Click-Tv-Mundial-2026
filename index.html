@@ -3,19 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CLICK TV MUNDIAL 2026 | Streaming Premium IPTV Mundial de Fútbol</title>
-  <meta name="description" content="CLICK TV Mundial 2026: streaming premium, IPTV, Disney+, Paramount+, Netflix, DAZN, música, apps premium y pagos rápidos por WhatsApp, PayPal, PayPhone y DEUNA.">
-  <meta name="keywords" content="CLICK TV, Mundial 2026, IPTV, streaming premium, Disney Plus, Paramount Plus, Netflix, DAZN, Ecuador">
+  <title>Click Tv Streaming | Streaming Premium IPTV Mundial de Fútbol</title>
+  <meta name="description" content="Click Tv Streaming: streaming premium, IPTV, Disney+, Paramount+, Netflix, DAZN, música, apps premium y pagos rápidos por WhatsApp, PayPal, PayPhone y DEUNA.">
+  <meta name="keywords" content="Click Tv Streaming, Mundial 2026, IPTV, streaming premium, Disney Plus, Paramount Plus, Netflix, DAZN, Ecuador">
   <meta name="theme-color" content="#00FF66">
 
-  <meta property="og:title" content="CLICK TV Mundial 2026 | Streaming Premium IPTV">
+  <meta property="og:title" content="Click Tv Streaming | Streaming Premium IPTV">
   <meta property="og:description" content="Servicios digitales, IPTV y streaming premium para disfrutar el Mundial 2026.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://click-tv-mundial.vercel.app/">
   <meta property="og:image" content="https://click-tv-mundial.vercel.app/og-image.jpg">
 
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="CLICK TV Mundial 2026">
+  <meta name="twitter:title" content="Click Tv Streaming">
   <meta name="twitter:description" content="Streaming Premium, IPTV y deportes para el Mundial 2026.">
 
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%2300FF66'/%3E%3Ctext x='50' y='60' text-anchor='middle' font-size='42'%3E%E2%9A%BD%3C/text%3E%3C/svg%3E">
@@ -27,7 +27,7 @@
   {
     "@context": "https://schema.org",
     "@type": "Store",
-    "name": "CLICK TV Mundial 2026",
+    "name": "Click Tv Streaming",
     "url": "https://click-tv-mundial.vercel.app/",
     "description": "Catálogo de streaming premium, IPTV y servicios digitales.",
     "areaServed": "Latinoamérica",
@@ -37,6 +37,41 @@
 </head>
 <body>
   <div class="site-bg"></div>
+
+  <div id="modal-ubicacion" class="geo-modal" aria-hidden="true">
+    <div class="geo-modal__card" role="dialog" aria-modal="true" aria-labelledby="geo-modal-title">
+      <button id="btn-cerrar-modal-ubicacion" class="geo-modal__close" type="button" aria-label="Cerrar">✕</button>
+      <span class="geo-modal__icon">📍</span>
+      <h2 id="geo-modal-title">Activa tu ubicación</h2>
+      <p>Así podemos sugerirte la moneda de tu país. Los precios base siempre se mantienen en USD porque Click Tv Streaming está en Ecuador.</p>
+      <button id="btn-modal-activar-ubicacion" class="btn btn--primary btn--full" type="button">Activar ubicación</button>
+      <div class="geo-modal__manual">
+        <label for="selector-pais-manual">O selecciona tu país manualmente</label>
+        <select id="selector-pais-manual">
+          <option value="">Seleccionar país</option>
+          <option value="EC">Ecuador / USD</option>
+          <option value="US">Estados Unidos / USD</option>
+          <option value="PE">Perú / PEN</option>
+          <option value="CO">Colombia / COP</option>
+          <option value="AR">Argentina / ARS</option>
+          <option value="MX">México / MXN</option>
+          <option value="CL">Chile / CLP</option>
+          <option value="ES">España / EUR</option>
+          <option value="BR">Brasil / BRL</option>
+          <option value="BO">Bolivia / BOB</option>
+          <option value="VE">Venezuela / VES</option>
+          <option value="UY">Uruguay / UYU</option>
+          <option value="PY">Paraguay / PYG</option>
+          <option value="DO">República Dominicana / DOP</option>
+          <option value="CR">Costa Rica / CRC</option>
+          <option value="GT">Guatemala / GTQ</option>
+          <option value="HN">Honduras / HNL</option>
+          <option value="NI">Nicaragua / NIO</option>
+        </select>
+      </div>
+      <button id="btn-continuar-sin-ubicacion" class="btn btn--ghost btn--full" type="button">Continuar con USD</button>
+    </div>
+  </div>
 
   <header class="header" id="inicio">
     <div class="topbar">
@@ -69,7 +104,7 @@
     <nav class="navbar container">
       <a class="brand" href="#inicio" aria-label="CLICK TV inicio">
         <span class="brand__logo">⚽</span>
-        <span><strong>CLICK TV</strong><small>Mundial 2026</small></span>
+        <span><strong>Click Tv Streaming</strong><small>Mundial 2026</small></span>
       </a>
 
       <button id="btn-menu-movil" class="menu-toggle" aria-label="Abrir menú">☰</button>
@@ -82,7 +117,7 @@
         <a class="nav-link" href="#musica">🎵 Música</a>
         <a class="nav-link" href="#apps">🎓 Premium Apps</a>
         <a class="nav-link" href="#promos">🔥 Promociones</a>
-        <a class="nav-link" href="#pagos">💳 Pagos</a>
+        <a class="nav-link" href="#streaming" data-ir-categoria="deportes">⚽ Deportes</a>
         <a class="nav-link" href="#contacto">💬 Contacto</a>
       </div>
 
@@ -183,59 +218,6 @@
       </div>
     </section>
 
-    <section id="pagos" class="section">
-      <div class="container">
-        <div class="section-head">
-          <span class="eyebrow">💳 Pagos seguros</span>
-          <h2>Métodos de pago disponibles</h2>
-          <p>Selecciona el método de pago y envía tu comprobante por WhatsApp para validar el pedido.</p>
-        </div>
-
-        <div class="payments-grid" id="seccion-pagos">
-          <article class="payment-card" id="bloque-transferencia">
-            <h3>🏦 Transferencia bancaria</h3>
-            <p>Banco Pichincha: <strong>2205375908</strong></p>
-            <button class="btn btn--outline btn--full" data-copy="2205375908" data-label="Banco Pichincha copiado">📋 Copiar Pichincha</button>
-            <p>Banco Guayaquil: <strong>0013647475</strong></p>
-            <button class="btn btn--outline btn--full" data-copy="0013647475" data-label="Banco Guayaquil copiado">📋 Copiar Guayaquil</button>
-            <p>Correo empresa: <strong>clicktvdigital@gmail.com</strong></p>
-            <button class="btn btn--outline btn--full" data-copy="clicktvdigital@gmail.com" data-label="Correo empresa copiado">📋 Copiar correo empresa</button>
-            <div class="warning-box">
-              ⚠️ Al realizar la transferencia agregue el correo <strong>clicktvprivado@gmail.com</strong> para agilizar la validación.
-            </div>
-            <button class="btn btn--primary btn--full" data-copy="clicktvprivado@gmail.com" data-label="Correo de validación copiado">📋 Copiar correo validación</button>
-            <button id="btn-enviar-comprobante" class="btn btn--ghost btn--full">📲 Enviar comprobante por WhatsApp</button>
-          </article>
-
-          <article class="payment-card">
-            <h3>💰 DEUNA</h3>
-            <p>Pago rápido por enlace oficial.</p>
-            <a id="link-deuna" class="btn btn--primary btn--full" href="#">💰 Pagar con DEUNA</a>
-            <button class="btn btn--outline btn--full" data-copy="https://pagar.deuna.app/H92p/U2FsdGVkX1+d5ztHtEqOvWZoCPyapr0gLHqVfd5bPEnxFHTZK9YHPAshlvR6BD3wG3A1HJIxJsdqS/ac5gip07gMGakILWEtHrLHQwCiL6Z/SAeuNxx4UZlxsyvCLBJjtcSCj7/jZoDAyB7FNrWMdr7WIw0EUeiv1Cdbs0Xtw4VfcP9tlvf4dRXGPzF65Wjr+YC1aZpkCI5gHp6qXtIAfA==" data-label="Link DEUNA copiado">📋 Copiar link DEUNA</button>
-          </article>
-
-          <article class="payment-card">
-            <h3>💳 PayPhone</h3>
-            <p>Pago con enlace PayPhone.</p>
-            <a id="link-payphone" class="btn btn--primary btn--full" href="#">💳 Pagar con PayPhone</a>
-            <button class="btn btn--outline btn--full" data-copy="https://ppls.me/izAAuu8fptGHF6uZBV9L4Q" data-label="Link PayPhone copiado">📋 Copiar PayPhone</button>
-          </article>
-
-          <article class="payment-card">
-            <h3>💳 PayPal</h3>
-            <p>PayPal.Me como alternativa global.</p>
-            <a id="link-paypalme" class="btn btn--primary btn--full" href="#">💳 Pagar por PayPal.Me</a>
-            <button class="btn btn--outline btn--full" data-copy="https://paypal.me/richardontaneda" data-label="Link PayPal copiado">📋 Copiar PayPal.Me</button>
-            <hr>
-            <p>Checkout automático con total del carrito:</p>
-            <p class="paypal-total">Total PayPal estimado: <strong id="paypal-total">$0.00 USD</strong></p>
-            <div id="paypal-button-container"></div>
-            <div id="confirmacion-pago"></div>
-          </article>
-        </div>
-      </div>
-    </section>
-
     <section id="contacto" class="section section--dark">
       <div class="container contact-grid">
         <div>
@@ -299,6 +281,11 @@
       </div>
 
       <div id="carrito-pago-detalle" class="cart-payment__detail"></div>
+      <div id="paypal-cart-box" class="paypal-cart-box">
+        <p class="paypal-total">Total PayPal estimado: <strong id="paypal-total">$0.00 USD</strong></p>
+        <div id="paypal-button-container-carrito"></div>
+        <div id="confirmacion-pago"></div>
+      </div>
     </div>
 
     <div class="cart-actions">
@@ -320,7 +307,7 @@
 
   <footer class="footer">
     <div class="container footer__content">
-      <p>© <span id="anio-actual"></span> CLICK TV Mundial 2026. Todos los derechos reservados.</p>
+      <p>© <span id="anio-actual"></span> Click Tv Streaming. Todos los derechos reservados.</p>
       <p>Pagos: Banco Pichincha · Banco Guayaquil · DEUNA · PayPhone · PayPal</p>
     </div>
   </footer>

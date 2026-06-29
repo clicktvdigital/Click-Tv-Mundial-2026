@@ -7,6 +7,7 @@ const CLAVE_CARRITO = "clicktv_carrito";
 const CLAVE_MONEDA = "clicktv_moneda";
 const CLAVE_CUPON = "clicktv_cupon";
 const CLAVE_VENTAS = "clicktv_ventas";
+const CLAVE_GEO_MODAL = "clicktv_geo_modal_visto";
 
 let carrito = [];
 let monedaActual = "USD";
@@ -34,7 +35,6 @@ document.addEventListener("DOMContentLoaded", () => {
   inicializarUbicacion();
   actualizarTasasCambio();
   actualizarContadorCarrito();
-  inicializarPayPalCheckout();
 
   setInterval(renderActividadReciente, 4500);
   setInterval(rotarResenas, 6000);
@@ -78,6 +78,7 @@ function inicializarUI() {
     localStorage.setItem(CLAVE_MONEDA, monedaActual);
     renderCatalogo();
     renderCarrito();
+    actualizarDetallePagoCarrito();
     mostrarToast(`Moneda cambiada a ${monedaActual}`, "info");
   });
 
@@ -198,9 +199,24 @@ function cargarMonedaDesdeStorage() {
 
 function inicializarUbicacion() {
   const btnUbicacion = document.getElementById("btn-activar-ubicacion");
+  const btnModalUbicacion = document.getElementById("btn-modal-activar-ubicacion");
+  const btnCerrarModal = document.getElementById("btn-cerrar-modal-ubicacion");
+  const btnContinuarUsd = document.getElementById("btn-continuar-sin-ubicacion");
+  const selectorPais = document.getElementById("selector-pais-manual");
   const elPais = document.getElementById("pais-detectado");
 
-  btnUbicacion?.addEventListener("click", detectarPais);
+  btnUbicacion?.addEventListener("click", mostrarModalUbicacion);
+  btnModalUbicacion?.addEventListener("click", detectarPais);
+  btnCerrarModal?.addEventListener("click", cerrarModalUbicacion);
+  btnContinuarUsd?.addEventListener("click", () => {
+    seleccionarMoneda("USD", "Ecuador / Internacional");
+    cerrarModalUbicacion();
+  });
+  selectorPais?.addEventListener("change", () => aplicarPaisManual(selectorPais.value));
+
+  if (!sessionStorage.getItem(CLAVE_GEO_MODAL)) {
+    setTimeout(mostrarModalUbicacion, 900);
+  }
 
   if (localStorage.getItem(CLAVE_MONEDA)) {
     if (elPais) elPais.textContent = `🌎 Moneda: ${monedaActual}`;
@@ -208,6 +224,47 @@ function inicializarUbicacion() {
   }
 
   if (elPais) elPais.textContent = "🌎 Activa ubicación o elige moneda";
+}
+
+function mostrarModalUbicacion() {
+  const modal = document.getElementById("modal-ubicacion");
+  if (!modal) return;
+  modal.classList.add("visible");
+  modal.setAttribute("aria-hidden", "false");
+}
+
+function cerrarModalUbicacion() {
+  const modal = document.getElementById("modal-ubicacion");
+  if (!modal) return;
+  modal.classList.remove("visible");
+  modal.setAttribute("aria-hidden", "true");
+  sessionStorage.setItem(CLAVE_GEO_MODAL, "1");
+}
+
+function aplicarPaisManual(codigoPais) {
+  if (!codigoPais) return;
+  const moneda = MONEDA_POR_PAIS?.[codigoPais] || "USD";
+  const opcion = document.querySelector(`#selector-pais-manual option[value="${codigoPais}"]`);
+  const pais = opcion?.textContent?.split("/")[0]?.trim() || "País seleccionado";
+  seleccionarMoneda(moneda, pais);
+  cerrarModalUbicacion();
+  mostrarToast(`Moneda configurada: ${moneda}`, "exito");
+}
+
+function seleccionarMoneda(moneda, pais = "") {
+  if (!TASAS_CAMBIO[moneda]) return;
+  monedaActual = moneda;
+  localStorage.setItem(CLAVE_MONEDA, monedaActual);
+
+  const selector = document.getElementById("selector-moneda");
+  if (selector) selector.value = monedaActual;
+
+  const elPais = document.getElementById("pais-detectado");
+  if (elPais) elPais.textContent = pais ? `🌎 ${pais} · ${monedaActual}` : `🌎 Moneda: ${monedaActual}`;
+
+  renderCatalogo();
+  renderCarrito();
+  actualizarDetallePagoCarrito();
 }
 
 async function actualizarTasasCambio() {
@@ -238,10 +295,12 @@ async function actualizarTasasCambio() {
 function detectarPais() {
   const elPais = document.getElementById("pais-detectado");
   const btnUbicacion = document.getElementById("btn-activar-ubicacion");
+  const btnModalUbicacion = document.getElementById("btn-modal-activar-ubicacion");
   if (!elPais) return;
 
   if (!navigator.geolocation) {
     elPais.textContent = "🌎 Ubicación no disponible";
+    mostrarToast("Tu navegador no permite ubicación. Selecciona tu país manualmente.", "info");
     return;
   }
 
@@ -249,6 +308,10 @@ function detectarPais() {
   if (btnUbicacion) {
     btnUbicacion.disabled = true;
     btnUbicacion.textContent = "📍 Detectando...";
+  }
+  if (btnModalUbicacion) {
+    btnModalUbicacion.disabled = true;
+    btnModalUbicacion.textContent = "Detectando ubicación...";
   }
 
   navigator.geolocation.getCurrentPosition(
@@ -260,13 +323,18 @@ function detectarPais() {
         const pais = datos?.address?.country || "Ubicación detectada";
         const codigoPais = datos?.address?.country_code?.toUpperCase() || "";
         elPais.textContent = `🌎 ${pais}`;
-        sugerirMonedaPorPais(pais, codigoPais);
+        sugerirMonedaPorPais(pais, codigoPais, true);
+        cerrarModalUbicacion();
       } catch {
         elPais.textContent = "🌎 País detectado";
       }
       if (btnUbicacion) {
         btnUbicacion.disabled = false;
         btnUbicacion.textContent = "📍 Ubicación activa";
+      }
+      if (btnModalUbicacion) {
+        btnModalUbicacion.disabled = false;
+        btnModalUbicacion.textContent = "Activar ubicación";
       }
     },
     () => {
@@ -275,31 +343,26 @@ function detectarPais() {
         btnUbicacion.disabled = false;
         btnUbicacion.textContent = "📍 Activar ubicación";
       }
+      if (btnModalUbicacion) {
+        btnModalUbicacion.disabled = false;
+        btnModalUbicacion.textContent = "Activar ubicación";
+      }
       mostrarToast("No se activó la ubicación. Puedes elegir la moneda manualmente.", "info");
     },
     { enableHighAccuracy: false, timeout: 7000, maximumAge: 600000 }
   );
 }
 
-function sugerirMonedaPorPais(pais, codigoPais = "") {
-  if (localStorage.getItem(CLAVE_MONEDA)) return;
-
+function sugerirMonedaPorPais(pais, codigoPais = "", forzar = false) {
+  if (localStorage.getItem(CLAVE_MONEDA) && !forzar) return;
   const monedaPorCodigo = MONEDA_POR_PAIS?.[codigoPais];
   const encontrada = monedaPorCodigo
     ? [monedaPorCodigo, TASAS_CAMBIO[monedaPorCodigo]]
     : Object.entries(TASAS_CAMBIO).find(([, info]) => info.paises?.includes(pais));
 
   if (!encontrada || !TASAS_CAMBIO[encontrada[0]]) return;
-
-  monedaActual = encontrada[0];
-  localStorage.setItem(CLAVE_MONEDA, monedaActual);
-
-  const selector = document.getElementById("selector-moneda");
-  if (selector) selector.value = monedaActual;
-
-  renderCatalogo();
-  renderCarrito();
-  mostrarToast(`Moneda sugerida: ${monedaActual}`, "exito");
+  seleccionarMoneda(encontrada[0], pais);
+  mostrarToast(`Moneda sugerida: ${encontrada[0]}`, "exito");
 }
 
 // ---------------------------------------------------------------------------
@@ -522,6 +585,10 @@ function procesarPago(metodo, ejecutar = false) {
 
   actualizarDetallePagoCarrito();
 
+  if (metodoPagoActual === "paypalme") {
+    setTimeout(inicializarPayPalCheckout, 50);
+  }
+
   if (!ejecutar) {
     mostrarToast(`Método seleccionado: ${obtenerNombreMetodoPago(metodoPagoActual)}`, "info");
     return;
@@ -542,7 +609,8 @@ function procesarPago(metodo, ejecutar = false) {
       window.open(CONFIG.payphoneUrl, "_blank", "noopener,noreferrer");
       break;
     case "paypalme":
-      window.open(CONFIG.paypalUrl, "_blank", "noopener,noreferrer");
+      document.getElementById("paypal-cart-box")?.scrollIntoView({ behavior: "smooth", block: "center" });
+      mostrarToast("Usa el botón de PayPal dentro del carrito o PayPal.Me.", "info");
       break;
     case "transferencia":
       mostrarToast("Copia los datos bancarios y envía el comprobante por WhatsApp.", "info");
@@ -565,6 +633,7 @@ function obtenerNombreMetodoPago(metodo) {
 
 function actualizarDetallePagoCarrito() {
   const detalle = document.getElementById("carrito-pago-detalle");
+  const paypalBox = document.getElementById("paypal-cart-box");
   if (!detalle || typeof CONFIG === "undefined") return;
 
   const totales = calcularTotales();
@@ -579,6 +648,7 @@ function actualizarDetallePagoCarrito() {
       <button class="btn btn--outline btn--full" onclick="copiarTexto('${CONFIG.bancoPichincha}', 'Banco Pichincha copiado')">Copiar Pichincha</button>
       <p>Banco Guayaquil: <b>${CONFIG.bancoGuayaquil}</b></p>
       <button class="btn btn--outline btn--full" onclick="copiarTexto('${CONFIG.bancoGuayaquil}', 'Banco Guayaquil copiado')">Copiar Guayaquil</button>
+      <button class="btn btn--ghost btn--full" onclick="enviarComprobanteWhatsApp()">Enviar comprobante por WhatsApp</button>
       <p>Luego envía tu comprobante por WhatsApp para validar tu pedido.</p>
     `,
     deuna: `
@@ -596,7 +666,7 @@ function actualizarDetallePagoCarrito() {
     paypalme: `
       <strong>PayPal</strong>
       <p>Total con comisión PayPal estimada: <b>${totalPaypal}</b></p>
-      <p>Usa PayPal.Me o el checkout automático de la sección pagos.</p>
+      <p>Usa el botón PayPal que aparece debajo o paga con PayPal.Me.</p>
       <a class="btn btn--primary btn--full" href="${CONFIG.paypalUrl}" target="_blank" rel="noopener noreferrer">Pagar con PayPal.Me</a>
     `,
     whatsapp: `
@@ -608,6 +678,10 @@ function actualizarDetallePagoCarrito() {
   };
 
   detalle.innerHTML = detalles[metodoPagoActual] || detalles.transferencia;
+
+  if (paypalBox) {
+    paypalBox.classList.toggle("visible", metodoPagoActual === "paypalme");
+  }
 }
 
 function generarResumenPedido() {
@@ -628,7 +702,7 @@ function enviarComprobanteWhatsApp() {
 }
 
 function inicializarPayPalCheckout() {
-  const contenedor = document.getElementById("paypal-button-container");
+  const contenedor = document.getElementById("paypal-button-container-carrito");
   if (!contenedor || paypalRenderizado) return;
 
   if (typeof paypal === "undefined") {
@@ -651,7 +725,7 @@ function inicializarPayPalCheckout() {
       const totalPaypal = calcularTotales().totalPaypal;
       return actions.order.create({
         purchase_units: [{
-          description: "Compra Click TV Mundial 2026",
+          description: "Compra Click Tv Streaming",
           amount: {
             currency_code: "USD",
             value: totalPaypal.toFixed(2)
@@ -677,7 +751,7 @@ function inicializarPayPalCheckout() {
       console.error("PayPal error:", err);
       mostrarToast("No se pudo completar el pago con PayPal. Intenta nuevamente o usa PayPal.Me.", "error");
     }
-  }).render("#paypal-button-container");
+  }).render("#paypal-button-container-carrito");
 
   paypalRenderizado = true;
 }
@@ -716,17 +790,20 @@ async function renderMundial() {
     const partidosAPI = await obtenerPartidosFootballData();
     const partidos = normalizarPartidos(partidosAPI);
     const html = renderizarBloquesMundial(partidos);
-    box.innerHTML = html || renderMundialFallback();
+    box.innerHTML = html || renderizarRespaldoMundial();
   } catch (error) {
     console.warn("No se pudo cargar Football-Data:", error);
-    const locales = Array.isArray(MUNDIAL_2026) ? normalizarPartidosLocales(MUNDIAL_2026) : [];
-    const htmlLocal = renderizarBloquesMundial(locales);
-    box.innerHTML = htmlLocal || renderMundialFallback();
+    box.innerHTML = renderizarRespaldoMundial();
   }
 }
 
 async function obtenerPartidosFootballData() {
-  const respuesta = await fetch(CONFIG.footballDataApiUrl, {
+  const params = new URLSearchParams({
+    dateFrom: fechaEcuador(-1),
+    dateTo: fechaEcuador(6)
+  });
+
+  const respuesta = await fetch(`${CONFIG.footballDataApiUrl}?${params.toString()}`, {
     headers: { "X-Auth-Token": CONFIG.footballDataApiToken }
   });
 
@@ -758,11 +835,18 @@ function normalizarPartidosLocales(grupos) {
         fechaUTC: p.fechaUTC,
         sede: p.sede || "Sede por confirmar",
         estado: obtenerEstadoPorFecha(p.fechaUTC),
-        marcador: ""
+        horaLocalTexto: p.horaLocalTexto || "",
+        marcador: p.marcador || ""
       });
     });
   });
   return lista;
+}
+
+function renderizarRespaldoMundial() {
+  const locales = Array.isArray(MUNDIAL_2026) ? normalizarPartidosLocales(MUNDIAL_2026) : [];
+  const htmlLocal = renderizarBloquesMundial(locales);
+  return htmlLocal || renderMundialFallback();
 }
 
 function renderizarBloquesMundial(partidos) {
@@ -807,7 +891,7 @@ function crearBloquePartidos(titulo, partidos) {
 function crearCardPartido(p) {
   const fecha = new Date(p.fechaUTC);
   const fechaTexto = fecha.toLocaleDateString("es-EC", { timeZone: "America/Guayaquil", weekday: "short", day: "2-digit", month: "short" });
-  const horaTexto = fecha.toLocaleTimeString("es-EC", { timeZone: "America/Guayaquil", hour: "2-digit", minute: "2-digit" });
+  const horaTexto = p.horaLocalTexto || fecha.toLocaleTimeString("es-EC", { timeZone: "America/Guayaquil", hour: "2-digit", minute: "2-digit" });
 
   return `
     <article class="match-card">

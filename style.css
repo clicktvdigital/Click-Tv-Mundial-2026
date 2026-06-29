@@ -84,6 +84,78 @@ a {
   mask-image: linear-gradient(to bottom, rgba(0,0,0,.65), rgba(0,0,0,.08));
 }
 
+.geo-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 2200;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(0,0,0,.72);
+  opacity: 0;
+  pointer-events: none;
+  transition: .24s ease;
+}
+
+.geo-modal.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.geo-modal__card {
+  position: relative;
+  width: min(440px, 100%);
+  padding: 24px;
+  border-radius: 22px;
+  background: linear-gradient(180deg, rgba(13,22,15,.98), rgba(5,8,6,.98));
+  border: 1px solid rgba(0,255,102,.22);
+  box-shadow: 0 28px 80px rgba(0,0,0,.45);
+}
+
+.geo-modal__close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 38px;
+  height: 38px;
+  border: 0;
+  border-radius: 14px;
+  background: rgba(255,255,255,.08);
+  color: var(--white);
+  cursor: pointer;
+}
+
+.geo-modal__icon {
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 12px;
+  border-radius: 18px;
+  background: rgba(0,255,102,.14);
+  font-size: 1.4rem;
+}
+
+.geo-modal h2 {
+  margin: 0 0 8px;
+}
+
+.geo-modal p,
+.geo-modal__manual label {
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.geo-modal__manual {
+  display: grid;
+  gap: 8px;
+  margin: 14px 0;
+}
+
+.geo-modal__manual select {
+  width: 100%;
+}
+
 .container {
   width: min(var(--max), calc(100% - 32px));
   margin-inline: auto;
@@ -659,6 +731,19 @@ audio {
   background: rgba(0,0,0,.2);
   padding: 12px;
   border-radius: 14px;
+}
+
+.paypal-cart-box {
+  display: none;
+  margin-top: 12px;
+  padding: 14px;
+  border-radius: 16px;
+  background: rgba(0,0,0,.24);
+  border: 1px solid rgba(255,255,255,.08);
+}
+
+.paypal-cart-box.visible {
+  display: block;
 }
 
 .contact-grid {

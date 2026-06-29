@@ -18,12 +18,25 @@ function inicializarFiltros() {
   const botones = document.querySelectorAll("[data-categoria]");
   botones.forEach((btn) => {
     btn.addEventListener("click", () => {
-      categoriaCatalogoActual = btn.dataset.categoria || "todos";
-      botones.forEach((b) => b.classList.remove("activo"));
-      btn.classList.add("activo");
-      renderCatalogo();
+      seleccionarCategoriaCatalogo(btn.dataset.categoria || "todos");
     });
   });
+
+  document.querySelectorAll("[data-ir-categoria]").forEach((link) => {
+    link.addEventListener("click", () => {
+      seleccionarCategoriaCatalogo(link.dataset.irCategoria || "todos");
+    });
+  });
+}
+
+function seleccionarCategoriaCatalogo(categoria) {
+  categoriaCatalogoActual = categoria || "todos";
+
+  document.querySelectorAll("[data-categoria]").forEach((btn) => {
+    btn.classList.toggle("activo", btn.dataset.categoria === categoriaCatalogoActual);
+  });
+
+  renderCatalogo();
 }
 
 function renderCatalogo() {
@@ -76,7 +89,7 @@ function crearCardProducto(producto) {
 }
 
 function crearPlanProducto(producto, plan, index) {
-  const precioTexto = plan.consultar ? "Consultar disponibilidad" : `$${Number(plan.precio).toFixed(2)} USD`;
+  const precioTexto = plan.consultar ? "Consultar disponibilidad" : formatearPrecio(plan.precio);
   const btnComprar = plan.consultar ? "💬 Consultar" : "🟢 Comprar Ahora";
 
   return `
