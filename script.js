@@ -31,7 +31,8 @@ document.addEventListener("DOMContentLoaded", () => {
   inicializarUI();
   inicializarBotonesFlotantes();
   inicializarPagosRapidos();
-  detectarPais();
+  inicializarUbicacion();
+  actualizarTasasCambio();
   actualizarContadorCarrito();
   inicializarPayPalCheckout();
 
@@ -181,7 +182,7 @@ function inicializarPagosRapidos() {
 function formatearPrecio(precioUSD) {
   const info = TASAS_CAMBIO[monedaActual] || TASAS_CAMBIO.USD;
   const convertido = Number(precioUSD) * info.tasa;
-  const decimales = ["USD", "EUR", "PEN"].includes(monedaActual) ? 2 : 0;
+  const decimales = ["USD", "EUR", "PEN", "BRL", "BOB", "DOP", "GTQ"].includes(monedaActual) ? 2 : 0;
   const local = monedaActual === "USD" ? "" : ` · ${info.simbolo}${convertido.toFixed(decimales)} aprox.`;
   return `$${Number(precioUSD).toFixed(2)} USD${local}`;
 }
@@ -195,8 +196,48 @@ function cargarMonedaDesdeStorage() {
   }
 }
 
+function inicializarUbicacion() {
+  const btnUbicacion = document.getElementById("btn-activar-ubicacion");
+  const elPais = document.getElementById("pais-detectado");
+
+  btnUbicacion?.addEventListener("click", detectarPais);
+
+  if (localStorage.getItem(CLAVE_MONEDA)) {
+    if (elPais) elPais.textContent = `🌎 Moneda: ${monedaActual}`;
+    return;
+  }
+
+  if (elPais) elPais.textContent = "🌎 Activa ubicación o elige moneda";
+}
+
+async function actualizarTasasCambio() {
+  if (!CONFIG.exchangeRateApiUrl) return;
+
+  try {
+    const respuesta = await fetch(CONFIG.exchangeRateApiUrl);
+    if (!respuesta.ok) throw new Error(`Exchange HTTP ${respuesta.status}`);
+
+    const datos = await respuesta.json();
+    const rates = datos?.rates;
+    if (!rates) return;
+
+    Object.keys(TASAS_CAMBIO).forEach((codigo) => {
+      if (Number.isFinite(Number(rates[codigo]))) {
+        TASAS_CAMBIO[codigo].tasa = Number(rates[codigo]);
+      }
+    });
+
+    renderCatalogo();
+    renderCarrito();
+    actualizarDetallePagoCarrito();
+  } catch (error) {
+    console.warn("No se pudieron actualizar tasas de cambio. Se usan tasas de respaldo.", error);
+  }
+}
+
 function detectarPais() {
   const elPais = document.getElementById("pais-detectado");
+  const btnUbicacion = document.getElementById("btn-activar-ubicacion");
   if (!elPais) return;
 
   if (!navigator.geolocation) {
@@ -205,6 +246,10 @@ function detectarPais() {
   }
 
   elPais.textContent = "📍 Detectando país...";
+  if (btnUbicacion) {
+    btnUbicacion.disabled = true;
+    btnUbicacion.textContent = "📍 Detectando...";
+  }
 
   navigator.geolocation.getCurrentPosition(
     async (posicion) => {
@@ -213,29 +258,48 @@ function detectarPais() {
         const respuesta = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`);
         const datos = await respuesta.json();
         const pais = datos?.address?.country || "Ubicación detectada";
+        const codigoPais = datos?.address?.country_code?.toUpperCase() || "";
         elPais.textContent = `🌎 ${pais}`;
-        sugerirMonedaPorPais(pais);
+        sugerirMonedaPorPais(pais, codigoPais);
       } catch {
         elPais.textContent = "🌎 País detectado";
+      }
+      if (btnUbicacion) {
+        btnUbicacion.disabled = false;
+        btnUbicacion.textContent = "📍 Ubicación activa";
       }
     },
     () => {
       elPais.textContent = "🌎 Ecuador / Internacional";
+      if (btnUbicacion) {
+        btnUbicacion.disabled = false;
+        btnUbicacion.textContent = "📍 Activar ubicación";
+      }
+      mostrarToast("No se activó la ubicación. Puedes elegir la moneda manualmente.", "info");
     },
     { enableHighAccuracy: false, timeout: 7000, maximumAge: 600000 }
   );
 }
 
-function sugerirMonedaPorPais(pais) {
+function sugerirMonedaPorPais(pais, codigoPais = "") {
   if (localStorage.getItem(CLAVE_MONEDA)) return;
-  const encontrada = Object.entries(TASAS_CAMBIO).find(([, info]) => info.paises?.includes(pais));
-  if (!encontrada) return;
+
+  const monedaPorCodigo = MONEDA_POR_PAIS?.[codigoPais];
+  const encontrada = monedaPorCodigo
+    ? [monedaPorCodigo, TASAS_CAMBIO[monedaPorCodigo]]
+    : Object.entries(TASAS_CAMBIO).find(([, info]) => info.paises?.includes(pais));
+
+  if (!encontrada || !TASAS_CAMBIO[encontrada[0]]) return;
 
   monedaActual = encontrada[0];
+  localStorage.setItem(CLAVE_MONEDA, monedaActual);
+
   const selector = document.getElementById("selector-moneda");
   if (selector) selector.value = monedaActual;
+
   renderCatalogo();
   renderCarrito();
+  mostrarToast(`Moneda sugerida: ${monedaActual}`, "exito");
 }
 
 // ---------------------------------------------------------------------------

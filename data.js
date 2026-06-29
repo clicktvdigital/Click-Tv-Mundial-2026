@@ -32,6 +32,7 @@ const CONFIG = {
 
   radioStreamUrl: "https://stream.zeno.fm/f3wvbbqmdg8uv",
   teleamazonasUrl: "https://www.teleamazonas.com/teleamazonas-en-vivo/",
+  exchangeRateApiUrl: "https://open.er-api.com/v6/latest/USD",
 
   ivaPorcentaje: 0.15,
   paypalComisionPorcentaje: 0.054,
@@ -45,7 +46,46 @@ const TASAS_CAMBIO = {
   ARS: { nombre: "Peso argentino", simbolo: "AR$", tasa: 950, paises: ["Argentina"] },
   MXN: { nombre: "Peso mexicano", simbolo: "MX$", tasa: 18.5, paises: ["México"] },
   CLP: { nombre: "Peso chileno", simbolo: "CL$", tasa: 930, paises: ["Chile"] },
-  EUR: { nombre: "Euro", simbolo: "€", tasa: 0.92, paises: ["España", "Francia", "Alemania", "Italia"] }
+  EUR: { nombre: "Euro", simbolo: "€", tasa: 0.92, paises: ["España", "Francia", "Alemania", "Italia", "Portugal", "Países Bajos", "Bélgica"] },
+  BRL: { nombre: "Real brasileño", simbolo: "R$", tasa: 5.4, paises: ["Brasil"] },
+  BOB: { nombre: "Boliviano", simbolo: "Bs", tasa: 6.9, paises: ["Bolivia"] },
+  VES: { nombre: "Bolívar", simbolo: "Bs", tasa: 36, paises: ["Venezuela"] },
+  UYU: { nombre: "Peso uruguayo", simbolo: "$U", tasa: 40, paises: ["Uruguay"] },
+  PYG: { nombre: "Guaraní", simbolo: "₲", tasa: 7500, paises: ["Paraguay"] },
+  DOP: { nombre: "Peso dominicano", simbolo: "RD$", tasa: 59, paises: ["República Dominicana"] },
+  CRC: { nombre: "Colón costarricense", simbolo: "₡", tasa: 520, paises: ["Costa Rica"] },
+  GTQ: { nombre: "Quetzal", simbolo: "Q", tasa: 7.8, paises: ["Guatemala"] },
+  HNL: { nombre: "Lempira", simbolo: "L", tasa: 24.8, paises: ["Honduras"] },
+  NIO: { nombre: "Córdoba", simbolo: "C$", tasa: 36.8, paises: ["Nicaragua"] }
+};
+
+const MONEDA_POR_PAIS = {
+  EC: "USD",
+  US: "USD",
+  PA: "USD",
+  SV: "USD",
+  PE: "PEN",
+  CO: "COP",
+  AR: "ARS",
+  MX: "MXN",
+  CL: "CLP",
+  ES: "EUR",
+  FR: "EUR",
+  DE: "EUR",
+  IT: "EUR",
+  PT: "EUR",
+  NL: "EUR",
+  BE: "EUR",
+  BR: "BRL",
+  BO: "BOB",
+  VE: "VES",
+  UY: "UYU",
+  PY: "PYG",
+  DO: "DOP",
+  CR: "CRC",
+  GT: "GTQ",
+  HN: "HNL",
+  NI: "NIO"
 };
 
 const CUPONES = {

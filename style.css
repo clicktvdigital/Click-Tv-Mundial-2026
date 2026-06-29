@@ -166,6 +166,27 @@ a {
   gap: 6px;
 }
 
+.geo-btn {
+  min-height: 34px;
+  padding: 8px 12px;
+  border: 1px solid rgba(0,255,102,.24);
+  border-radius: 999px;
+  background: rgba(0,255,102,.1);
+  color: var(--green-3);
+  cursor: pointer;
+  font-weight: 850;
+  font-size: .82rem;
+}
+
+.geo-btn:hover {
+  background: rgba(0,255,102,.18);
+}
+
+.geo-btn:disabled {
+  opacity: .65;
+  cursor: wait;
+}
+
 select,
 input {
   border: 1px solid var(--line);
