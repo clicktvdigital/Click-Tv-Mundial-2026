@@ -17,6 +17,13 @@ let indiceActividad = 0;
 let indiceResena = 0;
 let metodoPagoActual = "transferencia";
 let usuariosConectados = 48;
+let ubicacionCliente = {
+  ciudad: "",
+  pais: "Ecuador",
+  codigoPais: "EC",
+  bandera: "🇪🇨",
+  zonaHoraria: "America/Guayaquil"
+};
 
 // ---------------------------------------------------------------------------
 // INICIALIZACIÓN
@@ -112,11 +119,16 @@ function inicializarUI() {
 
   // Radio en vivo
   const radioPlayer = document.getElementById("radio-player");
+  const btnRadioPlay = document.getElementById("btn-radio-play");
 
   if (radioPlayer && typeof CONFIG !== "undefined" && CONFIG.radioStreamUrl) {
     radioPlayer.src = CONFIG.radioStreamUrl;
+    radioPlayer.autoplay = true;
     radioPlayer.load();
+    intentarAutoplayRadio();
   }
+
+  btnRadioPlay?.addEventListener("click", activarRadioManual);
 
   // Teleamazonas en vivo
   const btnTeleamazonas = document.getElementById("btn-teleamazonas");
@@ -175,6 +187,36 @@ function inicializarPagosRapidos() {
 
   const radio = document.getElementById("radio-player");
   if (radio) radio.src = CONFIG.radioStreamUrl;
+}
+
+async function intentarAutoplayRadio() {
+  const radio = document.getElementById("radio-player");
+  const btn = document.getElementById("btn-radio-play");
+  if (!radio) return;
+
+  try {
+    radio.muted = false;
+    await radio.play();
+    btn?.classList.add("oculto");
+  } catch {
+    btn?.classList.remove("oculto");
+  }
+}
+
+async function activarRadioManual() {
+  const radio = document.getElementById("radio-player");
+  const btn = document.getElementById("btn-radio-play");
+  if (!radio) return;
+
+  try {
+    radio.muted = false;
+    radio.volume = 1;
+    await radio.play();
+    btn?.classList.add("oculto");
+    mostrarToast("Radio activada correctamente.", "exito");
+  } catch {
+    mostrarToast("El navegador bloqueó la radio. Toca reproducir desde el control del audio.", "info");
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -248,8 +290,10 @@ function aplicarPaisManual(codigoPais) {
   const moneda = MONEDA_POR_PAIS?.[codigoPais] || "USD";
   const opcion = document.querySelector(`#selector-pais-manual option[value="${codigoPais}"]`);
   const pais = opcion?.textContent?.split("/")[0]?.trim() || "País seleccionado";
+  actualizarUbicacionCliente({ pais, codigoPais, zonaHoraria: obtenerZonaHorariaNavegador() });
   seleccionarMoneda(moneda, pais);
   cerrarModalUbicacion();
+  renderMundial(true);
   mostrarToast(`Moneda configurada: ${moneda}`, "exito");
 }
 
@@ -262,11 +306,40 @@ function seleccionarMoneda(moneda, pais = "") {
   if (selector) selector.value = monedaActual;
 
   const elPais = document.getElementById("pais-detectado");
-  if (elPais) elPais.textContent = pais ? `🌎 ${pais} · ${monedaActual}` : `🌎 Moneda: ${monedaActual}`;
+  if (elPais) elPais.textContent = pais ? `${ubicacionCliente.bandera || "🌎"} ${pais} · ${monedaActual}` : `🌎 Moneda: ${monedaActual}`;
 
   renderCatalogo();
   renderCarrito();
   actualizarDetallePagoCarrito();
+}
+
+function actualizarUbicacionCliente({ ciudad = "", pais = "", codigoPais = "", zonaHoraria = "" } = {}) {
+  const codigo = String(codigoPais || ubicacionCliente.codigoPais || "EC").toUpperCase();
+  ubicacionCliente = {
+    ciudad: ciudad || ubicacionCliente.ciudad,
+    pais: pais || ubicacionCliente.pais || "Ecuador",
+    codigoPais: codigo,
+    bandera: banderaDesdeCodigoPais(codigo),
+    zonaHoraria: zonaHoraria || ubicacionCliente.zonaHoraria || obtenerZonaHorariaNavegador()
+  };
+}
+
+function obtenerZonaHorariaNavegador() {
+  return Intl.DateTimeFormat().resolvedOptions().timeZone || "America/Guayaquil";
+}
+
+function banderaDesdeCodigoPais(codigoPais) {
+  const codigo = String(codigoPais || "").trim().toUpperCase();
+  if (!/^[A-Z]{2}$/.test(codigo)) return "🌎";
+  return [...codigo]
+    .map((letra) => String.fromCodePoint(127397 + letra.charCodeAt(0)))
+    .join("");
+}
+
+function obtenerEtiquetaHoraCliente() {
+  const pais = ubicacionCliente.pais || "Ecuador";
+  const bandera = ubicacionCliente.bandera || "🇪🇨";
+  return `${bandera} ${pais}`;
 }
 
 async function detectarUbicacionPorIP() {
@@ -280,16 +353,21 @@ async function detectarUbicacionPorIP() {
     const ciudad = datos?.city || "";
     const pais = datos?.country_name || datos?.country || "";
     const codigoPais = datos?.country_code || "";
+    const zonaHoraria = datos?.timezone || obtenerZonaHorariaNavegador();
     const ubicacion = formatearUbicacion(ciudad, pais);
+
+    actualizarUbicacionCliente({ ciudad, pais, codigoPais, zonaHoraria });
 
     if (ubicacion) {
       const elPais = document.getElementById("pais-detectado");
-      if (elPais) elPais.textContent = `🌎 ${ubicacion}`;
+      if (elPais) elPais.textContent = `${ubicacionCliente.bandera} ${ubicacion}`;
     }
 
     if (!localStorage.getItem(CLAVE_MONEDA) && codigoPais) {
       sugerirMonedaPorPais(ubicacion || pais, codigoPais, true, false);
     }
+
+    renderMundial(true);
   } catch (error) {
     console.warn("No se pudo detectar ubicación por IP.", error);
   }
@@ -362,8 +440,10 @@ function detectarPais() {
         const ciudad = datos?.address?.city || datos?.address?.town || datos?.address?.village || datos?.address?.municipality || datos?.address?.state || "";
         const codigoPais = datos?.address?.country_code?.toUpperCase() || "";
         const ubicacion = formatearUbicacion(ciudad, pais) || pais;
-        elPais.textContent = `🌎 ${ubicacion}`;
+        actualizarUbicacionCliente({ ciudad, pais, codigoPais, zonaHoraria: obtenerZonaHorariaNavegador() });
+        elPais.textContent = `${ubicacionCliente.bandera} ${ubicacion}`;
         sugerirMonedaPorPais(ubicacion, codigoPais, true);
+        renderMundial(true);
         cerrarModalUbicacion();
       } catch {
         elPais.textContent = "🌎 Ubicación GPS detectada";
@@ -889,7 +969,6 @@ function normalizarPartidosLocales(grupos) {
         fechaUTC: p.fechaUTC,
         sede: p.sede || "Sede por confirmar",
         estado: obtenerEstadoPorFecha(p.fechaUTC),
-        horaLocalTexto: p.horaLocalTexto || "",
         marcador: p.marcador || "",
         etapa: p.etapa || grupo.grupo || "Mundial 2026"
       });
@@ -945,17 +1024,17 @@ function crearBloquePartidos(titulo, partidos) {
 
 function crearCardPartido(p) {
   const fecha = new Date(p.fechaUTC);
-  const fechaTexto = fecha.toLocaleDateString("es-EC", { timeZone: "America/Guayaquil", weekday: "short", day: "2-digit", month: "short" });
-  const horaTexto = p.horaLocalTexto || fecha.toLocaleTimeString("es-EC", { timeZone: "America/Guayaquil", hour: "2-digit", minute: "2-digit" });
+  const fechaTexto = formatearFechaPartidoCliente(fecha);
+  const horaTexto = formatearHoraPartidoCliente(fecha);
   const estadoTiempo = obtenerTextoTiempoPartido(p);
-  const scoreTexto = p.marcador || "VS";
+  const scoreTexto = obtenerScoreTexto(p, estadoTiempo);
 
   return `
     <article class="match-card">
       <div class="match-card__topline">
         <span class="status">${estadoTiempo.estado}</span>
         <div class="match-scorebox">
-          <span>Score</span>
+          <span>Marcador</span>
           <strong>${scoreTexto}</strong>
         </div>
       </div>
@@ -963,11 +1042,36 @@ function crearCardPartido(p) {
       <h4>${p.local} <span>vs</span> ${p.visitante}</h4>
       <p class="match-countdown">${estadoTiempo.detalle}</p>
       <p>📅 ${fechaTexto}</p>
-      <p>⏰ ${horaTexto} (Ecuador)</p>
+      <p>⏰ ${horaTexto} ${obtenerEtiquetaHoraCliente()}</p>
       <p>📍 ${p.sede}</p>
       ${p.etapa ? `<p class="match-score">${p.etapa}</p>` : ""}
     </article>
   `;
+}
+
+function formatearFechaPartidoCliente(fecha) {
+  return fecha.toLocaleDateString("es-EC", {
+    timeZone: ubicacionCliente.zonaHoraria || obtenerZonaHorariaNavegador(),
+    weekday: "short",
+    day: "2-digit",
+    month: "short"
+  });
+}
+
+function formatearHoraPartidoCliente(fecha) {
+  return fecha.toLocaleTimeString("es-EC", {
+    timeZone: ubicacionCliente.zonaHoraria || obtenerZonaHorariaNavegador(),
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false
+  });
+}
+
+function obtenerScoreTexto(partido, estadoTiempo) {
+  if (partido.marcador) return partido.marcador;
+  if (estadoTiempo.estado.includes("EN VIVO")) return "En vivo";
+  if (estadoTiempo.estado.includes("Finalizado")) return "Sin marcador";
+  return "Por iniciar";
 }
 
 function obtenerTextoTiempoPartido(partido) {
@@ -1032,13 +1136,13 @@ function renderMundialFallback() {
 function fechaEcuador(offsetDias = 0) {
   const ahora = new Date();
   ahora.setDate(ahora.getDate() + offsetDias);
-  return ahora.toLocaleDateString("en-CA", { timeZone: "America/Guayaquil" });
+  return ahora.toLocaleDateString("en-CA", { timeZone: ubicacionCliente.zonaHoraria || "America/Guayaquil" });
 }
 
 function fechaDesdeUTCEnEcuador(fechaUTC) {
   const fecha = new Date(fechaUTC);
   if (isNaN(fecha.getTime())) return "";
-  return fecha.toLocaleDateString("en-CA", { timeZone: "America/Guayaquil" });
+  return fecha.toLocaleDateString("en-CA", { timeZone: ubicacionCliente.zonaHoraria || "America/Guayaquil" });
 }
 
 function obtenerEstadoPorFecha(fechaUTC) {

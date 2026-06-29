@@ -493,6 +493,14 @@ audio {
   width: 100%;
 }
 
+.radio-play-btn {
+  margin-top: 10px;
+}
+
+.oculto {
+  display: none !important;
+}
+
 .tele-link {
   display: block;
   margin-top: 14px;
@@ -663,7 +671,7 @@ audio {
 }
 
 .match-scorebox {
-  min-width: 78px;
+  min-width: 104px;
   padding: 8px 10px;
   border-radius: 14px;
   text-align: center;
@@ -684,7 +692,8 @@ audio {
   display: block;
   margin-top: 2px;
   color: var(--green-3);
-  font-size: 1.05rem;
+  font-size: .98rem;
+  white-space: nowrap;
 }
 
 .match-countdown {

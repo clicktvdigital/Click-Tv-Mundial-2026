@@ -389,7 +389,6 @@ const MUNDIAL_2026 = [
         local: "Brasil",
         visitante: "Japón",
         fechaUTC: "2026-06-29T17:00:00Z",
-        horaLocalTexto: "12:00 Ecuador",
         sede: "NRG Stadium / Houston Stadium",
         etapa: "Dieciseisavos de final"
       },
@@ -398,7 +397,6 @@ const MUNDIAL_2026 = [
         local: "Alemania",
         visitante: "Paraguay",
         fechaUTC: "2026-06-29T20:30:00Z",
-        horaLocalTexto: "15:30 Ecuador",
         sede: "Gillette Stadium / Boston Stadium",
         etapa: "Dieciseisavos de final"
       },
@@ -407,7 +405,6 @@ const MUNDIAL_2026 = [
         local: "Países Bajos",
         visitante: "Marruecos",
         fechaUTC: "2026-06-30T01:00:00Z",
-        horaLocalTexto: "20:00 Ecuador",
         sede: "Estadio BBVA Bancomer / Monterrey Stadium",
         etapa: "Dieciseisavos de final"
       },
@@ -416,7 +413,6 @@ const MUNDIAL_2026 = [
         local: "Costa de Marfil",
         visitante: "Noruega",
         fechaUTC: "2026-06-30T17:00:00Z",
-        horaLocalTexto: "12:00 Ecuador",
         sede: "New York New Jersey Stadium",
         etapa: "Dieciseisavos de final"
       },
@@ -425,7 +421,6 @@ const MUNDIAL_2026 = [
         local: "Francia",
         visitante: "Suecia",
         fechaUTC: "2026-06-30T21:00:00Z",
-        horaLocalTexto: "16:00 Ecuador",
         sede: "Dallas Stadium",
         etapa: "Dieciseisavos de final"
       },
@@ -434,7 +429,6 @@ const MUNDIAL_2026 = [
         local: "México",
         visitante: "Ecuador",
         fechaUTC: "2026-07-01T01:00:00Z",
-        horaLocalTexto: "20:00 Ecuador",
         sede: "Mexico City Stadium",
         etapa: "Dieciseisavos de final"
       }
