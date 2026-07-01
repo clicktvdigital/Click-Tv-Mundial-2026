@@ -809,8 +809,30 @@ audio {
   font-size: 1.05rem;
 }
 
+.match-teams {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.team-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.team-flag {
+  font-size: 1.05em;
+  line-height: 1;
+}
+
 .match-card h4 span {
   color: var(--green-3);
+}
+
+.match-card h4 .team-name {
+  color: #ffffff;
 }
 
 .match-card p {

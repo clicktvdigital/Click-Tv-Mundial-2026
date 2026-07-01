@@ -999,20 +999,75 @@ async function obtenerPartidosFootballData() {
 
   if (!respuesta.ok) throw new Error(`Football-Data HTTP ${respuesta.status}`);
   const data = await respuesta.json();
-  return Array.isArray(data.matches) ? data.matches : [];
+  const matches = Array.isArray(data.matches) ? data.matches : [];
+  return enriquecerPartidosConDetalle(matches);
+}
+
+async function enriquecerPartidosConDetalle(matches) {
+  const prioritarios = matches
+    .filter(debeCargarDetallePartido)
+    .sort(ordenarPartidosPorPrioridadDetalle)
+    .slice(0, 3);
+
+  if (!prioritarios.length) return matches;
+
+  const resultados = await Promise.allSettled(prioritarios.map((m) => obtenerDetallePartidoFootballData(m.id)));
+  const detalles = new Map();
+
+  resultados.forEach((resultado) => {
+    if (resultado.status === "fulfilled" && resultado.value?.id) {
+      detalles.set(resultado.value.id, resultado.value);
+    }
+  });
+
+  return matches.map((m) => detalles.has(m.id) ? { ...m, ...detalles.get(m.id) } : m);
+}
+
+function debeCargarDetallePartido(match) {
+  const status = String(match.status || "").toUpperCase();
+  return Boolean(match.id) && ["LIVE", "IN_PLAY", "PAUSED", "FINISHED"].includes(status);
+}
+
+function ordenarPartidosPorPrioridadDetalle(a, b) {
+  const prioridad = { LIVE: 1, IN_PLAY: 1, PAUSED: 2, FINISHED: 3 };
+  const estadoA = prioridad[String(a.status || "").toUpperCase()] || 9;
+  const estadoB = prioridad[String(b.status || "").toUpperCase()] || 9;
+  if (estadoA !== estadoB) return estadoA - estadoB;
+  return new Date(b.utcDate || 0) - new Date(a.utcDate || 0);
+}
+
+async function obtenerDetallePartidoFootballData(id) {
+  const url = new URL(CONFIG.footballDataApiUrl);
+  url.pathname = `/v4/matches/${id}`;
+  url.search = "";
+
+  const respuesta = await fetch(url.toString(), {
+    headers: { "X-Auth-Token": CONFIG.footballDataApiToken }
+  });
+
+  if (!respuesta.ok) throw new Error(`Football-Data detail HTTP ${respuesta.status}`);
+  return respuesta.json();
 }
 
 function normalizarPartidos(matches) {
   return matches.map((m) => ({
+    id: m.id || "",
     grupo: m.group || m.stage || m.competition?.name || "Mundial 2026",
     local: m.homeTeam?.name || m.homeTeam?.shortName || "Equipo local",
     visitante: m.awayTeam?.name || m.awayTeam?.shortName || "Equipo visitante",
+    codigoLocal: m.homeTeam?.tla || m.homeTeam?.area?.code || "",
+    codigoVisitante: m.awayTeam?.tla || m.awayTeam?.area?.code || "",
     fechaUTC: m.utcDate,
     sede: m.venue || "Sede por confirmar",
     statusRaw: m.status || "",
     statusDetalle: m.statusDetail || m.matchStatus || m.period || m.stage || "",
     minuto: m.minute || m.matchMinute || m.time?.minute || "",
+    injuryTime: m.injuryTime || "",
     score: m.score || null,
+    goles: Array.isArray(m.goals) ? m.goals : [],
+    bookings: Array.isArray(m.bookings) ? m.bookings : [],
+    substitutions: Array.isArray(m.substitutions) ? m.substitutions : [],
+    lastUpdated: m.lastUpdated || "",
     estado: traducirEstadoPartido(m.status),
     marcador: crearMarcador(m.score)
   })).filter((m) => m.fechaUTC);
@@ -1031,12 +1086,18 @@ function normalizarPartidosLocales(grupos) {
         grupo: grupo.grupo || p.grupo || "Mundial 2026",
         local: p.local,
         visitante: p.visitante,
+        codigoLocal: p.codigoLocal || "",
+        codigoVisitante: p.codigoVisitante || "",
         fechaUTC: p.fechaUTC,
         sede: p.sede || "Sede por confirmar",
         statusRaw: p.statusRaw || "",
         statusDetalle: p.statusDetalle || "",
         minuto: p.minuto || "",
+        injuryTime: p.injuryTime || "",
         score: p.score || null,
+        goles: Array.isArray(p.goles) ? p.goles : [],
+        bookings: Array.isArray(p.bookings) ? p.bookings : [],
+        substitutions: Array.isArray(p.substitutions) ? p.substitutions : [],
         estado: obtenerEstadoPorFecha(p.fechaUTC),
         marcador: p.marcador || "",
         etapa: p.etapa || grupo.grupo || "Mundial 2026"
@@ -1100,6 +1161,8 @@ function crearCardPartido(p) {
   const detalleScore = obtenerDetalleScore(p, estadoTiempo);
   const claseScore = obtenerClaseScorebox(estadoTiempo.estado);
   const tituloScore = obtenerTituloScorebox(estadoTiempo.estado, p);
+  const local = crearNombreEquipoConBandera(p.local, p.codigoLocal);
+  const visitante = crearNombreEquipoConBandera(p.visitante, p.codigoVisitante);
 
   return `
     <article class="match-card">
@@ -1112,7 +1175,7 @@ function crearCardPartido(p) {
         </div>
       </div>
       <p class="match-group">${p.grupo}</p>
-      <h4>${p.local} <span>vs</span> ${p.visitante}</h4>
+      <h4 class="match-teams">${local} <span>vs</span> ${visitante}</h4>
       <p class="match-countdown">${estadoTiempo.detalle}</p>
       <p>📅 ${fechaTexto}</p>
       <p>⏰ ${horaTexto} ${obtenerEtiquetaHoraCliente()}</p>
@@ -1120,6 +1183,97 @@ function crearCardPartido(p) {
       ${p.etapa ? `<p class="match-score">${p.etapa}</p>` : ""}
     </article>
   `;
+}
+
+function crearNombreEquipoConBandera(nombre, codigo = "") {
+  const bandera = obtenerBanderaEquipo(nombre, codigo);
+  return `<span class="team-name">${bandera ? `<span class="team-flag">${bandera}</span>` : ""}${nombre}</span>`;
+}
+
+function obtenerBanderaEquipo(nombre = "", codigo = "") {
+  const porCodigo = {
+    ARG: "🇦🇷", AUS: "🇦🇺", AUT: "🇦🇹", BEL: "🇧🇪", BRA: "🇧🇷", CAN: "🇨🇦",
+    CHI: "🇨🇱", CHN: "🇨🇳", CIV: "🇨🇮", COL: "🇨🇴", CRC: "🇨🇷", CRO: "🇭🇷",
+    DEN: "🇩🇰", ECU: "🇪🇨", ENG: "🏴", ESP: "🇪🇸", FRA: "🇫🇷", GER: "🇩🇪",
+    GHA: "🇬🇭", IRN: "🇮🇷", ITA: "🇮🇹", JPN: "🇯🇵", KOR: "🇰🇷", MAR: "🇲🇦",
+    MEX: "🇲🇽", NED: "🇳🇱", NOR: "🇳🇴", PAR: "🇵🇾", POL: "🇵🇱", POR: "🇵🇹",
+    QAT: "🇶🇦", SEN: "🇸🇳", SRB: "🇷🇸", SUI: "🇨🇭", SWE: "🇸🇪", URU: "🇺🇾",
+    USA: "🇺🇸", WAL: "🏴"
+  };
+
+  const claveCodigo = String(codigo || "").trim().toUpperCase();
+  if (porCodigo[claveCodigo]) return porCodigo[claveCodigo];
+
+  const claveNombre = normalizarTextoPais(nombre);
+  const porNombre = {
+    alemania: "🇩🇪",
+    argentina: "🇦🇷",
+    australia: "🇦🇺",
+    austria: "🇦🇹",
+    belgica: "🇧🇪",
+    belgium: "🇧🇪",
+    brasil: "🇧🇷",
+    brazil: "🇧🇷",
+    canada: "🇨🇦",
+    chile: "🇨🇱",
+    china: "🇨🇳",
+    colombia: "🇨🇴",
+    "costa de marfil": "🇨🇮",
+    "ivory coast": "🇨🇮",
+    croacia: "🇭🇷",
+    denmark: "🇩🇰",
+    dinamarca: "🇩🇰",
+    ecuador: "🇪🇨",
+    england: "🏴",
+    espana: "🇪🇸",
+    spain: "🇪🇸",
+    "estados unidos": "🇺🇸",
+    usa: "🇺🇸",
+    "united states": "🇺🇸",
+    francia: "🇫🇷",
+    france: "🇫🇷",
+    germany: "🇩🇪",
+    ghana: "🇬🇭",
+    iran: "🇮🇷",
+    italia: "🇮🇹",
+    italy: "🇮🇹",
+    japon: "🇯🇵",
+    japan: "🇯🇵",
+    marruecos: "🇲🇦",
+    morocco: "🇲🇦",
+    mexico: "🇲🇽",
+    noruega: "🇳🇴",
+    norway: "🇳🇴",
+    "paises bajos": "🇳🇱",
+    netherlands: "🇳🇱",
+    paraguay: "🇵🇾",
+    polonia: "🇵🇱",
+    portugal: "🇵🇹",
+    qatar: "🇶🇦",
+    senegal: "🇸🇳",
+    serbia: "🇷🇸",
+    "corea del sur": "🇰🇷",
+    "south korea": "🇰🇷",
+    suecia: "🇸🇪",
+    sweden: "🇸🇪",
+    suiza: "🇨🇭",
+    switzerland: "🇨🇭",
+    uruguay: "🇺🇾",
+    wales: "🏴",
+    gales: "🏴"
+  };
+
+  return porNombre[claveNombre] || "";
+}
+
+function normalizarTextoPais(texto = "") {
+  return String(texto)
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/\b(fc|cf|national team|seleccion)\b/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
 function formatearFechaPartidoCliente(fecha) {
@@ -1151,15 +1305,20 @@ function obtenerScoreTexto(partido, estadoTiempo) {
 
 function obtenerDetalleScore(partido, estadoTiempo) {
   const detalle = String(partido.statusDetalle || "").toLowerCase();
-  const minuto = obtenerMinutoPartido(partido);
+  const minuto = obtenerMinutoPartidoTexto(partido);
   const marcador = obtenerMarcadorPartido(partido);
+  const ultimoGol = obtenerUltimoGol(partido);
+  const detalleResultado = obtenerDetalleResultado(partido);
 
   if (/hydration|cooling|hidrat/.test(detalle)) return "Pausa de hidratación";
   if (/half.?time|descanso|break|paused/.test(detalle) || estadoTiempo.estado.includes("Descanso")) return marcador ? "Marcador al descanso" : "Actualizando marcador";
   if (/second|2nd|segundo/.test(detalle)) return minuto ? `Segundo tiempo · ${minuto}'` : "Segundo tiempo";
   if (/first|1st|primer/.test(detalle)) return minuto ? `Primer tiempo · ${minuto}'` : "Primer tiempo";
-  if (estadoTiempo.estado.includes("EN VIVO")) return minuto ? `Minuto ${minuto}'` : "Actualizando cada 30s";
-  if (estadoTiempo.estado.includes("Finalizado")) return marcador ? "Resultado oficial" : "Finalizado oficialmente";
+  if (estadoTiempo.estado.includes("EN VIVO")) {
+    if (ultimoGol) return `Último gol ${formatearMinutoEvento(ultimoGol)} · ${obtenerNombreEquipoEvento(ultimoGol)}`;
+    return minuto ? `Minuto ${minuto}'` : "Actualizando cada 30s";
+  }
+  if (estadoTiempo.estado.includes("Finalizado")) return detalleResultado || (marcador ? "Resultado oficial" : "Finalizado oficialmente");
   if (estadoTiempo.estado.includes("Programado")) return "Aún no inicia";
   return "";
 }
@@ -1171,6 +1330,52 @@ function obtenerMarcadorPartido(partido) {
 function obtenerMinutoPartido(partido) {
   const minuto = Number(partido.minuto);
   return Number.isFinite(minuto) && minuto > 0 ? Math.round(minuto) : "";
+}
+
+function obtenerMinutoPartidoTexto(partido) {
+  const minuto = obtenerMinutoPartido(partido);
+  const adicion = Number(partido.injuryTime);
+  if (!minuto) return "";
+  return Number.isFinite(adicion) && adicion > 0 ? `${minuto}+${Math.round(adicion)}` : `${minuto}`;
+}
+
+function obtenerDetalleResultado(partido) {
+  const score = partido.score || {};
+  const duracion = String(score.duration || "").toUpperCase();
+  const penales = crearMarcadorDesdeFuente(score.penalties);
+  const regular = crearMarcadorDesdeFuente(score.regularTime);
+  const tiempoExtra = crearMarcadorDesdeFuente(score.extraTime);
+
+  if (duracion === "PENALTY_SHOOTOUT" && penales) return `Final por penales ${penales}`;
+  if (duracion === "EXTRA_TIME") return tiempoExtra ? `Prórroga ${tiempoExtra}` : "Final en tiempo extra";
+  if (regular && regular !== obtenerMarcadorPartido(partido)) return `Tiempo regular ${regular}`;
+
+  const ultimoGol = obtenerUltimoGol(partido);
+  if (ultimoGol) return `Último gol ${formatearMinutoEvento(ultimoGol)} · ${obtenerNombreEquipoEvento(ultimoGol)}`;
+
+  return "";
+}
+
+function obtenerUltimoGol(partido) {
+  const goles = Array.isArray(partido.goles) ? partido.goles : [];
+  if (!goles.length) return null;
+
+  return [...goles].sort((a, b) => {
+    const minutoA = Number(a.minute || 0) + Number(a.injuryTime || 0) / 100;
+    const minutoB = Number(b.minute || 0) + Number(b.injuryTime || 0) / 100;
+    return minutoB - minutoA;
+  })[0];
+}
+
+function formatearMinutoEvento(evento) {
+  const minuto = Number(evento?.minute);
+  const adicion = Number(evento?.injuryTime);
+  if (!Number.isFinite(minuto) || minuto <= 0) return "";
+  return Number.isFinite(adicion) && adicion > 0 ? `${Math.round(minuto)}+${Math.round(adicion)}'` : `${Math.round(minuto)}'`;
+}
+
+function obtenerNombreEquipoEvento(evento) {
+  return evento?.team?.shortName || evento?.team?.name || "equipo";
 }
 
 function obtenerClaseScorebox(estado) {
@@ -1286,28 +1491,36 @@ function crearMarcador(score) {
   if (!score) return "";
 
   const fuentes = [
+    score.fullTime,
     score.current,
     score.live,
-    score.fullTime,
     score.regularTime,
     score.halfTime,
     score.extraTime,
     score.penalties
   ];
 
-  const fuente = fuentes.find((item) => tieneScoreValido(item));
-  if (!fuente) return "";
-
-  const home = Number(fuente.home);
-  const away = Number(fuente.away);
-  return `${home} - ${away}`;
+  return fuentes.map(crearMarcadorDesdeFuente).find(Boolean) || "";
 }
 
 function tieneScoreValido(fuente) {
-  if (!fuente) return false;
-  const home = Number(fuente.home);
-  const away = Number(fuente.away);
-  return Number.isFinite(home) && Number.isFinite(away);
+  return Boolean(crearMarcadorDesdeFuente(fuente));
+}
+
+function crearMarcadorDesdeFuente(fuente) {
+  if (!fuente) return "";
+  const home = obtenerNumeroScore(fuente, ["home", "homeTeam"]);
+  const away = obtenerNumeroScore(fuente, ["away", "awayTeam"]);
+  if (home === null || away === null) return "";
+  return `${home} - ${away}`;
+}
+
+function obtenerNumeroScore(fuente, llaves) {
+  for (const llave of llaves) {
+    const valor = Number(fuente[llave]);
+    if (Number.isFinite(valor)) return valor;
+  }
+  return null;
 }
 
 // ---------------------------------------------------------------------------
