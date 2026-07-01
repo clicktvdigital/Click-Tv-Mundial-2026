@@ -101,7 +101,7 @@ const CUPONES = {
   SAVE10: { porcentaje: 10, descripcion: "10% de descuento general" },
   WELCOME: { porcentaje: 15, descripcion: "15% de descuento de bienvenida" },
   IPTV50: { porcentaje: 20, descripcion: "20% exclusivo en IPTV" },
-  CLICKTVMUNDIAL: { porcentaje: 5, descripcion: "5% de descuento especial Mundial 2026" }
+  CLICKTVMUNDIAL: { porcentaje: 15, descripcion: "15% de descuento especial Mundial 2026 cuando aplica" }
 };
 
 const PRODUCTOS = [
