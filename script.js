@@ -187,24 +187,110 @@ function inicializarRadioLaRed() {
   const radioStatus = document.getElementById("radio-status");
   if (!radioPlayer || typeof CONFIG === "undefined" || !CONFIG.radioStreamUrl) return;
 
+  let usuarioQuiereRadio = false;
+  let temporizadorReconexion = null;
+
   radioPlayer.preload = "none";
   if (!radioPlayer.getAttribute("src")) {
     radioPlayer.src = CONFIG.radioStreamUrl;
   }
 
+  configurarMediaSessionRadio(radioPlayer);
+
+  const actualizarEstadoRadio = (mensaje) => {
+    if (radioStatus) radioStatus.textContent = mensaje;
+  };
+
+  const reproducirRadio = async () => {
+    usuarioQuiereRadio = true;
+    actualizarEstadoRadio("Cargando señal en vivo...");
+
+    try {
+      await radioPlayer.play();
+    } catch {
+      actualizarEstadoRadio("Presiona reproducir para reactivar la señal.");
+    }
+  };
+
+  const reconectarRadio = async () => {
+    if (!usuarioQuiereRadio) return;
+    clearTimeout(temporizadorReconexion);
+    actualizarEstadoRadio("Reconectando señal en vivo...");
+
+    const estabaEnSilencio = radioPlayer.muted;
+    const volumen = radioPlayer.volume;
+    radioPlayer.src = `${CONFIG.radioStreamUrl}?t=${Date.now()}`;
+    radioPlayer.load();
+    radioPlayer.muted = estabaEnSilencio;
+    radioPlayer.volume = volumen;
+
+    await reproducirRadio();
+  };
+
+  const programarReconexionRadio = () => {
+    if (!usuarioQuiereRadio) return;
+    clearTimeout(temporizadorReconexion);
+    temporizadorReconexion = setTimeout(reconectarRadio, 2500);
+  };
+
   radioPlayer.addEventListener("play", () => {
-    if (radioStatus) radioStatus.textContent = "Cargando señal en vivo...";
+    usuarioQuiereRadio = true;
+    actualizarEstadoRadio("Cargando señal en vivo...");
   });
 
   radioPlayer.addEventListener("playing", () => {
-    if (radioStatus) radioStatus.textContent = "Señal en vivo activa.";
+    clearTimeout(temporizadorReconexion);
+    usuarioQuiereRadio = true;
+    actualizarEstadoRadio("Señal en vivo activa.");
+  });
+
+  radioPlayer.addEventListener("pause", () => {
+    if (!document.hidden) usuarioQuiereRadio = false;
+  });
+
+  radioPlayer.addEventListener("waiting", programarReconexionRadio);
+  radioPlayer.addEventListener("stalled", programarReconexionRadio);
+  radioPlayer.addEventListener("ended", reconectarRadio);
+
+  window.addEventListener("online", reconectarRadio);
+  window.addEventListener("pageshow", () => {
+    if (usuarioQuiereRadio && radioPlayer.paused) reconectarRadio();
+  });
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      usuarioQuiereRadio = usuarioQuiereRadio || !radioPlayer.paused;
+      return;
+    }
+
+    if (usuarioQuiereRadio && radioPlayer.paused) {
+      reconectarRadio();
+    }
   });
 
   radioPlayer.addEventListener("error", () => {
-    if (radioStatus) {
-      radioStatus.textContent = "La radio no está disponible en este momento o la emisora restringe el acceso desde esta ubicación.";
-    }
+    actualizarEstadoRadio("La radio se cortó o la emisora restringe el acceso. Intentando reconectar...");
+    programarReconexionRadio();
   });
+}
+
+function configurarMediaSessionRadio(radioPlayer) {
+  if (!("mediaSession" in navigator)) return;
+
+  if ("MediaMetadata" in window) {
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: "La Red 102.1 FM en vivo",
+      artist: "Click Tv Streaming",
+      album: "Programación deportiva"
+    });
+  }
+
+  try {
+    navigator.mediaSession.setActionHandler("play", () => radioPlayer.play());
+    navigator.mediaSession.setActionHandler("pause", () => radioPlayer.pause());
+  } catch {
+    // Algunos navegadores no permiten registrar acciones de Media Session.
+  }
 }
 
 function inicializarBuscadorMaestro() {
