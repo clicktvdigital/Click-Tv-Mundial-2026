@@ -533,10 +533,12 @@ function sugerirMonedaPorPais(pais, codigoPais = "", forzar = false, mostrarMens
 function cargarCarritoDesdeStorage() {
   try {
     carrito = JSON.parse(localStorage.getItem(CLAVE_CARRITO) || "[]");
-    cuponAplicado = JSON.parse(localStorage.getItem(CLAVE_CUPON) || "null");
+    cuponAplicado = null;
+    localStorage.removeItem(CLAVE_CUPON);
   } catch {
     carrito = [];
     cuponAplicado = null;
+    localStorage.removeItem(CLAVE_CUPON);
   }
 }
 
@@ -748,7 +750,6 @@ function aplicarCupon() {
   if (!cupon) return mostrarToast("Cupón inválido. Puedes escribirlo con espacios o en minúsculas.", "error");
 
   cuponAplicado = { codigo, porcentaje: cupon.porcentaje };
-  localStorage.setItem(CLAVE_CUPON, JSON.stringify(cuponAplicado));
   input.value = codigo;
   renderCarrito();
   mostrarToast(`Cupón ${codigo} aplicado: ${cupon.descripcion}`, "exito");
