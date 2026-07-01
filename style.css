@@ -844,6 +844,36 @@ audio {
   white-space: nowrap;
 }
 
+.match-scorebox small {
+  display: block;
+  margin-top: 3px;
+  color: rgba(255,255,255,.68);
+  font-size: .66rem;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.match-scorebox--live {
+  border-color: rgba(255,64,64,.45);
+  box-shadow: 0 0 18px rgba(255,64,64,.12);
+}
+
+.match-scorebox--live strong {
+  color: #ff5555;
+}
+
+.match-scorebox--paused {
+  border-color: rgba(255,193,7,.45);
+}
+
+.match-scorebox--paused strong {
+  color: #ffd54f;
+}
+
+.match-scorebox--finished {
+  border-color: rgba(0,255,102,.35);
+}
+
 .match-countdown {
   display: inline-flex;
   padding: 7px 10px;

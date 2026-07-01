@@ -1010,6 +1010,9 @@ function normalizarPartidos(matches) {
     fechaUTC: m.utcDate,
     sede: m.venue || "Sede por confirmar",
     statusRaw: m.status || "",
+    statusDetalle: m.statusDetail || m.matchStatus || m.period || m.stage || "",
+    minuto: m.minute || m.matchMinute || m.time?.minute || "",
+    score: m.score || null,
     estado: traducirEstadoPartido(m.status),
     marcador: crearMarcador(m.score)
   })).filter((m) => m.fechaUTC);
@@ -1030,6 +1033,10 @@ function normalizarPartidosLocales(grupos) {
         visitante: p.visitante,
         fechaUTC: p.fechaUTC,
         sede: p.sede || "Sede por confirmar",
+        statusRaw: p.statusRaw || "",
+        statusDetalle: p.statusDetalle || "",
+        minuto: p.minuto || "",
+        score: p.score || null,
         estado: obtenerEstadoPorFecha(p.fechaUTC),
         marcador: p.marcador || "",
         etapa: p.etapa || grupo.grupo || "Mundial 2026"
@@ -1090,14 +1097,18 @@ function crearCardPartido(p) {
   const horaTexto = formatearHoraPartidoCliente(fecha);
   const estadoTiempo = obtenerTextoTiempoPartido(p);
   const scoreTexto = obtenerScoreTexto(p, estadoTiempo);
+  const detalleScore = obtenerDetalleScore(p, estadoTiempo);
+  const claseScore = obtenerClaseScorebox(estadoTiempo.estado);
+  const tituloScore = obtenerTituloScorebox(estadoTiempo.estado);
 
   return `
     <article class="match-card">
       <div class="match-card__topline">
         <span class="status">${estadoTiempo.estado}</span>
-        <div class="match-scorebox">
-          <span>Marcador</span>
+        <div class="match-scorebox ${claseScore}">
+          <span>${tituloScore}</span>
           <strong>${scoreTexto}</strong>
+          ${detalleScore ? `<small>${detalleScore}</small>` : ""}
         </div>
       </div>
       <p class="match-group">${p.grupo}</p>
@@ -1131,9 +1142,45 @@ function formatearHoraPartidoCliente(fecha) {
 
 function obtenerScoreTexto(partido, estadoTiempo) {
   if (partido.marcador) return partido.marcador;
+  const marcadorAPI = crearMarcador(partido.score);
+  if (marcadorAPI) return marcadorAPI;
   if (estadoTiempo.estado.includes("EN VIVO")) return "En vivo";
-  if (estadoTiempo.estado.includes("Finalizado")) return "Sin marcador";
-  return "Por iniciar";
+  if (estadoTiempo.estado.includes("Descanso")) return "Descanso";
+  if (estadoTiempo.estado.includes("Finalizado")) return "Finalizado";
+  return "VS";
+}
+
+function obtenerDetalleScore(partido, estadoTiempo) {
+  const detalle = String(partido.statusDetalle || "").toLowerCase();
+  const minuto = obtenerMinutoPartido(partido);
+
+  if (/hydration|cooling|hidrat/.test(detalle)) return "Pausa de hidratación";
+  if (/half.?time|descanso|break|paused/.test(detalle) || estadoTiempo.estado.includes("Descanso")) return "Receso del partido";
+  if (/second|2nd|segundo/.test(detalle)) return minuto ? `Segundo tiempo · ${minuto}'` : "Segundo tiempo";
+  if (/first|1st|primer/.test(detalle)) return minuto ? `Primer tiempo · ${minuto}'` : "Primer tiempo";
+  if (estadoTiempo.estado.includes("EN VIVO")) return minuto ? `Minuto ${minuto}'` : "Actualizando en vivo";
+  if (estadoTiempo.estado.includes("Finalizado")) return partido.marcador || crearMarcador(partido.score) ? "Resultado oficial" : "Resultado pendiente por API";
+  if (estadoTiempo.estado.includes("Programado")) return "Aún no inicia";
+  return "";
+}
+
+function obtenerMinutoPartido(partido) {
+  const minuto = Number(partido.minuto);
+  return Number.isFinite(minuto) && minuto > 0 ? Math.round(minuto) : "";
+}
+
+function obtenerClaseScorebox(estado) {
+  if (estado.includes("EN VIVO")) return "match-scorebox--live";
+  if (estado.includes("Descanso")) return "match-scorebox--paused";
+  if (estado.includes("Finalizado")) return "match-scorebox--finished";
+  return "";
+}
+
+function obtenerTituloScorebox(estado) {
+  if (estado.includes("EN VIVO")) return "En vivo";
+  if (estado.includes("Descanso")) return "Receso";
+  if (estado.includes("Finalizado")) return "Resultado";
+  return "Marcador";
 }
 
 function obtenerTextoTiempoPartido(partido) {
@@ -1233,11 +1280,30 @@ function traducirEstadoPartido(status) {
 
 function crearMarcador(score) {
   if (!score) return "";
-  const fuente = score.fullTime || score.regularTime || score.halfTime || {};
-  const home = fuente.home;
-  const away = fuente.away;
-  if (home === null || away === null || home === undefined || away === undefined) return "";
+
+  const fuentes = [
+    score.current,
+    score.live,
+    score.fullTime,
+    score.regularTime,
+    score.halfTime,
+    score.extraTime,
+    score.penalties
+  ];
+
+  const fuente = fuentes.find((item) => tieneScoreValido(item));
+  if (!fuente) return "";
+
+  const home = Number(fuente.home);
+  const away = Number(fuente.away);
   return `${home} - ${away}`;
+}
+
+function tieneScoreValido(fuente) {
+  if (!fuente) return false;
+  const home = Number(fuente.home);
+  const away = Number(fuente.away);
+  return Number.isFinite(home) && Number.isFinite(away);
 }
 
 // ---------------------------------------------------------------------------
