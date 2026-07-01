@@ -511,7 +511,8 @@ const MUNDIAL_2026 = [
         visitante: "Japón",
         fechaUTC: "2026-06-29T17:00:00Z",
         sede: "NRG Stadium / Houston Stadium",
-        etapa: "Dieciseisavos de final"
+        etapa: "Dieciseisavos de final",
+        marcador: "2 - 1"
       },
       {
         grupo: "Lunes 29 de junio",
@@ -519,7 +520,12 @@ const MUNDIAL_2026 = [
         visitante: "Paraguay",
         fechaUTC: "2026-06-29T20:30:00Z",
         sede: "Gillette Stadium / Boston Stadium",
-        etapa: "Dieciseisavos de final"
+        etapa: "Dieciseisavos de final",
+        marcador: "1 - 1",
+        score: {
+          duration: "PENALTY_SHOOTOUT",
+          penalties: { home: 3, away: 4 }
+        }
       },
       {
         grupo: "Lunes 29 de junio",
@@ -527,7 +533,8 @@ const MUNDIAL_2026 = [
         visitante: "Marruecos",
         fechaUTC: "2026-06-30T01:00:00Z",
         sede: "Estadio BBVA Bancomer / Monterrey Stadium",
-        etapa: "Dieciseisavos de final"
+        etapa: "Dieciseisavos de final",
+        marcador: "1 - 1"
       },
       {
         grupo: "Martes 30 de junio",
@@ -535,7 +542,8 @@ const MUNDIAL_2026 = [
         visitante: "Noruega",
         fechaUTC: "2026-06-30T17:00:00Z",
         sede: "New York New Jersey Stadium",
-        etapa: "Dieciseisavos de final"
+        etapa: "Dieciseisavos de final",
+        marcador: "1 - 2"
       },
       {
         grupo: "Martes 30 de junio",
@@ -543,7 +551,8 @@ const MUNDIAL_2026 = [
         visitante: "Suecia",
         fechaUTC: "2026-06-30T21:00:00Z",
         sede: "Dallas Stadium",
-        etapa: "Dieciseisavos de final"
+        etapa: "Dieciseisavos de final",
+        marcador: "3 - 0"
       },
       {
         grupo: "Martes 30 de junio",
@@ -551,6 +560,31 @@ const MUNDIAL_2026 = [
         visitante: "Ecuador",
         fechaUTC: "2026-07-01T01:00:00Z",
         sede: "Mexico City Stadium",
+        etapa: "Dieciseisavos de final",
+        marcador: "2 - 0"
+      },
+      {
+        grupo: "Miércoles 1 de julio",
+        local: "Inglaterra",
+        visitante: "RD Congo",
+        fechaUTC: "2026-07-01T16:00:00Z",
+        sede: "Atlanta Stadium",
+        etapa: "Dieciseisavos de final"
+      },
+      {
+        grupo: "Miércoles 1 de julio",
+        local: "Bélgica",
+        visitante: "Senegal",
+        fechaUTC: "2026-07-01T20:00:00Z",
+        sede: "Seattle Stadium",
+        etapa: "Dieciseisavos de final"
+      },
+      {
+        grupo: "Miércoles 1 de julio",
+        local: "Estados Unidos",
+        visitante: "Bosnia y Herzegovina",
+        fechaUTC: "2026-07-02T00:00:00Z",
+        sede: "San Francisco Bay Area Stadium",
         etapa: "Dieciseisavos de final"
       }
     ]

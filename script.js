@@ -184,28 +184,31 @@ function inicializarTeleamazonasPlayer() {
 
 function inicializarRadioLaRed() {
   const radioPlayer = document.getElementById("radio-player");
+  const radioStatus = document.getElementById("radio-status");
   if (!radioPlayer || typeof CONFIG === "undefined" || !CONFIG.radioStreamUrl) return;
 
-  radioPlayer.preload = "auto";
-  radioPlayer.src = CONFIG.radioStreamUrl;
-  radioPlayer.load();
+  radioPlayer.preload = "none";
+  radioPlayer.removeAttribute("src");
+  radioPlayer.dataset.streamUrl = radioPlayer.dataset.streamUrl || CONFIG.radioStreamUrl;
 
   const prepararRadio = () => {
+    if (radioPlayer.dataset.cargada === "true") return;
+    radioPlayer.src = radioPlayer.dataset.streamUrl;
+    radioPlayer.dataset.cargada = "true";
     radioPlayer.load();
-    document.removeEventListener("touchstart", prepararRadio);
-    document.removeEventListener("click", prepararRadio);
-    document.removeEventListener("keydown", prepararRadio);
+    if (radioStatus) radioStatus.textContent = "Cargando señal en vivo...";
   };
 
-  document.addEventListener("touchstart", prepararRadio, { once: true, passive: true });
-  document.addEventListener("click", prepararRadio, { once: true });
-  document.addEventListener("keydown", prepararRadio, { once: true });
+  radioPlayer.addEventListener("pointerdown", prepararRadio, { once: true });
+  radioPlayer.addEventListener("play", prepararRadio, { once: true });
+  radioPlayer.addEventListener("playing", () => {
+    if (radioStatus) radioStatus.textContent = "Señal en vivo activa.";
+  });
 
   radioPlayer.addEventListener("error", () => {
-    setTimeout(() => {
-      radioPlayer.src = `${CONFIG.radioStreamUrl}?t=${Date.now()}`;
-      radioPlayer.load();
-    }, 1500);
+    if (radioStatus) {
+      radioStatus.textContent = "La radio no está disponible en este momento o la emisora restringe el acceso desde esta ubicación.";
+    }
   });
 }
 
@@ -978,7 +981,9 @@ async function renderMundial(silencioso = false) {
 
   try {
     const partidosAPI = await obtenerPartidosFootballData();
-    const partidos = normalizarPartidos(partidosAPI).filter(tieneEquiposReales);
+    const partidosApiNormalizados = normalizarPartidos(partidosAPI).filter(tieneEquiposReales);
+    const partidosLocales = Array.isArray(MUNDIAL_2026) ? normalizarPartidosLocales(MUNDIAL_2026).filter(tieneEquiposReales) : [];
+    const partidos = combinarPartidosMundial(partidosApiNormalizados, partidosLocales);
     const html = renderizarBloquesMundial(partidos);
     box.innerHTML = html || renderizarRespaldoMundial();
   } catch (error) {
@@ -989,8 +994,8 @@ async function renderMundial(silencioso = false) {
 
 async function obtenerPartidosFootballData() {
   const params = new URLSearchParams({
-    dateFrom: fechaEcuador(-1),
-    dateTo: fechaEcuador(6)
+    dateFrom: fechaConsultaMundial(-2),
+    dateTo: fechaConsultaMundial(8)
   });
 
   const respuesta = await fetch(`${CONFIG.footballDataApiUrl}?${params.toString()}`, {
@@ -1113,6 +1118,28 @@ function renderizarRespaldoMundial() {
   return htmlLocal || renderMundialFallback();
 }
 
+function combinarPartidosMundial(api, locales) {
+  const mapa = new Map();
+
+  locales.forEach((partido) => {
+    mapa.set(crearClavePartidoMundial(partido), partido);
+  });
+
+  api.forEach((partido) => {
+    mapa.set(crearClavePartidoMundial(partido), { ...mapa.get(crearClavePartidoMundial(partido)), ...partido });
+  });
+
+  return [...mapa.values()].sort((a, b) => new Date(a.fechaUTC) - new Date(b.fechaUTC));
+}
+
+function crearClavePartidoMundial(partido) {
+  const fecha = new Date(partido.fechaUTC);
+  const dia = isNaN(fecha.getTime()) ? partido.fechaUTC : fecha.toISOString().slice(0, 10);
+  const local = normalizarTexto(partido.local || "");
+  const visitante = normalizarTexto(partido.visitante || "");
+  return `${dia}-${local}-${visitante}`;
+}
+
 function renderizarBloquesMundial(partidos) {
   if (!partidos.length) return "";
 
@@ -1212,6 +1239,8 @@ function obtenerBanderaEquipo(nombre = "", codigo = "") {
     austria: "🇦🇹",
     belgica: "🇧🇪",
     belgium: "🇧🇪",
+    "bosnia y herzegovina": "🇧🇦",
+    "bosnia and herzegovina": "🇧🇦",
     brasil: "🇧🇷",
     brazil: "🇧🇷",
     canada: "🇨🇦",
@@ -1225,6 +1254,7 @@ function obtenerBanderaEquipo(nombre = "", codigo = "") {
     dinamarca: "🇩🇰",
     ecuador: "🇪🇨",
     england: "🏴",
+    inglaterra: "🏴",
     espana: "🇪🇸",
     spain: "🇪🇸",
     "estados unidos": "🇺🇸",
@@ -1250,6 +1280,9 @@ function obtenerBanderaEquipo(nombre = "", codigo = "") {
     polonia: "🇵🇱",
     portugal: "🇵🇹",
     qatar: "🇶🇦",
+    "rd congo": "🇨🇩",
+    "republica democratica del congo": "🇨🇩",
+    "dr congo": "🇨🇩",
     senegal: "🇸🇳",
     serbia: "🇷🇸",
     "corea del sur": "🇰🇷",
@@ -1455,6 +1488,12 @@ function fechaEcuador(offsetDias = 0) {
   const ahora = new Date();
   ahora.setDate(ahora.getDate() + offsetDias);
   return ahora.toLocaleDateString("en-CA", { timeZone: ubicacionCliente.zonaHoraria || "America/Guayaquil" });
+}
+
+function fechaConsultaMundial(offsetDias = 0) {
+  const ahora = new Date();
+  ahora.setDate(ahora.getDate() + offsetDias);
+  return ahora.toLocaleDateString("en-CA", { timeZone: "America/Guayaquil" });
 }
 
 function fechaDesdeUTCEnEcuador(fechaUTC) {

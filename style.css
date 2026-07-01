@@ -776,6 +776,13 @@ audio {
   line-height: 1.45;
 }
 
+.radio-status {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: .82rem;
+  line-height: 1.4;
+}
+
 .mundial-grid {
   display: grid;
   gap: 22px;
