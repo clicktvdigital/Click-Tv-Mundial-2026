@@ -1099,7 +1099,7 @@ function crearCardPartido(p) {
   const scoreTexto = obtenerScoreTexto(p, estadoTiempo);
   const detalleScore = obtenerDetalleScore(p, estadoTiempo);
   const claseScore = obtenerClaseScorebox(estadoTiempo.estado);
-  const tituloScore = obtenerTituloScorebox(estadoTiempo.estado);
+  const tituloScore = obtenerTituloScorebox(estadoTiempo.estado, p);
 
   return `
     <article class="match-card">
@@ -1141,27 +1141,31 @@ function formatearHoraPartidoCliente(fecha) {
 }
 
 function obtenerScoreTexto(partido, estadoTiempo) {
-  if (partido.marcador) return partido.marcador;
-  const marcadorAPI = crearMarcador(partido.score);
-  if (marcadorAPI) return marcadorAPI;
-  if (estadoTiempo.estado.includes("EN VIVO")) return "En vivo";
+  const marcador = obtenerMarcadorPartido(partido);
+  if (marcador) return marcador;
+  if (estadoTiempo.estado.includes("EN VIVO")) return "En desarrollo";
   if (estadoTiempo.estado.includes("Descanso")) return "Descanso";
-  if (estadoTiempo.estado.includes("Finalizado")) return "Finalizado";
+  if (estadoTiempo.estado.includes("Finalizado")) return "Cerrado";
   return "VS";
 }
 
 function obtenerDetalleScore(partido, estadoTiempo) {
   const detalle = String(partido.statusDetalle || "").toLowerCase();
   const minuto = obtenerMinutoPartido(partido);
+  const marcador = obtenerMarcadorPartido(partido);
 
   if (/hydration|cooling|hidrat/.test(detalle)) return "Pausa de hidratación";
-  if (/half.?time|descanso|break|paused/.test(detalle) || estadoTiempo.estado.includes("Descanso")) return "Receso del partido";
+  if (/half.?time|descanso|break|paused/.test(detalle) || estadoTiempo.estado.includes("Descanso")) return marcador ? "Marcador al descanso" : "Actualizando marcador";
   if (/second|2nd|segundo/.test(detalle)) return minuto ? `Segundo tiempo · ${minuto}'` : "Segundo tiempo";
   if (/first|1st|primer/.test(detalle)) return minuto ? `Primer tiempo · ${minuto}'` : "Primer tiempo";
-  if (estadoTiempo.estado.includes("EN VIVO")) return minuto ? `Minuto ${minuto}'` : "Actualizando en vivo";
-  if (estadoTiempo.estado.includes("Finalizado")) return partido.marcador || crearMarcador(partido.score) ? "Resultado oficial" : "Resultado pendiente por API";
+  if (estadoTiempo.estado.includes("EN VIVO")) return minuto ? `Minuto ${minuto}'` : "Actualizando cada 30s";
+  if (estadoTiempo.estado.includes("Finalizado")) return marcador ? "Resultado oficial" : "Finalizado oficialmente";
   if (estadoTiempo.estado.includes("Programado")) return "Aún no inicia";
   return "";
+}
+
+function obtenerMarcadorPartido(partido) {
+  return partido.marcador || crearMarcador(partido.score);
 }
 
 function obtenerMinutoPartido(partido) {
@@ -1176,23 +1180,23 @@ function obtenerClaseScorebox(estado) {
   return "";
 }
 
-function obtenerTituloScorebox(estado) {
+function obtenerTituloScorebox(estado, partido = null) {
   if (estado.includes("EN VIVO")) return "En vivo";
   if (estado.includes("Descanso")) return "Receso";
-  if (estado.includes("Finalizado")) return "Resultado";
+  if (estado.includes("Finalizado")) return partido && obtenerMarcadorPartido(partido) ? "Resultado" : "Partido";
   return "Marcador";
 }
 
 function obtenerTextoTiempoPartido(partido) {
   const raw = String(partido.statusRaw || "").toUpperCase();
   if (["LIVE", "IN_PLAY"].includes(raw)) {
-    return { estado: "🔴 EN VIVO", detalle: "Partido en vivo ahora" };
+    return { estado: "🔴 EN VIVO", detalle: "Partido en curso" };
   }
   if (raw === "PAUSED") {
-    return { estado: "⏸️ Descanso", detalle: "Partido en descanso" };
+    return { estado: "⏸️ Descanso", detalle: "Entretiempo" };
   }
   if (raw === "FINISHED") {
-    return { estado: "⚫ Finalizado", detalle: "Partido finalizado" };
+    return { estado: "⚫ Finalizado", detalle: "Encuentro terminado" };
   }
 
   const inicio = new Date(partido.fechaUTC);
@@ -1209,10 +1213,10 @@ function obtenerTextoTiempoPartido(partido) {
   }
 
   if (ahora <= finEstimado) {
-    return { estado: "🔴 EN VIVO", detalle: "Partido en vivo ahora" };
+    return { estado: "🔴 EN VIVO", detalle: "Partido en curso" };
   }
 
-  return { estado: "⚫ Finalizado", detalle: "Partido finalizado" };
+  return { estado: "⚫ Finalizado", detalle: "Encuentro terminado" };
 }
 
 function formatearTiempoRestante(ms) {
