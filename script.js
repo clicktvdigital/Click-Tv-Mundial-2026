@@ -185,46 +185,32 @@ function inicializarTeleamazonasPlayer() {
 function inicializarRadioLaRed() {
   const radioPlayer = document.getElementById("radio-player");
   const radioStatus = document.getElementById("radio-status");
-  const btnCargarRadio = document.getElementById("btn-cargar-radio");
   if (!radioPlayer || typeof CONFIG === "undefined" || !CONFIG.radioStreamUrl) return;
 
   radioPlayer.preload = "none";
   radioPlayer.removeAttribute("src");
   radioPlayer.dataset.streamUrl = radioPlayer.dataset.streamUrl || CONFIG.radioStreamUrl;
 
-  const prepararRadio = async (reproducir = false) => {
+  const prepararRadio = () => {
     if (radioPlayer.dataset.cargada !== "true") {
       radioPlayer.src = radioPlayer.dataset.streamUrl;
       radioPlayer.dataset.cargada = "true";
       radioPlayer.load();
     }
 
-    if (btnCargarRadio) btnCargarRadio.textContent = "Cargando radio...";
     if (radioStatus) radioStatus.textContent = "Cargando señal en vivo...";
-
-    if (!reproducir) return;
-
-    try {
-      await radioPlayer.play();
-    } catch {
-      if (radioStatus) radioStatus.textContent = "La señal quedó cargada. Presiona reproducir en el reproductor.";
-    }
   };
 
-  const cargarDesdeBoton = () => prepararRadio(true);
-  if (btnCargarRadio) btnCargarRadio.addEventListener("click", cargarDesdeBoton);
-
-  radioPlayer.addEventListener("pointerdown", () => prepararRadio(false), { once: true });
-  radioPlayer.addEventListener("play", () => prepararRadio(false), { once: true });
+  radioPlayer.addEventListener("pointerdown", prepararRadio, { once: true });
+  radioPlayer.addEventListener("touchstart", prepararRadio, { once: true, passive: true });
+  radioPlayer.addEventListener("play", prepararRadio, { once: true });
   radioPlayer.addEventListener("playing", () => {
-    if (btnCargarRadio) btnCargarRadio.textContent = "Radio en vivo activa";
     if (radioStatus) radioStatus.textContent = "Señal en vivo activa.";
   });
 
   radioPlayer.addEventListener("error", () => {
     radioPlayer.src = radioPlayer.dataset.streamUrl;
     radioPlayer.dataset.cargada = "false";
-    if (btnCargarRadio) btnCargarRadio.textContent = "Reintentar radio";
     if (radioStatus) {
       radioStatus.textContent = "La radio no está disponible en este momento o la emisora restringe el acceso desde esta ubicación.";
     }
@@ -1222,13 +1208,19 @@ function renderizarBloquesMundial(partidos) {
     { titulo: "📅 Mañana", fecha: manana }
   ];
 
+  const fechasPrincipales = new Set(bloques.map((bloque) => bloque.fecha));
+  const clavesMostradas = new Set();
+
   let html = bloques.map((bloque) => {
     const items = partidos.filter((p) => fechaDesdeUTCEnEcuador(p.fechaUTC) === bloque.fecha);
+    items.forEach((p) => clavesMostradas.add(crearClavePartidoMundial(p)));
     return crearBloquePartidos(bloque.titulo, items);
   }).join("");
 
   const proximos = partidos
     .filter((p) => new Date(p.fechaUTC) > new Date())
+    .filter((p) => !fechasPrincipales.has(fechaDesdeUTCEnEcuador(p.fechaUTC)))
+    .filter((p) => !clavesMostradas.has(crearClavePartidoMundial(p)))
     .sort((a, b) => new Date(a.fechaUTC) - new Date(b.fechaUTC))
     .slice(0, 8);
 
