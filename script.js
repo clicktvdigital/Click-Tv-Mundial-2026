@@ -188,29 +188,19 @@ function inicializarRadioLaRed() {
   if (!radioPlayer || typeof CONFIG === "undefined" || !CONFIG.radioStreamUrl) return;
 
   radioPlayer.preload = "none";
-  radioPlayer.removeAttribute("src");
-  radioPlayer.dataset.streamUrl = radioPlayer.dataset.streamUrl || CONFIG.radioStreamUrl;
+  if (!radioPlayer.getAttribute("src")) {
+    radioPlayer.src = CONFIG.radioStreamUrl;
+  }
 
-  const prepararRadio = () => {
-    if (radioPlayer.dataset.cargada !== "true") {
-      radioPlayer.src = radioPlayer.dataset.streamUrl;
-      radioPlayer.dataset.cargada = "true";
-      radioPlayer.load();
-    }
-
+  radioPlayer.addEventListener("play", () => {
     if (radioStatus) radioStatus.textContent = "Cargando señal en vivo...";
-  };
+  });
 
-  radioPlayer.addEventListener("pointerdown", prepararRadio, { once: true });
-  radioPlayer.addEventListener("touchstart", prepararRadio, { once: true, passive: true });
-  radioPlayer.addEventListener("play", prepararRadio, { once: true });
   radioPlayer.addEventListener("playing", () => {
     if (radioStatus) radioStatus.textContent = "Señal en vivo activa.";
   });
 
   radioPlayer.addEventListener("error", () => {
-    radioPlayer.src = radioPlayer.dataset.streamUrl;
-    radioPlayer.dataset.cargada = "false";
     if (radioStatus) {
       radioStatus.textContent = "La radio no está disponible en este momento o la emisora restringe el acceso desde esta ubicación.";
     }
