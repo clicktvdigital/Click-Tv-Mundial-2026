@@ -185,27 +185,46 @@ function inicializarTeleamazonasPlayer() {
 function inicializarRadioLaRed() {
   const radioPlayer = document.getElementById("radio-player");
   const radioStatus = document.getElementById("radio-status");
+  const btnCargarRadio = document.getElementById("btn-cargar-radio");
   if (!radioPlayer || typeof CONFIG === "undefined" || !CONFIG.radioStreamUrl) return;
 
   radioPlayer.preload = "none";
   radioPlayer.removeAttribute("src");
   radioPlayer.dataset.streamUrl = radioPlayer.dataset.streamUrl || CONFIG.radioStreamUrl;
 
-  const prepararRadio = () => {
-    if (radioPlayer.dataset.cargada === "true") return;
-    radioPlayer.src = radioPlayer.dataset.streamUrl;
-    radioPlayer.dataset.cargada = "true";
-    radioPlayer.load();
+  const prepararRadio = async (reproducir = false) => {
+    if (radioPlayer.dataset.cargada !== "true") {
+      radioPlayer.src = radioPlayer.dataset.streamUrl;
+      radioPlayer.dataset.cargada = "true";
+      radioPlayer.load();
+    }
+
+    if (btnCargarRadio) btnCargarRadio.textContent = "Cargando radio...";
     if (radioStatus) radioStatus.textContent = "Cargando señal en vivo...";
+
+    if (!reproducir) return;
+
+    try {
+      await radioPlayer.play();
+    } catch {
+      if (radioStatus) radioStatus.textContent = "La señal quedó cargada. Presiona reproducir en el reproductor.";
+    }
   };
 
-  radioPlayer.addEventListener("pointerdown", prepararRadio, { once: true });
-  radioPlayer.addEventListener("play", prepararRadio, { once: true });
+  const cargarDesdeBoton = () => prepararRadio(true);
+  if (btnCargarRadio) btnCargarRadio.addEventListener("click", cargarDesdeBoton);
+
+  radioPlayer.addEventListener("pointerdown", () => prepararRadio(false), { once: true });
+  radioPlayer.addEventListener("play", () => prepararRadio(false), { once: true });
   radioPlayer.addEventListener("playing", () => {
+    if (btnCargarRadio) btnCargarRadio.textContent = "Radio en vivo activa";
     if (radioStatus) radioStatus.textContent = "Señal en vivo activa.";
   });
 
   radioPlayer.addEventListener("error", () => {
+    radioPlayer.src = radioPlayer.dataset.streamUrl;
+    radioPlayer.dataset.cargada = "false";
+    if (btnCargarRadio) btnCargarRadio.textContent = "Reintentar radio";
     if (radioStatus) {
       radioStatus.textContent = "La radio no está disponible en este momento o la emisora restringe el acceso desde esta ubicación.";
     }
@@ -1126,7 +1145,8 @@ function combinarPartidosMundial(api, locales) {
   });
 
   api.forEach((partido) => {
-    mapa.set(crearClavePartidoMundial(partido), { ...mapa.get(crearClavePartidoMundial(partido)), ...partido });
+    const clave = crearClavePartidoMundial(partido);
+    mapa.set(clave, fusionarPartidosMundial(mapa.get(clave), partido));
   });
 
   return [...mapa.values()].sort((a, b) => new Date(a.fechaUTC) - new Date(b.fechaUTC));
@@ -1135,9 +1155,58 @@ function combinarPartidosMundial(api, locales) {
 function crearClavePartidoMundial(partido) {
   const fecha = new Date(partido.fechaUTC);
   const dia = isNaN(fecha.getTime()) ? partido.fechaUTC : fecha.toISOString().slice(0, 10);
-  const local = normalizarTexto(partido.local || "");
-  const visitante = normalizarTexto(partido.visitante || "");
+  const local = normalizarClaveEquipoMundial(partido.local || "");
+  const visitante = normalizarClaveEquipoMundial(partido.visitante || "");
   return `${dia}-${local}-${visitante}`;
+}
+
+function fusionarPartidosMundial(base = {}, nuevo = {}) {
+  return {
+    ...base,
+    ...nuevo,
+    marcador: nuevo.marcador || base.marcador || "",
+    score: tieneMarcadorEnScore(nuevo.score) ? nuevo.score : (base.score || nuevo.score || null),
+    etapa: nuevo.etapa || base.etapa || "",
+    sede: nuevo.sede || base.sede || "Sede por confirmar"
+  };
+}
+
+function tieneMarcadorEnScore(score) {
+  return Boolean(crearMarcador(score));
+}
+
+function normalizarClaveEquipoMundial(nombre = "") {
+  const clave = normalizarTexto(nombre);
+  const alias = {
+    usa: "estados-unidos",
+    us: "estados-unidos",
+    "united-states": "estados-unidos",
+    "estados-unidos": "estados-unidos",
+    "estados-unidos-de-america": "estados-unidos",
+    england: "inglaterra",
+    inglaterra: "inglaterra",
+    "dr-congo": "rd-congo",
+    "congo-dr": "rd-congo",
+    "rd-congo": "rd-congo",
+    "democratic-republic-of-the-congo": "rd-congo",
+    "republica-democratica-del-congo": "rd-congo",
+    "bosnia-herzegovina": "bosnia-y-herzegovina",
+    "bosnia-and-herzegovina": "bosnia-y-herzegovina",
+    "bosnia-y-herzegovina": "bosnia-y-herzegovina",
+    "ivory-coast": "costa-de-marfil",
+    "cote-d-ivoire": "costa-de-marfil",
+    "costa-de-marfil": "costa-de-marfil",
+    netherlands: "paises-bajos",
+    "paises-bajos": "paises-bajos",
+    germany: "alemania",
+    alemania: "alemania",
+    belgium: "belgica",
+    belgica: "belgica",
+    mexico: "mexico",
+    ecuador: "ecuador"
+  };
+
+  return alias[clave] || clave;
 }
 
 function renderizarBloquesMundial(partidos) {

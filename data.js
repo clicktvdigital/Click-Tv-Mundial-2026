@@ -569,7 +569,8 @@ const MUNDIAL_2026 = [
         visitante: "RD Congo",
         fechaUTC: "2026-07-01T16:00:00Z",
         sede: "Atlanta Stadium",
-        etapa: "Dieciseisavos de final"
+        etapa: "Dieciseisavos de final",
+        marcador: "2 - 1"
       },
       {
         grupo: "Miércoles 1 de julio",
