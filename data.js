@@ -142,6 +142,18 @@ const PRODUCTOS = [
     planes: [{ tipo: "1 mes", precio: 10 }]
   },
   {
+    id: "zapping-pro",
+    nombre: "Zapping Pro",
+    categoria: "deportes",
+    icono: "📺",
+    descripcion: "Liga Pro Ecuador / Liga Ecuabet en vivo, más de 40 canales nacionales e internacionales. Cuenta completa: 2 dispositivos simultáneos en diferente IP para Liga Pro o hasta 5 dispositivos dentro del mismo domicilio con la misma IP.",
+    etiquetas: ["⚽ LIGA PRO ECUADOR", "🔥 ZAPPING PRO", "📺 +40 CANALES"],
+    planes: [
+      { tipo: "Cuenta individual · 1 dispositivo · 1 mes", precio: 10, ivaIncluido: true },
+      { tipo: "Cuenta completa · hasta 5 dispositivos · 1 mes", precio: 20, ivaIncluido: true }
+    ]
+  },
+  {
     id: "directv-go",
     nombre: "DIRECTV GO",
     categoria: "streaming",
@@ -363,7 +375,7 @@ const PRODUCTOS = [
     nombre: "Pack Deportes",
     categoria: "deportes",
     icono: "⚽",
-    descripcion: "DAZN, Disney+ ESPN, Paramount+, NBA, UFC, ECDF y Zapping Pro. Consulta disponibilidad.",
+    descripcion: "DAZN, Disney+ ESPN, Paramount+, NBA, UFC, ECDF y Zapping Pro. Consulta disponibilidad de paquetes combinados.",
     etiquetas: ["⚽ IDEAL PARA EL MUNDIAL", "🔥 MÁS VENDIDO"],
     planes: [{ tipo: "Consultar disponibilidad", precio: 0, consultar: true }]
   },
