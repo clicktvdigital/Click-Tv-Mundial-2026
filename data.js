@@ -590,7 +590,11 @@ const MUNDIAL_2026 = [
         visitante: "Senegal",
         fechaUTC: "2026-07-01T20:00:00Z",
         sede: "Seattle Stadium",
-        etapa: "Dieciseisavos de final"
+        etapa: "Dieciseisavos de final",
+        marcador: "3 - 2",
+        score: {
+          duration: "EXTRA_TIME"
+        }
       },
       {
         grupo: "Miércoles 1 de julio",
@@ -598,6 +602,55 @@ const MUNDIAL_2026 = [
         visitante: "Bosnia y Herzegovina",
         fechaUTC: "2026-07-02T00:00:00Z",
         sede: "San Francisco Bay Area Stadium",
+        etapa: "Dieciseisavos de final",
+        marcador: "2 - 0"
+      },
+      {
+        grupo: "Jueves 2 de julio",
+        local: "España",
+        visitante: "Austria",
+        fechaUTC: "2026-07-02T19:00:00Z",
+        sede: "Sede por confirmar",
+        etapa: "Dieciseisavos de final"
+      },
+      {
+        grupo: "Jueves 2 de julio",
+        local: "Portugal",
+        visitante: "Croacia",
+        fechaUTC: "2026-07-02T23:00:00Z",
+        sede: "Sede por confirmar",
+        etapa: "Dieciseisavos de final"
+      },
+      {
+        grupo: "Jueves 2 de julio",
+        local: "Suiza",
+        visitante: "Argelia",
+        fechaUTC: "2026-07-03T03:00:00Z",
+        sede: "Sede por confirmar",
+        etapa: "Dieciseisavos de final"
+      },
+      {
+        grupo: "Viernes 3 de julio",
+        local: "Australia",
+        visitante: "Egipto",
+        fechaUTC: "2026-07-03T18:00:00Z",
+        sede: "Sede por confirmar",
+        etapa: "Dieciseisavos de final"
+      },
+      {
+        grupo: "Viernes 3 de julio",
+        local: "Argentina",
+        visitante: "Cabo Verde",
+        fechaUTC: "2026-07-03T22:00:00Z",
+        sede: "Sede por confirmar",
+        etapa: "Dieciseisavos de final"
+      },
+      {
+        grupo: "Viernes 3 de julio",
+        local: "Colombia",
+        visitante: "Ghana",
+        fechaUTC: "2026-07-04T01:30:00Z",
+        sede: "Sede por confirmar",
         etapa: "Dieciseisavos de final"
       }
     ]

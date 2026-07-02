@@ -1402,6 +1402,13 @@ function normalizarClaveEquipoMundial(nombre = "") {
     alemania: "alemania",
     belgium: "belgica",
     belgica: "belgica",
+    algeria: "argelia",
+    argelia: "argelia",
+    egypt: "egipto",
+    egipto: "egipto",
+    "cape-verde": "cabo-verde",
+    "cabo-verde-islands": "cabo-verde",
+    "cabo-verde": "cabo-verde",
     mexico: "mexico",
     ecuador: "ecuador"
   };
@@ -1495,8 +1502,8 @@ function crearNombreEquipoConBandera(nombre, codigo = "") {
 function obtenerBanderaEquipo(nombre = "", codigo = "") {
   const porCodigo = {
     ARG: "🇦🇷", AUS: "🇦🇺", AUT: "🇦🇹", BEL: "🇧🇪", BRA: "🇧🇷", CAN: "🇨🇦",
-    CHI: "🇨🇱", CHN: "🇨🇳", CIV: "🇨🇮", COL: "🇨🇴", CRC: "🇨🇷", CRO: "🇭🇷",
-    DEN: "🇩🇰", ECU: "🇪🇨", ENG: "🏴", ESP: "🇪🇸", FRA: "🇫🇷", GER: "🇩🇪",
+    CHI: "🇨🇱", CHN: "🇨🇳", CIV: "🇨🇮", COL: "🇨🇴", CPV: "🇨🇻", CRC: "🇨🇷", CRO: "🇭🇷",
+    DEN: "🇩🇰", DZA: "🇩🇿", ECU: "🇪🇨", EGY: "🇪🇬", ENG: "🏴", ESP: "🇪🇸", FRA: "🇫🇷", GER: "🇩🇪",
     GHA: "🇬🇭", IRN: "🇮🇷", ITA: "🇮🇹", JPN: "🇯🇵", KOR: "🇰🇷", MAR: "🇲🇦",
     MEX: "🇲🇽", NED: "🇳🇱", NOR: "🇳🇴", PAR: "🇵🇾", POL: "🇵🇱", POR: "🇵🇹",
     QAT: "🇶🇦", SEN: "🇸🇳", SRB: "🇷🇸", SUI: "🇨🇭", SWE: "🇸🇪", URU: "🇺🇾",
@@ -1509,6 +1516,8 @@ function obtenerBanderaEquipo(nombre = "", codigo = "") {
   const claveNombre = normalizarTextoPais(nombre);
   const porNombre = {
     alemania: "🇩🇪",
+    argelia: "🇩🇿",
+    algeria: "🇩🇿",
     argentina: "🇦🇷",
     australia: "🇦🇺",
     austria: "🇦🇹",
@@ -1519,6 +1528,8 @@ function obtenerBanderaEquipo(nombre = "", codigo = "") {
     brasil: "🇧🇷",
     brazil: "🇧🇷",
     canada: "🇨🇦",
+    "cabo verde": "🇨🇻",
+    "cape verde": "🇨🇻",
     chile: "🇨🇱",
     china: "🇨🇳",
     colombia: "🇨🇴",
@@ -1528,6 +1539,8 @@ function obtenerBanderaEquipo(nombre = "", codigo = "") {
     denmark: "🇩🇰",
     dinamarca: "🇩🇰",
     ecuador: "🇪🇨",
+    egipto: "🇪🇬",
+    egypt: "🇪🇬",
     england: "🏴",
     inglaterra: "🏴",
     espana: "🇪🇸",
