@@ -361,10 +361,18 @@
 
         <div class="savings-card glass-card">
           <h3>Resumen estimado</h3>
+          <div class="savings-coupon">
+            <label for="input-cupon-ahorro">Cupón de descuento</label>
+            <div class="input-row">
+              <input id="input-cupon-ahorro" type="text" placeholder="Ej: CLICK TV MUNDIAL">
+              <button id="btn-aplicar-cupon-ahorro" class="btn btn--primary" type="button">Aplicar</button>
+            </div>
+            <small id="ahorro-cupon-info">Sin cupón aplicado.</small>
+          </div>
           <div class="savings-summary">
             <p><span>Precio normal referencial</span><strong id="ahorro-normal">$0.00 USD</strong></p>
             <p><span>Subtotal Click TV</span><strong id="ahorro-subtotal">$0.00 USD</strong></p>
-            <p><span>Cupón simulado 15%</span><strong id="ahorro-cupon">- $0.00 USD</strong></p>
+            <p><span>Cupón de descuento</span><strong id="ahorro-cupon">- $0.00 USD</strong></p>
             <p><span>IVA vigente Ecuador</span><strong id="ahorro-iva">$0.00 USD</strong></p>
             <p class="total"><span>Total estimado</span><strong id="ahorro-total">$0.00 USD</strong></p>
             <p class="saving-line"><span>Ahorro aproximado</span><strong id="ahorro-total-ahorrado">$0.00 USD</strong></p>

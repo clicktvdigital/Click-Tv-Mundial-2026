@@ -1124,6 +1124,26 @@ textarea {
   padding: 22px;
 }
 
+.savings-coupon {
+  display: grid;
+  gap: 8px;
+  margin: 14px 0;
+  padding: 12px;
+  border-radius: 16px;
+  background: rgba(0,0,0,.22);
+  border: 1px solid rgba(255,255,255,.08);
+}
+
+.savings-coupon label {
+  color: var(--muted);
+  font-weight: 850;
+}
+
+.savings-coupon small {
+  color: var(--muted);
+  line-height: 1.35;
+}
+
 .savings-summary {
   display: grid;
   gap: 10px;

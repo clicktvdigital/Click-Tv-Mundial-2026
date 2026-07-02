@@ -18,6 +18,7 @@ let indiceActividad = 0;
 let indiceResena = 0;
 let metodoPagoActual = "transferencia";
 let usuariosConectados = 48;
+let cuponAhorroAplicado = null;
 let ubicacionCliente = {
   ciudad: "",
   pais: "Ecuador",
@@ -778,21 +779,23 @@ function renderCarrito() {
   actualizarTexto("paypal-total", `$${totales.totalPaypal.toFixed(2)} USD`);
   actualizarDetallePagoCarrito();
 
+  const cuponManualActivo = obtenerCuponManualActivo();
   const elCuponInfo = document.getElementById("cupon-info");
   if (elCuponInfo) {
-    elCuponInfo.textContent = cuponAplicado
-      ? `Cupón aplicado: ${cuponAplicado.codigo} (${cuponAplicado.porcentaje}% de descuento). No aplica a recargas o combos oficiales de operadora.`
+    elCuponInfo.textContent = cuponManualActivo
+      ? `Cupón aplicado manualmente: ${cuponManualActivo.codigo} (${cuponManualActivo.porcentaje}% de descuento). No aplica a recargas o combos oficiales de operadora.`
       : "";
   }
 }
 
 function calcularTotales() {
+  const cuponManualActivo = obtenerCuponManualActivo();
   const subtotal = carrito.reduce((acc, item) => acc + Number(item.precio) * Number(item.cantidad), 0);
   const subtotalDescontable = carrito.reduce((acc, item) => {
     if (item.bloquearDescuento) return acc;
     return acc + Number(item.precio) * Number(item.cantidad);
   }, 0);
-  const descuento = cuponAplicado ? subtotalDescontable * (Number(cuponAplicado.porcentaje) / 100) : 0;
+  const descuento = cuponManualActivo ? subtotalDescontable * (Number(cuponManualActivo.porcentaje) / 100) : 0;
   const base = Math.max(subtotal - descuento, 0);
   const subtotalGravado = carrito.reduce((acc, item) => {
     if (item.ivaIncluido) return acc;
@@ -802,7 +805,7 @@ function calcularTotales() {
     if (item.ivaIncluido || item.bloquearDescuento) return acc;
     return acc + Number(item.precio) * Number(item.cantidad);
   }, 0);
-  const descuentoGravado = cuponAplicado ? subtotalGravadoDescontable * (Number(cuponAplicado.porcentaje) / 100) : 0;
+  const descuentoGravado = cuponManualActivo ? subtotalGravadoDescontable * (Number(cuponManualActivo.porcentaje) / 100) : 0;
   const baseGravada = Math.max(subtotalGravado - descuentoGravado, 0);
   const iva = baseGravada * CONFIG.ivaPorcentaje;
   const total = base + iva;
@@ -811,6 +814,10 @@ function calcularTotales() {
     : 0;
 
   return { subtotal, descuento, base, iva, total, totalPaypal };
+}
+
+function obtenerCuponManualActivo() {
+  return cuponAplicado && cuponAplicado.manual === true ? cuponAplicado : null;
 }
 
 function actualizarContadorCarrito() {
@@ -875,6 +882,7 @@ function inicializarCalculadoraAhorro() {
     input.addEventListener("change", actualizarCalculadoraAhorro);
   });
 
+  document.getElementById("btn-aplicar-cupon-ahorro")?.addEventListener("click", aplicarCuponAhorro);
   document.getElementById("btn-ahorro-whatsapp")?.addEventListener("click", enviarAhorroWhatsApp);
   actualizarCalculadoraAhorro();
 }
@@ -898,7 +906,7 @@ function calcularAhorroSeleccionado() {
   const seleccionados = obtenerServiciosAhorroSeleccionados();
   const normal = seleccionados.reduce((acc, item) => acc + Number(item.precioNormal), 0);
   const subtotal = seleccionados.reduce((acc, item) => acc + Number(item.data.plan.precio), 0);
-  const descuento = subtotal * 0.15;
+  const descuento = cuponAhorroAplicado ? subtotal * (Number(cuponAhorroAplicado.porcentaje) / 100) : 0;
   const base = Math.max(subtotal - descuento, 0);
   const iva = base * Number(CONFIG.ivaPorcentaje || 0);
   const total = base + iva;
@@ -915,6 +923,23 @@ function actualizarCalculadoraAhorro() {
   actualizarTexto("ahorro-iva", formatearPrecio(totales.iva));
   actualizarTexto("ahorro-total", formatearPrecio(totales.total));
   actualizarTexto("ahorro-total-ahorrado", formatearPrecio(totales.ahorro));
+  actualizarTexto("ahorro-cupon-info", cuponAhorroAplicado ? `Cupón aplicado manualmente: ${cuponAhorroAplicado.codigo}` : "Sin cupón aplicado.");
+}
+
+function aplicarCuponAhorro() {
+  const input = document.getElementById("input-cupon-ahorro");
+  if (!input) return;
+
+  const codigo = normalizarCuponCodigo(input.value);
+  if (!codigo) return mostrarToast("Ingresa un cupón para la calculadora.", "error");
+
+  const cupon = CUPONES[codigo];
+  if (!cupon) return mostrarToast("Cupón inválido en la calculadora.", "error");
+
+  cuponAhorroAplicado = { codigo, porcentaje: cupon.porcentaje, manual: true };
+  input.value = codigo;
+  actualizarCalculadoraAhorro();
+  mostrarToast(`Cupón ${codigo} aplicado manualmente en la calculadora.`, "exito");
 }
 
 function enviarAhorroWhatsApp() {
@@ -926,7 +951,7 @@ function enviarAhorroWhatsApp() {
     .join("\n");
 
   const mensaje = encodeURIComponent(
-    `Hola, deseo consultar este combo simulado:\n${servicios}\n\nSubtotal Click TV: $${totales.subtotal.toFixed(2)} USD\nCupón simulado 15%: -$${totales.descuento.toFixed(2)} USD\nIVA Ecuador: $${totales.iva.toFixed(2)} USD\nTotal estimado: $${totales.total.toFixed(2)} USD\nAhorro aproximado: $${totales.ahorro.toFixed(2)} USD\n\nPor favor confirmar disponibilidad y precio final.`
+    `Hola, deseo consultar este combo simulado:\n${servicios}\n\nSubtotal Click TV: $${totales.subtotal.toFixed(2)} USD\nCupón aplicado: ${cuponAhorroAplicado ? `${cuponAhorroAplicado.codigo} (-$${totales.descuento.toFixed(2)} USD)` : "Sin cupón"}\nIVA Ecuador: $${totales.iva.toFixed(2)} USD\nTotal estimado: $${totales.total.toFixed(2)} USD\nAhorro aproximado: $${totales.ahorro.toFixed(2)} USD\n\nPor favor confirmar disponibilidad y precio final.`
   );
 
   window.open(`${CONFIG.whatsappLink}?text=${mensaje}`, "_blank", "noopener,noreferrer");
@@ -945,7 +970,7 @@ function aplicarCupon() {
   const cupon = CUPONES[codigo];
   if (!cupon) return mostrarToast("Cupón inválido. Puedes escribirlo con espacios o en minúsculas.", "error");
 
-  cuponAplicado = { codigo, porcentaje: cupon.porcentaje };
+  cuponAplicado = { codigo, porcentaje: cupon.porcentaje, manual: true };
   input.value = codigo;
   renderCarrito();
   mostrarToast(`Cupón ${codigo} aplicado: ${cupon.descripcion}`, "exito");
@@ -1071,7 +1096,8 @@ function generarResumenPedido() {
   const resumen = carrito.map((item) => `• ${item.nombre} (${item.plan}) x${item.cantidad}`).join("\n");
   const totales = calcularTotales();
   const ivaEtiqueta = Math.round(CONFIG.ivaPorcentaje * 100);
-  return `Hola, quiero finalizar mi compra:\n${resumen}\n\nMétodo elegido: ${obtenerNombreMetodoPago(metodoPagoActual)}\nSubtotal: $${totales.subtotal.toFixed(2)} USD\nDescuento aplicado: $${totales.descuento.toFixed(2)} USD\nIVA ${ivaEtiqueta}% Ecuador cuando aplica: $${totales.iva.toFixed(2)} USD\nTotal: $${totales.total.toFixed(2)} USD${cuponAplicado ? `\nCupón: ${cuponAplicado.codigo} (no aplica a recargas o combos oficiales de operadora)` : ""}\n\nPor favor confirmar disponibilidad y pasos para activar.`;
+  const cuponManualActivo = obtenerCuponManualActivo();
+  return `Hola, quiero finalizar mi compra:\n${resumen}\n\nMétodo elegido: ${obtenerNombreMetodoPago(metodoPagoActual)}\nSubtotal: $${totales.subtotal.toFixed(2)} USD\nDescuento aplicado: $${totales.descuento.toFixed(2)} USD\nIVA ${ivaEtiqueta}% Ecuador cuando aplica: $${totales.iva.toFixed(2)} USD\nTotal: $${totales.total.toFixed(2)} USD${cuponManualActivo ? `\nCupón: ${cuponManualActivo.codigo} (no aplica a recargas o combos oficiales de operadora)` : ""}\n\nPor favor confirmar disponibilidad y pasos para activar.`;
 }
 
 function enviarPedidoWhatsApp() {
