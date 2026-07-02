@@ -43,7 +43,7 @@ const CONFIG = {
   exchangeRateApiUrl: "https://open.er-api.com/v6/latest/USD",
   ipGeoUrl: "https://ipapi.co/json/",
 
-  ivaPorcentaje: 0.15,
+  ivaPorcentaje: 0.13,
   paypalComisionPorcentaje: 0.054,
   paypalComisionFija: 0.30
 };
@@ -112,7 +112,7 @@ const PRODUCTOS = [
     icono: "🔵",
     descripcion: "Plataforma para ver películas, series, realities, contenido familiar y deportes seleccionados. Ideal para entretenimiento diario desde Smart TV, celular o navegador.",
     etiquetas: ["⚽ IDEAL PARA EL MUNDIAL", "🔥 MÁS VENDIDO"],
-    planes: [{ tipo: "1 mes", precio: 5, ivaIncluido: true }]
+    planes: [{ tipo: "1 mes", precio: 5 }]
   },
   {
     id: "disney-premium",
@@ -121,7 +121,7 @@ const PRODUCTOS = [
     icono: "🟣",
     descripcion: "Acceso premium para ver Disney, Marvel, Star Wars, Pixar, National Geographic y contenido familiar en alta calidad.",
     etiquetas: ["⭐ RECOMENDADO", "💎 PREMIUM"],
-    planes: [{ tipo: "1 mes", precio: 9, ivaIncluido: true }]
+    planes: [{ tipo: "1 mes", precio: 9 }]
   },
   {
     id: "disney-estandar",
@@ -130,7 +130,7 @@ const PRODUCTOS = [
     icono: "🏰",
     descripcion: "Plan enfocado en películas, series y contenido familiar de Disney. No incluye ESPN, ideal si solo necesitas entretenimiento.",
     etiquetas: ["⭐ RECOMENDADO"],
-    planes: [{ tipo: "1 mes", precio: 5, ivaIncluido: true }]
+    planes: [{ tipo: "1 mes", precio: 5 }]
   },
   {
     id: "dazn",
@@ -161,8 +161,8 @@ const PRODUCTOS = [
     descripcion: "TV en vivo por internet con canales deportivos, entretenimiento, noticias y programación premium desde dispositivos compatibles.",
     etiquetas: ["💎 PREMIUM"],
     planes: [
-      { tipo: "1 dispositivo", precio: 15, ivaIncluido: true },
-      { tipo: "Cuenta completa", precio: 25, ivaIncluido: true }
+      { tipo: "1 dispositivo", precio: 15 },
+      { tipo: "Cuenta completa", precio: 25 }
     ]
   },
   {
@@ -173,10 +173,10 @@ const PRODUCTOS = [
     descripcion: "Perfil compartido para ver series, películas, documentales y estrenos de Netflix con soporte durante el periodo contratado.",
     etiquetas: ["🔥 MÁS VENDIDO"],
     planes: [
-      { tipo: "1 mes", precio: 4, ivaIncluido: true },
-      { tipo: "3 meses", precio: 12, ivaIncluido: true },
-      { tipo: "6 meses", precio: 24, ivaIncluido: true },
-      { tipo: "12 meses", precio: 48, ivaIncluido: true }
+      { tipo: "1 mes", precio: 4 },
+      { tipo: "3 meses", precio: 12 },
+      { tipo: "6 meses", precio: 24 },
+      { tipo: "12 meses", precio: 48 }
     ]
   },
   {
@@ -187,10 +187,10 @@ const PRODUCTOS = [
     descripcion: "Perfil extra con mejor estabilidad de uso para ver Netflix en un entorno más ordenado y con menor riesgo de cruces de acceso.",
     etiquetas: ["⭐ RECOMENDADO", "💎 PREMIUM"],
     planes: [
-      { tipo: "1 mes", precio: 6, ivaIncluido: true },
-      { tipo: "3 meses", precio: 18, ivaIncluido: true },
-      { tipo: "6 meses", precio: 36, ivaIncluido: true },
-      { tipo: "12 meses", precio: 72, ivaIncluido: true }
+      { tipo: "1 mes", precio: 6 },
+      { tipo: "3 meses", precio: 18 },
+      { tipo: "6 meses", precio: 36 },
+      { tipo: "12 meses", precio: 72 }
     ]
   },
   {
@@ -201,10 +201,10 @@ const PRODUCTOS = [
     descripcion: "Plataforma para ver series, películas, estrenos, documentales y contenido premium de entretenimiento.",
     etiquetas: ["⭐ RECOMENDADO"],
     planes: [
-      { tipo: "1 mes", precio: 3, ivaIncluido: true },
-      { tipo: "3 meses", precio: 8, ivaIncluido: true },
-      { tipo: "6 meses", precio: 15, ivaIncluido: true },
-      { tipo: "12 meses", precio: 25, ivaIncluido: true }
+      { tipo: "1 mes", precio: 3 },
+      { tipo: "3 meses", precio: 8 },
+      { tipo: "6 meses", precio: 15 },
+      { tipo: "12 meses", precio: 25 }
     ]
   },
   {
@@ -215,10 +215,10 @@ const PRODUCTOS = [
     descripcion: "Servicio para ver películas, series originales, estrenos y contenido exclusivo de Amazon Prime Video.",
     etiquetas: ["🔥 MÁS VENDIDO"],
     planes: [
-      { tipo: "1 mes", precio: 3, ivaIncluido: true },
-      { tipo: "3 meses", precio: 8, ivaIncluido: true },
-      { tipo: "6 meses", precio: 15, ivaIncluido: true },
-      { tipo: "12 meses", precio: 25, ivaIncluido: true }
+      { tipo: "1 mes", precio: 3 },
+      { tipo: "3 meses", precio: 8 },
+      { tipo: "6 meses", precio: 15 },
+      { tipo: "12 meses", precio: 25 }
     ]
   },
   {
@@ -229,8 +229,8 @@ const PRODUCTOS = [
     descripcion: "Contenido original de Apple, series exclusivas, películas y estrenos para ver en dispositivos compatibles.",
     etiquetas: ["💎 PREMIUM"],
     planes: [
-      { tipo: "1 dispositivo", precio: 3, ivaIncluido: true },
-      { tipo: "Cuenta completa", precio: 5, ivaIncluido: true }
+      { tipo: "1 dispositivo", precio: 3 },
+      { tipo: "Cuenta completa", precio: 5 }
     ]
   },
   {
@@ -241,10 +241,10 @@ const PRODUCTOS = [
     descripcion: "Servicio especializado en anime, estrenos, temporadas completas, simulcast y contenido japonés para fanáticos del anime.",
     etiquetas: ["⭐ RECOMENDADO"],
     planes: [
-      { tipo: "1 mes", precio: 3, ivaIncluido: true },
-      { tipo: "3 meses", precio: 8, ivaIncluido: true },
-      { tipo: "6 meses", precio: 15, ivaIncluido: true },
-      { tipo: "12 meses", precio: 25, ivaIncluido: true }
+      { tipo: "1 mes", precio: 3 },
+      { tipo: "3 meses", precio: 8 },
+      { tipo: "6 meses", precio: 15 },
+      { tipo: "12 meses", precio: 25 }
     ]
   },
   {
@@ -255,10 +255,10 @@ const PRODUCTOS = [
     descripcion: "Contenido latino con películas, novelas, series, realities, deportes y entretenimiento en español.",
     etiquetas: ["🔥 MÁS VENDIDO"],
     planes: [
-      { tipo: "1 mes", precio: 3, ivaIncluido: true },
-      { tipo: "3 meses", precio: 8, ivaIncluido: true },
-      { tipo: "6 meses", precio: 15, ivaIncluido: true },
-      { tipo: "12 meses", precio: 25, ivaIncluido: true }
+      { tipo: "1 mes", precio: 3 },
+      { tipo: "3 meses", precio: 8 },
+      { tipo: "6 meses", precio: 15 },
+      { tipo: "12 meses", precio: 25 }
     ]
   },
   {

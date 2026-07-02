@@ -77,7 +77,8 @@
   }
 
   .hero__grid,
-  .contact-grid {
+  .contact-grid,
+  .savings-grid {
     grid-template-columns: 1fr;
   }
 
@@ -226,6 +227,10 @@
 
   .footer__content {
     display: grid;
+  }
+
+  .footer-payments {
+    justify-content: flex-start;
   }
 }
 

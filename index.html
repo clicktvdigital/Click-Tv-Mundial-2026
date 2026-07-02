@@ -349,6 +349,30 @@
         </div>
       </div>
     </section>
+
+    <section id="calculadora-ahorro" class="section savings-section">
+      <div class="container savings-grid">
+        <div class="savings-copy">
+          <span class="eyebrow">🧮 Calculadora de ahorro</span>
+          <h2>Simula tus servicios favoritos</h2>
+          <p>Selecciona los servicios más comprados y revisa un estimado con cupón manual e IVA vigente en Ecuador. El valor final se confirma por WhatsApp según disponibilidad.</p>
+          <div id="ahorro-servicios" class="savings-options"></div>
+        </div>
+
+        <div class="savings-card glass-card">
+          <h3>Resumen estimado</h3>
+          <div class="savings-summary">
+            <p><span>Precio normal referencial</span><strong id="ahorro-normal">$0.00 USD</strong></p>
+            <p><span>Subtotal Click TV</span><strong id="ahorro-subtotal">$0.00 USD</strong></p>
+            <p><span>Cupón simulado 15%</span><strong id="ahorro-cupon">- $0.00 USD</strong></p>
+            <p><span>IVA vigente Ecuador</span><strong id="ahorro-iva">$0.00 USD</strong></p>
+            <p class="total"><span>Total estimado</span><strong id="ahorro-total">$0.00 USD</strong></p>
+            <p class="saving-line"><span>Ahorro aproximado</span><strong id="ahorro-total-ahorrado">$0.00 USD</strong></p>
+          </div>
+          <button id="btn-ahorro-whatsapp" class="btn btn--primary btn--full" type="button">📲 Consultar este combo</button>
+        </div>
+      </div>
+    </section>
   </main>
 
   <div id="carrito-overlay" class="carrito-overlay"></div>
@@ -383,7 +407,7 @@
     <div class="cart-summary">
       <p><span>Subtotal</span><strong id="carrito-subtotal">$0.00 USD</strong></p>
       <p><span>Cupón de descuento</span><strong id="carrito-descuento">- $0.00 USD</strong></p>
-      <p><span>IVA 15% cuando aplica</span><strong id="carrito-iva">$0.00 USD</strong></p>
+      <p><span>IVA vigente Ecuador cuando aplica</span><strong id="carrito-iva">$0.00 USD</strong></p>
       <p class="total"><span>Total final</span><strong id="carrito-total">$0.00 USD</strong></p>
     </div>
 
@@ -469,8 +493,20 @@
 
   <footer class="footer">
     <div class="container footer__content">
-      <p>© <span id="anio-actual"></span> Click Tv Streaming. Todos los derechos reservados.</p>
-      <p>Pagos: Banco Pichincha · Banco Guayaquil · DEUNA · PayPhone · PayPal</p>
+      <div>
+        <strong>Click TV Digital</strong>
+        <p>Desarrollo y catálogo comercial: Click Tv Streaming.</p>
+        <p>© <span id="anio-actual"></span> Click TV Digital. Todos los derechos reservados.</p>
+      </div>
+      <div class="footer-payments" aria-label="Métodos de pago">
+        <span>🏦 Banco Pichincha</span>
+        <span>🏦 Banco Guayaquil</span>
+        <span>💚 DEUNA</span>
+        <span>📱 PayPhone</span>
+        <span>🅿️ PayPal</span>
+        <span>🌎 Remitly</span>
+        <span>💳 Stripe</span>
+      </div>
     </div>
   </footer>
 

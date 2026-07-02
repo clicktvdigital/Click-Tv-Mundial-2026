@@ -41,6 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
   inicializarUI();
   inicializarBotonesFlotantes();
   inicializarPagosRapidos();
+  inicializarCalculadoraAhorro();
   inicializarUbicacion();
   actualizarTasasCambio();
   actualizarUsuariosConectados();
@@ -619,6 +620,7 @@ function sugerirMonedaPorPais(pais, codigoPais = "", forzar = false, mostrarMens
 function cargarCarritoDesdeStorage() {
   try {
     carrito = JSON.parse(localStorage.getItem(CLAVE_CARRITO) || "[]");
+    normalizarCarritoDesdeCatalogo();
     cuponAplicado = null;
     localStorage.removeItem(CLAVE_CUPON);
   } catch {
@@ -626,6 +628,23 @@ function cargarCarritoDesdeStorage() {
     cuponAplicado = null;
     localStorage.removeItem(CLAVE_CUPON);
   }
+}
+
+function normalizarCarritoDesdeCatalogo() {
+  if (!Array.isArray(carrito) || typeof PRODUCTOS === "undefined") return;
+
+  carrito = carrito.map((item) => {
+    const producto = PRODUCTOS.find((p) => p.id === item.productoId);
+    const plan = producto?.planes?.find((p) => p.tipo === item.plan);
+    if (!plan) return item;
+
+    return {
+      ...item,
+      precio: Number(plan.precio),
+      ivaIncluido: Boolean(plan.ivaIncluido),
+      bloquearDescuento: Boolean(plan.bloquearDescuento)
+    };
+  });
 }
 
 function guardarCarritoEnStorage() {
@@ -823,6 +842,97 @@ function vaciarCarrito() {
 }
 
 // ---------------------------------------------------------------------------
+// CALCULADORA DE AHORRO
+// ---------------------------------------------------------------------------
+const SERVICIOS_AHORRO = [
+  { id: "netflix-extra", plan: "1 mes", nombre: "Netflix Perfil Extra", precioNormal: 9.99 },
+  { id: "disney-estandar", plan: "1 mes", nombre: "Disney Estándar", precioNormal: 7.99 },
+  { id: "prime-video", plan: "1 mes", nombre: "Prime Video", precioNormal: 5.99 },
+  { id: "paramount-plus", plan: "1 mes", nombre: "Paramount+", precioNormal: 5.99 },
+  { id: "zapping-pro", plan: "Cuenta individual · 1 dispositivo · 1 mes", nombre: "Zapping Pro", precioNormal: 14.99 }
+];
+
+function inicializarCalculadoraAhorro() {
+  const contenedor = document.getElementById("ahorro-servicios");
+  if (!contenedor || typeof PRODUCTOS === "undefined") return;
+
+  contenedor.innerHTML = SERVICIOS_AHORRO.map((servicio, index) => {
+    const data = obtenerServicioAhorro(servicio);
+    if (!data) return "";
+
+    return `
+      <label class="saving-option">
+        <input type="checkbox" value="${servicio.id}" ${index < 3 ? "checked" : ""}>
+        <span>
+          <strong>${servicio.nombre}</strong>
+          <small>${data.plan.tipo} · Click TV ${formatearPrecio(data.plan.precio)} · Normal ref. $${servicio.precioNormal.toFixed(2)}</small>
+        </span>
+      </label>
+    `;
+  }).join("");
+
+  contenedor.querySelectorAll("input").forEach((input) => {
+    input.addEventListener("change", actualizarCalculadoraAhorro);
+  });
+
+  document.getElementById("btn-ahorro-whatsapp")?.addEventListener("click", enviarAhorroWhatsApp);
+  actualizarCalculadoraAhorro();
+}
+
+function obtenerServicioAhorro(servicio) {
+  const producto = PRODUCTOS.find((item) => item.id === servicio.id);
+  const plan = producto?.planes?.find((item) => item.tipo === servicio.plan);
+  if (!producto || !plan) return null;
+  return { producto, plan };
+}
+
+function obtenerServiciosAhorroSeleccionados() {
+  const seleccionados = [...document.querySelectorAll("#ahorro-servicios input:checked")].map((input) => input.value);
+  return SERVICIOS_AHORRO
+    .filter((servicio) => seleccionados.includes(servicio.id))
+    .map((servicio) => ({ ...servicio, data: obtenerServicioAhorro(servicio) }))
+    .filter((servicio) => servicio.data);
+}
+
+function calcularAhorroSeleccionado() {
+  const seleccionados = obtenerServiciosAhorroSeleccionados();
+  const normal = seleccionados.reduce((acc, item) => acc + Number(item.precioNormal), 0);
+  const subtotal = seleccionados.reduce((acc, item) => acc + Number(item.data.plan.precio), 0);
+  const descuento = subtotal * 0.15;
+  const base = Math.max(subtotal - descuento, 0);
+  const iva = base * Number(CONFIG.ivaPorcentaje || 0);
+  const total = base + iva;
+  const ahorro = Math.max(normal - total, 0);
+
+  return { seleccionados, normal, subtotal, descuento, iva, total, ahorro };
+}
+
+function actualizarCalculadoraAhorro() {
+  const totales = calcularAhorroSeleccionado();
+  actualizarTexto("ahorro-normal", formatearPrecio(totales.normal));
+  actualizarTexto("ahorro-subtotal", formatearPrecio(totales.subtotal));
+  actualizarTexto("ahorro-cupon", `- ${formatearPrecio(totales.descuento)}`);
+  actualizarTexto("ahorro-iva", formatearPrecio(totales.iva));
+  actualizarTexto("ahorro-total", formatearPrecio(totales.total));
+  actualizarTexto("ahorro-total-ahorrado", formatearPrecio(totales.ahorro));
+}
+
+function enviarAhorroWhatsApp() {
+  const totales = calcularAhorroSeleccionado();
+  if (!totales.seleccionados.length) return mostrarToast("Selecciona al menos un servicio para consultar.", "error");
+
+  const servicios = totales.seleccionados
+    .map((item) => `• ${item.nombre} (${item.data.plan.tipo})`)
+    .join("\n");
+
+  const mensaje = encodeURIComponent(
+    `Hola, deseo consultar este combo simulado:\n${servicios}\n\nSubtotal Click TV: $${totales.subtotal.toFixed(2)} USD\nCupón simulado 15%: -$${totales.descuento.toFixed(2)} USD\nIVA Ecuador: $${totales.iva.toFixed(2)} USD\nTotal estimado: $${totales.total.toFixed(2)} USD\nAhorro aproximado: $${totales.ahorro.toFixed(2)} USD\n\nPor favor confirmar disponibilidad y precio final.`
+  );
+
+  window.open(`${CONFIG.whatsappLink}?text=${mensaje}`, "_blank", "noopener,noreferrer");
+}
+
+// ---------------------------------------------------------------------------
 // CUPONES
 // ---------------------------------------------------------------------------
 function aplicarCupon() {
@@ -960,7 +1070,8 @@ function actualizarDetallePagoCarrito() {
 function generarResumenPedido() {
   const resumen = carrito.map((item) => `• ${item.nombre} (${item.plan}) x${item.cantidad}`).join("\n");
   const totales = calcularTotales();
-  return `Hola, quiero finalizar mi compra:\n${resumen}\n\nMétodo elegido: ${obtenerNombreMetodoPago(metodoPagoActual)}\nSubtotal: $${totales.subtotal.toFixed(2)} USD\nDescuento aplicado: $${totales.descuento.toFixed(2)} USD\nIVA 15% cuando aplica: $${totales.iva.toFixed(2)} USD\nTotal: $${totales.total.toFixed(2)} USD${cuponAplicado ? `\nCupón: ${cuponAplicado.codigo} (no aplica a recargas o combos oficiales de operadora)` : ""}\n\nPor favor confirmar disponibilidad y pasos para activar.`;
+  const ivaEtiqueta = Math.round(CONFIG.ivaPorcentaje * 100);
+  return `Hola, quiero finalizar mi compra:\n${resumen}\n\nMétodo elegido: ${obtenerNombreMetodoPago(metodoPagoActual)}\nSubtotal: $${totales.subtotal.toFixed(2)} USD\nDescuento aplicado: $${totales.descuento.toFixed(2)} USD\nIVA ${ivaEtiqueta}% Ecuador cuando aplica: $${totales.iva.toFixed(2)} USD\nTotal: $${totales.total.toFixed(2)} USD${cuponAplicado ? `\nCupón: ${cuponAplicado.codigo} (no aplica a recargas o combos oficiales de operadora)` : ""}\n\nPor favor confirmar disponibilidad y pasos para activar.`;
 }
 
 function enviarPedidoWhatsApp() {
