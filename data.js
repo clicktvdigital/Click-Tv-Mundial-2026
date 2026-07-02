@@ -110,36 +110,36 @@ const PRODUCTOS = [
     nombre: "Paramount+",
     categoria: "streaming",
     icono: "🔵",
-    descripcion: "Streaming premium con películas, series y deportes seleccionados.",
+    descripcion: "Plataforma para ver películas, series, realities, contenido familiar y deportes seleccionados. Ideal para entretenimiento diario desde Smart TV, celular o navegador.",
     etiquetas: ["⚽ IDEAL PARA EL MUNDIAL", "🔥 MÁS VENDIDO"],
-    planes: [{ tipo: "1 mes", precio: 5 }]
+    planes: [{ tipo: "1 mes", precio: 5, ivaIncluido: true }]
   },
   {
     id: "disney-premium",
     nombre: "Disney+ Premium",
     categoria: "streaming",
     icono: "🟣",
-    descripcion: "Disney+, Marvel, Star Wars, Pixar, National Geographic y contenido premium.",
+    descripcion: "Acceso premium para ver Disney, Marvel, Star Wars, Pixar, National Geographic y contenido familiar en alta calidad.",
     etiquetas: ["⭐ RECOMENDADO", "💎 PREMIUM"],
-    planes: [{ tipo: "1 mes", precio: 9 }]
+    planes: [{ tipo: "1 mes", precio: 9, ivaIncluido: true }]
   },
   {
     id: "disney-estandar",
     nombre: "Disney Estándar sin ESPN",
     categoria: "streaming",
     icono: "🏰",
-    descripcion: "Disney Estándar sin ESPN, ideal para películas y series familiares.",
+    descripcion: "Plan enfocado en películas, series y contenido familiar de Disney. No incluye ESPN, ideal si solo necesitas entretenimiento.",
     etiquetas: ["⭐ RECOMENDADO"],
-    planes: [{ tipo: "1 mes", precio: 5 }]
+    planes: [{ tipo: "1 mes", precio: 5, ivaIncluido: true }]
   },
   {
     id: "dazn",
     nombre: "DAZN",
     categoria: "deportes",
     icono: "🔴",
-    descripcion: "Deportes, boxeo, fútbol internacional y eventos en vivo.",
+    descripcion: "Servicio deportivo para ver eventos en vivo, fútbol internacional, boxeo y programación deportiva según disponibilidad de la plataforma.",
     etiquetas: ["⚽ IDEAL PARA EL MUNDIAL"],
-    planes: [{ tipo: "1 mes", precio: 10 }]
+    planes: [{ tipo: "1 mes", precio: 10, ivaIncluido: true }]
   },
   {
     id: "zapping-pro",
@@ -158,11 +158,11 @@ const PRODUCTOS = [
     nombre: "DIRECTV GO",
     categoria: "streaming",
     icono: "⚪",
-    descripcion: "TV en vivo, deportes, entretenimiento y canales premium.",
+    descripcion: "TV en vivo por internet con canales deportivos, entretenimiento, noticias y programación premium desde dispositivos compatibles.",
     etiquetas: ["💎 PREMIUM"],
     planes: [
-      { tipo: "1 dispositivo", precio: 15 },
-      { tipo: "Cuenta completa", precio: 25 }
+      { tipo: "1 dispositivo", precio: 15, ivaIncluido: true },
+      { tipo: "Cuenta completa", precio: 25, ivaIncluido: true }
     ]
   },
   {
@@ -170,13 +170,13 @@ const PRODUCTOS = [
     nombre: "Netflix Compartido",
     categoria: "streaming",
     icono: "🔴",
-    descripcion: "Netflix compartido con acceso estable y soporte durante el servicio.",
+    descripcion: "Perfil compartido para ver series, películas, documentales y estrenos de Netflix con soporte durante el periodo contratado.",
     etiquetas: ["🔥 MÁS VENDIDO"],
     planes: [
-      { tipo: "1 mes", precio: 4 },
-      { tipo: "3 meses", precio: 12 },
-      { tipo: "6 meses", precio: 24 },
-      { tipo: "12 meses", precio: 48 }
+      { tipo: "1 mes", precio: 4, ivaIncluido: true },
+      { tipo: "3 meses", precio: 12, ivaIncluido: true },
+      { tipo: "6 meses", precio: 24, ivaIncluido: true },
+      { tipo: "12 meses", precio: 48, ivaIncluido: true }
     ]
   },
   {
@@ -184,13 +184,13 @@ const PRODUCTOS = [
     nombre: "Netflix Perfil Extra",
     categoria: "streaming",
     icono: "🟡",
-    descripcion: "Perfil extra de Netflix con mayor estabilidad de uso.",
+    descripcion: "Perfil extra con mejor estabilidad de uso para ver Netflix en un entorno más ordenado y con menor riesgo de cruces de acceso.",
     etiquetas: ["⭐ RECOMENDADO", "💎 PREMIUM"],
     planes: [
-      { tipo: "1 mes", precio: 6 },
-      { tipo: "3 meses", precio: 18 },
-      { tipo: "6 meses", precio: 36 },
-      { tipo: "12 meses", precio: 72 }
+      { tipo: "1 mes", precio: 6, ivaIncluido: true },
+      { tipo: "3 meses", precio: 18, ivaIncluido: true },
+      { tipo: "6 meses", precio: 36, ivaIncluido: true },
+      { tipo: "12 meses", precio: 72, ivaIncluido: true }
     ]
   },
   {
@@ -198,13 +198,13 @@ const PRODUCTOS = [
     nombre: "Max",
     categoria: "streaming",
     icono: "🟣",
-    descripcion: "Series, películas, estrenos y entretenimiento premium.",
+    descripcion: "Plataforma para ver series, películas, estrenos, documentales y contenido premium de entretenimiento.",
     etiquetas: ["⭐ RECOMENDADO"],
     planes: [
-      { tipo: "1 mes", precio: 3 },
-      { tipo: "3 meses", precio: 8 },
-      { tipo: "6 meses", precio: 15 },
-      { tipo: "12 meses", precio: 25 }
+      { tipo: "1 mes", precio: 3, ivaIncluido: true },
+      { tipo: "3 meses", precio: 8, ivaIncluido: true },
+      { tipo: "6 meses", precio: 15, ivaIncluido: true },
+      { tipo: "12 meses", precio: 25, ivaIncluido: true }
     ]
   },
   {
@@ -212,13 +212,13 @@ const PRODUCTOS = [
     nombre: "Prime Video",
     categoria: "streaming",
     icono: "🔵",
-    descripcion: "Películas, series originales y contenido exclusivo.",
+    descripcion: "Servicio para ver películas, series originales, estrenos y contenido exclusivo de Amazon Prime Video.",
     etiquetas: ["🔥 MÁS VENDIDO"],
     planes: [
-      { tipo: "1 mes", precio: 3 },
-      { tipo: "3 meses", precio: 8 },
-      { tipo: "6 meses", precio: 15 },
-      { tipo: "12 meses", precio: 25 }
+      { tipo: "1 mes", precio: 3, ivaIncluido: true },
+      { tipo: "3 meses", precio: 8, ivaIncluido: true },
+      { tipo: "6 meses", precio: 15, ivaIncluido: true },
+      { tipo: "12 meses", precio: 25, ivaIncluido: true }
     ]
   },
   {
@@ -226,11 +226,11 @@ const PRODUCTOS = [
     nombre: "Apple TV",
     categoria: "streaming",
     icono: "⚪",
-    descripcion: "Contenido original, series, películas y estrenos Apple.",
+    descripcion: "Contenido original de Apple, series exclusivas, películas y estrenos para ver en dispositivos compatibles.",
     etiquetas: ["💎 PREMIUM"],
     planes: [
-      { tipo: "1 dispositivo", precio: 3 },
-      { tipo: "Cuenta completa", precio: 5 }
+      { tipo: "1 dispositivo", precio: 3, ivaIncluido: true },
+      { tipo: "Cuenta completa", precio: 5, ivaIncluido: true }
     ]
   },
   {
@@ -238,13 +238,13 @@ const PRODUCTOS = [
     nombre: "Crunchyroll",
     categoria: "streaming",
     icono: "🟠",
-    descripcion: "Anime, estrenos, temporadas completas y contenido japonés.",
+    descripcion: "Servicio especializado en anime, estrenos, temporadas completas, simulcast y contenido japonés para fanáticos del anime.",
     etiquetas: ["⭐ RECOMENDADO"],
     planes: [
-      { tipo: "1 mes", precio: 3 },
-      { tipo: "3 meses", precio: 8 },
-      { tipo: "6 meses", precio: 15 },
-      { tipo: "12 meses", precio: 25 }
+      { tipo: "1 mes", precio: 3, ivaIncluido: true },
+      { tipo: "3 meses", precio: 8, ivaIncluido: true },
+      { tipo: "6 meses", precio: 15, ivaIncluido: true },
+      { tipo: "12 meses", precio: 25, ivaIncluido: true }
     ]
   },
   {
@@ -252,13 +252,13 @@ const PRODUCTOS = [
     nombre: "VIX Premium",
     categoria: "streaming",
     icono: "⚫",
-    descripcion: "Películas, novelas, series, deportes y contenido latino.",
+    descripcion: "Contenido latino con películas, novelas, series, realities, deportes y entretenimiento en español.",
     etiquetas: ["🔥 MÁS VENDIDO"],
     planes: [
-      { tipo: "1 mes", precio: 3 },
-      { tipo: "3 meses", precio: 8 },
-      { tipo: "6 meses", precio: 15 },
-      { tipo: "12 meses", precio: 25 }
+      { tipo: "1 mes", precio: 3, ivaIncluido: true },
+      { tipo: "3 meses", precio: 8, ivaIncluido: true },
+      { tipo: "6 meses", precio: 15, ivaIncluido: true },
+      { tipo: "12 meses", precio: 25, ivaIncluido: true }
     ]
   },
   {
@@ -266,12 +266,12 @@ const PRODUCTOS = [
     nombre: "IPTV Básico",
     categoria: "iptv",
     icono: "📺",
-    descripcion: "TV en vivo, películas, series y deportes en paquete básico.",
+    descripcion: "Servicio IPTV básico para ver TV en vivo, películas, series y deportes desde apps compatibles en Android, TV Box o Smart TV.",
     etiquetas: ["⚽ IDEAL PARA EL MUNDIAL"],
     planes: [
-      { tipo: "1 dispositivo", precio: 3, dispositivos: 1 },
-      { tipo: "2 dispositivos", precio: 5, dispositivos: 2 },
-      { tipo: "3 dispositivos", precio: 7, dispositivos: 3 }
+      { tipo: "1 dispositivo", precio: 3, dispositivos: 1, ivaIncluido: true },
+      { tipo: "2 dispositivos", precio: 5, dispositivos: 2, ivaIncluido: true },
+      { tipo: "3 dispositivos", precio: 7, dispositivos: 3, ivaIncluido: true }
     ]
   },
   {
@@ -279,12 +279,12 @@ const PRODUCTOS = [
     nombre: "IPTV Premium",
     categoria: "iptv",
     icono: "📺",
-    descripcion: "Paquete premium con TV en vivo, VOD, películas, series y deportes.",
+    descripcion: "Paquete IPTV premium con canales en vivo, contenido VOD, películas, series y deportes para una experiencia más completa.",
     etiquetas: ["🔥 MÁS VENDIDO", "⚽ IDEAL PARA EL MUNDIAL"],
     planes: [
-      { tipo: "1 dispositivo", precio: 5, dispositivos: 1 },
-      { tipo: "2 dispositivos", precio: 10, dispositivos: 2 },
-      { tipo: "3 dispositivos", precio: 15, dispositivos: 3 }
+      { tipo: "1 dispositivo", precio: 5, dispositivos: 1, ivaIncluido: true },
+      { tipo: "2 dispositivos", precio: 10, dispositivos: 2, ivaIncluido: true },
+      { tipo: "3 dispositivos", precio: 15, dispositivos: 3, ivaIncluido: true }
     ]
   },
   {
@@ -292,12 +292,12 @@ const PRODUCTOS = [
     nombre: "IPTV Ultra",
     categoria: "iptv",
     icono: "📺",
-    descripcion: "Experiencia superior para ver Mundial 2026, deportes, series y películas.",
+    descripcion: "Plan IPTV superior para usuarios que buscan más estabilidad, más contenido y mejor experiencia en deportes, películas y series.",
     etiquetas: ["💎 PREMIUM", "⚽ IDEAL PARA EL MUNDIAL"],
     planes: [
-      { tipo: "1 dispositivo", precio: 7, dispositivos: 1 },
-      { tipo: "2 dispositivos", precio: 14, dispositivos: 2 },
-      { tipo: "3 dispositivos", precio: 21, dispositivos: 3 }
+      { tipo: "1 dispositivo", precio: 7, dispositivos: 1, ivaIncluido: true },
+      { tipo: "2 dispositivos", precio: 14, dispositivos: 2, ivaIncluido: true },
+      { tipo: "3 dispositivos", precio: 21, dispositivos: 3, ivaIncluido: true }
     ]
   },
   {
@@ -305,11 +305,11 @@ const PRODUCTOS = [
     nombre: "IBO Player",
     categoria: "iptv",
     icono: "📡",
-    descripcion: "Licencia compatible con Android, Android TV, LG WebOS, Samsung Tizen, Fire TV, iPhone, iPad, Windows y Mac.",
+    descripcion: "Licencia de reproductor IPTV compatible con Android, Android TV, LG WebOS, Samsung Tizen, Fire TV, iPhone, iPad, Windows y Mac.",
     etiquetas: ["💎 PREMIUM"],
     planes: [
-      { tipo: "Licencia anual", precio: 10 },
-      { tipo: "Licencia permanente", precio: 20 }
+      { tipo: "Licencia anual", precio: 10, ivaIncluido: true },
+      { tipo: "Licencia permanente", precio: 20, ivaIncluido: true }
     ]
   },
   {
@@ -326,12 +326,12 @@ const PRODUCTOS = [
     nombre: "Spotify Premium",
     categoria: "musica",
     icono: "🎵",
-    descripcion: "Música sin anuncios, descargas y reproducción offline.",
+    descripcion: "Música sin anuncios, descargas, reproducción offline y mejor experiencia para escuchar playlists, álbumes y podcasts.",
     etiquetas: ["⭐ RECOMENDADO"],
     planes: [
-      { tipo: "3 meses", precio: 5 },
-      { tipo: "6 meses", precio: 10 },
-      { tipo: "12 meses", precio: 15 }
+      { tipo: "3 meses", precio: 5, ivaIncluido: true },
+      { tipo: "6 meses", precio: 10, ivaIncluido: true },
+      { tipo: "12 meses", precio: 15, ivaIncluido: true }
     ]
   },
   {
@@ -339,16 +339,16 @@ const PRODUCTOS = [
     nombre: "Deezer",
     categoria: "musica",
     icono: "🎧",
-    descripcion: "Música premium en un dispositivo.",
+    descripcion: "Servicio musical premium para escuchar canciones, playlists y contenido de audio con mejor experiencia en un dispositivo.",
     etiquetas: ["⭐ RECOMENDADO"],
-    planes: [{ tipo: "1 dispositivo", precio: 5 }]
+    planes: [{ tipo: "1 dispositivo", precio: 5, ivaIncluido: true }]
   },
   {
     id: "canva-pro",
     nombre: "Canva Pro",
     categoria: "apps",
     icono: "🎨",
-    descripcion: "Plantillas premium, fondos removibles y herramientas Pro.",
+    descripcion: "Herramienta de diseño para crear flyers, logos, publicaciones, presentaciones y contenido visual con plantillas premium y funciones Pro.",
     etiquetas: ["💎 PREMIUM"],
     planes: [{ tipo: "Consultar disponibilidad", precio: 0, consultar: true }]
   },
@@ -357,7 +357,7 @@ const PRODUCTOS = [
     nombre: "Duolingo",
     categoria: "apps",
     icono: "🎓",
-    descripcion: "Plan premium para aprendizaje de idiomas.",
+    descripcion: "Plan premium para aprender idiomas con ejercicios, práctica diaria, avance guiado y funciones adicionales según disponibilidad del servicio.",
     etiquetas: ["⭐ RECOMENDADO"],
     planes: [{ tipo: "Consultar disponibilidad", precio: 0, consultar: true }]
   },
@@ -366,7 +366,7 @@ const PRODUCTOS = [
     nombre: "ChatGPT",
     categoria: "apps",
     icono: "🤖",
-    descripcion: "Consulta disponibilidad de planes digitales.",
+    descripcion: "Herramienta de inteligencia artificial para estudiar, redactar, resolver dudas, crear contenido y mejorar productividad. Consulta disponibilidad de planes.",
     etiquetas: ["💎 PREMIUM"],
     planes: [{ tipo: "Consultar disponibilidad", precio: 0, consultar: true }]
   },
