@@ -652,6 +652,22 @@ const MUNDIAL_2026 = [
         fechaUTC: "2026-07-04T01:30:00Z",
         sede: "Sede por confirmar",
         etapa: "Dieciseisavos de final"
+      },
+      {
+        grupo: "Domingo 5 de julio",
+        local: "Brasil",
+        visitante: "Noruega",
+        fechaUTC: "2026-07-05T20:00:00Z",
+        sede: "New York New Jersey Stadium / MetLife Stadium",
+        etapa: "Octavos de final"
+      },
+      {
+        grupo: "Domingo 5 de julio",
+        local: "México",
+        visitante: "Inglaterra",
+        fechaUTC: "2026-07-06T00:00:00Z",
+        sede: "Mexico City Stadium / Estadio Azteca",
+        etapa: "Octavos de final"
       }
     ]
   }

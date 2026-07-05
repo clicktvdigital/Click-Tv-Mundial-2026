@@ -189,20 +189,12 @@ function inicializarRadioLaRed() {
   const radioStatus = document.getElementById("radio-status");
   if (!radioPlayer || typeof CONFIG === "undefined" || !CONFIG.radioStreamUrl) return;
 
-  const streamUrl = CONFIG.radioStreamUrl;
   let usuarioQuiereRadio = false;
-  let reconexionTimer = null;
-  let avisoConexionTimer = null;
+  let temporizadorReconexion = null;
 
   radioPlayer.preload = "none";
-  radioPlayer.setAttribute("playsinline", "");
-  radioPlayer.dataset.stream = streamUrl;
-
-  // IMPORTANTE:
-  // Dejamos el SRC puesto desde el inicio para que el botón nativo tenga una señal lista.
-  // Pero mantenemos preload="none" para que NO intente conectarse automáticamente al abrir la página.
-  if (radioPlayer.src !== streamUrl) {
-    radioPlayer.src = streamUrl;
+  if (!radioPlayer.getAttribute("src")) {
+    radioPlayer.src = CONFIG.radioStreamUrl;
   }
 
   configurarMediaSessionRadio(radioPlayer);
@@ -211,117 +203,60 @@ function inicializarRadioLaRed() {
     if (radioStatus) radioStatus.textContent = mensaje;
   };
 
-  const asegurarFuenteRadio = () => {
-    if (!radioPlayer.getAttribute("src")) {
-      radioPlayer.src = radioPlayer.dataset.stream || streamUrl;
+  const reproducirRadio = async () => {
+    usuarioQuiereRadio = true;
+    actualizarEstadoRadio("Cargando señal en vivo...");
+
+    try {
+      await radioPlayer.play();
+    } catch {
+      actualizarEstadoRadio("Presiona reproducir para reactivar la señal.");
     }
   };
 
-  const limpiarTimersRadio = () => {
-    clearTimeout(reconexionTimer);
-    clearTimeout(avisoConexionTimer);
-  };
-
-  const programarAvisoConexion = () => {
-    clearTimeout(avisoConexionTimer);
-    avisoConexionTimer = setTimeout(() => {
-      if (usuarioQuiereRadio && !radioPlayer.paused && radioPlayer.readyState < 2) {
-        actualizarEstadoRadio("Conectando con La Red 102.1 FM... un momento.");
-      }
-    }, 1800);
-  };
-
-  const intentarReproducir = () => {
-    usuarioQuiereRadio = true;
-    asegurarFuenteRadio();
-    actualizarEstadoRadio("Conectando con La Red 102.1 FM...");
-    programarAvisoConexion();
-
-    return radioPlayer.play().catch(() => {
-      actualizarEstadoRadio("Presiona reproducir para iniciar la señal.");
-    });
-  };
-
-  const reiniciarFuenteRadio = () => {
-    const stream = radioPlayer.dataset.stream || streamUrl;
-    radioPlayer.pause();
-    radioPlayer.removeAttribute("src");
-    try { radioPlayer.load(); } catch {}
-    radioPlayer.src = stream;
-  };
-
-  const reconectarRadio = () => {
+  const reconectarRadio = async () => {
     if (!usuarioQuiereRadio) return;
-    clearTimeout(reconexionTimer);
+    clearTimeout(temporizadorReconexion);
     actualizarEstadoRadio("Reconectando señal en vivo...");
-    reiniciarFuenteRadio();
-    setTimeout(intentarReproducir, 350);
+
+    const estabaEnSilencio = radioPlayer.muted;
+    const volumen = radioPlayer.volume;
+    radioPlayer.src = `${CONFIG.radioStreamUrl}?t=${Date.now()}`;
+    radioPlayer.load();
+    radioPlayer.muted = estabaEnSilencio;
+    radioPlayer.volume = volumen;
+
+    await reproducirRadio();
   };
 
   const programarReconexionRadio = () => {
     if (!usuarioQuiereRadio) return;
-    clearTimeout(reconexionTimer);
-    reconexionTimer = setTimeout(reconectarRadio, 5000);
+    clearTimeout(temporizadorReconexion);
+    temporizadorReconexion = setTimeout(reconectarRadio, 2500);
   };
 
-  // No llamamos load() en play ni en touchstart.
-  // Eso era lo que hacía que el primer toque se quedara cargando y recién funcionara al segundo toque.
   radioPlayer.addEventListener("play", () => {
     usuarioQuiereRadio = true;
-    asegurarFuenteRadio();
-    actualizarEstadoRadio("Conectando con La Red 102.1 FM...");
-    programarAvisoConexion();
+    actualizarEstadoRadio("Cargando señal en vivo...");
   });
 
   radioPlayer.addEventListener("playing", () => {
-    limpiarTimersRadio();
+    clearTimeout(temporizadorReconexion);
     usuarioQuiereRadio = true;
     actualizarEstadoRadio("Señal en vivo activa.");
   });
 
-  radioPlayer.addEventListener("canplay", () => {
-    if (!usuarioQuiereRadio) return;
-    actualizarEstadoRadio("Señal lista. Reproduciendo en vivo...");
-
-    if (radioPlayer.paused) {
-      radioPlayer.play().catch(() => {
-        actualizarEstadoRadio("Presiona reproducir para iniciar la señal.");
-      });
-    }
-  });
-
-  radioPlayer.addEventListener("waiting", () => {
-    if (!usuarioQuiereRadio) return;
-    actualizarEstadoRadio("Cargando señal en vivo...");
-    programarReconexionRadio();
-  });
-
-  radioPlayer.addEventListener("stalled", () => {
-    if (!usuarioQuiereRadio) return;
-    actualizarEstadoRadio("La señal está tardando. Reintentando conexión...");
-    programarReconexionRadio();
-  });
-
-  radioPlayer.addEventListener("error", () => {
-    if (!usuarioQuiereRadio) {
-      actualizarEstadoRadio("Presiona reproducir para cargar la señal.");
-      return;
-    }
-    actualizarEstadoRadio("No se pudo conectar de inmediato. Reintentando señal...");
-    programarReconexionRadio();
-  });
-
   radioPlayer.addEventListener("pause", () => {
-    clearTimeout(avisoConexionTimer);
     if (!document.hidden) usuarioQuiereRadio = false;
-    actualizarEstadoRadio("Radio pausada. Presiona reproducir para continuar.");
   });
 
+  radioPlayer.addEventListener("waiting", programarReconexionRadio);
+  radioPlayer.addEventListener("stalled", programarReconexionRadio);
   radioPlayer.addEventListener("ended", reconectarRadio);
 
   window.addEventListener("online", reconectarRadio);
   window.addEventListener("pageshow", () => {
-    if (usuarioQuiereRadio && radioPlayer.paused) intentarReproducir();
+    if (usuarioQuiereRadio && radioPlayer.paused) reconectarRadio();
   });
 
   document.addEventListener("visibilitychange", () => {
@@ -331,8 +266,13 @@ function inicializarRadioLaRed() {
     }
 
     if (usuarioQuiereRadio && radioPlayer.paused) {
-      intentarReproducir();
+      reconectarRadio();
     }
+  });
+
+  radioPlayer.addEventListener("error", () => {
+    actualizarEstadoRadio("La radio se cortó o la emisora restringe el acceso. Intentando reconectar...");
+    programarReconexionRadio();
   });
 }
 
@@ -1445,6 +1385,10 @@ function normalizarClaveEquipoMundial(nombre = "") {
     "estados-unidos-de-america": "estados-unidos",
     england: "inglaterra",
     inglaterra: "inglaterra",
+    brazil: "brasil",
+    brasil: "brasil",
+    norway: "noruega",
+    noruega: "noruega",
     "dr-congo": "rd-congo",
     "congo-dr": "rd-congo",
     "rd-congo": "rd-congo",
