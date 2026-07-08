@@ -1439,6 +1439,15 @@ function renderizarBloquesMundial(partidos) {
   let html = bloques.map((bloque) => {
     const items = partidos.filter((p) => fechaDesdeUTCEnEcuador(p.fechaUTC) === bloque.fecha);
     items.forEach((p) => clavesMostradas.add(crearClavePartidoMundial(p)));
+
+    if (!items.length && bloque.fecha === manana) {
+      return crearBloqueSinPartidos(
+        bloque.titulo,
+        "No hay partidos programados para mañana en horario de Ecuador.",
+        "El siguiente partido disponible aparecerá en Próximos partidos."
+      );
+    }
+
     return crearBloquePartidos(bloque.titulo, items);
   }).join("");
 
@@ -1460,6 +1469,22 @@ function crearBloquePartidos(titulo, partidos) {
       <h3>${titulo}</h3>
       <div class="mundial-cards">
         ${partidos.map(crearCardPartido).join("")}
+      </div>
+    </div>
+  `;
+}
+
+function crearBloqueSinPartidos(titulo, mensaje, detalle = "") {
+  return `
+    <div class="mundial-bloque mundial-bloque--vacio">
+      <h3>${titulo}</h3>
+      <div class="mundial-cards">
+        <article class="match-card match-card--empty">
+          <div class="match-status status-scheduled">🟡 Sin partidos</div>
+          <h3>Descanso del Mundial 2026</h3>
+          <p>${mensaje}</p>
+          ${detalle ? `<small>${detalle}</small>` : ""}
+        </article>
       </div>
     </div>
   `;

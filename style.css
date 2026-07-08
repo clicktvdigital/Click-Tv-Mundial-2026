@@ -1870,3 +1870,20 @@ textarea {
   margin: 0 auto;
   line-height: 1.5;
 }
+
+/* Estado sin partidos del Mundial */
+.match-card--empty {
+  text-align: left;
+  border-style: dashed;
+  background: linear-gradient(135deg, rgba(0,255,102,.10), rgba(255,255,255,.035));
+}
+
+.match-card--empty h3 {
+  margin-top: 14px;
+}
+
+.match-card--empty small {
+  display: block;
+  color: var(--muted);
+  margin-top: 8px;
+}

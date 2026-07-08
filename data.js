@@ -659,7 +659,8 @@ const MUNDIAL_2026 = [
         visitante: "Noruega",
         fechaUTC: "2026-07-05T20:00:00Z",
         sede: "New York New Jersey Stadium / MetLife Stadium",
-        etapa: "Octavos de final"
+        etapa: "Octavos de final",
+        marcador: "1 - 2"
       },
       {
         grupo: "Domingo 5 de julio",
@@ -667,7 +668,56 @@ const MUNDIAL_2026 = [
         visitante: "Inglaterra",
         fechaUTC: "2026-07-06T00:00:00Z",
         sede: "Mexico City Stadium / Estadio Azteca",
-        etapa: "Octavos de final"
+        etapa: "Octavos de final",
+        marcador: "2 - 3"
+      },
+      {
+        grupo: "Lunes 6 de julio",
+        local: "Portugal",
+        visitante: "España",
+        fechaUTC: "2026-07-06T19:00:00Z",
+        sede: "Miami Stadium / Hard Rock Stadium",
+        etapa: "Octavos de final",
+        marcador: "0 - 1"
+      },
+      {
+        grupo: "Lunes 6 de julio",
+        local: "Estados Unidos",
+        visitante: "Bélgica",
+        fechaUTC: "2026-07-07T00:00:00Z",
+        sede: "Los Angeles Stadium",
+        etapa: "Octavos de final",
+        marcador: "1 - 4"
+      },
+      {
+        grupo: "Martes 7 de julio",
+        local: "Argentina",
+        visitante: "Egipto",
+        fechaUTC: "2026-07-07T16:00:00Z",
+        sede: "Kansas City Stadium",
+        etapa: "Octavos de final",
+        marcador: "3 - 2"
+      },
+      {
+        grupo: "Martes 7 de julio",
+        local: "Suiza",
+        visitante: "Colombia",
+        fechaUTC: "2026-07-07T20:00:00Z",
+        sede: "Dallas Stadium",
+        etapa: "Octavos de final",
+        marcador: "0 - 0",
+        score: {
+          duration: "PENALTY_SHOOTOUT",
+          penalties: { home: 4, away: 3 }
+        }
+      },
+      {
+        grupo: "Jueves 9 de julio",
+        local: "Francia",
+        visitante: "Marruecos",
+        fechaUTC: "2026-07-09T20:00:00Z",
+        sede: "Sede por confirmar",
+        etapa: "Cuartos de final"
       }
     ]
   }
