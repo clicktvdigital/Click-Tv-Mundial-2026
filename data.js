@@ -652,73 +652,31 @@ const MUNDIAL_2026 = [
         fechaUTC: "2026-07-04T01:30:00Z",
         sede: "Sede por confirmar",
         etapa: "Dieciseisavos de final"
-      },
-      {
-        grupo: "Domingo 5 de julio",
-        local: "Brasil",
-        visitante: "Noruega",
-        fechaUTC: "2026-07-05T20:00:00Z",
-        sede: "New York New Jersey Stadium / MetLife Stadium",
-        etapa: "Octavos de final",
-        marcador: "1 - 2"
-      },
-      {
-        grupo: "Domingo 5 de julio",
-        local: "México",
-        visitante: "Inglaterra",
-        fechaUTC: "2026-07-06T00:00:00Z",
-        sede: "Mexico City Stadium / Estadio Azteca",
-        etapa: "Octavos de final",
-        marcador: "2 - 3"
-      },
-      {
-        grupo: "Lunes 6 de julio",
-        local: "Portugal",
-        visitante: "España",
-        fechaUTC: "2026-07-06T19:00:00Z",
-        sede: "Miami Stadium / Hard Rock Stadium",
-        etapa: "Octavos de final",
-        marcador: "0 - 1"
-      },
-      {
-        grupo: "Lunes 6 de julio",
-        local: "Estados Unidos",
-        visitante: "Bélgica",
-        fechaUTC: "2026-07-07T00:00:00Z",
-        sede: "Los Angeles Stadium",
-        etapa: "Octavos de final",
-        marcador: "1 - 4"
-      },
-      {
-        grupo: "Martes 7 de julio",
-        local: "Argentina",
-        visitante: "Egipto",
-        fechaUTC: "2026-07-07T16:00:00Z",
-        sede: "Kansas City Stadium",
-        etapa: "Octavos de final",
-        marcador: "3 - 2"
-      },
-      {
-        grupo: "Martes 7 de julio",
-        local: "Suiza",
-        visitante: "Colombia",
-        fechaUTC: "2026-07-07T20:00:00Z",
-        sede: "Dallas Stadium",
-        etapa: "Octavos de final",
-        marcador: "0 - 0",
-        score: {
-          duration: "PENALTY_SHOOTOUT",
-          penalties: { home: 4, away: 3 }
-        }
-      },
-      {
-        grupo: "Jueves 9 de julio",
-        local: "Francia",
-        visitante: "Marruecos",
-        fechaUTC: "2026-07-09T20:00:00Z",
-        sede: "Sede por confirmar",
-        etapa: "Cuartos de final"
       }
+      ,
+      {
+        grupo: "Sábado 11 de julio",
+        local: "Noruega",
+        visitante: "Inglaterra",
+        codigoLocal: "NOR",
+        codigoVisitante: "ENG",
+        fechaUTC: "2026-07-11T21:00:00Z",
+        sede: "New York New Jersey Stadium",
+        etapa: "Cuartos de final",
+        statusRaw: "SCHEDULED"
+      },
+      {
+        grupo: "Sábado 11 de julio",
+        local: "Argentina",
+        visitante: "Suiza",
+        codigoLocal: "ARG",
+        codigoVisitante: "SUI",
+        fechaUTC: "2026-07-12T01:00:00Z",
+        sede: "Miami Stadium",
+        etapa: "Cuartos de final",
+        statusRaw: "SCHEDULED"
+      }
+
     ]
   }
 ];

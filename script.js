@@ -1385,10 +1385,6 @@ function normalizarClaveEquipoMundial(nombre = "") {
     "estados-unidos-de-america": "estados-unidos",
     england: "inglaterra",
     inglaterra: "inglaterra",
-    brazil: "brasil",
-    brasil: "brasil",
-    norway: "noruega",
-    noruega: "noruega",
     "dr-congo": "rd-congo",
     "congo-dr": "rd-congo",
     "rd-congo": "rd-congo",
@@ -1414,7 +1410,28 @@ function normalizarClaveEquipoMundial(nombre = "") {
     "cabo-verde-islands": "cabo-verde",
     "cabo-verde": "cabo-verde",
     mexico: "mexico",
-    ecuador: "ecuador"
+    ecuador: "ecuador",
+    argentina: "argentina",
+    suiza: "suiza",
+    switzerland: "suiza",
+    norway: "noruega",
+    noruega: "noruega",
+    brazil: "brasil",
+    brasil: "brasil",
+    japan: "japon",
+    japon: "japon",
+    france: "francia",
+    francia: "francia",
+    morocco: "marruecos",
+    marruecos: "marruecos",
+    spain: "espana",
+    espana: "espana",
+    portugal: "portugal",
+    croatia: "croacia",
+    croacia: "croacia",
+    senegal: "senegal",
+    egypt: "egipto",
+    egipto: "egipto"
   };
 
   return alias[clave] || clave;
@@ -1439,15 +1456,6 @@ function renderizarBloquesMundial(partidos) {
   let html = bloques.map((bloque) => {
     const items = partidos.filter((p) => fechaDesdeUTCEnEcuador(p.fechaUTC) === bloque.fecha);
     items.forEach((p) => clavesMostradas.add(crearClavePartidoMundial(p)));
-
-    if (!items.length && bloque.fecha === manana) {
-      return crearBloqueSinPartidos(
-        bloque.titulo,
-        "No hay partidos programados para mañana en horario de Ecuador.",
-        "El siguiente partido disponible aparecerá en Próximos partidos."
-      );
-    }
-
     return crearBloquePartidos(bloque.titulo, items);
   }).join("");
 
@@ -1469,22 +1477,6 @@ function crearBloquePartidos(titulo, partidos) {
       <h3>${titulo}</h3>
       <div class="mundial-cards">
         ${partidos.map(crearCardPartido).join("")}
-      </div>
-    </div>
-  `;
-}
-
-function crearBloqueSinPartidos(titulo, mensaje, detalle = "") {
-  return `
-    <div class="mundial-bloque mundial-bloque--vacio">
-      <h3>${titulo}</h3>
-      <div class="mundial-cards">
-        <article class="match-card match-card--empty">
-          <div class="match-status status-scheduled">🟡 Sin partidos</div>
-          <h3>Descanso del Mundial 2026</h3>
-          <p>${mensaje}</p>
-          ${detalle ? `<small>${detalle}</small>` : ""}
-        </article>
       </div>
     </div>
   `;
