@@ -1,0 +1,18 @@
+.team-flag--uniforme {
+  width: 34px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  line-height: 1;
+  vertical-align: middle;
+}
+
+@media (max-width: 720px) {
+  .team-flag--uniforme {
+    width: 30px;
+    height: 24px;
+    font-size: 23px;
+  }
+}

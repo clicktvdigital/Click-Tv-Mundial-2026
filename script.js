@@ -1526,7 +1526,7 @@ function crearCardPartido(p) {
 }
 function crearNombreEquipoConBandera(nombre, codigo = "") {
   const bandera = obtenerBanderaEquipo(nombre, codigo);
-  return `<span class="team-name">${bandera ? `<span class="team-flag">${bandera}</span>` : ""}${nombre}</span>`;
+  return `<span class="team-name">${bandera ? `<span class="team-flag team-flag--uniforme">${bandera}</span>` : ""}${nombre}</span>`;
 }
 
 function obtenerBanderaEquipo(nombre = "", codigo = "") {
