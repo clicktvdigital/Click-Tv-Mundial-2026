@@ -1,0 +1,42 @@
+CLICK TV STREAMING — REPARACIÓN V11
+======================================
+
+ESTE PARCHE NO TOCA LA RADIO.
+
+PROBLEMA 1 — MUNDIAL
+La versión actual muestra el error apenas falla Football-Data, aunque ya existe un
+calendario local MUNDIAL_2026. La corrección hace que la web use ese respaldo y
+mantenga visibles los partidos mientras la API vuelve a responder.
+
+PASOS:
+1. Abre script.js.
+2. Busca: async function renderMundial(silencioso = false)
+3. Reemplaza esa función completa por el contenido de:
+   PARCHE-script-renderMundial.js
+
+PROBLEMA 2 — WHATSAPP SIN IMAGEN
+El HTML apunta a una imagen Open Graph, pero WhatsApp necesita que el archivo exista
+realmente en la raíz pública y que tenga una URL nueva para evitar la caché vieja.
+
+PASOS:
+1. Sube og-clicktv-v11.jpg a la raíz del proyecto, junto a index.html.
+2. Abre index.html.
+3. Reemplaza el bloque Open Graph y Twitter por:
+   PARCHE-index-OpenGraph.html
+4. Publica nuevamente en Vercel.
+5. Verifica que abra directamente:
+   https://click-tv-mundial.vercel.app/og-clicktv-v11.jpg
+6. Para probar una vista previa nueva en WhatsApp, envía:
+   https://click-tv-mundial.vercel.app/?v=11
+
+SEGURIDAD / API
+El token de Football-Data no debe quedar visible dentro de data.js. La carpeta api/
+incluye una función opcional para Vercel. Configura en Vercel:
+FOOTBALL_DATA_TOKEN = tu token vigente
+
+Luego aplica PARCHE-data-api-proxy.txt.
+
+IMPORTANTE
+- No borres MUNDIAL_2026 de data.js.
+- No reemplaces el código de la radio.
+- La imagen tiene 1200 × 630 px y formato JPG, adecuado para vista previa.

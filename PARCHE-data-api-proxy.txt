@@ -1,0 +1,10 @@
+// OPCIONAL: después de subir /api/mundial.js y configurar FOOTBALL_DATA_TOKEN,
+// cambia SOLO estas dos líneas dentro de CONFIG en data.js:
+
+footballDataApiUrl: "/api/mundial",
+footballDataApiToken: "",
+
+// Luego, en obtenerPartidosFootballData(), deja los headers así:
+// headers: CONFIG.footballDataApiToken
+//   ? { "X-Auth-Token": CONFIG.footballDataApiToken }
+//   : {}
