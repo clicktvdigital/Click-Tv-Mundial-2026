@@ -1,0 +1,30 @@
+CLICK TV STREAMING - INTEGRACION DE MEJORAS
+
+Base conservada:
+- index.html
+- style.css
+- responsive.css
+- data.js
+- catalogo.js
+- script.js
+
+Mejoras a integrar sobre esta base:
+1. Radio La Red:
+   - carga inicial optimizada.
+   - recuperación automática.
+   - evitar doble clic.
+   - mejor compatibilidad móvil.
+
+2. Mundial 2026:
+   - evitar duplicados.
+   - estados automaticos.
+   - banderas.
+   - horario Ecuador.
+   - marcador API + respaldo.
+
+3. Mantener intacto:
+   - catálogo.
+   - carrito.
+   - pagos.
+   - cupones.
+   - responsive.
