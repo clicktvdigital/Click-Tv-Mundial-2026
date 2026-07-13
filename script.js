@@ -191,8 +191,9 @@ function inicializarRadioLaRed() {
 
   let usuarioQuiereRadio = false;
   let temporizadorReconexion = null;
+  let reconexionEnCurso = false;
 
-  radioPlayer.preload = "none";
+  radioPlayer.preload = "auto";
   if (!radioPlayer.getAttribute("src")) {
     radioPlayer.src = CONFIG.radioStreamUrl;
   }
@@ -215,18 +216,20 @@ function inicializarRadioLaRed() {
   };
 
   const reconectarRadio = async () => {
-    if (!usuarioQuiereRadio) return;
+    if (!usuarioQuiereRadio || reconexionEnCurso) return;
+    reconexionEnCurso = true;
     clearTimeout(temporizadorReconexion);
     actualizarEstadoRadio("Reconectando señal en vivo...");
 
     const estabaEnSilencio = radioPlayer.muted;
     const volumen = radioPlayer.volume;
-    radioPlayer.src = `${CONFIG.radioStreamUrl}?t=${Date.now()}`;
+    radioPlayer.src = CONFIG.radioStreamUrl;
     radioPlayer.load();
     radioPlayer.muted = estabaEnSilencio;
     radioPlayer.volume = volumen;
 
     await reproducirRadio();
+    reconexionEnCurso = false;
   };
 
   const programarReconexionRadio = () => {
