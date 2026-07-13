@@ -1207,6 +1207,7 @@ async function renderMundial(silencioso = false) {
     const partidosLocales = Array.isArray(MUNDIAL_2026) ? normalizarPartidosLocales(MUNDIAL_2026).filter(tieneEquiposReales) : [];
     const partidos = combinarPartidosMundial(partidosApiNormalizados, partidosLocales);
     const html = renderizarBloquesMundial(partidos);
+    iniciarCronometroMundial();
     box.innerHTML = html || `
       <div class="loading-card">
         ⚽ No hay partidos disponibles actualmente.
@@ -1223,18 +1224,18 @@ async function renderMundial(silencioso = false) {
 }
 
 async function obtenerPartidosFootballData() {
-  const respuesta = await fetch("/api/mundial");
+  const params = new URLSearchParams({
+    dateFrom: fechaConsultaMundial(-2),
+    dateTo: fechaConsultaMundial(8)
+  });
 
-  if (!respuesta.ok) {
-    throw new Error(`API Mundial HTTP ${respuesta.status}`);
-  }
+  const respuesta = await fetch(`${CONFIG.footballDataApiUrl}?${params.toString()}`, {
+    headers: { "X-Auth-Token": CONFIG.footballDataApiToken }
+  });
 
+  if (!respuesta.ok) throw new Error(`Football-Data HTTP ${respuesta.status}`);
   const data = await respuesta.json();
-
-  const matches = Array.isArray(data.matches)
-    ? data.matches
-    : [];
-
+  const matches = Array.isArray(data.matches) ? data.matches : [];
   return enriquecerPartidosConDetalle(matches);
 }
 
@@ -1292,6 +1293,8 @@ function normalizarPartidos(matches) {
     visitante: m.awayTeam?.name || m.awayTeam?.shortName || "Equipo visitante",
     codigoLocal: m.homeTeam?.tla || m.homeTeam?.area?.code || "",
     codigoVisitante: m.awayTeam?.tla || m.awayTeam?.area?.code || "",
+    escudoLocal: m.homeTeam?.crest || "",
+    escudoVisitante: m.awayTeam?.crest || "",
     fechaUTC: m.utcDate,
     sede: m.venue || "Sede por confirmar",
     statusRaw: m.status || "",
@@ -1495,35 +1498,32 @@ function crearBloquePartidos(titulo, partidos) {
 
 function crearCardPartido(p) {
   const fecha = new Date(p.fechaUTC);
-  const fechaTexto = formatearFechaPartidoCliente(fecha);
-  const horaTexto = formatearHoraPartidoCliente(fecha);
   const estadoTiempo = obtenerTextoTiempoPartido(p);
   const scoreTexto = obtenerScoreTexto(p, estadoTiempo);
-  const detalleScore = obtenerDetalleScore(p, estadoTiempo);
-  const claseScore = obtenerClaseScorebox(estadoTiempo.estado);
-  const tituloScore = obtenerTituloScorebox(estadoTiempo.estado, p);
-  const local = crearNombreEquipoConBandera(p.local, p.codigoLocal);
-  const visitante = crearNombreEquipoConBandera(p.visitante, p.codigoVisitante);
 
   return `
-    <article class="match-card">
-      <div class="match-card__topline">
-        <span class="status">${estadoTiempo.estado}</span>
-        <div class="match-scorebox ${claseScore}">
-          <span>${tituloScore}</span>
+    <article class="match-card mundial-pantalla-gigante ${estadoTiempo.estado.includes("EN VIVO") ? "mundial-live" : ""}">
+      <div class="mundial-live-status">${estadoTiempo.estado}</div>
+      <p class="match-group">${p.grupo}</p>
+      <div class="mundial-duelo">
+        <div class="mundial-team">
+          ${p.escudoLocal ? `<img class="mundial-escudo" src="${p.escudoLocal}" alt="${p.local}">` : ""}
+          <strong>${p.local}</strong>
+        </div>
+        <div class="mundial-marcador">
           <strong>${scoreTexto}</strong>
-          ${detalleScore ? `<small>${detalleScore}</small>` : ""}
+          <span>${estadoTiempo.detalle}</span>
+          <div class="mundial-cronometro" data-fecha="${p.fechaUTC}">⏱</div>
+        </div>
+        <div class="mundial-team">
+          ${p.escudoVisitante ? `<img class="mundial-escudo" src="${p.escudoVisitante}" alt="${p.visitante}">` : ""}
+          <strong>${p.visitante}</strong>
         </div>
       </div>
-      <p class="match-group">${p.grupo}</p>
-      <h4 class="match-teams">${local} <span>vs</span> ${visitante}</h4>
-      <p class="match-countdown">${estadoTiempo.detalle}</p>
-      <p>📅 ${fechaTexto}</p>
-      <p>⏰ ${horaTexto} ${obtenerEtiquetaHoraCliente()}</p>
+      <p>📅 ${formatearFechaPartidoCliente(fecha)}</p>
+      <p>⏰ ${formatearHoraPartidoCliente(fecha)} ${obtenerEtiquetaHoraCliente()}</p>
       <p>📍 ${p.sede}</p>
-      ${p.etapa ? `<p class="match-score">${p.etapa}</p>` : ""}
-    </article>
-  `;
+    </article>`;
 }
 
 function crearNombreEquipoConBandera(nombre, codigo = "") {
@@ -1535,7 +1535,7 @@ function obtenerBanderaEquipo(nombre = "", codigo = "") {
   const porCodigo = {
     ARG: "🇦🇷", AUS: "🇦🇺", AUT: "🇦🇹", BEL: "🇧🇪", BRA: "🇧🇷", CAN: "🇨🇦",
     CHI: "🇨🇱", CHN: "🇨🇳", CIV: "🇨🇮", COL: "🇨🇴", CPV: "🇨🇻", CRC: "🇨🇷", CRO: "🇭🇷",
-    DEN: "🇩🇰", DZA: "🇩🇿", ECU: "🇪🇨", EGY: "🇪🇬", ENG: "🏴", ESP: "🇪🇸", FRA: "🇫🇷", GER: "🇩🇪",
+    DEN: "🇩🇰", DZA: "🇩🇿", ECU: "🇪🇨", EGY: "🇪🇬", ENG: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", ESP: "🇪🇸", FRA: "🇫🇷", GER: "🇩🇪",
     GHA: "🇬🇭", IRN: "🇮🇷", ITA: "🇮🇹", JPN: "🇯🇵", KOR: "🇰🇷", MAR: "🇲🇦",
     MEX: "🇲🇽", NED: "🇳🇱", NOR: "🇳🇴", PAR: "🇵🇾", POL: "🇵🇱", POR: "🇵🇹",
     QAT: "🇶🇦", SEN: "🇸🇳", SRB: "🇷🇸", SUI: "🇨🇭", SWE: "🇸🇪", URU: "🇺🇾",
@@ -1573,7 +1573,7 @@ function obtenerBanderaEquipo(nombre = "", codigo = "") {
     ecuador: "🇪🇨",
     egipto: "🇪🇬",
     egypt: "🇪🇬",
-    england: "🏴",
+    england: "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
     inglaterra: "🏴",
     espana: "🇪🇸",
     spain: "🇪🇸",
@@ -1880,6 +1880,15 @@ function obtenerNumeroScore(fuente, llaves) {
     if (Number.isFinite(valor)) return valor;
   }
   return null;
+}
+
+
+function iniciarCronometroMundial() {
+  setInterval(() => {
+    document.querySelectorAll(".mundial-cronometro").forEach((el) => {
+      el.textContent = "⏱ " + new Date().toLocaleTimeString("es-EC");
+    });
+  }, 1000);
 }
 
 // ---------------------------------------------------------------------------
