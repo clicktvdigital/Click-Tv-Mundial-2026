@@ -192,9 +192,10 @@ function inicializarRadioLaRed() {
   let usuarioQuiereRadio = false;
   let temporizadorReconexion = null;
 
-  radioPlayer.preload = "none";
+  radioPlayer.preload = "auto";
   if (!radioPlayer.getAttribute("src")) {
     radioPlayer.src = CONFIG.radioStreamUrl;
+    radioPlayer.load();
   }
 
   configurarMediaSessionRadio(radioPlayer);
@@ -232,7 +233,7 @@ function inicializarRadioLaRed() {
   const programarReconexionRadio = () => {
     if (!usuarioQuiereRadio) return;
     clearTimeout(temporizadorReconexion);
-    temporizadorReconexion = setTimeout(reconectarRadio, 2500);
+    temporizadorReconexion = setTimeout(reconectarRadio, 6000);
   };
 
   radioPlayer.addEventListener("play", () => {
@@ -1357,7 +1358,7 @@ function crearClavePartidoMundial(partido) {
   const dia = isNaN(fecha.getTime()) ? partido.fechaUTC : fecha.toISOString().slice(0, 10);
   const local = normalizarClaveEquipoMundial(partido.local || "");
   const visitante = normalizarClaveEquipoMundial(partido.visitante || "");
-  return `${dia}-${local}-${visitante}`;
+  return `${dia}-${local}-${visitante}`.replace(/\s+/g, "-");
 }
 
 function fusionarPartidosMundial(base = {}, nuevo = {}) {
