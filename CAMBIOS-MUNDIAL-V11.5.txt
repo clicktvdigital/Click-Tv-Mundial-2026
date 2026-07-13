@@ -1,0 +1,14 @@
+CLICK TV MUNDIAL V11.5
+Integración real sobre script.js actual.
+
+Modificar:
+- crearCardPartido()
+- crearNombreEquipoConBandera()
+- estilos .match-card del Mundial
+
+Objetivo:
+- escudos API
+- pantalla gigante
+- cronómetro
+- contador próximo partido
+- móvil
