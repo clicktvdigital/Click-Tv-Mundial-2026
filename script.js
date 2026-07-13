@@ -2061,23 +2061,3 @@ function normalizarCuponCodigo(texto) {
     .toUpperCase()
     .replace(/[^A-Z0-9]/g, "");
 }
-
-// ---------------------------------------------------------------------------
-// MEJORA V3 - PRIORIDAD DE ESTADOS MUNDIAL
-// No reemplaza la API ni el render existente.
-// ---------------------------------------------------------------------------
-function ordenarPrioridadEstadoMundial(partidos = []) {
-  const prioridad = {
-    "EN VIVO": 1,
-    "ENTRETIEMPO": 2,
-    "FINALIZADO": 3,
-    "PROXIMO": 4
-  };
-
-  return [...partidos].sort((a, b) => {
-    const pa = prioridad[String(a.estado || "").toUpperCase()] || 9;
-    const pb = prioridad[String(b.estado || "").toUpperCase()] || 9;
-    if (pa !== pb) return pa - pb;
-    return new Date(a.fechaUTC || 0) - new Date(b.fechaUTC || 0);
-  });
-}
