@@ -1215,8 +1215,7 @@ async function renderMundial(silencioso = false) {
       </div>`;
   } catch (error) {
     console.warn("No se pudo cargar Football-Data:", error);
-    const respaldo = renderizarRespaldoMundial();
-    box.innerHTML = respaldo || `
+    box.innerHTML = `
       <div class="loading-card">
         ⚽ No se pudo conectar con la API del Mundial.
         <br>Se reintentará automáticamente.
@@ -1225,10 +1224,6 @@ async function renderMundial(silencioso = false) {
 }
 
 async function obtenerPartidosFootballData() {
-  if (typeof CONFIG === "undefined" || !CONFIG.footballDataApiUrl || !CONFIG.footballDataApiToken) {
-    throw new Error("API Mundial no configurada");
-  }
-
   const params = new URLSearchParams({
     dateFrom: fechaConsultaMundial(-2),
     dateTo: fechaConsultaMundial(8)
@@ -1505,14 +1500,13 @@ function crearCardPartido(p) {
   const fecha = new Date(p.fechaUTC);
   const estadoTiempo = obtenerTextoTiempoPartido(p);
   const scoreTexto = obtenerScoreTexto(p, estadoTiempo);
-
   return `
     <article class="match-card mundial-pantalla-gigante ${estadoTiempo.estado.includes("EN VIVO") ? "mundial-live" : ""}">
       <div class="mundial-live-status">${estadoTiempo.estado}</div>
       <p class="match-group">${p.grupo}</p>
       <div class="mundial-duelo">
         <div class="mundial-team">
-          ${p.escudoLocal ? `<img class="mundial-escudo" src="${p.escudoLocal}" alt="${p.local}">` : ""}
+          ${p.escudoLocal ? `<img class="mundial-escudo" src="${p.escudoLocal}" alt="${p.local}">` : crearNombreEquipoConBandera(p.local,p.codigoLocal)}
           <strong>${p.local}</strong>
         </div>
         <div class="mundial-marcador">
@@ -1521,7 +1515,7 @@ function crearCardPartido(p) {
           <div class="mundial-cronometro" data-fecha="${p.fechaUTC}">⏱</div>
         </div>
         <div class="mundial-team">
-          ${p.escudoVisitante ? `<img class="mundial-escudo" src="${p.escudoVisitante}" alt="${p.visitante}">` : ""}
+          ${p.escudoVisitante ? `<img class="mundial-escudo" src="${p.escudoVisitante}" alt="${p.visitante}">` : crearNombreEquipoConBandera(p.visitante,p.codigoVisitante)}
           <strong>${p.visitante}</strong>
         </div>
       </div>
@@ -1530,7 +1524,6 @@ function crearCardPartido(p) {
       <p>📍 ${p.sede}</p>
     </article>`;
 }
-
 function crearNombreEquipoConBandera(nombre, codigo = "") {
   const bandera = obtenerBanderaEquipo(nombre, codigo);
   return `<span class="team-name">${bandera ? `<span class="team-flag">${bandera}</span>` : ""}${nombre}</span>`;
