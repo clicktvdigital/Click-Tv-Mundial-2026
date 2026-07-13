@@ -1904,16 +1904,30 @@ textarea {
 }
 
 
-/* CORRECCION ESPECIFICA BANDERA ARGENTINA */
-.team-flag img[src*="argentina"],
-.team-flag img[src*="Argentina"],
-.team-flag img[alt*="Argentina"] {
-  transform: scale(1.18);
-  transform-origin: center;
+/* ==========================================================
+   MUNDIAL 2026 - BANDERAS MISMO TAMAÑO VISUAL
+   Ajuste solo visual: no modifica JS, API ni partidos.
+   ========================================================== */
+
+.team-flag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 }
 
-/* Normalización de imágenes de banderas */
 .team-flag img {
-  object-fit: cover;
+  width: auto;
+  height: 24px;
+  max-width: 38px;
+  object-fit: contain;
   object-position: center;
+  display: block;
+}
+
+@media (max-width: 720px) {
+  .team-flag img {
+    height: 21px;
+    max-width: 34px;
+  }
 }
