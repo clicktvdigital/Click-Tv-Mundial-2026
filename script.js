@@ -184,6 +184,45 @@ function inicializarTeleamazonasPlayer() {
   configurarLinkExterno(linkOficial, CONFIG.teleamazonasUrl);
 }
 
+
+function filtrarPartidosMundialAutomatico(partidos = []) {
+  const ahora = new Date();
+
+  const prioridadEstado = {
+    LIVE: 1,
+    IN_PLAY: 1,
+    PAUSED: 2,
+    FINISHED: 3,
+    TIMED: 4,
+    SCHEDULED: 4
+  };
+
+  const vistos = new Set();
+
+  return partidos
+    .filter((p) => {
+      const estado = String(p.status || p.estado || "").toUpperCase();
+      const fecha = new Date(p.utcDate || p.fecha || p.fechaUTC || ahora);
+
+      if (["LIVE","IN_PLAY","PAUSED"].some(x => estado.includes(x))) return true;
+      if (estado.includes("FINISHED")) return true;
+
+      return fecha >= ahora;
+    })
+    .filter((p) => {
+      const clave = `${p.homeTeam?.name || p.local || ""}-${p.awayTeam?.name || p.visitante || ""}`;
+      if (vistos.has(clave)) return false;
+      vistos.add(clave);
+      return true;
+    })
+    .sort((a,b)=>{
+      const ea=prioridadEstado[String(a.status || a.estado || "").toUpperCase()]||9;
+      const eb=prioridadEstado[String(b.status || b.estado || "").toUpperCase()]||9;
+      if(ea!==eb) return ea-eb;
+      return new Date(a.utcDate||0)-new Date(b.utcDate||0);
+    });
+}
+
 function inicializarRadioLaRed() {
   const radioPlayer = document.getElementById("radio-player");
   const radioStatus = document.getElementById("radio-status");
@@ -192,7 +231,7 @@ function inicializarRadioLaRed() {
   let usuarioQuiereRadio = false;
   let temporizadorReconexion = null;
 
-  radioPlayer.preload = "none";
+  radioPlayer.preload = "auto";
   if (!radioPlayer.getAttribute("src")) {
     radioPlayer.src = CONFIG.radioStreamUrl;
   }
@@ -232,7 +271,7 @@ function inicializarRadioLaRed() {
   const programarReconexionRadio = () => {
     if (!usuarioQuiereRadio) return;
     clearTimeout(temporizadorReconexion);
-    temporizadorReconexion = setTimeout(reconectarRadio, 2500);
+    temporizadorReconexion = setTimeout(reconectarRadio, 8000);
   };
 
   radioPlayer.addEventListener("play", () => {
@@ -1190,7 +1229,7 @@ function mostrarConfirmacionPago(mensaje) {
 // ---------------------------------------------------------------------------
 // MUNDIAL 2026
 // ---------------------------------------------------------------------------
-async function renderMundial(silencioso = false) {
+async async function renderMundial(silencioso = false) {
   const box = document.getElementById("mundial-grid");
   if (!box) return;
 
