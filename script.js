@@ -1574,7 +1574,7 @@ function obtenerBanderaEquipo(nombre = "", codigo = "") {
     egipto: "🇪🇬",
     egypt: "🇪🇬",
     england: "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
-    inglaterra: "🏴",
+    inglaterra: "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
     espana: "🇪🇸",
     spain: "🇪🇸",
     "estados unidos": "🇺🇸",
@@ -1884,11 +1884,28 @@ function obtenerNumeroScore(fuente, llaves) {
 
 
 function iniciarCronometroMundial() {
-  setInterval(() => {
-    document.querySelectorAll(".mundial-cronometro").forEach((el) => {
-      el.textContent = "⏱ " + new Date().toLocaleTimeString("es-EC");
-    });
-  }, 1000);
+  if (window.__cronometroMundialActivo) return;
+  window.__cronometroMundialActivo = true;
+  setInterval(actualizarTemporizadoresMundial, 1000);
+}
+
+
+function actualizarTemporizadoresMundial() {
+  document.querySelectorAll(".mundial-cronometro[data-fecha]").forEach((el) => {
+    const fecha = new Date(el.dataset.fecha);
+    if (isNaN(fecha.getTime())) return;
+    const diff = fecha.getTime() - Date.now();
+    if (diff > 0) {
+      const s = Math.floor(diff / 1000);
+      const d = Math.floor(s / 86400);
+      const h = Math.floor((s % 86400) / 3600);
+      const m = Math.floor((s % 3600) / 60);
+      const sec = s % 60;
+      el.textContent = `⏳ ${d}d ${h}h ${m}m ${sec}s`;
+    } else {
+      el.textContent = "🔴 En vivo";
+    }
+  });
 }
 
 // ---------------------------------------------------------------------------
