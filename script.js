@@ -192,10 +192,9 @@ function inicializarRadioLaRed() {
   let usuarioQuiereRadio = false;
   let temporizadorReconexion = null;
 
-  radioPlayer.preload = "auto";
+  radioPlayer.preload = "none";
   if (!radioPlayer.getAttribute("src")) {
     radioPlayer.src = CONFIG.radioStreamUrl;
-    radioPlayer.load();
   }
 
   configurarMediaSessionRadio(radioPlayer);
@@ -233,7 +232,7 @@ function inicializarRadioLaRed() {
   const programarReconexionRadio = () => {
     if (!usuarioQuiereRadio) return;
     clearTimeout(temporizadorReconexion);
-    temporizadorReconexion = setTimeout(reconectarRadio, 6000);
+    temporizadorReconexion = setTimeout(reconectarRadio, 2500);
   };
 
   radioPlayer.addEventListener("play", () => {
@@ -1358,7 +1357,7 @@ function crearClavePartidoMundial(partido) {
   const dia = isNaN(fecha.getTime()) ? partido.fechaUTC : fecha.toISOString().slice(0, 10);
   const local = normalizarClaveEquipoMundial(partido.local || "");
   const visitante = normalizarClaveEquipoMundial(partido.visitante || "");
-  return `${dia}-${local}-${visitante}`.replace(/\s+/g, "-");
+  return `${dia}-${local}-${visitante}`;
 }
 
 function fusionarPartidosMundial(base = {}, nuevo = {}) {
@@ -2061,4 +2060,24 @@ function normalizarCuponCodigo(texto) {
     .replace(/[\u0300-\u036f]/g, "")
     .toUpperCase()
     .replace(/[^A-Z0-9]/g, "");
+}
+
+// ---------------------------------------------------------------------------
+// MEJORA V3 - PRIORIDAD DE ESTADOS MUNDIAL
+// No reemplaza la API ni el render existente.
+// ---------------------------------------------------------------------------
+function ordenarPrioridadEstadoMundial(partidos = []) {
+  const prioridad = {
+    "EN VIVO": 1,
+    "ENTRETIEMPO": 2,
+    "FINALIZADO": 3,
+    "PROXIMO": 4
+  };
+
+  return [...partidos].sort((a, b) => {
+    const pa = prioridad[String(a.estado || "").toUpperCase()] || 9;
+    const pb = prioridad[String(b.estado || "").toUpperCase()] || 9;
+    if (pa !== pb) return pa - pb;
+    return new Date(a.fechaUTC || 0) - new Date(b.fechaUTC || 0);
+  });
 }
