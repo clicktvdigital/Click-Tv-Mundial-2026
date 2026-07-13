@@ -1215,7 +1215,8 @@ async function renderMundial(silencioso = false) {
       </div>`;
   } catch (error) {
     console.warn("No se pudo cargar Football-Data:", error);
-    box.innerHTML = `
+    const respaldo = renderizarRespaldoMundial();
+    box.innerHTML = respaldo || `
       <div class="loading-card">
         ⚽ No se pudo conectar con la API del Mundial.
         <br>Se reintentará automáticamente.
@@ -1224,6 +1225,10 @@ async function renderMundial(silencioso = false) {
 }
 
 async function obtenerPartidosFootballData() {
+  if (typeof CONFIG === "undefined" || !CONFIG.footballDataApiUrl || !CONFIG.footballDataApiToken) {
+    throw new Error("API Mundial no configurada");
+  }
+
   const params = new URLSearchParams({
     dateFrom: fechaConsultaMundial(-2),
     dateTo: fechaConsultaMundial(8)
