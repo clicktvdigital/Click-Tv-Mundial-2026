@@ -1223,18 +1223,18 @@ async function renderMundial(silencioso = false) {
 }
 
 async function obtenerPartidosFootballData() {
-  const params = new URLSearchParams({
-    dateFrom: fechaConsultaMundial(-2),
-    dateTo: fechaConsultaMundial(8)
-  });
+  const respuesta = await fetch("/api/mundial");
 
-  const respuesta = await fetch(`${CONFIG.footballDataApiUrl}?${params.toString()}`, {
-    headers: { "X-Auth-Token": CONFIG.footballDataApiToken }
-  });
+  if (!respuesta.ok) {
+    throw new Error(`API Mundial HTTP ${respuesta.status}`);
+  }
 
-  if (!respuesta.ok) throw new Error(`Football-Data HTTP ${respuesta.status}`);
   const data = await respuesta.json();
-  const matches = Array.isArray(data.matches) ? data.matches : [];
+
+  const matches = Array.isArray(data.matches)
+    ? data.matches
+    : [];
+
   return enriquecerPartidosConDetalle(matches);
 }
 
