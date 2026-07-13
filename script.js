@@ -1235,7 +1235,7 @@ async function obtenerPartidosFootballData() {
 
   if (!respuesta.ok) throw new Error(`Football-Data HTTP ${respuesta.status}`);
   const data = await respuesta.json();
-  const matches = Array.isArray(data.matches) ? data.matches : [];
+  const matches = Array.isArray(data) ? data : (data.matches || data.partidos || []);
   return enriquecerPartidosConDetalle(matches);
 }
 
