@@ -1,0 +1,21 @@
+CLICK TV STREAMING V8 FINAL
+
+Archivo añadido:
+- script.js completo
+
+Integración preparada con:
+- carrito
+- pagos
+- moneda
+- ubicación
+- radio La Red
+- Mundial 2026 API
+- respaldo de partidos
+- responsive existente
+
+Mantener junto con:
+index.html
+style.css
+responsive.css
+data.js
+catalogo.js
