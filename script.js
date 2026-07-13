@@ -1289,8 +1289,8 @@ function normalizarPartidos(matches) {
   return matches.map((m) => ({
     id: m.id || "",
     grupo: m.group || m.stage || m.competition?.name || "Mundial 2026",
-    local: m.homeTeam?.name || m.homeTeam?.shortName || "Equipo local",
-    visitante: m.awayTeam?.name || m.awayTeam?.shortName || "Equipo visitante",
+    local: traducirPais(m.homeTeam?.name || m.homeTeam?.shortName || "Equipo local"),
+visitante: traducirPais(m.awayTeam?.name || m.awayTeam?.shortName || "Equipo visitante"),
     codigoLocal: m.homeTeam?.tla || m.homeTeam?.area?.code || "",
     codigoVisitante: m.awayTeam?.tla || m.awayTeam?.area?.code || "",
     escudoLocal: m.homeTeam?.crest || "",
@@ -1310,7 +1310,34 @@ function normalizarPartidos(matches) {
     marcador: crearMarcador(m.score)
   })).filter((m) => m.fechaUTC);
 }
+function traducirPais(nombre = "") {
+  const paises = {
+    "Argentina": "Argentina",
+    "Switzerland": "Suiza",
+    "England": "Inglaterra",
+    "France": "Francia",
+    "Spain": "España",
+    "Germany": "Alemania",
+    "Brazil": "Brasil",
+    "Portugal": "Portugal",
+    "Netherlands": "Países Bajos",
+    "Belgium": "Bélgica",
+    "Croatia": "Croacia",
+    "Japan": "Japón",
+    "South Korea": "Corea del Sur",
+    "United States": "Estados Unidos",
+    "Mexico": "México",
+    "Morocco": "Marruecos",
+    "Senegal": "Senegal",
+    "Norway": "Noruega",
+    "Ecuador": "Ecuador",
+    "Italy": "Italia",
+    "Uruguay": "Uruguay",
+    "Colombia": "Colombia"
+  };
 
+  return paises[nombre] || nombre;
+}
 function tieneEquiposReales(partido) {
   const texto = `${partido.local} ${partido.visitante}`.toLowerCase();
   return !/(equipo|ganador|grupo|third|runner|tbd|por confirmar)/i.test(texto);
