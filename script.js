@@ -193,56 +193,31 @@ function inicializarRadioLaRed() {
   let temporizadorReconexion = null;
 
   radioPlayer.preload = "none";
-  if (!radioPlayer.getAttribute("src")) {
-    radioPlayer.src = CONFIG.radioStreamUrl;
-  }
-
   configurarMediaSessionRadio(radioPlayer);
 
   const actualizarEstadoRadio = (mensaje) => {
     if (radioStatus) radioStatus.textContent = mensaje;
   };
 
-  const reproducirRadio = async () => {
-    usuarioQuiereRadio = true;
-    actualizarEstadoRadio("Cargando señal en vivo...");
-
-    try {
-      await radioPlayer.play();
-    } catch {
-      actualizarEstadoRadio("Presiona reproducir para reactivar la señal.");
-    }
-  };
-
-  const reconectarRadio = async () => {
+  const reconectarRadio = () => {
     if (!usuarioQuiereRadio) return;
     clearTimeout(temporizadorReconexion);
     actualizarEstadoRadio("Reconectando señal en vivo...");
-
-    const estabaEnSilencio = radioPlayer.muted;
-    const volumen = radioPlayer.volume;
-    radioPlayer.src = `${CONFIG.radioStreamUrl}?t=${Date.now()}`;
     radioPlayer.load();
-    radioPlayer.muted = estabaEnSilencio;
-    radioPlayer.volume = volumen;
-
-    await reproducirRadio();
   };
 
   const programarReconexionRadio = () => {
     if (!usuarioQuiereRadio) return;
     clearTimeout(temporizadorReconexion);
-    temporizadorReconexion = setTimeout(reconectarRadio, 2500);
+    temporizadorReconexion = setTimeout(reconectarRadio, 5000);
   };
 
   radioPlayer.addEventListener("play", () => {
     usuarioQuiereRadio = true;
-    actualizarEstadoRadio("Cargando señal en vivo...");
+    actualizarEstadoRadio("Conectando con La Red 102.1 FM...");
   });
 
   radioPlayer.addEventListener("playing", () => {
-    clearTimeout(temporizadorReconexion);
-    usuarioQuiereRadio = true;
     actualizarEstadoRadio("Señal en vivo activa.");
   });
 
@@ -252,29 +227,19 @@ function inicializarRadioLaRed() {
 
   radioPlayer.addEventListener("waiting", programarReconexionRadio);
   radioPlayer.addEventListener("stalled", programarReconexionRadio);
-  radioPlayer.addEventListener("ended", reconectarRadio);
+  radioPlayer.addEventListener("error", programarReconexionRadio);
 
-  window.addEventListener("online", reconectarRadio);
-  window.addEventListener("pageshow", () => {
-    if (usuarioQuiereRadio && radioPlayer.paused) reconectarRadio();
+  window.addEventListener("online", () => {
+    if (usuarioQuiereRadio) reconectarRadio();
   });
 
   document.addEventListener("visibilitychange", () => {
-    if (document.hidden) {
-      usuarioQuiereRadio = usuarioQuiereRadio || !radioPlayer.paused;
-      return;
-    }
-
-    if (usuarioQuiereRadio && radioPlayer.paused) {
+    if (!document.hidden && usuarioQuiereRadio && radioPlayer.paused) {
       reconectarRadio();
     }
   });
-
-  radioPlayer.addEventListener("error", () => {
-    actualizarEstadoRadio("La radio se cortó o la emisora restringe el acceso. Intentando reconectar...");
-    programarReconexionRadio();
-  });
 }
+
 
 function configurarMediaSessionRadio(radioPlayer) {
   if (!("mediaSession" in navigator)) return;
