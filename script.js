@@ -1531,7 +1531,7 @@ function crearNombreEquipoConBandera(nombre, codigo = "") {
 
 function obtenerBanderaEquipo(nombre = "", codigo = "") {
   const porCodigo = {
-    ARG: "🇦🇷", AUS: "🇦🇺", AUT: "🇦🇹", BEL: "🇧🇪", BRA: "🇧🇷", CAN: "🇨🇦",
+    ARG: "<span class="flag-argentina">🇦🇷</span>", AUS: "🇦🇺", AUT: "🇦🇹", BEL: "🇧🇪", BRA: "🇧🇷", CAN: "🇨🇦",
     CHI: "🇨🇱", CHN: "🇨🇳", CIV: "🇨🇮", COL: "🇨🇴", CPV: "🇨🇻", CRC: "🇨🇷", CRO: "🇭🇷",
     DEN: "🇩🇰", DZA: "🇩🇿", ECU: "🇪🇨", EGY: "🇪🇬", ENG: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", ESP: "🇪🇸", FRA: "🇫🇷", GER: "🇩🇪",
     GHA: "🇬🇭", IRN: "🇮🇷", ITA: "🇮🇹", JPN: "🇯🇵", KOR: "🇰🇷", MAR: "🇲🇦",
@@ -2096,3 +2096,6 @@ function normalizarCuponCodigo(texto) {
     .toUpperCase()
     .replace(/[^A-Z0-9]/g, "");
 }
+
+
+/* Ajuste exclusivo bandera Argentina */
