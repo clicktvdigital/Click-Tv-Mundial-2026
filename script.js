@@ -191,6 +191,8 @@ function inicializarRadioLaRed() {
 
   let usuarioQuiereRadio = false;
   let temporizadorReconexion = null;
+  let radioReintentando = false;
+  let intentosRadio = 0;
 
   radioPlayer.preload = "none";
   if (!radioPlayer.getAttribute("src")) {
@@ -215,18 +217,22 @@ function inicializarRadioLaRed() {
   };
 
   const reconectarRadio = async () => {
-    if (!usuarioQuiereRadio) return;
+    if (!usuarioQuiereRadio || radioReintentando) return;
+
+    radioReintentando = true;
     clearTimeout(temporizadorReconexion);
     actualizarEstadoRadio("Reconectando señal en vivo...");
 
     const estabaEnSilencio = radioPlayer.muted;
     const volumen = radioPlayer.volume;
-    radioPlayer.src = `${CONFIG.radioStreamUrl}?t=${Date.now()}`;
+    radioPlayer.src = CONFIG.radioStreamUrl;
     radioPlayer.load();
     radioPlayer.muted = estabaEnSilencio;
     radioPlayer.volume = volumen;
 
     await reproducirRadio();
+    intentosRadio += 1;
+    radioReintentando = false;
   };
 
   const programarReconexionRadio = () => {
@@ -1204,10 +1210,19 @@ async function renderMundial(silencioso = false) {
     const partidosLocales = Array.isArray(MUNDIAL_2026) ? normalizarPartidosLocales(MUNDIAL_2026).filter(tieneEquiposReales) : [];
     const partidos = combinarPartidosMundial(partidosApiNormalizados, partidosLocales);
     const html = renderizarBloquesMundial(partidos);
-    box.innerHTML = html || renderizarRespaldoMundial();
+
+    box.innerHTML = html || `
+      <div class="loading-card">
+        ⚽ No hay partidos disponibles actualmente desde la API.
+        <br>Actualizando información...
+      </div>`;
   } catch (error) {
     console.warn("No se pudo cargar Football-Data:", error);
-    box.innerHTML = renderizarRespaldoMundial();
+    box.innerHTML = `
+      <div class="loading-card">
+        ⚽ No se pudo sincronizar el Mundial 2026.
+        <br>Se reintentará automáticamente.
+      </div>`;
   }
 }
 
