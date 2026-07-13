@@ -1902,3 +1902,18 @@ textarea {
   min-height: 30px;
   align-items: center;
 }
+
+
+/* CORRECCION ESPECIFICA BANDERA ARGENTINA */
+.team-flag img[src*="argentina"],
+.team-flag img[src*="Argentina"],
+.team-flag img[alt*="Argentina"] {
+  transform: scale(1.18);
+  transform-origin: center;
+}
+
+/* Normalización de imágenes de banderas */
+.team-flag img {
+  object-fit: cover;
+  object-position: center;
+}
