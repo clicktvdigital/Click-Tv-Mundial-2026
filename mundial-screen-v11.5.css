@@ -1,0 +1,8 @@
+/* PANTALLA GIGANTE */
+.stadium-match-card{background:linear-gradient(145deg,#08111f,#162c4d);color:white;border-radius:22px;padding:22px;margin:15px 0;box-shadow:0 0 25px #0008}
+.stadium-match-card.live{border:2px solid red;animation:livePulse 1.5s infinite}
+@keyframes livePulse{50%{box-shadow:0 0 30px red}}
+.stadium-status{text-align:center;font-weight:900}
+.stadium-teams{display:flex;justify-content:space-around;align-items:center;text-align:center;gap:15px}
+.stadium-team{display:flex;flex-direction:column;font-weight:bold}
+.stadium-score strong{font-size:42px;display:block}
