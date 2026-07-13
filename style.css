@@ -1962,3 +1962,31 @@ textarea {
     min-width: 30px;
   }
 }
+/* ==========================================================
+   MUNDIAL 2026 - NORMALIZACIÓN ESCUDOS / BANDERAS API
+   Solo modifica la visualización del escudo.
+   No modifica JS, API ni partidos.
+   ========================================================== */
+
+.mundial-escudo {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Ajuste visual Argentina */
+.mundial-escudo[src*="argentina"],
+.mundial-escudo[alt*="Argentina"],
+.mundial-escudo[alt*="argentina"] {
+  transform: scale(1.25);
+  transform-origin: center;
+}
+
+@media (max-width: 720px) {
+  .mundial-escudo {
+    width: 36px;
+    height: 36px;
+  }
+}
