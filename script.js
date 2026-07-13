@@ -1229,11 +1229,9 @@ async function obtenerPartidosFootballData() {
     dateTo: fechaConsultaMundial(8)
   });
 
-  const respuesta = await fetch(`${CONFIG.footballDataApiUrl}?${params.toString()}`, {
-    headers: { "X-Auth-Token": CONFIG.footballDataApiToken }
-  });
+  const respuesta = await fetch("/api/mundial");
 
-  if (!respuesta.ok) throw new Error(`Football-Data HTTP ${respuesta.status}`);
+  if (!respuesta.ok) throw new Error(`API Mundial HTTP ${respuesta.status}`);
   const data = await respuesta.json();
   const matches = Array.isArray(data)
     ? data
