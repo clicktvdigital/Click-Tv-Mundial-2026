@@ -1,0 +1,16 @@
+CLICK TV STREAMING V6
+
+Base conservada:
+- index.html
+- style.css
+- responsive.css
+- data.js
+- catalogo.js
+- script.js
+
+Objetivos V6:
+- Optimización radio La Red.
+- Preparación Open Graph para miniatura WhatsApp.
+- Validación API Mundial 2026.
+- Respaldo automático cuando API no entrega datos.
+- Mantener catálogo, carrito y pagos.
