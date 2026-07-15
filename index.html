@@ -190,10 +190,14 @@
           <div id="radio-app" class="media-box radio-app premium-surface">
             <div class="radio-app__header">
               <div class="radio-now-playing">
-                <div class="radio-now-playing__art">
+                <button id="radio-art-action" class="radio-now-playing__art" type="button" aria-label="Reproducir La Red 102.1 FM Quito" aria-pressed="false">
                   <img id="radio-current-logo" src="radio-la-red.png" width="900" height="600" alt="Logo de La Red 102.1 FM Quito">
                   <span class="radio-signal-ring" aria-hidden="true"></span>
-                </div>
+                  <span class="radio-art-control" aria-hidden="true">
+                    <svg class="icon-play" viewBox="0 0 24 24"><path d="M8 5.4v13.2L18.5 12 8 5.4Z"/></svg>
+                    <svg class="icon-pause" viewBox="0 0 24 24"><path d="M7 5h4v14H7V5Zm6 0h4v14h-4V5Z"/></svg>
+                  </span>
+                </button>
                 <div class="radio-now-playing__copy">
                   <span class="radio-kicker">Radio deportiva de Quito</span>
                   <strong id="radio-current-name">La Red 102.1 FM Quito</strong>
@@ -237,7 +241,7 @@
               <button id="radio-retry" class="radio-retry" type="button" hidden>Reconectar</button>
             </div>
 
-            <audio id="radio-player" preload="none" playsinline>
+            <audio id="radio-player" preload="auto" playsinline>
               Tu navegador no permite reproducir esta radio.
             </audio>
           </div>

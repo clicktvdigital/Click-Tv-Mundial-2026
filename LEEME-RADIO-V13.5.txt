@@ -1,0 +1,9 @@
+CLICK TV RADIO V13.5
+
+Cambios:
+- Pausar ya no elimina la fuente ni abre una conexión nueva.
+- Al reanudar se intenta saltar al borde EN VIVO disponible.
+- El logo grande de la emisora funciona como Play/Pausa.
+- Tocar la tarjeta o logo de La Red/Mach inicia la reproducción directamente.
+- Cambiar de emisora la selecciona y reproduce en el mismo toque.
+- La fuente se precarga y también se prepara en pointerdown para reducir espera en iPhone y Android.
