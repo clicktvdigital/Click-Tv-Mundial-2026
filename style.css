@@ -2044,3 +2044,36 @@ textarea {
   border-radius: 18px;
   border: 1px solid rgba(0,255,102,.35);
 }
+
+
+/* V7 PRO REAL */
+.brand__logo--horizontal{
+ width:190px;
+ height:auto;
+ border-radius:0;
+ background:transparent;
+ display:flex;
+ box-shadow:none;
+}
+.brand__logo--horizontal img{
+ width:100%;
+ height:auto;
+ object-fit:contain;
+ filter:drop-shadow(0 0 12px rgba(0,255,102,.45));
+}
+.radio-pro{
+ padding:22px;
+}
+.radio-logos-pro{
+ display:flex;
+ gap:12px;
+ margin:14px 0;
+}
+.radio-logos-pro div{
+ flex:1;
+ padding:14px;
+ border-radius:18px;
+ background:rgba(0,255,102,.08);
+ border:1px solid rgba(0,255,102,.2);
+ text-align:center;
+}

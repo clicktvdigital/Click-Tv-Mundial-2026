@@ -224,7 +224,7 @@ function inicializarRadioLaRed() {
 
     radioPlayer.pause();
     radioPlayer.src = radio.url;
-    radioPlayer.load();
+    radioPlayer.volume = 1;\n    radioPlayer.load();
 
     try {
       await radioPlayer.play();
