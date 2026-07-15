@@ -187,97 +187,76 @@ function inicializarTeleamazonasPlayer() {
 function inicializarRadioLaRed() {
   const radioPlayer = document.getElementById("radio-player");
   const radioStatus = document.getElementById("radio-status");
-  if (!radioPlayer || typeof CONFIG === "undefined" || !CONFIG.radioStreamUrl) return;
+  const botones = document.querySelectorAll("[data-radio]");
+  if (!radioPlayer) return;
 
-  let usuarioQuiereRadio = false;
-  let temporizadorReconexion = null;
-  let reconexionEnCurso = false;
-
-  radioPlayer.preload = "auto";
-  if (!radioPlayer.getAttribute("src")) {
-    radioPlayer.src = CONFIG.radioStreamUrl;
-  }
-
-  configurarMediaSessionRadio(radioPlayer);
-
-  const actualizarEstadoRadio = (mensaje) => {
-    if (radioStatus) radioStatus.textContent = mensaje;
+  const radios = {
+    lared: {
+      nombre: "La Red 102.1 FM Quito",
+      url: "https://icecast.radiolared.com.ec/radiolared"
+    },
+    mach: {
+      nombre: "Mach Deportes 91.7 Quito",
+      url: "https://streamingecuador.net:9170/stream"
+    }
   };
 
-  const reproducirRadio = async () => {
-    usuarioQuiereRadio = true;
-    actualizarEstadoRadio("Cargando señal en vivo...");
+  let radioActual = "lared";
+  let usuarioActivo = false;
+  let reconexion = null;
+
+  const estado = (texto) => {
+    if (radioStatus) radioStatus.textContent = texto;
+  };
+
+  const cargarRadio = async (id) => {
+    const radio = radios[id];
+    if (!radio) return;
+
+    radioActual = id;
+    usuarioActivo = true;
+
+    botones.forEach(btn => {
+      btn.classList.toggle("btn-radio-activo", btn.dataset.radio === id);
+    });
+
+    estado(`Cargando ${radio.nombre}...`);
+
+    radioPlayer.pause();
+    radioPlayer.src = radio.url;
+    radioPlayer.load();
 
     try {
       await radioPlayer.play();
     } catch {
-      actualizarEstadoRadio("Presiona reproducir para reactivar la señal.");
+      estado(`Presiona reproducir para iniciar ${radio.nombre}.`);
     }
   };
 
-  const reconectarRadio = async () => {
-    if (!usuarioQuiereRadio || reconexionEnCurso) return;
-    reconexionEnCurso = true;
-    clearTimeout(temporizadorReconexion);
-    actualizarEstadoRadio("Reconectando señal en vivo...");
-
-    const estabaEnSilencio = radioPlayer.muted;
-    const volumen = radioPlayer.volume;
-    radioPlayer.src = CONFIG.radioStreamUrl;
-    radioPlayer.load();
-    radioPlayer.muted = estabaEnSilencio;
-    radioPlayer.volume = volumen;
-
-    await reproducirRadio();
-    reconexionEnCurso = false;
-  };
-
-  const programarReconexionRadio = () => {
-    if (!usuarioQuiereRadio) return;
-    clearTimeout(temporizadorReconexion);
-    temporizadorReconexion = setTimeout(reconectarRadio, 2500);
-  };
-
-  radioPlayer.addEventListener("play", () => {
-    usuarioQuiereRadio = true;
-    actualizarEstadoRadio("Cargando señal en vivo...");
+  botones.forEach(btn => {
+    btn.addEventListener("click", () => cargarRadio(btn.dataset.radio));
   });
 
   radioPlayer.addEventListener("playing", () => {
-    clearTimeout(temporizadorReconexion);
-    usuarioQuiereRadio = true;
-    actualizarEstadoRadio("Señal en vivo activa.");
+    estado(`🔴 ${radios[radioActual].nombre} en vivo.`);
   });
 
-  radioPlayer.addEventListener("pause", () => {
-    if (!document.hidden) usuarioQuiereRadio = false;
-  });
-
-  radioPlayer.addEventListener("waiting", programarReconexionRadio);
-  radioPlayer.addEventListener("stalled", programarReconexionRadio);
-  radioPlayer.addEventListener("ended", reconectarRadio);
-
-  window.addEventListener("online", reconectarRadio);
-  window.addEventListener("pageshow", () => {
-    if (usuarioQuiereRadio && radioPlayer.paused) reconectarRadio();
-  });
-
-  document.addEventListener("visibilitychange", () => {
-    if (document.hidden) {
-      usuarioQuiereRadio = usuarioQuiereRadio || !radioPlayer.paused;
-      return;
-    }
-
-    if (usuarioQuiereRadio && radioPlayer.paused) {
-      reconectarRadio();
-    }
+  radioPlayer.addEventListener("waiting", () => {
+    estado("Cargando señal...");
   });
 
   radioPlayer.addEventListener("error", () => {
-    actualizarEstadoRadio("La radio se cortó o la emisora restringe el acceso. Intentando reconectar...");
-    programarReconexionRadio();
+    estado("Señal interrumpida. Intentando reconectar...");
+    clearTimeout(reconexion);
+    reconexion = setTimeout(() => {
+      if (usuarioActivo) cargarRadio(radioActual);
+    }, 1200);
   });
+
+  configurarMediaSessionRadio(radioPlayer);
+  radioPlayer.src = radios.lared.url;
 }
+
 
 function configurarMediaSessionRadio(radioPlayer) {
   if (!("mediaSession" in navigator)) return;

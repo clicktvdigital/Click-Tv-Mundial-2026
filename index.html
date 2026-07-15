@@ -8,31 +8,19 @@
   <meta name="keywords" content="Click Tv Streaming, Mundial 2026, IPTV, streaming premium, Disney Plus, Paramount Plus, Netflix, DAZN, Ecuador">
   <meta name="theme-color" content="#00FF66">
 
-  <!-- Open Graph / WhatsApp / Facebook / Telegram -->
-<meta property="og:title" content="Click TV Streaming ⚽ | Mundial 2026 + Streaming Premium">
-<meta property="og:description" content="Disfruta el Mundial 2026, IPTV, deportes en vivo, Netflix, Disney+, música y servicios premium con activación rápida por WhatsApp.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://click-tv-mundial.vercel.app/">
+  <meta property="og:title" content="Click Tv Streaming | Streaming Premium IPTV">
+  <meta property="og:description" content="Servicios digitales, IPTV y streaming premium para disfrutar el Mundial 2026.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://click-tv-mundial.vercel.app/">
+  <meta property="og:image" content="https://click-tv-mundial.vercel.app/og-image.png?v=10">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
 
-<!-- Imagen de vista previa -->
-<meta property="og:image" content="https://click-tv-mundial.vercel.app/og-image-v11.png?v=11">
-<meta property="og:image:secure_url" content="https://click-tv-mundial.vercel.app/og-image-v11.png?v=11">
-<meta property="og:image:type" content="image/png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Click TV Streaming - Mundial 2026 y Streaming Premium">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Click Tv Streaming">
+  <meta name="twitter:description" content="Streaming Premium, IPTV y deportes para el Mundial 2026.">
 
-<!-- Idioma y sitio -->
-<meta property="og:locale" content="es_EC">
-<meta property="og:site_name" content="Click TV Streaming">
-
-<!-- Twitter / X -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Click TV Streaming ⚽ | Mundial 2026">
-<meta name="twitter:description" content="Partidos del Mundial 2026, IPTV, streaming premium y entretenimiento digital.">
-<meta name="twitter:image" content="https://click-tv-mundial.vercel.app/og-image-v11.png?v=11">
-<meta name="twitter:image:alt" content="Click TV Streaming Mundial 2026">
-  
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%2300FF66'/%3E%3Ctext x='50' y='60' text-anchor='middle' font-size='42'%3E%E2%9A%BD%3C/text%3E%3C/svg%3E">
   <link rel="preconnect" href="https://www.paypal.com">
   <link rel="dns-prefetch" href="//icecast.radiolared.com.ec">
@@ -177,12 +165,23 @@
           </div>
 
           <div class="media-box">
-            <h3>📻 La Red 102.1 FM en vivo</h3>
-            <p class="radio-note">Programación deportiva en vivo dentro de Click Tv Streaming.</p>
-            <audio id="radio-player" class="lared-audio-player" controls preload="none" src="https://icecast.radiolared.com.ec/radiolared">
+            <h3>📻 Radios deportivas en vivo</h3>
+            <p class="radio-note">Selecciona tu emisora deportiva favorita de Quito.</p>
+
+            <div class="radio-selector">
+              <button class="btn btn--primary btn-radio-activo" data-radio="lared" type="button">
+                🔴 La Red 102.1 FM Quito
+              </button>
+              <button class="btn btn--outline" data-radio="mach" type="button">
+                ⚽ Mach Deportes 91.7 Quito
+              </button>
+            </div>
+
+            <audio id="radio-player" class="lared-audio-player" controls preload="auto">
               Tu navegador no permite reproducir esta radio.
             </audio>
-            <p id="radio-status" class="radio-status">Presiona reproducir. La señal se carga solo cuando el usuario la activa.</p>
+
+            <p id="radio-status" class="radio-status">Selecciona una radio y presiona reproducir.</p>
           </div>
           <div class="teleamazonas-player-card">
             <div class="teleamazonas-player-card__head">
