@@ -353,3 +353,115 @@
  .radio-logos-pro{display:grid;grid-template-columns:1fr;}
  .radio-brand-card img{width:58px;height:58px;}
 }
+
+
+/* ========================================================================== 
+   CLICK TV STREAMING — RESPONSIVE PREMIUM V12
+   ========================================================================== */
+
+@media (min-width: 1500px) {
+  :root { --max: 1320px; }
+  .hero__grid { gap: 54px; }
+  .catalogo-grid { grid-template-columns: repeat(3, minmax(0,1fr)); }
+}
+
+@media (max-width: 1040px) {
+  .brand__logo--horizontal { width: 190px; height: 76px; }
+  .plan-row__actions--triple { grid-template-columns: 1fr; }
+  .plan-row__actions--triple .btn { width: 100%; }
+}
+
+@media (max-width: 920px) {
+  .navbar { min-height: 70px; }
+  .hero__panel { order: 0; }
+  .nav-menu { top: 112px; }
+  .radio-app__header { align-items: flex-start; }
+}
+
+@media (max-width: 720px) {
+  body { padding-bottom: calc(88px + env(safe-area-inset-bottom)); }
+  .header { padding-top: env(safe-area-inset-top); }
+  .topbar { padding-inline: max(11px, env(safe-area-inset-left)); }
+  .navbar { padding-inline: max(0px, env(safe-area-inset-left)); }
+  .brand__logo--horizontal { width: 150px; height: 64px; }
+  .cart-btn { min-width: 48px; justify-content: center; }
+
+  .hero { padding-top: 42px; }
+  .hero__panel { padding: 16px; }
+  .radio-app { padding: 15px; }
+  .radio-app__header { display: grid; grid-template-columns: 1fr auto; }
+  .radio-now-playing__art { width: 64px; height: 64px; min-width: 64px; border-radius: 18px; }
+  .radio-now-playing__copy strong { white-space: normal; line-height: 1.22; }
+  .radio-stations { grid-template-columns: 1fr; }
+  .radio-console { flex-wrap: wrap; }
+  .radio-app .equalizer { min-width: 120px; }
+  .radio-volume { width: 100%; min-width: 0; }
+  .radio-status-row { align-items: flex-start; }
+
+  .floating-actions {
+    left: max(8px, env(safe-area-inset-left));
+    right: max(8px, env(safe-area-inset-right));
+    bottom: max(7px, env(safe-area-inset-bottom));
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0,1fr));
+    gap: 4px;
+    padding: 6px;
+    border-radius: 22px;
+  }
+  .float-btn {
+    width: 100%;
+    height: 58px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    border: 0;
+    border-radius: 16px;
+    box-shadow: none;
+  }
+  .float-btn svg { width: 22px; height: 22px; }
+  .float-btn__label {
+    position: static;
+    display: block;
+    max-width: 100%;
+    padding: 0;
+    border: 0;
+    color: currentColor;
+    background: transparent;
+    box-shadow: none;
+    font-size: .58rem;
+    line-height: 1;
+    opacity: .9;
+    transform: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .scroll-top-btn {
+    right: 14px;
+    bottom: calc(84px + env(safe-area-inset-bottom));
+  }
+  .toast-contenedor { bottom: calc(92px + env(safe-area-inset-bottom)); }
+  .panel-carrito { padding-bottom: calc(112px + env(safe-area-inset-bottom)); }
+}
+
+@media (max-width: 480px) {
+  .topbar > span:last-child { display: none; }
+  .brand__logo--horizontal { width: 142px; height: 60px; }
+  .navbar { gap: 7px; }
+  .menu-toggle { width: 42px; height: 42px; }
+  .cart-btn { padding: 9px 10px; }
+  .radio-app__header { grid-template-columns: 1fr; }
+  .live-badge { width: max-content; }
+  .radio-now-playing { align-items: flex-start; }
+  .radio-station { grid-template-columns: 46px 1fr auto; }
+  .radio-station img { width: 46px; height: 46px; }
+  .carrito-item__title-row,
+  .carrito-item__quantity-row { align-items: flex-start; flex-direction: column; }
+  .carrito-item__renew-actions { width: 100%; }
+  .cart-renew-toggle, .cart-renew-whatsapp { flex: 1; }
+}
+
+@media (max-width: 360px) {
+  .brand__logo--horizontal { width: 128px; height: 56px; }
+  .float-btn__label { font-size: .52rem; }
+  .radio-play-toggle { width: 48px; height: 48px; min-width: 48px; }
+}

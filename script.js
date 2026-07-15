@@ -9,11 +9,15 @@ const CLAVE_CUPON = "clicktv_cupon";
 const CLAVE_VENTAS = "clicktv_ventas";
 const CLAVE_GEO_MODAL = "clicktv_geo_modal_visto";
 const CLAVE_RESENAS_CLIENTES = "clicktv_resenas_clientes";
+const CLAVE_VOLUMEN_RADIO = "clicktv_radio_volumen";
+const CLAVE_RADIO_SELECCIONADA = "clicktv_radio_seleccionada";
 
 let carrito = [];
 let monedaActual = "USD";
 let cuponAplicado = null;
 let paypalRenderizado = false;
+let paypalSdkPromise = null;
+let observadorReveal = null;
 let indiceActividad = 0;
 let indiceResena = 0;
 let metodoPagoActual = "transferencia";
@@ -40,13 +44,16 @@ document.addEventListener("DOMContentLoaded", () => {
   renderActividadReciente();
   renderMundial();
   inicializarUI();
-  inicializarBotonesFlotantes();
   inicializarPagosRapidos();
   inicializarCalculadoraAhorro();
   inicializarUbicacion();
   actualizarTasasCambio();
   actualizarUsuariosConectados();
   actualizarContadorCarrito();
+  inicializarFondoDinamico();
+  inicializarAnimacionesScroll();
+  inicializarTiltPremium();
+  inicializarAccesibilidadGlobal();
 
   setInterval(renderActividadReciente, 4500);
   setInterval(rotarResenas, 6000);
@@ -59,7 +66,11 @@ function inicializarUI() {
   const navMenu = document.getElementById("nav-menu");
 
   if (btnMenu && navMenu) {
-    btnMenu.addEventListener("click", () => navMenu.classList.toggle("abierto"));
+    btnMenu.addEventListener("click", () => {
+      const abierto = navMenu.classList.toggle("abierto");
+      btnMenu.setAttribute("aria-expanded", String(abierto));
+      btnMenu.classList.toggle("is-open", abierto);
+    });
   }
 
   // Carrito
@@ -115,7 +126,11 @@ function inicializarUI() {
 
   // Cerrar menú móvil al tocar una opción
   document.querySelectorAll(".nav-link").forEach((link) => {
-    link.addEventListener("click", () => navMenu?.classList.remove("abierto"));
+    link.addEventListener("click", () => {
+      navMenu?.classList.remove("abierto");
+      btnMenu?.classList.remove("is-open");
+      btnMenu?.setAttribute("aria-expanded", "false");
+    });
   });
 
   // Año dinámico en footer
@@ -147,10 +162,12 @@ function inicializarBotonesFlotantes() {
   const grupo = document.getElementById("btn-whatsapp-grupo");
   const tg = document.getElementById("btn-telegram");
   const soporte = document.getElementById("btn-soporte");
+  const catalogo = document.getElementById("btn-catalogo-flotante");
 
   if (wa) configurarLinkExterno(wa, CONFIG.whatsappLink);
   if (grupo) configurarLinkExterno(grupo, CONFIG.whatsappGrupo);
   if (tg) configurarLinkExterno(tg, CONFIG.telegramLink);
+  if (catalogo) catalogo.href = "#streaming";
 
   if (soporte) {
     const msg = encodeURIComponent("Hola, necesito soporte técnico con mi servicio Click TV.");
@@ -186,99 +203,232 @@ function inicializarTeleamazonasPlayer() {
 
 function inicializarRadioLaRed() {
   const radioPlayer = document.getElementById("radio-player");
+  const app = document.getElementById("radio-app");
   const radioStatus = document.getElementById("radio-status");
-  const botones = document.querySelectorAll("[data-radio]");
-  if (!radioPlayer) return;
+  const connection = document.getElementById("radio-connection");
+  const currentName = document.getElementById("radio-current-name");
+  const currentLogo = document.getElementById("radio-current-logo");
+  const playButton = document.getElementById("radio-toggle-play");
+  const volumeControl = document.getElementById("radio-volume");
+  const retryButton = document.getElementById("radio-retry");
+  const botones = [...document.querySelectorAll("[data-radio]")];
 
-  const radios = {
+  if (!radioPlayer || !app || !playButton) return;
+
+  const radios = CONFIG?.radioStations || {
     lared: {
       nombre: "La Red 102.1 FM Quito",
-      url: "https://icecast.ticsecuador.com.ec/radiolared"
+      corto: "La Red",
+      frecuencia: "102.1 FM · Quito",
+      url: "https://icecast.ticsecuador.com.ec/radiolared",
+      logo: "radio-la-red.png"
     },
     mach: {
-      nombre: "Mach Deportes 91.7 Quito",
-      url: "https://streamingecuador.net:9170/stream"
+      nombre: "Mach Deportes 91.7 FM Quito",
+      corto: "Mach Deportes",
+      frecuencia: "91.7 FM · Quito",
+      url: "https://streamingecuador.net:9170/stream",
+      logo: "radio-mach-deportes.png"
     }
   };
 
-  let radioActual = "lared";
-  let usuarioActivo = false;
-  let reconexion = null;
+  let radioActual = localStorage.getItem(CLAVE_RADIO_SELECCIONADA);
+  if (!radios[radioActual]) radioActual = "lared";
+  let reproduccionSolicitada = false;
+  let reconexionTimer = null;
+  let intentosReconexion = 0;
+  const maxIntentos = 6;
 
-  const estado = (texto) => {
+  const establecerEstado = (tipo, texto) => {
     if (radioStatus) radioStatus.textContent = texto;
+    if (connection) {
+      connection.className = `radio-connection is-${tipo}`;
+      connection.innerHTML = `<i aria-hidden="true"></i>${escaparHTML(texto)}`;
+    }
+    app.dataset.state = tipo;
+    app.classList.toggle("is-playing", tipo === "live");
+    app.classList.toggle("is-loading", tipo === "connecting");
+    app.classList.toggle("has-error", tipo === "error");
   };
 
-  const cargarRadio = async (id) => {
+  const actualizarBotonPlay = (reproduciendo) => {
+    playButton.setAttribute("aria-pressed", String(reproduciendo));
+    playButton.setAttribute("aria-label", `${reproduciendo ? "Pausar" : "Reproducir"} ${radios[radioActual].nombre}`);
+    app.classList.toggle("is-playing", reproduciendo);
+  };
+
+  const actualizarEmisoraUI = (id) => {
     const radio = radios[id];
     if (!radio) return;
-
     radioActual = id;
-    usuarioActivo = true;
+    localStorage.setItem(CLAVE_RADIO_SELECCIONADA, id);
 
-    botones.forEach(btn => {
-      btn.classList.toggle("btn-radio-activo", btn.dataset.radio === id);
+    if (currentName) currentName.textContent = radio.nombre;
+    if (currentLogo) {
+      currentLogo.src = radio.logo;
+      currentLogo.alt = `Logo de ${radio.nombre}`;
+    }
+
+    botones.forEach((btn) => {
+      const activa = btn.dataset.radio === id;
+      btn.classList.toggle("is-active", activa);
+      btn.setAttribute("aria-checked", String(activa));
     });
 
-    estado(`Cargando ${radio.nombre}...`);
+    configurarMediaSessionRadio(radioPlayer, radio);
+  };
 
-    radioPlayer.pause();
-    radioPlayer.src = radio.url;
-    radioPlayer.volume = 1;
-    radioPlayer.load();
+  const limpiarReconexion = () => {
+    clearTimeout(reconexionTimer);
+    reconexionTimer = null;
+  };
+
+  const prepararFuente = (forzar = false) => {
+    const radio = radios[radioActual];
+    if (!radio) return;
+    if (forzar || radioPlayer.src !== radio.url) {
+      radioPlayer.pause();
+      radioPlayer.src = radio.url;
+      radioPlayer.load();
+    }
+  };
+
+  const reproducir = async ({ reconexion = false } = {}) => {
+    const radio = radios[radioActual];
+    if (!radio) return;
+    reproduccionSolicitada = true;
+    limpiarReconexion();
+    if (!reconexion) intentosReconexion = 0;
+    establecerEstado("connecting", `Conectando con ${radio.corto}...`);
+    prepararFuente(reconexion || !radioPlayer.src);
 
     try {
       await radioPlayer.play();
-    } catch {
-      estado(`Presiona reproducir para iniciar ${radio.nombre}.`);
+    } catch (error) {
+      actualizarBotonPlay(false);
+      if (error?.name === "NotAllowedError") {
+        reproduccionSolicitada = false;
+        establecerEstado("paused", `Presiona reproducir para escuchar ${radio.corto}.`);
+      } else {
+        programarReconexion();
+      }
     }
   };
 
-  botones.forEach(btn => {
-    btn.addEventListener("click", () => cargarRadio(btn.dataset.radio));
+  const pausar = () => {
+    reproduccionSolicitada = false;
+    limpiarReconexion();
+    radioPlayer.pause();
+    actualizarBotonPlay(false);
+    establecerEstado("paused", `${radios[radioActual].corto} en pausa.`);
+  };
+
+  const programarReconexion = () => {
+    if (!reproduccionSolicitada) return;
+    limpiarReconexion();
+
+    if (intentosReconexion >= maxIntentos) {
+      establecerEstado("error", "No se pudo recuperar la señal automáticamente.");
+      if (retryButton) retryButton.hidden = false;
+      return;
+    }
+
+    const espera = Math.min(1500 * (2 ** intentosReconexion), 12000);
+    intentosReconexion += 1;
+    establecerEstado("connecting", `Señal interrumpida. Reconectando (${intentosReconexion}/${maxIntentos})...`);
+    reconexionTimer = setTimeout(() => reproducir({ reconexion: true }), espera);
+  };
+
+  botones.forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const nueva = btn.dataset.radio;
+      if (!radios[nueva] || nueva === radioActual) return;
+      const estabaActiva = reproduccionSolicitada && !radioPlayer.paused;
+      limpiarReconexion();
+      radioPlayer.pause();
+      radioPlayer.removeAttribute("src");
+      actualizarEmisoraUI(nueva);
+      establecerEstado("idle", `${radios[nueva].corto} seleccionada.`);
+      if (estabaActiva) await reproducir();
+    });
   });
 
-  const eqPanel = document.querySelector('.radio-live-panel');
-  radioPlayer.addEventListener('play',()=>eqPanel?.classList.add('playing'));
-  radioPlayer.addEventListener('pause',()=>eqPanel?.classList.remove('playing'));
-
-  radioPlayer.addEventListener("playing", () => {
-    estado(`🔴 ${radios[radioActual].nombre} en vivo.`);
+  playButton.addEventListener("click", () => {
+    if (radioPlayer.paused) reproducir();
+    else pausar();
   });
 
+  retryButton?.addEventListener("click", () => {
+    retryButton.hidden = true;
+    intentosReconexion = 0;
+    reproducir({ reconexion: true });
+  });
+
+  const volumenGuardado = Number(localStorage.getItem(CLAVE_VOLUMEN_RADIO));
+  const volumenInicial = Number.isFinite(volumenGuardado) ? Math.min(1, Math.max(0, volumenGuardado)) : 0.85;
+  radioPlayer.volume = volumenInicial;
+  if (volumeControl) {
+    volumeControl.value = String(volumenInicial);
+    volumeControl.addEventListener("input", () => {
+      const valor = Math.min(1, Math.max(0, Number(volumeControl.value)));
+      radioPlayer.volume = valor;
+      localStorage.setItem(CLAVE_VOLUMEN_RADIO, String(valor));
+    });
+  }
+
+  radioPlayer.addEventListener("loadstart", () => {
+    if (reproduccionSolicitada) establecerEstado("connecting", "Cargando señal en vivo...");
+  });
   radioPlayer.addEventListener("waiting", () => {
-    estado("Cargando señal...");
+    if (reproduccionSolicitada) establecerEstado("connecting", "Almacenando señal para evitar cortes...");
   });
-
-  radioPlayer.addEventListener("error", () => {
-    estado("Señal interrumpida. Intentando reconectar...");
-    clearTimeout(reconexion);
-    reconexion = setTimeout(() => {
-      if (usuarioActivo) cargarRadio(radioActual);
-    }, 1200);
+  radioPlayer.addEventListener("playing", () => {
+    intentosReconexion = 0;
+    if (retryButton) retryButton.hidden = true;
+    actualizarBotonPlay(true);
+    establecerEstado("live", `${radios[radioActual].nombre} transmitiendo en vivo.`);
   });
+  radioPlayer.addEventListener("pause", () => {
+    if (!reproduccionSolicitada) actualizarBotonPlay(false);
+  });
+  radioPlayer.addEventListener("stalled", programarReconexion);
+  radioPlayer.addEventListener("error", programarReconexion);
+  radioPlayer.addEventListener("ended", programarReconexion);
 
-  configurarMediaSessionRadio(radioPlayer);
-  radioPlayer.src = radios.lared.url;
+  actualizarEmisoraUI(radioActual);
+  establecerEstado("idle", "Lista para conectar.");
 }
 
-
-function configurarMediaSessionRadio(radioPlayer) {
+function configurarMediaSessionRadio(radioPlayer, radio = {}) {
   if (!("mediaSession" in navigator)) return;
 
   if ("MediaMetadata" in window) {
-    navigator.mediaSession.metadata = new MediaMetadata({
-      title: "La Red 102.1 FM Quito en vivo",
-      artist: "Click Tv Streaming",
-      album: "Programación deportiva"
-    });
+    let artwork = [];
+    if (radio.logo) {
+      try {
+        artwork = [{ src: new URL(radio.logo, document.baseURI).href, sizes: "512x512", type: "image/png" }];
+      } catch {
+        artwork = [];
+      }
+    }
+
+    try {
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: radio.nombre || "Radio deportiva en vivo",
+        artist: "Click TV Streaming",
+        album: "Radios deportivas de Quito",
+        artwork
+      });
+    } catch {
+      // Algunos navegadores exigen artwork absoluto o no aceptan MediaMetadata.
+    }
   }
 
   try {
     navigator.mediaSession.setActionHandler("play", () => radioPlayer.play());
     navigator.mediaSession.setActionHandler("pause", () => radioPlayer.pause());
   } catch {
-    // Algunos navegadores no permiten registrar acciones de Media Session.
+    // Safari y navegadores antiguos pueden limitar Media Session.
   }
 }
 
@@ -630,7 +780,8 @@ function normalizarCarritoDesdeCatalogo() {
       ...item,
       precio: Number(plan.precio),
       ivaIncluido: Boolean(plan.ivaIncluido),
-      bloquearDescuento: Boolean(plan.bloquearDescuento)
+      bloquearDescuento: Boolean(plan.bloquearDescuento),
+      operacion: item.operacion === "renovacion" ? "renovacion" : "compra"
     };
   });
 }
@@ -672,7 +823,8 @@ function agregarAlCarrito(producto, plan) {
       cantidad: 1,
       ivaIncluido: Boolean(plan.ivaIncluido),
       bloquearDescuento: Boolean(plan.bloquearDescuento),
-      dispositivos: plan.dispositivos || null
+      dispositivos: plan.dispositivos || null,
+      operacion: "compra"
     });
   }
 
@@ -729,6 +881,46 @@ function comprarAhora(productoId, planIndex) {
   window.open(`${CONFIG.whatsappLink}?text=${mensaje}`, "_blank", "noopener,noreferrer");
 }
 
+function renovarServicio(productoId, planIndex, agregarAlCarrito = false) {
+  const data = obtenerPlanProducto(productoId, planIndex);
+  if (!data) return mostrarToast("Servicio no disponible.", "error");
+
+  const { producto, plan } = data;
+
+  if (agregarAlCarrito && !plan.consultar) {
+    agregarAlCarrito(producto, plan);
+    const itemId = `${producto.id}-${normalizarTexto(plan.tipo)}`;
+    const item = carrito.find((elemento) => elemento.itemId === itemId);
+    if (item) item.operacion = "renovacion";
+    guardarCarritoEnStorage();
+    renderCarrito();
+    return;
+  }
+
+  const mensaje = encodeURIComponent(
+    `Hola Click TV, deseo renovar mi servicio:\n\nServicio: ${producto.nombre}\nPlan: ${plan.tipo}\nDeseo realizar renovación.`
+  );
+  window.open(`${CONFIG.whatsappLink}?text=${mensaje}`, "_blank", "noopener,noreferrer");
+}
+
+function marcarRenovacionCarrito(itemId) {
+  const item = carrito.find((elemento) => elemento.itemId === itemId);
+  if (!item) return;
+  item.operacion = item.operacion === "renovacion" ? "compra" : "renovacion";
+  guardarCarritoEnStorage();
+  renderCarrito();
+  mostrarToast(item.operacion === "renovacion" ? "Producto marcado para renovación." : "Producto marcado como compra nueva.", "info");
+}
+
+function renovarItemWhatsApp(itemId) {
+  const item = carrito.find((elemento) => elemento.itemId === itemId);
+  if (!item) return;
+  const mensaje = encodeURIComponent(
+    `Hola Click TV, deseo renovar mi servicio:\n\nServicio: ${item.nombre}\nPlan: ${item.plan}\nDeseo realizar renovación.`
+  );
+  window.open(`${CONFIG.whatsappLink}?text=${mensaje}`, "_blank", "noopener,noreferrer");
+}
+
 function renderCarrito() {
   const contenedor = document.getElementById("carrito-items");
   if (!contenedor) return;
@@ -740,20 +932,29 @@ function renderCarrito() {
       <div class="carrito-item">
         <span class="carrito-item__icono">${item.icono}</span>
         <div class="carrito-item__info">
-          <p class="carrito-item__nombre">${item.nombre}</p>
+          <div class="carrito-item__title-row">
+            <p class="carrito-item__nombre">${item.nombre}</p>
+            <span class="operation-badge ${item.operacion === "renovacion" ? "is-renewal" : ""}">${item.operacion === "renovacion" ? "Renovación" : "Compra nueva"}</span>
+          </div>
           <p class="carrito-item__plan">${item.plan} · ${formatearPrecio(item.precio)}${item.ivaIncluido ? " · Precio final" : ""}${item.bloquearDescuento ? " · Sin cupón" : ""}</p>
           ${item.dispositivos ? `
             <label class="mini-label">Dispositivos
               <input type="number" min="1" max="10" value="${item.dispositivos}" onchange="modificarDispositivos('${item.itemId}', this.value)">
             </label>
           ` : ""}
-          <div class="carrito-item__cantidad">
-            <button onclick="cambiarCantidad('${item.itemId}', -1)" aria-label="Reducir cantidad">−</button>
-            <span>${item.cantidad}</span>
-            <button onclick="cambiarCantidad('${item.itemId}', 1)" aria-label="Aumentar cantidad">+</button>
+          <div class="carrito-item__quantity-row">
+            <div class="carrito-item__cantidad">
+              <button type="button" onclick="cambiarCantidad('${item.itemId}', -1)" aria-label="Reducir cantidad">−</button>
+              <span>${item.cantidad}</span>
+              <button type="button" onclick="cambiarCantidad('${item.itemId}', 1)" aria-label="Aumentar cantidad">+</button>
+            </div>
+            <div class="carrito-item__renew-actions">
+              <button type="button" class="cart-renew-toggle" onclick="marcarRenovacionCarrito('${item.itemId}')">${item.operacion === "renovacion" ? "Cambiar a compra" : "🔄 Renovar"}</button>
+              <button type="button" class="cart-renew-whatsapp" onclick="renovarItemWhatsApp('${item.itemId}')">WhatsApp</button>
+            </div>
           </div>
         </div>
-        <button class="carrito-item__borrar" onclick="eliminarDelCarrito('${item.itemId}')" aria-label="Eliminar producto">🗑️</button>
+        <button type="button" class="carrito-item__borrar" onclick="eliminarDelCarrito('${item.itemId}')" aria-label="Eliminar producto">🗑️</button>
       </div>
     `).join("");
   }
@@ -811,19 +1012,29 @@ function actualizarContadorCarrito() {
   const contador = document.getElementById("contador-carrito");
   if (!contador) return;
   const totalItems = carrito.reduce((acc, item) => acc + Number(item.cantidad), 0);
+  const anterior = Number(contador.textContent || 0);
   contador.textContent = totalItems;
   contador.style.display = totalItems > 0 ? "inline-flex" : "none";
+  if (anterior !== totalItems) {
+    contador.classList.remove("is-bumping");
+    requestAnimationFrame(() => contador.classList.add("is-bumping"));
+    setTimeout(() => contador.classList.remove("is-bumping"), 420);
+  }
 }
 
 function abrirCarrito() {
   document.getElementById("panel-carrito")?.classList.add("abierto");
   document.getElementById("carrito-overlay")?.classList.add("visible");
+  document.getElementById("btn-abrir-carrito")?.setAttribute("aria-expanded", "true");
+  document.body.classList.add("cart-open");
   renderCarrito();
 }
 
 function cerrarCarrito() {
   document.getElementById("panel-carrito")?.classList.remove("abierto");
   document.getElementById("carrito-overlay")?.classList.remove("visible");
+  document.getElementById("btn-abrir-carrito")?.setAttribute("aria-expanded", "false");
+  document.body.classList.remove("cart-open");
 }
 
 function vaciarCarrito() {
@@ -1080,7 +1291,10 @@ function actualizarDetallePagoCarrito() {
 }
 
 function generarResumenPedido() {
-  const resumen = carrito.map((item) => `• ${item.nombre} (${item.plan}) x${item.cantidad}`).join("\n");
+  const resumen = carrito.map((item) => {
+    const operacion = item.operacion === "renovacion" ? "RENOVACIÓN" : "COMPRA NUEVA";
+    return `• ${operacion}: ${item.nombre} (${item.plan}) x${item.cantidad}`;
+  }).join("\n");
   const totales = calcularTotales();
   const ivaEtiqueta = Math.round(CONFIG.ivaPorcentaje * 100);
   const cuponManualActivo = obtenerCuponManualActivo();
@@ -1098,14 +1312,36 @@ function enviarComprobanteWhatsApp() {
   window.open(`${CONFIG.whatsappLink}?text=${mensaje}`, "_blank", "noopener,noreferrer");
 }
 
-function inicializarPayPalCheckout() {
+function cargarPayPalSDK() {
+  if (typeof paypal !== "undefined") return Promise.resolve(paypal);
+  if (paypalSdkPromise) return paypalSdkPromise;
+
+  paypalSdkPromise = new Promise((resolve, reject) => {
+    const script = document.createElement("script");
+    const clientId = encodeURIComponent(CONFIG.paypalClientIdLive);
+    script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&currency=USD`;
+    script.async = true;
+    script.onload = () => resolve(window.paypal);
+    script.onerror = () => reject(new Error("No se pudo cargar PayPal SDK"));
+    document.head.appendChild(script);
+  });
+
+  return paypalSdkPromise;
+}
+
+async function inicializarPayPalCheckout() {
   const contenedor = document.getElementById("paypal-button-container-carrito");
   if (!contenedor || paypalRenderizado) return;
 
-  if (typeof paypal === "undefined") {
-    contenedor.innerHTML = `<p class="notice">PayPal Checkout no pudo cargar. Use PayPal.Me como alternativa.</p>`;
+  try {
+    await cargarPayPalSDK();
+  } catch (error) {
+    console.error("PayPal SDK:", error);
+    contenedor.innerHTML = `<p class="notice">PayPal Checkout no pudo cargar. Usa PayPal.Me como alternativa.</p>`;
     return;
   }
+
+  if (typeof paypal === "undefined") return;
 
   paypal.Buttons({
     style: {
@@ -1198,12 +1434,9 @@ async function renderMundial(silencioso = false) {
         <br>Sincronizando Mundial 2026...
       </div>`;
   } catch (error) {
-    console.warn("No se pudo cargar Football-Data:", error);
-    box.innerHTML = `
-      <div class="loading-card">
-        ⚽ No se pudo conectar con la API del Mundial.
-        <br>Se reintentará automáticamente.
-      </div>`;
+    console.warn("No se pudo cargar Football-Data; se usa el calendario local:", error);
+    box.innerHTML = renderizarRespaldoMundial();
+    iniciarCronometroMundial();
   }
 }
 
@@ -1213,10 +1446,27 @@ async function obtenerPartidosFootballData() {
     dateTo: fechaConsultaMundial(8)
   });
 
-  const respuesta = await fetch("/api/mundial");
+  let data = null;
 
-  if (!respuesta.ok) throw new Error(`API Mundial HTTP ${respuesta.status}`);
-  const data = await respuesta.json();
+  // Vercel: intenta primero el proxy serverless para evitar exponer el token en red.
+  try {
+    const respuestaProxy = await fetch(`/api/mundial?${params.toString()}`);
+    if (respuestaProxy.ok) data = await respuestaProxy.json();
+  } catch {
+    // En GitHub Pages el endpoint /api no existe; se usa el respaldo directo.
+  }
+
+  // GitHub Pages / despliegue estático: respaldo directo con la configuración existente.
+  if (!data) {
+    const url = new URL(CONFIG.footballDataApiUrl);
+    url.search = params.toString();
+    const respuestaDirecta = await fetch(url.toString(), {
+      headers: { "X-Auth-Token": CONFIG.footballDataApiToken }
+    });
+    if (!respuestaDirecta.ok) throw new Error(`Football-Data HTTP ${respuestaDirecta.status}`);
+    data = await respuestaDirecta.json();
+  }
+
   const matches = Array.isArray(data)
     ? data
     : (data.matches || data.partidos || []);
@@ -2036,7 +2286,10 @@ function rotarResenas() {
 function renderActividadReciente() {
   const box = document.getElementById("actividad-reciente");
   if (!box || !ACTIVIDAD_RECIENTE?.length) return;
-  box.textContent = ACTIVIDAD_RECIENTE[indiceActividad % ACTIVIDAD_RECIENTE.length];
+  const texto = String(ACTIVIDAD_RECIENTE[indiceActividad % ACTIVIDAD_RECIENTE.length]).replace(/^🟢\s*/, "");
+  box.classList.remove("activity-pill--animate");
+  box.innerHTML = `<span class="activity-live"><i aria-hidden="true"></i>LIVE</span><span>${escaparHTML(texto)}</span>`;
+  requestAnimationFrame(() => box.classList.add("activity-pill--animate"));
   indiceActividad++;
 }
 
@@ -2047,6 +2300,127 @@ function actualizarUsuariosConectados() {
   const variacion = Math.floor(Math.random() * 7) - 3;
   usuariosConectados = Math.min(92, Math.max(38, usuariosConectados + variacion));
   usuarios.textContent = usuariosConectados;
+}
+
+// ---------------------------------------------------------------------------
+// EXPERIENCIA PREMIUM, ANIMACIONES Y ACCESIBILIDAD
+// ---------------------------------------------------------------------------
+function inicializarFondoDinamico() {
+  const contenedor = document.getElementById("tech-particles");
+  if (!contenedor || contenedor.childElementCount) return;
+  const cantidad = window.matchMedia("(max-width: 720px)").matches ? 10 : 18;
+  const fragmento = document.createDocumentFragment();
+
+  for (let i = 0; i < cantidad; i += 1) {
+    const particula = document.createElement("span");
+    particula.style.setProperty("--x", `${Math.random() * 100}%`);
+    particula.style.setProperty("--y", `${Math.random() * 100}%`);
+    particula.style.setProperty("--size", `${2 + Math.random() * 4}px`);
+    particula.style.setProperty("--duration", `${12 + Math.random() * 18}s`);
+    particula.style.setProperty("--delay", `${-Math.random() * 20}s`);
+    fragmento.appendChild(particula);
+  }
+  contenedor.appendChild(fragmento);
+}
+
+function inicializarAnimacionesScroll() {
+  if (!("IntersectionObserver" in window)) {
+    document.querySelectorAll(".reveal").forEach((el) => el.classList.add("reveal--visible"));
+    return;
+  }
+
+  observadorReveal = new IntersectionObserver((entradas) => {
+    entradas.forEach((entrada) => {
+      if (!entrada.isIntersecting) return;
+      entrada.target.classList.add("reveal--visible");
+      observadorReveal.unobserve(entrada.target);
+    });
+  }, { rootMargin: "0px 0px -8%", threshold: 0.08 });
+
+  registrarContenidoDinamico(document);
+
+  const mutaciones = new MutationObserver((lista) => {
+    lista.forEach((mutacion) => {
+      mutacion.addedNodes.forEach((nodo) => {
+        if (nodo.nodeType === Node.ELEMENT_NODE) registrarContenidoDinamico(nodo);
+      });
+    });
+  });
+  mutaciones.observe(document.body, { childList: true, subtree: true });
+}
+
+function registrarContenidoDinamico(root = document) {
+  const selector = [
+    ".reveal", ".section-head", ".step-card", ".product-card", ".payment-card", ".stat-card",
+    ".faq-card", ".match-card", ".glass-card", ".teleamazonas-player-card",
+    ".saving-option", ".savings-card", ".radio-app"
+  ].join(",");
+
+  const elementos = [];
+  if (root.matches?.(selector)) elementos.push(root);
+  root.querySelectorAll?.(selector).forEach((el) => elementos.push(el));
+
+  elementos.forEach((el, index) => {
+    if (!el.classList.contains("reveal")) el.classList.add("reveal");
+    el.style.setProperty("--reveal-delay", `${Math.min(index % 6, 5) * 55}ms`);
+    if (observadorReveal) observadorReveal.observe(el);
+  });
+}
+
+function inicializarTiltPremium() {
+  const permiteMovimiento = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const permiteHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  if (!permiteMovimiento || !permiteHover) return;
+
+  let frame = 0;
+  let tarjetaActiva = null;
+  let ultimoEvento = null;
+  const selector = ".product-card, .payment-card, .step-card, .faq-card, .match-card, .stat-card, .glass-card, .radio-app";
+
+  document.addEventListener("pointermove", (evento) => {
+    const tarjeta = evento.target.closest(selector);
+    if (!tarjeta) return;
+    tarjetaActiva = tarjeta;
+    ultimoEvento = evento;
+    tarjeta.classList.add("premium-tilt");
+
+    if (frame) return;
+    frame = requestAnimationFrame(() => {
+      frame = 0;
+      if (!tarjetaActiva || !ultimoEvento) return;
+      const rect = tarjetaActiva.getBoundingClientRect();
+      const x = (ultimoEvento.clientX - rect.left) / rect.width - 0.5;
+      const y = (ultimoEvento.clientY - rect.top) / rect.height - 0.5;
+      tarjetaActiva.style.setProperty("--ry", `${x * 4.5}deg`);
+      tarjetaActiva.style.setProperty("--rx", `${y * -4.5}deg`);
+      tarjetaActiva.style.setProperty("--glow-x", `${(x + 0.5) * 100}%`);
+      tarjetaActiva.style.setProperty("--glow-y", `${(y + 0.5) * 100}%`);
+    });
+  }, { passive: true });
+
+  document.addEventListener("pointerout", (evento) => {
+    const tarjeta = evento.target.closest(selector);
+    if (!tarjeta || tarjeta.contains(evento.relatedTarget)) return;
+    tarjeta.style.setProperty("--ry", "0deg");
+    tarjeta.style.setProperty("--rx", "0deg");
+  });
+}
+
+function inicializarAccesibilidadGlobal() {
+  document.addEventListener("keydown", (evento) => {
+    if (evento.key !== "Escape") return;
+    cerrarCarrito();
+    cerrarModalUbicacion();
+    const menu = document.getElementById("nav-menu");
+    const boton = document.getElementById("btn-menu-movil");
+    menu?.classList.remove("abierto");
+    boton?.classList.remove("is-open");
+    boton?.setAttribute("aria-expanded", "false");
+  });
+
+  document.querySelectorAll('a[target="_blank"]').forEach((enlace) => {
+    enlace.rel = "noopener noreferrer";
+  });
 }
 
 // ---------------------------------------------------------------------------
