@@ -1,0 +1,21 @@
+CLICK TV PREMIUM V6
+
+Archivos reemplazables:
+- index.html
+- script.js
+- style.css
+- responsive.css
+
+Cambios de radio:
+La Red 102.1 FM Quito:
+https://icecast.ticsecuador.com.ec/radiolared
+
+Mach Deportes 91.7 Quito:
+https://streamingecuador.net:9170/stream
+
+Mantener intacto:
+- Mundial/API
+- catálogo
+- carrito
+- pagos
+- WhatsApp
