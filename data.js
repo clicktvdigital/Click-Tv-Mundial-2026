@@ -7,7 +7,7 @@ const CONFIG = {
   whatsappNumero: "593939166222",
   whatsappLocal: "0939166222",
   whatsappLink: "https://wa.me/593939166222",
-  whatsappGrupo: "https://chat.whatsapp.com/CNWqZ0AhHhKDb1VKp1LqNu?s=sw&p=a&mlu=1",
+  whatsappGrupo: "https://chat.whatsapp.com/Jj1d8iwCAL3EokVWwu5t1D",
 
   telegramUsuario: "streamid",
   telegramLink: "https://t.me/streamid",
@@ -30,7 +30,24 @@ const CONFIG = {
   footballDataApiToken: "467c885c07fa49baa40ac78cf636f8b0",
   fifaCalendarioUrl: "https://www.fifa.com/es/tournaments/mens/worldcup/canadamexicousa2026/scores-fixtures",
 
-  radioStreamUrl: "https://icecast.radiolared.com.ec/radiolared",
+  radioStreamUrl: "https://icecast.ticsecuador.com.ec/radiolared",
+  machRadioStreamUrl: "https://streamingecuador.net:9170/stream",
+  radioStations: {
+    lared: {
+      nombre: "La Red 102.1 FM Quito",
+      corto: "La Red",
+      frecuencia: "102.1 FM · Quito",
+      url: "https://icecast.ticsecuador.com.ec/radiolared",
+      logo: "radio-la-red.png"
+    },
+    mach: {
+      nombre: "Mach Deportes 91.7 FM Quito",
+      corto: "Mach Deportes",
+      frecuencia: "91.7 FM · Quito",
+      url: "https://streamingecuador.net:9170/stream",
+      logo: "radio-mach-deportes.png"
+    }
+  },
   laredStreamingUrl: "https://www.lared.com.ec/streaming/",
   teleamazonasUrl: "https://www.teleamazonas.com/teleamazonas-en-vivo/",
   teleamazonasSignatureUrl: "https://www.teleamazonas.com/mediastream/signature",
@@ -610,7 +627,7 @@ const MUNDIAL_2026 = [
         local: "España",
         visitante: "Austria",
         fechaUTC: "2026-07-02T19:00:00Z",
-        sede: "Sede por confirmar",
+        sede: "",
         etapa: "Dieciseisavos de final"
       },
       {
@@ -618,7 +635,7 @@ const MUNDIAL_2026 = [
         local: "Portugal",
         visitante: "Croacia",
         fechaUTC: "2026-07-02T23:00:00Z",
-        sede: "Sede por confirmar",
+        sede: "",
         etapa: "Dieciseisavos de final"
       },
       {
@@ -626,7 +643,7 @@ const MUNDIAL_2026 = [
         local: "Suiza",
         visitante: "Argelia",
         fechaUTC: "2026-07-03T03:00:00Z",
-        sede: "Sede por confirmar",
+        sede: "",
         etapa: "Dieciseisavos de final"
       },
       {
@@ -634,7 +651,7 @@ const MUNDIAL_2026 = [
         local: "Australia",
         visitante: "Egipto",
         fechaUTC: "2026-07-03T18:00:00Z",
-        sede: "Sede por confirmar",
+        sede: "",
         etapa: "Dieciseisavos de final"
       },
       {
@@ -642,7 +659,7 @@ const MUNDIAL_2026 = [
         local: "Argentina",
         visitante: "Cabo Verde",
         fechaUTC: "2026-07-03T22:00:00Z",
-        sede: "Sede por confirmar",
+        sede: "",
         etapa: "Dieciseisavos de final"
       },
       {
@@ -650,7 +667,7 @@ const MUNDIAL_2026 = [
         local: "Colombia",
         visitante: "Ghana",
         fechaUTC: "2026-07-04T01:30:00Z",
-        sede: "Sede por confirmar",
+        sede: "",
         etapa: "Dieciseisavos de final"
       }
       ,

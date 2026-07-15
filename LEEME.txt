@@ -1,0 +1,19 @@
+CLICK TV STREAMING — PAQUETE FINAL CON PARCHES INTEGRADOS
+
+Archivos base reemplazables:
+- index.html
+- style.css
+- responsive.css
+- script.js
+- data.js
+- catalogo.js
+
+Parches incluidos dentro de esos archivos:
+- Ecualizador animado con requestAnimationFrame: se mueve solo al reproducir y se detiene al pausar.
+- Iconos SVG grandes y renovados en la barra flotante móvil/escritorio.
+- Enlace del grupo de WhatsApp actualizado en HTML, JS/configuración y accesos rápidos.
+- La sede se muestra únicamente cuando la API o el respaldo local entregan un estadio válido.
+- Se eliminó el texto “Sede por confirmar”.
+- Renovación, carrito, animaciones, radio premium, Mundial y funciones previas se conservan.
+
+Sube todos los archivos de esta carpeta a la raíz de Vercel/GitHub Pages.

@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <script>document.documentElement.classList.add("js");</script>
+  <title>Click Tv Streaming | Streaming Premium IPTV Mundial de Fútbol</title>
+  <meta name="description" content="Click TV Streaming: IPTV, deportes en vivo, Netflix, Disney+, DAZN, música y aplicaciones premium con activación inmediata y soporte directo.">
+  <meta name="keywords" content="Click TV Streaming, Mundial 2026, IPTV, streaming premium, Disney Plus, Netflix, DAZN, Ecuador">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="theme-color" content="#050806">
+  <meta name="color-scheme" content="dark">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Click TV">
+  <link rel="canonical" href="https://click-tv-mundial.vercel.app/">
+
+  <meta property="og:title" content="Click TV Streaming | IPTV, deportes y streaming premium">
+  <meta property="og:description" content="Vive el Mundial 2026, TV en vivo y tus plataformas favoritas con activación inmediata y soporte directo.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Click TV Streaming">
+  <meta property="og:locale" content="es_EC">
+  <meta property="og:url" content="https://click-tv-mundial.vercel.app/">
+  <meta property="og:image" content="https://click-tv-mundial.vercel.app/og-image-v12.png?v=12">
+  <meta property="og:image:secure_url" content="https://click-tv-mundial.vercel.app/og-image-v12.png?v=12">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Click TV Streaming: Mundial 2026 en vivo, IPTV y streaming premium">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Click TV Streaming">
+  <meta name="twitter:description" content="IPTV, deportes y streaming premium con activación inmediata.">
+  <meta name="twitter:image" content="https://click-tv-mundial.vercel.app/og-image-v12.png?v=12">
+  <meta name="twitter:image:alt" content="Click TV Streaming: Mundial 2026 en vivo">
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%2300FF66'/%3E%3Ctext x='50' y='60' text-anchor='middle' font-size='42'%3E%E2%9A%BD%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://www.paypal.com">
+  <link rel="preconnect" href="https://icecast.ticsecuador.com.ec" crossorigin>
+  <link rel="preconnect" href="https://streamingecuador.net" crossorigin>
+  <link rel="preload" href="click-tv-logo-premium.png" as="image" type="image/png">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="responsive.css">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Store",
+    "name": "Click Tv Streaming",
+    "url": "https://click-tv-mundial.vercel.app/",
+    "description": "Catálogo de streaming premium, IPTV y servicios digitales.",
+    "areaServed": "Latinoamérica",
+    "paymentAccepted": "PayPal, PayPhone, DEUNA, Transferencia bancaria"
+  }
+  </script>
+</head>
+<body>
+  <div class="site-bg" aria-hidden="true">
+    <span class="ambient-orb ambient-orb--one"></span>
+    <span class="ambient-orb ambient-orb--two"></span>
+    <span class="ambient-orb ambient-orb--three"></span>
+    <div id="tech-particles" class="tech-particles"></div>
+  </div>
+
+  <div id="modal-ubicacion" class="geo-modal" aria-hidden="true">
+    <div class="geo-modal__card" role="dialog" aria-modal="true" aria-labelledby="geo-modal-title">
+      <button id="btn-cerrar-modal-ubicacion" class="geo-modal__close" type="button" aria-label="Cerrar">✕</button>
+      <span class="geo-modal__icon">📍</span>
+      <h2 id="geo-modal-title">Activa tu ubicación</h2>
+      <p>Así podemos sugerirte la moneda de tu país. Los precios base siempre se mantienen en USD porque Click Tv Streaming está en Ecuador.</p>
+      <button id="btn-modal-activar-ubicacion" class="btn btn--primary btn--full" type="button">Activar ubicación</button>
+      <div class="geo-modal__manual">
+        <label for="selector-pais-manual">O selecciona tu país manualmente</label>
+        <select id="selector-pais-manual">
+          <option value="">Seleccionar país</option>
+          <option value="EC">Ecuador / USD</option>
+          <option value="US">Estados Unidos / USD</option>
+          <option value="PE">Perú / PEN</option>
+          <option value="CO">Colombia / COP</option>
+          <option value="AR">Argentina / ARS</option>
+          <option value="MX">México / MXN</option>
+          <option value="CL">Chile / CLP</option>
+          <option value="ES">España / EUR</option>
+          <option value="BR">Brasil / BRL</option>
+          <option value="BO">Bolivia / BOB</option>
+          <option value="VE">Venezuela / VES</option>
+          <option value="UY">Uruguay / UYU</option>
+          <option value="PY">Paraguay / PYG</option>
+          <option value="DO">República Dominicana / DOP</option>
+          <option value="CR">Costa Rica / CRC</option>
+          <option value="GT">Guatemala / GTQ</option>
+          <option value="HN">Honduras / HNL</option>
+          <option value="NI">Nicaragua / NIO</option>
+        </select>
+      </div>
+      <button id="btn-continuar-sin-ubicacion" class="btn btn--ghost btn--full" type="button">Continuar con USD</button>
+    </div>
+  </div>
+
+  <header class="header" id="inicio">
+    <div class="topbar">
+      <span id="pais-detectado">🌎 Ecuador / Internacional</span>
+      <button id="btn-activar-ubicacion" class="geo-btn" type="button">📍 Activar ubicación</button>
+      <label class="currency-label">💱
+        <select id="selector-moneda" aria-label="Seleccionar moneda">
+          <option value="USD">USD</option>
+          <option value="PEN">PEN</option>
+          <option value="COP">COP</option>
+          <option value="ARS">ARS</option>
+          <option value="MXN">MXN</option>
+          <option value="CLP">CLP</option>
+          <option value="EUR">EUR</option>
+          <option value="BRL">BRL</option>
+          <option value="BOB">BOB</option>
+          <option value="VES">VES</option>
+          <option value="UYU">UYU</option>
+          <option value="PYG">PYG</option>
+          <option value="DOP">DOP</option>
+          <option value="CRC">CRC</option>
+          <option value="GTQ">GTQ</option>
+          <option value="HNL">HNL</option>
+          <option value="NIO">NIO</option>
+        </select>
+      </label>
+      <span>👥 <strong id="usuarios-conectados">48</strong> conectados</span>
+    </div>
+
+    <nav class="navbar container">
+      <a class="brand" href="#inicio" aria-label="CLICK TV inicio">
+        <span class="brand__logo brand__logo--horizontal">
+          <img src="click-tv-logo-premium.png" width="1000" height="454" alt="Click TV Streaming">
+        </span>
+      </a>
+
+      <button id="btn-menu-movil" class="menu-toggle" type="button" aria-label="Abrir menú" aria-controls="nav-menu" aria-expanded="false"><span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span></button>
+
+      <div id="nav-menu" class="nav-menu">
+        <a class="nav-link" href="#inicio">🏠 Inicio</a>
+        <a class="nav-link" href="#mundial">⚽ Mundial 2026</a>
+        <a class="nav-link" href="#streaming">🎬 Streaming</a>
+        <a class="nav-link" href="#iptv">📺 IPTV</a>
+        <a class="nav-link" href="#musica">🎵 Música</a>
+        <a class="nav-link" href="#apps">🎓 Premium Apps</a>
+        <a class="nav-link" href="#streaming" data-ir-categoria="proneet">🚀 PRONEET VPN</a>
+        <a class="nav-link" href="#streaming" data-ir-categoria="recargas">📲 Recargas</a>
+        <a class="nav-link" href="#promos">🔥 Promociones</a>
+        <a class="nav-link" href="#streaming" data-ir-categoria="deportes">⚽ Deportes</a>
+        <a class="nav-link" href="#contacto">💬 Contacto</a>
+      </div>
+
+      <button id="btn-abrir-carrito" class="cart-btn" type="button" aria-label="Abrir carrito" aria-controls="panel-carrito" aria-expanded="false">
+        🛒 <span id="contador-carrito">0</span>
+      </button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero section">
+      <div class="container hero__grid">
+        <div class="hero__content reveal">
+          <span class="eyebrow">⚡ Activaciones inmediatas · Soporte 24/7</span>
+          <h1>Streaming Premium e IPTV para vivir el Mundial 2026</h1>
+          <p>Disfruta tus plataformas favoritas, deportes, TV en vivo y servicios digitales con atención directa por WhatsApp.</p>
+          <div class="master-search" role="search">
+            <span aria-hidden="true">🔎</span>
+            <input id="buscador-maestro" type="search" placeholder="Buscar Netflix, IPTV, DAZN, recargas, aumento de gigas..." autocomplete="off">
+            <button id="btn-buscar-maestro" class="btn btn--primary" type="button">Buscar</button>
+          </div>
+          <div class="hero__actions">
+            <a class="btn btn--primary" href="#mundial">🔴 EN VIVO - PARTIDOS DE HOY</a>
+            <a class="btn btn--outline" href="#streaming">🎬 Ver catálogo</a>
+            <a id="link-catalogo-oficial" class="btn btn--ghost" href="#streaming">📖 Catálogo oficial</a>
+          </div>
+          <div class="activity-pill" id="actividad-reciente" role="status" aria-live="polite"><span class="activity-live"><i></i>LIVE</span><span>Cliente de Quito - Ecuador activó IPTV Premium</span></div>
+        </div>
+
+        <div class="hero__panel glass-card reveal">
+          <h2>📺 Acceso rápido</h2>
+          <p>WhatsApp directo: <strong>0939166222 🇪🇨</strong></p>
+          <div class="quick-links">
+            <a class="btn btn--primary" href="https://wa.me/593939166222" target="_blank" rel="noopener noreferrer">📲 Pedidos inmediatos</a>
+            <a class="btn btn--outline" href="https://t.me/streamid" target="_blank" rel="noopener noreferrer">💬 Telegram</a>
+            <a class="btn btn--ghost" href="https://chat.whatsapp.com/Jj1d8iwCAL3EokVWwu5t1D" target="_blank" rel="noopener noreferrer">👥 Grupo WhatsApp</a>
+          </div>
+
+          <div id="radio-app" class="media-box radio-app premium-surface">
+            <div class="radio-app__header">
+              <div class="radio-now-playing">
+                <div class="radio-now-playing__art">
+                  <img id="radio-current-logo" src="radio-la-red.png" width="900" height="600" alt="Logo de La Red 102.1 FM Quito">
+                  <span class="radio-signal-ring" aria-hidden="true"></span>
+                </div>
+                <div class="radio-now-playing__copy">
+                  <span class="radio-kicker">Radio deportiva de Quito</span>
+                  <strong id="radio-current-name">La Red 102.1 FM Quito</strong>
+                  <span id="radio-connection" class="radio-connection is-idle"><i></i>Lista para conectar</span>
+                </div>
+              </div>
+              <span id="radio-live-badge" class="live-badge" aria-label="Transmisión en vivo"><i></i>EN VIVO</span>
+            </div>
+
+            <div class="radio-stations" role="radiogroup" aria-label="Seleccionar radio deportiva">
+              <button class="radio-station is-active" data-radio="lared" type="button" role="radio" aria-checked="true">
+                <img src="radio-la-red.png" width="900" height="600" alt="">
+                <span><strong>La Red</strong><small>102.1 FM · Quito</small></span>
+                <i aria-hidden="true"></i>
+              </button>
+              <button class="radio-station" data-radio="mach" type="button" role="radio" aria-checked="false">
+                <img src="radio-mach-deportes.png" width="900" height="600" alt="">
+                <span><strong>Mach Deportes</strong><small>91.7 FM · Quito</small></span>
+                <i aria-hidden="true"></i>
+              </button>
+            </div>
+
+            <div class="radio-console">
+              <button id="radio-toggle-play" class="radio-play-toggle" type="button" aria-label="Reproducir La Red 102.1 FM" aria-pressed="false">
+                <svg class="icon-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.4v13.2L18.5 12 8 5.4Z"/></svg>
+                <svg class="icon-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h4v14H7V5Zm6 0h4v14h-4V5Z"/></svg>
+              </button>
+
+              <div class="equalizer" aria-label="Ecualizador de reproducción" aria-hidden="true">
+                <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+              </div>
+
+              <label class="radio-volume" for="radio-volume">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4Zm11.5-.9v7.8a5 5 0 0 0 0-7.8Zm0-3v2.1a7 7 0 0 1 0 9.6v2.1a9 9 0 0 0 0-13.8Z"/></svg>
+                <input id="radio-volume" type="range" min="0" max="1" step="0.01" value="0.85" aria-label="Volumen de la radio">
+              </label>
+            </div>
+
+            <div class="radio-status-row">
+              <p id="radio-status" class="radio-status" role="status" aria-live="polite">Selecciona una emisora y presiona reproducir.</p>
+              <button id="radio-retry" class="radio-retry" type="button" hidden>Reconectar</button>
+            </div>
+
+            <audio id="radio-player" preload="none" playsinline>
+              Tu navegador no permite reproducir esta radio.
+            </audio>
+          </div>
+          <div class="teleamazonas-player-card">
+            <div class="teleamazonas-player-card__head">
+              <span class="teleamazonas-card__icon">📡</span>
+              <div>
+                <span class="teleamazonas-card__label">EN VIVO</span>
+                <strong>Teleamazonas en vivo</strong>
+                <small>Señal en vivo oficial de Teleamazonas</small>
+              </div>
+            </div>
+
+            <div id="teleamazonas-player" class="teleamazonas-locked-card">
+              <strong>Transmisión en vivo oficial</strong>
+              <span>La señal directa se abre desde Teleamazonas para que cargue sin errores y con la mejor disponibilidad.</span>
+              <a id="teleamazonas-link-oficial" class="btn btn--primary btn--full" href="https://www.teleamazonas.com/teleamazonas-en-vivo/" target="_blank" rel="noopener noreferrer">
+                🔴 Ver transmisión en vivo
+              </a>
+            </div>
+            <p class="teleamazonas-embed-note">
+              Acceso directo a la fuente oficial de Teleamazonas.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="como-comprar" class="section section--compact">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">🛒 Compra fácil</span>
+          <h2>Cómo activar tu servicio</h2>
+          <p>Un proceso rápido para que el cliente entienda qué hacer antes de pagar.</p>
+        </div>
+
+        <div class="steps-grid">
+          <article class="step-card">
+            <span>1</span>
+            <h3>Elige tu servicio</h3>
+            <p>Selecciona streaming, IPTV, deportes, música o premium apps desde el catálogo.</p>
+          </article>
+          <article class="step-card">
+            <span>2</span>
+            <h3>Agrega al carrito</h3>
+            <p>Revisa el plan, la moneda referencial y el total antes de confirmar.</p>
+          </article>
+          <article class="step-card">
+            <span>3</span>
+            <h3>Paga y confirma</h3>
+            <p>Elige transferencia, DEUNA, PayPhone, PayPal o envía tu pedido por WhatsApp.</p>
+          </article>
+        </div>
+
+        <div class="trust-strip" aria-label="Garantías de atención">
+          <span>✅ Activación rápida</span>
+          <span>💬 Soporte por WhatsApp</span>
+          <span>💳 Pagos seguros</span>
+          <span>🌎 Atención internacional</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="mundial" class="section section--dark">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">⚽ Mundial 2026</span>
+          <h2>Partidos y calendario</h2>
+          <p>Mostramos información disponible desde la API configurada. Si no hay datos, puedes revisar el calendario oficial FIFA.</p>
+        </div>
+        <div id="mundial-grid" class="mundial-grid"></div>
+      </div>
+    </section>
+
+    <section id="streaming" class="section">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">🎬 Catálogo oficial</span>
+          <h2>Streaming, IPTV, recargas, música y premium apps</h2>
+          <p>Precios principales en USD. La conversión local aparece como referencia cuando cambias la moneda.</p>
+        </div>
+
+        <div class="filter-tabs" role="tablist" aria-label="Filtros de catálogo">
+          <button class="filter-btn activo" data-categoria="todos">Todos</button>
+          <button class="filter-btn" data-categoria="streaming">🎬 Streaming</button>
+          <button class="filter-btn" data-categoria="iptv" id="iptv">📺 IPTV</button>
+          <button class="filter-btn" data-categoria="musica" id="musica">🎵 Música</button>
+          <button class="filter-btn" data-categoria="apps" id="apps">🎓 Premium Apps</button>
+          <button class="filter-btn" data-categoria="proneet">🚀 PRONEET VPN</button>
+          <button class="filter-btn" data-categoria="recargas">📲 Recargas y combos</button>
+          <button class="filter-btn" data-categoria="deportes">⚽ Deportes</button>
+        </div>
+
+        <div id="catalogo-grid" class="catalogo-grid"></div>
+      </div>
+    </section>
+
+    <section id="promos" class="section section--accent">
+      <div class="container stats-grid">
+        <div class="stat-card"><strong>🌎 14</strong><span>países atendidos</span></div>
+        <div class="stat-card"><strong>⚡</strong><span>Activaciones inmediatas</span></div>
+        <div class="stat-card"><strong>🛡️</strong><span>Soporte 24/7</span></div>
+        <div class="stat-card"><strong>⚽</strong><span>Mundial 2026 disponible</span></div>
+        <div class="stat-card"><strong>💬</strong><span>Atención personalizada</span></div>
+      </div>
+    </section>
+
+    <section id="ayuda" class="section">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">❓ Ayuda rápida</span>
+          <h2>Preguntas frecuentes</h2>
+          <p>Respuestas claras para evitar dudas antes de comprar o renovar.</p>
+        </div>
+
+        <div class="faq-grid">
+          <article class="faq-card">
+            <h3>¿Cuánto demora la activación?</h3>
+            <p>Normalmente la atención es inmediata por WhatsApp luego de confirmar el pago o disponibilidad.</p>
+          </article>
+          <article class="faq-card">
+            <h3>¿Puedo pagar desde otro país?</h3>
+            <p>Sí. Los precios base están en USD y la página muestra una conversión referencial según tu moneda.</p>
+          </article>
+          <article class="faq-card">
+            <h3>¿Qué pasa si comparto mi cuenta?</h3>
+            <p>El uso posterior queda bajo responsabilidad del cliente. Evita compartir accesos para no perder la cuenta.</p>
+          </article>
+          <article class="faq-card">
+            <h3>¿Todos los productos están disponibles?</h3>
+            <p>Algunos servicios dependen de stock. Si ves “consultar disponibilidad”, primero confirma por WhatsApp.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="contacto" class="section section--dark">
+      <div class="container contact-grid">
+        <div>
+          <span class="eyebrow">💬 Contacto</span>
+          <h2>Activa tu servicio hoy</h2>
+          <p>Respondemos al instante. No te quedes sin tu cuenta para disfrutar tus contenidos favoritos.</p>
+          <form id="form-contacto-internacional" class="contact-form">
+            <div class="form-grid">
+              <label>Nombre y apellido
+                <input id="contacto-nombre" type="text" placeholder="Ej: Carlos Pérez" required>
+              </label>
+              <label>País
+                <select id="contacto-pais" required>
+                  <option value="">Seleccionar país</option>
+                  <option value="Ecuador">Ecuador</option>
+                  <option value="Perú">Perú</option>
+                  <option value="Colombia">Colombia</option>
+                  <option value="Argentina">Argentina</option>
+                  <option value="México">México</option>
+                  <option value="Chile">Chile</option>
+                  <option value="España">España</option>
+                  <option value="Brasil">Brasil</option>
+                  <option value="Bolivia">Bolivia</option>
+                  <option value="Venezuela">Venezuela</option>
+                  <option value="Estados Unidos">Estados Unidos</option>
+                  <option value="Otro país">Otro país</option>
+                </select>
+              </label>
+            </div>
+            <label>Número de teléfono
+              <input id="contacto-telefono" type="tel" placeholder="Ej: +593 939166222" required>
+            </label>
+            <label>Mensaje
+              <textarea id="contacto-mensaje" rows="4" placeholder="Hola, deseo información sobre..." required></textarea>
+            </label>
+            <button class="btn btn--primary btn--full" type="submit">📲 Enviar consulta por WhatsApp</button>
+          </form>
+          <div class="contact-actions">
+            <a id="link-renovar-servicio" class="btn btn--primary" href="https://wa.me/593939166222" target="_blank" rel="noopener noreferrer">🔁 Renovar servicio</a>
+            <a class="btn btn--outline" href="https://t.me/streamid" target="_blank" rel="noopener noreferrer">💬 Telegram</a>
+          </div>
+        </div>
+        <div class="glass-card">
+          <h3>⭐ Reseñas verificadas</h3>
+          <div id="resenas-slider" class="resenas-slider"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="calculadora-ahorro" class="section savings-section">
+      <div class="container savings-grid">
+        <div class="savings-copy">
+          <span class="eyebrow">🧮 Calculadora de ahorro</span>
+          <h2>Simula tus servicios favoritos</h2>
+          <p>Selecciona los servicios más comprados y revisa un estimado con cupón manual e IVA vigente en Ecuador. El valor final se confirma por WhatsApp según disponibilidad.</p>
+          <div id="ahorro-servicios" class="savings-options"></div>
+        </div>
+
+        <div class="savings-card glass-card">
+          <h3>Resumen estimado</h3>
+          <div class="savings-coupon">
+            <label for="input-cupon-ahorro">Cupón de descuento</label>
+            <div class="input-row">
+              <input id="input-cupon-ahorro" type="text" placeholder="Ej: CLICK TV MUNDIAL">
+              <button id="btn-aplicar-cupon-ahorro" class="btn btn--primary" type="button">Aplicar</button>
+            </div>
+            <small id="ahorro-cupon-info">Sin cupón aplicado.</small>
+          </div>
+          <div class="savings-summary">
+            <p><span>Precio normal referencial</span><strong id="ahorro-normal">$0.00 USD</strong></p>
+            <p><span>Subtotal Click TV</span><strong id="ahorro-subtotal">$0.00 USD</strong></p>
+            <p><span>Cupón de descuento</span><strong id="ahorro-cupon">- $0.00 USD</strong></p>
+            <p><span>IVA vigente Ecuador</span><strong id="ahorro-iva">$0.00 USD</strong></p>
+            <p class="total"><span>Total estimado</span><strong id="ahorro-total">$0.00 USD</strong></p>
+            <p class="saving-line"><span>Ahorro aproximado</span><strong id="ahorro-total-ahorrado">$0.00 USD</strong></p>
+          </div>
+          <button id="btn-ahorro-whatsapp" class="btn btn--primary btn--full" type="button">📲 Consultar este combo</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="carrito-overlay" class="carrito-overlay"></div>
+  <aside id="panel-carrito" class="panel-carrito" aria-label="Carrito de compras">
+    <div class="panel-carrito__header">
+      <h2>🛒 Tu carrito</h2>
+      <button id="btn-cerrar-carrito" class="icon-btn" aria-label="Cerrar carrito">✕</button>
+    </div>
+
+    <div id="carrito-items" class="carrito-items"></div>
+
+    <div class="cart-trust">
+      <strong>Compra con confianza</strong>
+      <p>Antes de pagar, revisa tu resumen. Si tienes dudas, envía el pedido por WhatsApp y confirmamos disponibilidad.</p>
+      <div>
+        <span>⚡ Activación rápida</span>
+        <span>🛡️ Validación de pago</span>
+        <span>💬 Soporte directo</span>
+      </div>
+    </div>
+
+    <div class="cupon-box">
+      <label for="input-cupon">Cupón de descuento</label>
+      <div class="input-row">
+        <input id="input-cupon" type="text" placeholder="Ej: CLICK TV MUNDIAL">
+        <button id="btn-aplicar-cupon" class="btn btn--primary">Aplicar</button>
+      </div>
+      <small class="cupon-ayuda">El descuento solo se aplica cuando escribes el cupón y presionas Aplicar. Puedes escribirlo en mayúsculas, minúsculas, con espacios o seguido. No aplica a recargas o combos oficiales.</small>
+      <p id="cupon-info" class="cupon-info"></p>
+    </div>
+
+    <div class="cart-summary">
+      <p><span>Subtotal</span><strong id="carrito-subtotal">$0.00 USD</strong></p>
+      <p><span>Cupón de descuento</span><strong id="carrito-descuento">- $0.00 USD</strong></p>
+      <p><span>IVA vigente Ecuador cuando aplica</span><strong id="carrito-iva">$0.00 USD</strong></p>
+      <p class="total"><span>Total final</span><strong id="carrito-total">$0.00 USD</strong></p>
+    </div>
+
+    <div class="cart-payment">
+      <div class="cart-payment__head">
+        <span>💳</span>
+        <div>
+          <h3>Elige tu método de pago</h3>
+          <p>Selecciona una opción y continúa con el pago o envía tu pedido por WhatsApp.</p>
+        </div>
+      </div>
+
+      <div class="cart-payment__methods" aria-label="Métodos de pago del carrito">
+        <button class="btn-pago activo" data-metodo="transferencia">🏦 Transferencia</button>
+        <button class="btn-pago" data-metodo="deuna">💰 DEUNA</button>
+        <button class="btn-pago" data-metodo="payphone">💳 PayPhone</button>
+        <button class="btn-pago" data-metodo="paypalme">🅿️ PayPal</button>
+        <button class="btn-pago btn-pago--wide" data-metodo="whatsapp">📲 Enviar por WhatsApp</button>
+      </div>
+
+      <div id="carrito-pago-detalle" class="cart-payment__detail"></div>
+      <div id="paypal-cart-box" class="paypal-cart-box">
+        <p class="paypal-total">Total PayPal estimado: <strong id="paypal-total">$0.00 USD</strong></p>
+        <div id="paypal-button-container-carrito"></div>
+        <div id="confirmacion-pago"></div>
+      </div>
+    </div>
+
+    <div class="cart-reviews">
+      <div class="cart-reviews__head">
+        <h3>⭐ Reseñas de clientes</h3>
+        <span>Verificadas</span>
+      </div>
+      <div id="carrito-resenas-lista" class="cart-reviews__list"></div>
+
+      <form id="form-resena-carrito" class="review-form">
+        <label>Tu nombre
+          <input id="resena-nombre" type="text" placeholder="Ej: Cliente de Lima" required>
+        </label>
+        <label>País / ciudad
+          <input id="resena-pais" type="text" placeholder="Ej: Lima - Perú" required>
+        </label>
+        <label>Calificación
+          <select id="resena-estrellas" required>
+            <option value="5">⭐⭐⭐⭐⭐ Excelente</option>
+            <option value="4">⭐⭐⭐⭐ Muy bueno</option>
+            <option value="3">⭐⭐⭐ Bueno</option>
+          </select>
+        </label>
+        <label>Comentario
+          <textarea id="resena-comentario" rows="3" placeholder="Cuéntanos cómo fue tu experiencia..." required></textarea>
+        </label>
+        <button class="btn btn--outline btn--full" type="submit">⭐ Dejar reseña</button>
+      </form>
+    </div>
+
+    <div class="cart-actions">
+      <button id="btn-finalizar-compra" class="btn btn--primary btn--full">💳 Finalizar compra</button>
+      <button id="btn-enviar-pedido" class="btn btn--outline btn--full">📲 Enviar pedido por WhatsApp</button>
+      <button id="btn-continuar-comprando" class="btn btn--ghost btn--full">Seguir comprando</button>
+    </div>
+  </aside>
+
+  <nav class="floating-actions" aria-label="Accesos rápidos">
+    <a id="btn-whatsapp" class="float-btn float-btn--wa" href="https://wa.me/593939166222" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp directo" title="WhatsApp directo">
+      <span class="float-btn__icon" aria-hidden="true">
+        <svg viewBox="0 0 48 48"><path d="M24 4C13 4 4 12.6 4 23.2c0 3.7 1.1 7.2 3.1 10.2L4.8 44l10.9-2.8A20.5 20.5 0 0 0 24 43c11 0 20-8.6 20-19.3S35 4 24 4Zm0 35.5c-2.9 0-5.7-.8-8.1-2.2l-.6-.3-6.5 1.7 1.8-6.3-.4-.6a15.5 15.5 0 0 1-2.6-8.6c0-8.7 7.3-15.7 16.4-15.7s16.4 7 16.4 15.7S33.1 39.5 24 39.5Zm9-11.8c-.5-.2-2.9-1.4-3.4-1.5-.5-.2-.8-.2-1.2.3-.3.5-1.3 1.5-1.6 1.8-.3.3-.6.4-1.1.1-3-1.4-5-2.6-7-5.9-.5-.9.5-.8 1.4-2.7.2-.3.1-.6 0-.9-.1-.3-1.2-2.7-1.6-3.7-.4-1-.9-.9-1.2-.9h-1c-.4 0-.9.1-1.4.6-.5.5-1.9 1.8-1.9 4.4s1.9 5.1 2.2 5.5c.3.3 3.8 5.6 9.2 7.8 3.4 1.4 4.7 1.5 6.4 1.3 1-.2 2.9-1.2 3.3-2.3.4-1.1.4-2.1.3-2.3-.2-.2-.6-.3-1.1-.6Z"/></svg>
+      </span>
+      <span class="float-btn__label">WhatsApp</span>
+    </a>
+    <a id="btn-whatsapp-grupo" class="float-btn float-btn--group" href="https://chat.whatsapp.com/Jj1d8iwCAL3EokVWwu5t1D" target="_blank" rel="noopener noreferrer" aria-label="Grupo de WhatsApp" title="Grupo de WhatsApp">
+      <span class="float-btn__icon" aria-hidden="true">
+        <svg viewBox="0 0 48 48"><path d="M18.3 23.2a7.1 7.1 0 1 0 0-14.2 7.1 7.1 0 0 0 0 14.2Zm12.5-1.8a5.8 5.8 0 1 0 0-11.6 5.8 5.8 0 0 0 0 11.6ZM5.5 39.2c0-7.1 5.5-12.8 12.8-12.8s12.8 5.7 12.8 12.8V42H5.5v-2.8Zm27.7 2.8v-3.3c0-4.2-1.5-8.1-4-11.1 1.7-1 3.7-1.5 5.9-1.5 6.2 0 11.2 4.9 11.2 11V42H33.2Z"/></svg>
+        <span class="float-btn__badge">WA</span>
+      </span>
+      <span class="float-btn__label">Grupo</span>
+    </a>
+    <a id="btn-telegram" class="float-btn float-btn--tg" href="https://t.me/streamid" target="_blank" rel="noopener noreferrer" aria-label="Telegram" title="Telegram">
+      <span class="float-btn__icon" aria-hidden="true">
+        <svg viewBox="0 0 48 48"><path d="M42.7 7.5 36.5 39c-.5 2.2-1.8 2.7-3.7 1.7l-9.4-6.9-4.5 4.4c-.5.5-.9.9-1.9.9l.7-9.6L35 13.9c.8-.7-.2-1.1-1.2-.4L12.4 27 3.2 24.1c-2-.6-2-2 .4-2.9L39.4 7.4c1.7-.6 3.1.4 3.3.1Z"/></svg>
+      </span>
+      <span class="float-btn__label">Telegram</span>
+    </a>
+    <a id="btn-soporte" class="float-btn float-btn--support" href="https://wa.me/593939166222" target="_blank" rel="noopener noreferrer" aria-label="Soporte técnico" title="Soporte técnico">
+      <span class="float-btn__icon" aria-hidden="true">
+        <svg viewBox="0 0 48 48"><path d="M24 5C13.5 5 5 13.3 5 23.5v10.2A6.3 6.3 0 0 0 11.4 40H16V24h-7v-.5C9 15.4 15.7 9 24 9s15 6.4 15 14.5v.5h-7v16h4.4A6.5 6.5 0 0 0 43 33.7V23.5C43 13.3 34.5 5 24 5ZM9 28h3v8h-.6A2.4 2.4 0 0 1 9 33.7V28Zm30 5.7a2.4 2.4 0 0 1-2.6 2.3H36v-8h3v5.7ZM21 38h7a2 2 0 1 1 0 4h-7a2 2 0 1 1 0-4Z"/></svg>
+      </span>
+      <span class="float-btn__label">Soporte</span>
+    </a>
+    <a id="btn-catalogo-flotante" class="float-btn float-btn--catalog" href="#streaming" aria-label="Abrir catálogo" title="Catálogo">
+      <span class="float-btn__icon" aria-hidden="true">
+        <svg viewBox="0 0 48 48"><path d="M8 7h5l2 6h26l-3.1 15.4A5 5 0 0 1 33 32H18.1a5 5 0 0 1-4.9-4L9.8 11H8V7Zm8 10 2 10a1 1 0 0 0 1 .8h14a1 1 0 0 0 1-.8l2-10H16Zm4 18a4 4 0 1 1 0 8 4 4 0 0 1 0-8Zm14 0a4 4 0 1 1 0 8 4 4 0 0 1 0-8Z"/></svg>
+      </span>
+      <span class="float-btn__label">Catálogo</span>
+    </a>
+  </nav>
+
+  <button id="btn-scroll-top" class="scroll-top-btn" type="button" aria-label="Volver arriba" title="Volver arriba">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.2 5.6 11.6l1.5 1.5 3.85-3.85V20h2.1V9.25l3.85 3.85 1.5-1.5L12 5.2Z"/></svg>
+  </button>
+
+  <div id="toast-contenedor" class="toast-contenedor"></div>
+
+  <footer class="footer">
+    <div class="container footer__content">
+      <div>
+        <strong>Click TV Digital</strong>
+        <p>Desarrollo y catálogo comercial: Click Tv Streaming.</p>
+        <p>© <span id="anio-actual"></span> Click TV Digital. Todos los derechos reservados.</p>
+      </div>
+      <div class="footer-payments" aria-label="Métodos de pago">
+        <span>🏦 Banco Pichincha</span>
+        <span>🏦 Banco Guayaquil</span>
+        <span>💚 DEUNA</span>
+        <span>📱 PayPhone</span>
+        <span>🅿️ PayPal</span>
+        <span>🌎 Remitly</span>
+        <span>💳 Stripe</span>
+      </div>
+    </div>
+  </footer>
+  <script src="data.js" defer></script>
+  <script src="catalogo.js" defer></script>
+  <script src="script.js" defer></script>
+</body>
+</html>

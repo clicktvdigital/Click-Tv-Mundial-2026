@@ -2741,3 +2741,134 @@ body.cart-open { overflow: hidden; }
   .tech-particles, .ambient-orb { display: none; }
   .js .reveal { opacity: 1; transform: none; }
 }
+
+
+/* ========================================================================== 
+   CLICK TV — PARCHES INTEGRADOS V13
+   Ecualizador requestAnimationFrame, accesos flotantes premium y sede limpia
+   ========================================================================== */
+
+/* El movimiento lo controla script.js con transform para mantener 60 FPS. */
+.radio-app .equalizer {
+  min-height: 44px;
+  align-items: flex-end;
+  gap: clamp(4px, 1vw, 7px);
+  overflow: visible;
+}
+
+.radio-app .equalizer i,
+.radio-app.is-playing .equalizer i {
+  width: clamp(4px, 1.2vw, 6px);
+  height: 38px;
+  min-height: 38px;
+  flex: 0 0 auto;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #d9ff91 0%, #75ff3d 42%, #00db63 100%);
+  box-shadow: 0 0 8px rgba(117,255,61,.62), 0 0 18px rgba(0,232,91,.22);
+  transform: scaleY(.18);
+  transform-origin: center bottom;
+  animation: none !important;
+  will-change: transform, opacity;
+}
+
+.radio-app.is-playing .equalizer {
+  filter: drop-shadow(0 0 8px rgba(117,255,61,.3));
+}
+
+/* Barra flotante con logos grandes y legibles. */
+.floating-actions {
+  gap: 10px;
+  padding: 9px;
+  border-color: rgba(117,255,61,.18);
+  background: rgba(4,9,6,.86);
+  box-shadow: 0 22px 55px rgba(0,0,0,.46), 0 0 28px rgba(0,255,102,.08);
+}
+
+.float-btn {
+  width: 58px;
+  height: 58px;
+  padding: 5px;
+  border-radius: 19px;
+  overflow: visible;
+  isolation: isolate;
+}
+
+.float-btn::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  z-index: -1;
+  border-radius: inherit;
+  background: linear-gradient(145deg, rgba(255,255,255,.2), transparent 48%);
+  pointer-events: none;
+}
+
+.float-btn__icon {
+  position: relative;
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  color: inherit;
+  background: rgba(255,255,255,.11);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.24), 0 8px 18px rgba(0,0,0,.18);
+  transition: transform .22s ease, background .22s ease;
+}
+
+.float-btn__icon svg,
+.float-btn svg {
+  width: 34px;
+  height: 34px;
+  display: block;
+  fill: currentColor;
+}
+
+.float-btn:hover .float-btn__icon,
+.float-btn:focus-visible .float-btn__icon {
+  transform: scale(1.08) rotate(-2deg);
+  background: rgba(255,255,255,.18);
+}
+
+.float-btn__badge {
+  position: absolute;
+  right: -3px;
+  bottom: -2px;
+  min-width: 20px;
+  height: 16px;
+  display: grid;
+  place-items: center;
+  padding: 0 3px;
+  border: 2px solid rgba(3,12,7,.92);
+  border-radius: 999px;
+  color: #041108;
+  background: #d7ff6b;
+  font-size: 7px;
+  font-weight: 950;
+  letter-spacing: -.02em;
+}
+
+.float-btn--wa,
+.float-btn--group {
+  color: #fff;
+  background: linear-gradient(145deg, #21d366, #079c43);
+}
+
+.float-btn--tg {
+  color: #fff;
+  background: linear-gradient(145deg, #39bdf8, #1688cf);
+}
+
+.float-btn--support {
+  color: #fff;
+  background: linear-gradient(145deg, #313b38, #151a18);
+}
+
+.float-btn--catalog {
+  color: #061008;
+  background: linear-gradient(145deg, #a5ff64, #19e95c);
+}
+
+.match-venue {
+  color: #d8e6dc;
+}

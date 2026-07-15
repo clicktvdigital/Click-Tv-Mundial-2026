@@ -238,6 +238,50 @@ function inicializarRadioLaRed() {
   let reconexionTimer = null;
   let intentosReconexion = 0;
   const maxIntentos = 6;
+  const equalizerBars = [...app.querySelectorAll(".equalizer i")];
+  let equalizerFrame = 0;
+  let equalizerActivo = false;
+
+  const pintarEcualizadorEnReposo = () => {
+    equalizerBars.forEach((bar, index) => {
+      const escala = 0.18 + ((index % 4) * 0.035);
+      bar.style.transform = `scaleY(${escala.toFixed(3)})`;
+      bar.style.opacity = "0.58";
+    });
+  };
+
+  const detenerEcualizador = () => {
+    equalizerActivo = false;
+    if (equalizerFrame) cancelAnimationFrame(equalizerFrame);
+    equalizerFrame = 0;
+    pintarEcualizadorEnReposo();
+  };
+
+  const animarEcualizador = (tiempo) => {
+    if (!equalizerActivo || radioPlayer.paused || document.hidden) {
+      equalizerFrame = 0;
+      return;
+    }
+
+    equalizerBars.forEach((bar, index) => {
+      const ondaPrincipal = (Math.sin((tiempo / 115) + (index * 1.13)) + 1) / 2;
+      const ondaSecundaria = (Math.sin((tiempo / 63) + (index * 0.57)) + 1) / 2;
+      const pulso = (Math.sin((tiempo / 310) - (index * 0.36)) + 1) / 2;
+      const escala = Math.min(1, 0.18 + (ondaPrincipal * 0.48) + (ondaSecundaria * 0.23) + (pulso * 0.11));
+      bar.style.transform = `scaleY(${escala.toFixed(3)})`;
+      bar.style.opacity = String((0.62 + escala * 0.38).toFixed(2));
+    });
+
+    equalizerFrame = requestAnimationFrame(animarEcualizador);
+  };
+
+  const iniciarEcualizador = () => {
+    if (equalizerActivo || !equalizerBars.length || radioPlayer.paused) return;
+    equalizerActivo = true;
+    equalizerFrame = requestAnimationFrame(animarEcualizador);
+  };
+
+  pintarEcualizadorEnReposo();
 
   const establecerEstado = (tipo, texto) => {
     if (radioStatus) radioStatus.textContent = texto;
@@ -249,6 +293,8 @@ function inicializarRadioLaRed() {
     app.classList.toggle("is-playing", tipo === "live");
     app.classList.toggle("is-loading", tipo === "connecting");
     app.classList.toggle("has-error", tipo === "error");
+    if (tipo === "live") iniciarEcualizador();
+    else detenerEcualizador();
   };
 
   const actualizarBotonPlay = (reproduciendo) => {
@@ -323,6 +369,9 @@ function inicializarRadioLaRed() {
     establecerEstado("paused", `${radios[radioActual].corto} en pausa.`);
   };
 
+  radioPlayer.clickTvPlay = () => reproducir();
+  radioPlayer.clickTvPause = () => pausar();
+
   const programarReconexion = () => {
     if (!reproduccionSolicitada) return;
     limpiarReconexion();
@@ -394,6 +443,10 @@ function inicializarRadioLaRed() {
   radioPlayer.addEventListener("stalled", programarReconexion);
   radioPlayer.addEventListener("error", programarReconexion);
   radioPlayer.addEventListener("ended", programarReconexion);
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) detenerEcualizador();
+    else if (!radioPlayer.paused && reproduccionSolicitada) iniciarEcualizador();
+  });
 
   actualizarEmisoraUI(radioActual);
   establecerEstado("idle", "Lista para conectar.");
@@ -425,8 +478,14 @@ function configurarMediaSessionRadio(radioPlayer, radio = {}) {
   }
 
   try {
-    navigator.mediaSession.setActionHandler("play", () => radioPlayer.play());
-    navigator.mediaSession.setActionHandler("pause", () => radioPlayer.pause());
+    navigator.mediaSession.setActionHandler("play", () => {
+      if (typeof radioPlayer.clickTvPlay === "function") radioPlayer.clickTvPlay();
+      else radioPlayer.play();
+    });
+    navigator.mediaSession.setActionHandler("pause", () => {
+      if (typeof radioPlayer.clickTvPause === "function") radioPlayer.clickTvPause();
+      else radioPlayer.pause();
+    });
   } catch {
     // Safari y navegadores antiguos pueden limitar Media Session.
   }
@@ -1519,6 +1578,37 @@ async function obtenerDetallePartidoFootballData(id) {
   return respuesta.json();
 }
 
+function normalizarSedePartido(valor) {
+  let sede = valor;
+  if (sede && typeof sede === "object") {
+    sede = sede.name || sede.fullName || sede.shortName || sede.label || "";
+  }
+
+  sede = String(sede || "").replace(/\s+/g, " ").trim();
+  if (!sede) return "";
+  if (/^(sede|estadio|venue)?\s*(por confirmar|pendiente)$/i.test(sede)) return "";
+  if (/^(tbd|tbc|to be confirmed|unknown|n\/?a|null|undefined|-+)$/i.test(sede)) return "";
+  return sede;
+}
+
+function extraerSedePartidoApi(match = {}) {
+  const candidatos = [
+    match.venue,
+    match.stadium,
+    match.matchVenue,
+    match.location,
+    match.ground,
+    match.details?.venue,
+    match.details?.stadium
+  ];
+
+  for (const candidato of candidatos) {
+    const sede = normalizarSedePartido(candidato);
+    if (sede) return sede;
+  }
+  return "";
+}
+
 function normalizarPartidos(matches) {
   return matches.map((m) => ({
     id: m.id || "",
@@ -1530,7 +1620,7 @@ visitante: traducirPais(m.awayTeam?.name || m.awayTeam?.shortName || "Equipo vis
     escudoLocal: m.homeTeam?.crest || "",
     escudoVisitante: m.awayTeam?.crest || "",
     fechaUTC: m.utcDate,
-    sede: m.venue || "Sede por confirmar",
+    sede: extraerSedePartidoApi(m),
     statusRaw: m.status || "",
     statusDetalle: m.statusDetail || m.matchStatus || m.period || m.stage || "",
     minuto: m.minute || m.matchMinute || m.time?.minute || "",
@@ -1588,7 +1678,7 @@ function normalizarPartidosLocales(grupos) {
         codigoLocal: p.codigoLocal || "",
         codigoVisitante: p.codigoVisitante || "",
         fechaUTC: p.fechaUTC,
-        sede: p.sede || "Sede por confirmar",
+        sede: normalizarSedePartido(p.sede),
         statusRaw: p.statusRaw || "",
         statusDetalle: p.statusDetalle || "",
         minuto: p.minuto || "",
@@ -1642,7 +1732,7 @@ function fusionarPartidosMundial(base = {}, nuevo = {}) {
     marcador: nuevo.marcador || base.marcador || "",
     score: tieneMarcadorEnScore(nuevo.score) ? nuevo.score : (base.score || nuevo.score || null),
     etapa: nuevo.etapa || base.etapa || "",
-    sede: nuevo.sede || base.sede || "Sede por confirmar"
+    sede: normalizarSedePartido(nuevo.sede) || normalizarSedePartido(base.sede)
   };
 }
 
@@ -1761,6 +1851,7 @@ function crearCardPartido(p) {
   const fecha = new Date(p.fechaUTC);
   const estadoTiempo = obtenerTextoTiempoPartido(p);
   const scoreTexto = obtenerScoreTexto(p, estadoTiempo);
+  const sede = normalizarSedePartido(p.sede);
   return `
     <article class="match-card mundial-pantalla-gigante ${estadoTiempo.estado.includes("EN VIVO") ? "mundial-live" : ""}">
       <div class="mundial-live-status">${estadoTiempo.estado}</div>
@@ -1782,7 +1873,7 @@ function crearCardPartido(p) {
       </div>
       <p>📅 ${formatearFechaPartidoCliente(fecha)}</p>
       <p>⏰ ${formatearHoraPartidoCliente(fecha)} ${obtenerEtiquetaHoraCliente()}</p>
-      <p>📍 ${p.sede}</p>
+      ${sede ? `<p class="match-venue">📍 ${escaparHTML(sede)}</p>` : ""}
     </article>`;
 }
 function crearNombreEquipoConBandera(nombre, codigo = "") {
