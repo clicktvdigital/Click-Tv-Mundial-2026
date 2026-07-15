@@ -1,0 +1,13 @@
+CLICK TV V13.4 — ACTUALIZACIÓN RADIO LA RED
+
+Cambios integrados directamente en los archivos base:
+- data.js: URL principal y radioStations.lared.url actualizadas.
+- script.js: URL de respaldo actualizada.
+- El audio continúa con preload="none".
+- La fuente se inyecta únicamente al pulsar reproducir.
+- Al pausar o cambiar de emisora se elimina src y se limpia el buffer/conexión.
+
+URL configurada:
+https://icecast.ticsecuador.com.ec/radiolared#.mp3
+
+Sube todos los archivos del paquete a la raíz de Vercel reemplazando los anteriores.

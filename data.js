@@ -30,14 +30,14 @@ const CONFIG = {
   footballDataApiToken: "467c885c07fa49baa40ac78cf636f8b0",
   fifaCalendarioUrl: "https://www.fifa.com/es/tournaments/mens/worldcup/canadamexicousa2026/scores-fixtures",
 
-  radioStreamUrl: "https://icecast.ticsecuador.com.ec/radiolared",
+  radioStreamUrl: "https://icecast.ticsecuador.com.ec/radiolared#.mp3",
   machRadioStreamUrl: "https://streamingecuador.net:9170/stream",
   radioStations: {
     lared: {
       nombre: "La Red 102.1 FM Quito",
       corto: "La Red",
       frecuencia: "102.1 FM · Quito",
-      url: "https://icecast.ticsecuador.com.ec/radiolared",
+      url: "https://icecast.ticsecuador.com.ec/radiolared#.mp3",
       logo: "radio-la-red.png"
     },
     mach: {

@@ -220,7 +220,7 @@ function inicializarRadioLaRed() {
       nombre: "La Red 102.1 FM Quito",
       corto: "La Red",
       frecuencia: "102.1 FM · Quito",
-      url: "https://icecast.ticsecuador.com.ec/radiolared",
+      url: "https://icecast.ticsecuador.com.ec/radiolared#.mp3",
       logo: "radio-la-red.png"
     },
     mach: {
@@ -361,10 +361,16 @@ function inicializarRadioLaRed() {
     }
   };
 
+  const desconectarFuente = () => {
+    radioPlayer.pause();
+    radioPlayer.removeAttribute("src");
+    radioPlayer.load();
+  };
+
   const pausar = () => {
     reproduccionSolicitada = false;
     limpiarReconexion();
-    radioPlayer.pause();
+    desconectarFuente();
     actualizarBotonPlay(false);
     establecerEstado("paused", `${radios[radioActual].corto} en pausa.`);
   };
@@ -394,8 +400,7 @@ function inicializarRadioLaRed() {
       if (!radios[nueva] || nueva === radioActual) return;
       const estabaActiva = reproduccionSolicitada && !radioPlayer.paused;
       limpiarReconexion();
-      radioPlayer.pause();
-      radioPlayer.removeAttribute("src");
+      desconectarFuente();
       actualizarEmisoraUI(nueva);
       establecerEstado("idle", `${radios[nueva].corto} seleccionada.`);
       if (estabaActiva) await reproducir();
