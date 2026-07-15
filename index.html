@@ -167,7 +167,10 @@
 
           <div class="media-box radio-pro">
             <h3>📻 Radios deportivas en vivo</h3>
-            <div class="radio-logos-pro"><div>🔴<strong> La Red</strong></div><div>⚽<strong> Mach Deportes</strong></div></div>
+            <div class="radio-logos-pro">
+<div class="radio-brand-card"><img src="la-red.png" alt="La Red 102.1 FM Quito"><strong>La Red 102.1 FM</strong></div>
+<div class="radio-brand-card"><img src="mach-deportes.png" alt="Mach Deportes 91.7 FM Quito"><strong>Mach Deportes 91.7 FM</strong></div>
+</div>
             <p class="radio-note">Selecciona tu emisora deportiva favorita de Quito.</p>
 
             <div class="radio-selector">
@@ -179,7 +182,8 @@
               </button>
             </div>
 
-            <audio id="radio-player" class="lared-audio-player" controls preload="auto">
+            <div class="radio-live-panel"><span id="radio-live-badge">🟢 EN VIVO</span><div class="equalizer" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div></div>
+<audio id="radio-player" class="lared-audio-player" preload="none">
               Tu navegador no permite reproducir esta radio.
             </audio>
 

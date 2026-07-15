@@ -347,5 +347,3 @@
 .brand__logo--horizontal{width:150px;}
 .radio-logos-pro{display:grid;grid-template-columns:1fr;}
 }
-
-@media(max-width:720px){.brand__logo--horizontal{width:170px;height:52px}.radio-premium-card{grid-template-columns:1fr;text-align:center}.radio-logo-img{margin:auto}}
