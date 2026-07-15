@@ -1,9 +1,0 @@
-
-CLICK TV MUNDIAL V11.5 REAL
-
-Este paquete contiene:
-- script-V11.5-PANTALLA-GIGANTE.js
-- style-V11.5-PANTALLA-GIGANTE.css
-- CAMBIOS-V11.5.txt
-
-Integrar sobre el módulo Mundial existente.
