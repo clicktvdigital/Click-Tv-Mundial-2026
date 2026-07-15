@@ -193,7 +193,7 @@ function inicializarRadioLaRed() {
   const radios = {
     lared: {
       nombre: "La Red 102.1 FM Quito",
-      url: "https://icecast.radiolared.com.ec/radiolared"
+      url: "https://as27u7vbgp8uv.radioca.st/stream"
     },
     mach: {
       nombre: "Mach Deportes 91.7 Quito",
@@ -263,7 +263,7 @@ function configurarMediaSessionRadio(radioPlayer) {
 
   if ("MediaMetadata" in window) {
     navigator.mediaSession.metadata = new MediaMetadata({
-      title: "La Red 102.1 FM en vivo",
+      title: "La Red 102.1 FM Quito en vivo",
       artist: "Click Tv Streaming",
       album: "Programación deportiva"
     });
