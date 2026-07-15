@@ -193,7 +193,7 @@ function inicializarRadioLaRed() {
   const radios = {
     lared: {
       nombre: "La Red 102.1 FM Quito",
-      url: "https://as27u7vbgp8uv.radioca.st/stream"
+      url: "https://icecast.ticsecuador.com.ec/radiolared"
     },
     mach: {
       nombre: "Mach Deportes 91.7 Quito",

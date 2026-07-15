@@ -2006,3 +2006,41 @@ textarea {
     height: 50px;
   }
 }
+
+
+/* ================= RADIO PREMIUM CLICK TV ================= */
+.radio-premium-box {
+  position: relative;
+  overflow: hidden;
+}
+
+.radio-premium-box::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top right, rgba(0,255,102,.18), transparent 45%);
+  pointer-events: none;
+}
+
+.radio-selector {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 14px 0;
+}
+
+.btn-radio-activo {
+  background: linear-gradient(135deg, #00ff66, #00e676) !important;
+  color: #001a09 !important;
+  box-shadow: 0 0 25px rgba(0,255,102,.35);
+}
+
+.radio-status {
+  color: #00ff88;
+  font-weight: 800;
+}
+
+.lared-audio-player {
+  border-radius: 18px;
+  border: 1px solid rgba(0,255,102,.35);
+}

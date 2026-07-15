@@ -325,3 +325,20 @@
     min-width: 28px;
   }
 }
+
+
+/* RADIO PREMIUM MOBILE */
+@media (max-width:720px){
+  .radio-selector {
+    display:grid;
+    grid-template-columns:1fr;
+  }
+
+  .radio-selector .btn {
+    width:100%;
+  }
+
+  .media-box {
+    padding:16px;
+  }
+}
