@@ -1,9 +1,0 @@
-CLICK TV STREAMING V8
-
-Base tomada desde V7.
-
-Objetivos de esta versión:
-- Mantener la radio estable y corregir reconexión.
-- Revisar carga API Mundial 2026 sin mostrar partidos antiguos.
-- Corregir vista previa WhatsApp/Open Graph.
-- Mantener catálogo, carrito, pagos y diseño.
