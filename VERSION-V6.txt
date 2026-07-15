@@ -1,0 +1,9 @@
+CLICK TV PREMIUM PRO V6
+
+Archivos incluidos:
+- index.html
+- script.js
+- style.css
+- responsive.css
+
+Base preparada para reemplazo en GitHub/Vercel.
