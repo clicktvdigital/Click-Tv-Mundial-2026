@@ -224,7 +224,8 @@ function inicializarRadioLaRed() {
 
     radioPlayer.pause();
     radioPlayer.src = radio.url;
-    radioPlayer.volume = 1;\n    radioPlayer.load();
+    radioPlayer.volume = 1;
+    radioPlayer.load();
 
     try {
       await radioPlayer.play();
@@ -236,6 +237,10 @@ function inicializarRadioLaRed() {
   botones.forEach(btn => {
     btn.addEventListener("click", () => cargarRadio(btn.dataset.radio));
   });
+
+  const eqPanel = document.querySelector('.radio-live-panel');
+  radioPlayer.addEventListener('play',()=>eqPanel?.classList.add('playing'));
+  radioPlayer.addEventListener('pause',()=>eqPanel?.classList.remove('playing'));
 
   radioPlayer.addEventListener("playing", () => {
     estado(`🔴 ${radios[radioActual].nombre} en vivo.`);
