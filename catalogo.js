@@ -1,151 +1,71 @@
-/* ========================================================================== 
-   CLICK TV STREAMING MUNDIAL 2026 — catalogo.js
-   Render de catálogo, filtros y botones de compra
-   ========================================================================== */
+/* Catálogo multicanal Click TV Streaming */
+(function () {
+  const escapar = (texto = "") => String(texto).replace(/[&<>'"]/g, (c) => ({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[c]));
+  let categoriaActual = "todos";
 
-const CATEGORIAS = {
-  todos: "Todos",
-  streaming: "🎬 Streaming",
-  iptv: "📺 IPTV",
-  musica: "🎵 Música",
-  apps: "🎓 Premium Apps",
-  proneet: "🚀 PRONEET VPN",
-  recargas: "📲 Recargas y combos",
-  deportes: "⚽ Deportes"
-};
+  window.seleccionarCategoriaCatalogo = function (categoria = "todos") {
+    categoriaActual = categoria;
+    document.querySelectorAll("[data-categoria]").forEach((btn) => btn.classList.toggle("activo", btn.dataset.categoria === categoria));
+    renderCatalogo();
+  };
 
-let categoriaCatalogoActual = "todos";
+  window.renderCatalogo = function () {
+    const grid = document.getElementById("catalogo-grid");
+    if (!grid || typeof PRODUCTOS === "undefined") return;
+    const productos = categoriaActual === "todos" ? PRODUCTOS : PRODUCTOS.filter((p) => p.categoria === categoriaActual);
+    grid.innerHTML = productos.map(crearProducto).join("");
+  };
 
-function inicializarFiltros() {
-  const botones = document.querySelectorAll("[data-categoria]");
-  botones.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      seleccionarCategoriaCatalogo(btn.dataset.categoria || "todos");
-    });
-  });
-
-  document.querySelectorAll("[data-ir-categoria]").forEach((link) => {
-    link.addEventListener("click", () => {
-      seleccionarCategoriaCatalogo(link.dataset.irCategoria || "todos");
-    });
-  });
-}
-
-function seleccionarCategoriaCatalogo(categoria) {
-  categoriaCatalogoActual = categoria || "todos";
-
-  document.querySelectorAll("[data-categoria]").forEach((btn) => {
-    btn.classList.toggle("activo", btn.dataset.categoria === categoriaCatalogoActual);
-  });
-
-  renderCatalogo();
-}
-
-function renderCatalogo() {
-  const contenedor = document.getElementById("catalogo-grid");
-  if (!contenedor || typeof PRODUCTOS === "undefined") return;
-
-  const productosFiltrados = categoriaCatalogoActual === "todos"
-    ? PRODUCTOS
-    : PRODUCTOS.filter((producto) => producto.categoria === categoriaCatalogoActual);
-
-  if (productosFiltrados.length === 0) {
-    contenedor.innerHTML = `
-      <div class="empty-state">
-        <h3>Sin productos disponibles</h3>
-        <p>Pronto agregaremos más opciones a esta categoría.</p>
-      </div>
-    `;
-    return;
+  function crearProducto(producto) {
+    const planes = (producto.planes || []).map((plan, i) => {
+      const precio = plan.consultar ? "Consultar" : (typeof formatearPrecio === "function" ? formatearPrecio(plan.precio) : `$${Number(plan.precio).toFixed(2)} USD`);
+      return `<div class="product-plan">
+        <div class="product-plan__info"><strong>${escapar(plan.tipo)}</strong><span>${precio}</span></div>
+        <div class="product-plan__actions">
+          ${plan.consultar ? "" : `<button class="btn btn--primary btn--small" type="button" onclick="agregarPlanAlCarrito('${producto.id}',${i})">🛒 Añadir al carrito</button>`}
+          <button class="btn btn--outline btn--small" type="button" onclick="contactarPlanWhatsApp('${producto.id}',${i},'compra')">🟢 Comprar por WhatsApp</button>
+          <button class="btn btn--outline btn--small" type="button" onclick="contactarPlanTelegram('${producto.id}',${i},'compra')">✈️ Comprar por Telegram</button>
+          <button class="btn btn--outline btn--small" type="button" onclick="contactarPlanSignal('${producto.id}',${i},'compra')">🔵 Comprar por Signal</button>
+          <button class="btn btn--ghost btn--small" type="button" onclick="marcarPlanRenovacion('${producto.id}',${i})">🔄 Renovar</button>
+        </div>
+      </div>`;
+    }).join("");
+    return `<article class="product-card reveal" data-producto="${escapar(producto.id)}">
+      <div class="product-card__head"><span class="product-card__icon">${producto.icono || "📺"}</span><div><h3>${escapar(producto.nombre)}</h3><div class="product-tags">${(producto.etiquetas||[]).map(e=>`<span>${escapar(e)}</span>`).join("")}</div></div></div>
+      <p>${escapar(producto.descripcion || "")}</p>
+      <div class="product-plans">${planes}</div>
+    </article>`;
   }
 
-  contenedor.innerHTML = productosFiltrados.map((producto) => crearCardProducto(producto)).join("");
-
-  if (typeof registrarContenidoDinamico === "function") {
-    registrarContenidoDinamico(contenedor);
+  function obtener(productoId, planIndex) {
+    const producto = PRODUCTOS.find((p) => p.id === productoId);
+    const plan = producto?.planes?.[Number(planIndex)];
+    return producto && plan ? {producto, plan} : null;
   }
-}
+  function mensaje(productoId, planIndex, operacion) {
+    const data = obtener(productoId, planIndex); if (!data) return "Hola, deseo información sobre sus servicios.";
+    const tipo = operacion === "renovacion" ? "renovar" : "comprar por primera vez";
+    return `Hola Click TV Streaming. Deseo ${tipo}:
 
-function crearCardProducto(producto) {
-  const etiquetas = (producto.etiquetas || [])
-    .map((etiqueta) => `<span class="product-badge">${etiqueta}</span>`)
-    .join("");
+Servicio: ${data.producto.nombre}
+Plan: ${data.plan.tipo}
+Precio: ${data.plan.consultar ? "Por consultar" : `$${Number(data.plan.precio).toFixed(2)} USD`}
 
-  const planes = producto.planes
-    .map((plan, index) => crearPlanProducto(producto, plan, index))
-    .join("");
-
-  return `
-    <article class="product-card" data-producto="${producto.id}">
-      <div class="product-card__top">
-        <span class="product-card__icon">${producto.icono}</span>
-        <div>
-          <h3>${producto.nombre}</h3>
-          <p>${producto.descripcion}</p>
-        </div>
-      </div>
-
-      <div class="product-card__badges">${etiquetas}</div>
-
-      <div class="planes-lista">
-        ${planes}
-      </div>
-    </article>
-  `;
-}
-
-function crearPlanProducto(producto, plan, index) {
-  const renovarButton = `
-    <button class="btn btn--renew btn--mini" type="button" onclick="renovarServicio('${producto.id}', ${index})">
-      🔄 Renovar
-    </button>
-  `;
-
-  if (plan.consultar) {
-    return `
-      <div class="plan-row plan-row--consultar">
-        <div class="plan-row__info">
-          <strong>${plan.tipo}</strong>
-          <span>Sujeto a disponibilidad</span>
-        </div>
-        <p class="plan-row__note">Confirma stock y condiciones antes de pagar.</p>
-        <div class="plan-row__actions plan-row__actions--triple">
-          <button class="btn btn--outline btn--mini" type="button" onclick="agregarPlanAlCarrito('${producto.id}', ${index})">🛒 Agregar / consultar</button>
-          <button class="btn btn--primary btn--mini" type="button" onclick="comprarAhora('${producto.id}', ${index})">📲 Comprar por WhatsApp</button>
-          ${renovarButton}
-        </div>
-      </div>
-    `;
+Por favor, indíqueme disponibilidad y forma de pago.`;
   }
+  window.contactarPlanWhatsApp = (p,i,o='compra') => window.open(`${CONFIG.whatsappLink}?text=${encodeURIComponent(mensaje(p,i,o))}`, '_blank', 'noopener,noreferrer');
+  window.contactarPlanTelegram = (p,i,o='compra') => abrirTelegramConMensaje(mensaje(p,i,o));
+  window.contactarPlanSignal = (p,i,o='compra') => abrirSignalConMensaje(mensaje(p,i,o));
+  window.marcarPlanRenovacion = (p,i) => {
+    const data=obtener(p,i); if (!data) return;
+    if (!data.plan.consultar) agregarAlCarrito(data.producto, {...data.plan, operacion:'renovacion'});
+    const item = carrito.find(x => x.productoId===p && x.plan===data.plan.tipo);
+    if (item) { item.operacion='renovacion'; guardarCarritoEnStorage(); renderCarrito(); actualizarContadorCarrito(); }
+    mostrarToast('Servicio marcado como renovación. Elige WhatsApp, Telegram o Signal.', 'exito');
+  };
 
-  const precioTexto = plan.ivaIncluido
-    ? `${formatearPrecio(plan.precio)} · Precio final`
-    : formatearPrecio(plan.precio);
-
-  return `
-    <div class="plan-row ${plan.ivaIncluido ? "plan-row--iva-incluido" : ""}">
-      <div class="plan-row__info">
-        <strong>${plan.tipo}</strong>
-        <span>${precioTexto}</span>
-      </div>
-      ${plan.ivaIncluido ? `<p class="plan-row__note">${plan.bloquearDescuento ? "Precio real de operadora: no suma IVA ni acepta cupón." : "Precio final: no suma IVA adicional y sí acepta cupón."}</p>` : ""}
-      <div class="plan-row__actions plan-row__actions--triple">
-        <button class="btn btn--outline btn--mini" type="button" onclick="agregarPlanAlCarrito('${producto.id}', ${index})">🛒 Agregar al carrito</button>
-        <button class="btn btn--primary btn--mini" type="button" onclick="comprarAhora('${producto.id}', ${index})">📲 Comprar por WhatsApp</button>
-        ${renovarButton}
-      </div>
-    </div>
-  `;
-}
-
-function obtenerProductoPorId(productoId) {
-  return PRODUCTOS.find((producto) => producto.id === productoId);
-}
-
-function obtenerPlanProducto(productoId, planIndex) {
-  const producto = obtenerProductoPorId(productoId);
-  if (!producto) return null;
-  const plan = producto.planes[planIndex];
-  if (!plan) return null;
-  return { producto, plan };
-}
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('[data-categoria]').forEach(btn => btn.addEventListener('click', () => seleccionarCategoriaCatalogo(btn.dataset.categoria)));
+    renderCatalogo();
+  });
+})();

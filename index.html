@@ -138,7 +138,9 @@
 
       <button id="btn-menu-movil" class="menu-toggle" type="button" aria-label="Abrir menú" aria-controls="nav-menu" aria-expanded="false"><span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span></button>
 
+      <div id="menu-overlay" class="menu-overlay" aria-hidden="true"></div>
       <div id="nav-menu" class="nav-menu">
+        <button id="btn-cerrar-menu" class="nav-menu__close" type="button" aria-label="Cerrar menú">✕ <span>Cerrar menú</span></button>
         <a class="nav-link" href="#inicio">🏠 Inicio</a>
         <a class="nav-link" href="#mundial">⚽ Partidos en vivo</a>
         <a class="nav-link" href="#streaming">🎬 Streaming</a>
@@ -476,24 +478,24 @@
             <span class="eyebrow">✍️ Comparte tu experiencia</span>
             <h3>Deja tu reseña</h3>
             <p>Tu reseña se enviará por WhatsApp para validación y aparecerá inmediatamente en este dispositivo.</p>
-            <form id="form-resena-publica" class="review-form">
+            <form id="form-resena-publica" class="review-form" data-review-form>
               <div class="form-grid">
                 <label>Tu nombre
-                  <input id="resena-nombre" type="text" placeholder="Ej: Cliente de Loja" maxlength="60" required>
+                  <input id="resena-nombre" name="nombre" type="text" placeholder="Ej: Cliente de Loja" maxlength="60" required>
                 </label>
                 <label>País / ciudad
-                  <input id="resena-pais" type="text" placeholder="Ej: Loja - Ecuador" maxlength="60" required>
+                  <input id="resena-pais" name="pais" type="text" placeholder="Ej: Loja - Ecuador" maxlength="60" required>
                 </label>
               </div>
               <label>Calificación
-                <select id="resena-estrellas" required>
+                <select id="resena-estrellas" name="estrellas" required>
                   <option value="5">⭐⭐⭐⭐⭐ Excelente</option>
                   <option value="4">⭐⭐⭐⭐ Muy bueno</option>
                   <option value="3">⭐⭐⭐ Bueno</option>
                 </select>
               </label>
               <label>Comentario
-                <textarea id="resena-comentario" rows="4" maxlength="350" placeholder="Cuéntanos cómo fue tu experiencia..." required></textarea>
+                <textarea id="resena-comentario" name="comentario" rows="4" maxlength="350" placeholder="Cuéntanos cómo fue tu experiencia..." required></textarea>
               </label>
               <button class="btn btn--primary btn--full" type="submit">⭐ Enviar reseña para validación</button>
               <small class="review-privacy">No publiques contraseñas, códigos ni datos bancarios.</small>
@@ -629,7 +631,28 @@
       </div>
       <div id="carrito-resenas-lista" class="cart-reviews__list"></div>
 
-      <a class="btn btn--outline btn--full" href="#resenas">⭐ Ver o dejar una reseña</a>
+      <form id="form-resena-carrito" class="cart-review-form" data-review-form>
+        <label>Nombre o referencia
+          <input name="nombre" type="text" placeholder="Ej: Cliente de Quito" maxlength="60" required>
+        </label>
+        <label>Ciudad / país
+          <input name="pais" type="text" placeholder="Ej: Quito, Ecuador" maxlength="60" required>
+        </label>
+        <label>Calificación
+          <select name="estrellas" required>
+            <option value="5">⭐⭐⭐⭐⭐ Excelente</option>
+            <option value="4">⭐⭐⭐⭐ Muy buena</option>
+            <option value="3">⭐⭐⭐ Buena</option>
+            <option value="2">⭐⭐ Regular</option>
+            <option value="1">⭐ Mala</option>
+          </select>
+        </label>
+        <label>Tu experiencia
+          <textarea name="comentario" rows="3" maxlength="350" placeholder="Escribe tu reseña..." required></textarea>
+        </label>
+        <button class="btn btn--primary btn--full" type="submit">⭐ Enviar reseña</button>
+      </form>
+      <a class="btn btn--ghost btn--full" href="#resenas">Ver todas las reseñas</a>
     </div>
 
     <div class="cart-actions">
@@ -673,6 +696,10 @@
       </span>
       <span class="float-btn__label">Soporte</span>
     </a>
+    <button id="btn-menu-flotante" class="float-btn float-btn--menu" type="button" aria-label="Abrir menú" title="Menú">
+      <span class="float-btn__icon" aria-hidden="true">☰</span>
+      <span class="float-btn__label">Menú</span>
+    </button>
     <a id="btn-catalogo-flotante" class="float-btn float-btn--catalog" href="#streaming" aria-label="Abrir catálogo" title="Catálogo">
       <span class="float-btn__icon" aria-hidden="true">
         <svg viewBox="0 0 48 48"><path d="M8 7h5l2 6h26l-3.1 15.4A5 5 0 0 1 33 32H18.1a5 5 0 0 1-4.9-4L9.8 11H8V7Zm8 10 2 10a1 1 0 0 0 1 .8h14a1 1 0 0 0 1-.8l2-10H16Zm4 18a4 4 0 1 1 0 8 4 4 0 0 1 0-8Zm14 0a4 4 0 1 1 0 8 4 4 0 0 1 0-8Z"/></svg>

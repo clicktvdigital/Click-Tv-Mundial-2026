@@ -61,15 +61,52 @@ document.addEventListener("DOMContentLoaded", () => {
   setInterval(() => renderMundial(true), 30000);
 });
 
+function abrirMenuMovil() {
+  const menu = document.getElementById("nav-menu");
+  const boton = document.getElementById("btn-menu-movil");
+  const overlay = document.getElementById("menu-overlay");
+  if (!menu) return;
+  menu.classList.add("abierto");
+  overlay?.classList.add("visible");
+  overlay?.setAttribute("aria-hidden", "false");
+  boton?.setAttribute("aria-expanded", "true");
+  boton?.classList.add("is-open");
+  document.body.classList.add("menu-movil-abierto");
+}
+
+function cerrarMenuMovil() {
+  const menu = document.getElementById("nav-menu");
+  const boton = document.getElementById("btn-menu-movil");
+  const overlay = document.getElementById("menu-overlay");
+  menu?.classList.remove("abierto");
+  overlay?.classList.remove("visible");
+  overlay?.setAttribute("aria-hidden", "true");
+  boton?.setAttribute("aria-expanded", "false");
+  boton?.classList.remove("is-open");
+  document.body.classList.remove("menu-movil-abierto");
+}
+
+function alternarMenuMovil() {
+  const abierto = document.getElementById("nav-menu")?.classList.contains("abierto");
+  if (abierto) cerrarMenuMovil(); else abrirMenuMovil();
+}
+
 function inicializarUI() {
   const btnMenu = document.getElementById("btn-menu-movil");
   const navMenu = document.getElementById("nav-menu");
 
   if (btnMenu && navMenu) {
-    btnMenu.addEventListener("click", () => {
-      const abierto = navMenu.classList.toggle("abierto");
-      btnMenu.setAttribute("aria-expanded", String(abierto));
-      btnMenu.classList.toggle("is-open", abierto);
+    btnMenu.addEventListener("click", () => alternarMenuMovil());
+    document.getElementById("btn-cerrar-menu")?.addEventListener("click", cerrarMenuMovil);
+    document.getElementById("menu-overlay")?.addEventListener("click", cerrarMenuMovil);
+    document.getElementById("btn-menu-flotante")?.addEventListener("click", abrirMenuMovil);
+
+    navMenu.querySelectorAll("a.nav-link").forEach((enlace) => {
+      enlace.addEventListener("click", cerrarMenuMovil);
+    });
+
+    document.addEventListener("keydown", (evento) => {
+      if (evento.key === "Escape") cerrarMenuMovil();
     });
   }
 
@@ -78,6 +115,7 @@ function inicializarUI() {
   document.getElementById("btn-cerrar-carrito")?.addEventListener("click", cerrarCarrito);
   document.getElementById("btn-continuar-comprando")?.addEventListener("click", cerrarCarrito);
   document.getElementById("carrito-overlay")?.addEventListener("click", cerrarCarrito);
+  document.querySelector('.cart-reviews a[href="#resenas"]')?.addEventListener("click", cerrarCarrito);
 
   // Cupón
   document.getElementById("btn-aplicar-cupon")?.addEventListener("click", aplicarCupon);
@@ -86,7 +124,7 @@ function inicializarUI() {
   document.getElementById("btn-finalizar-compra")?.addEventListener("click", finalizarCompra);
   document.getElementById("btn-enviar-comprobante")?.addEventListener("click", enviarComprobanteWhatsApp);
   document.getElementById("btn-enviar-pedido")?.addEventListener("click", enviarPedidoWhatsApp);
-  document.getElementById("form-resena-publica")?.addEventListener("submit", registrarResenaCarrito);
+  document.querySelectorAll("[data-review-form]").forEach((form) => form.addEventListener("submit", registrarResenaCarrito));
   document.getElementById("form-contacto-internacional")?.addEventListener("submit", enviarContactoInternacional);
 
   // Botones de pago
@@ -2555,10 +2593,12 @@ function renderResenasCarrito() {
 function registrarResenaCarrito(evento) {
   evento.preventDefault();
 
-  const nombre = document.getElementById("resena-nombre")?.value.trim();
-  const pais = document.getElementById("resena-pais")?.value.trim();
-  const estrellas = Number(document.getElementById("resena-estrellas")?.value || 5);
-  const comentario = document.getElementById("resena-comentario")?.value.trim();
+  const formulario = evento.currentTarget || evento.target;
+  const datosFormulario = new FormData(formulario);
+  const nombre = String(datosFormulario.get("nombre") || "").trim();
+  const pais = String(datosFormulario.get("pais") || "").trim();
+  const estrellas = Number(datosFormulario.get("estrellas") || 5);
+  const comentario = String(datosFormulario.get("comentario") || "").trim();
 
   if (!nombre || !pais || !comentario) {
     mostrarToast("Completa tu nombre, país y comentario.", "error");

@@ -3239,3 +3239,28 @@ body.cart-open { overflow: hidden; }
 /* Estado de fuentes de fútbol */
 .football-source-status{display:inline-flex;align-items:center;gap:.45rem;margin-top:.8rem;padding:.65rem 1rem;border:1px solid rgba(54,255,138,.22);border-radius:999px;background:rgba(54,255,138,.08);color:#c9ffdc;font-size:.9rem;font-weight:700}
 .match-group{display:inline-flex;align-items:center;max-width:100%;padding:.35rem .65rem;border-radius:999px;background:rgba(255,255,255,.08);font-weight:800;letter-spacing:.02em}
+
+
+/* Menú móvil: cierre exterior, botón cerrar y acceso flotante */
+.menu-overlay { display:none; }
+.nav-menu__close { display:none; }
+.float-btn--menu { background:linear-gradient(135deg,#232a24,#0c0f0d); color:#fff; border:1px solid rgba(116,255,56,.3); }
+body.menu-movil-abierto { overflow:hidden; }
+
+.cart-review-form { display:grid; gap:10px; margin:14px 0; padding:14px; border-radius:16px; background:rgba(255,255,255,.04); border:1px solid rgba(116,255,56,.16); }
+.cart-review-form label { display:grid; gap:6px; font-size:.86rem; color:var(--muted); }
+.cart-review-form input,.cart-review-form select,.cart-review-form textarea { width:100%; padding:11px 12px; border-radius:11px; border:1px solid rgba(255,255,255,.12); background:#0b0e0c; color:#fff; }
+
+.product-plan__actions { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; margin-top:10px; }
+.product-plan__actions .btn { min-height:40px; white-space:normal; text-align:center; justify-content:center; }
+.product-plan__info { display:flex; justify-content:space-between; gap:12px; align-items:center; }
+
+@media (max-width: 980px) {
+  .menu-overlay { position:fixed; inset:0; z-index:1090; background:rgba(0,0,0,.68); backdrop-filter:blur(3px); }
+  .menu-overlay.visible { display:block; }
+  .nav-menu { z-index:1100 !important; }
+  .nav-menu__close { display:flex; grid-column:1/-1; align-items:center; justify-content:center; gap:8px; width:100%; min-height:44px; border:1px solid rgba(255,255,255,.14); border-radius:13px; background:rgba(255,255,255,.08); color:#fff; font-weight:800; }
+}
+@media (max-width: 560px) {
+  .product-plan__actions { grid-template-columns:1fr; }
+}
