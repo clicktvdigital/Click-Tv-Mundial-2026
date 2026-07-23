@@ -369,8 +369,6 @@ function inicializarRadioLaRed() {
       url: "https://icecast.radiolared.com.ec/radiolared",
       formato: "MP3",
       calidad: "128 kbps",
-      ganancia: 1.4,
-      audioMejorado: true,
       logo: "radio-la-red.png"
     },
     mach: {
@@ -378,8 +376,7 @@ function inicializarRadioLaRed() {
       corto: "Mach Deportes",
       frecuencia: "91.7 FM · Quito",
       url: "https://streamingecuador.net:9170/stream",
-      ganancia: 1,
-      audioMejorado: false,
+      formato: "Audio en vivo",
       logo: "radio-mach-deportes.png"
     }
   };
@@ -392,102 +389,18 @@ function inicializarRadioLaRed() {
   let reconexionTimer = null;
   let temporizadorConexion = null;
   let intentosReconexion = 0;
-  const maxIntentos = 8;
-  const tiempoMaximoConexion = 15000;
+  const maxIntentos = 6;
+  const tiempoMaximoConexion = 18000;
   const equalizerBars = [...app.querySelectorAll(".equalizer i")];
   let equalizerFrame = 0;
   let equalizerActivo = false;
 
-  // Cadena de audio para elevar únicamente el nivel de Radio La Red.
-  // Se crea una sola vez y siempre dentro de un gesto del usuario.
-  let audioContext = null;
-  let audioSource = null;
-  let gainNode = null;
-  let compressor = null;
-  let audioPreparado = false;
-  let audioPreparando = null;
-  let audioMejoraDisponible = Boolean(window.AudioContext || window.webkitAudioContext);
-
-  // El preconnect del HTML y preload=auto reducen el retraso del primer toque.
-  // crossorigin se define antes de asignar src para permitir Web Audio cuando
-  // el servidor Icecast autoriza CORS.
+  // Reproducción nativa: no se usa Web Audio ni crossorigin porque varios
+  // servidores Icecast no exponen CORS y el navegador puede dejar el audio mudo.
   radioPlayer.preload = "auto";
   radioPlayer.autoplay = false;
   radioPlayer.playsInline = true;
-  radioPlayer.crossOrigin = "anonymous";
-
-  const gananciaEmisoraActual = () => {
-    const radio = radios[radioActual] || {};
-    const ganancia = Number(radio.ganancia);
-    return Number.isFinite(ganancia) ? Math.min(1.5, Math.max(1, ganancia)) : 1;
-  };
-
-  const aplicarGananciaEmisora = (inmediata = false) => {
-    if (!gainNode || !audioContext) return;
-    const ahora = audioContext.currentTime;
-    const destino = gananciaEmisoraActual();
-    gainNode.gain.cancelScheduledValues(ahora);
-    if (inmediata) gainNode.gain.setValueAtTime(destino, ahora);
-    else gainNode.gain.setTargetAtTime(destino, ahora, 0.035);
-    app.dataset.audioGain = String(destino);
-  };
-
-  const mejorarAudioRadio = async () => {
-    if (!audioMejoraDisponible) return false;
-
-    if (audioPreparado && audioContext) {
-      if (audioContext.state === "suspended") await audioContext.resume();
-      aplicarGananciaEmisora();
-      return true;
-    }
-
-    if (audioPreparando) return audioPreparando;
-
-    audioPreparando = (async () => {
-      try {
-        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-        audioContext = new AudioContextClass();
-        audioSource = audioContext.createMediaElementSource(radioPlayer);
-        gainNode = audioContext.createGain();
-        compressor = audioContext.createDynamicsCompressor();
-
-        // Amplificación exclusiva de La Red; las demás emisoras permanecen en 1.0.
-        gainNode.gain.value = gananciaEmisoraActual();
-
-        // Control de picos para conservar claridad con la ganancia elevada.
-        compressor.threshold.value = -4;
-        compressor.knee.value = 8;
-        compressor.ratio.value = 10;
-        compressor.attack.value = 0.003;
-        compressor.release.value = 0.25;
-
-        audioSource
-          .connect(gainNode)
-          .connect(compressor)
-          .connect(audioContext.destination);
-
-        await audioContext.resume();
-        audioPreparado = true;
-        app.classList.add("has-audio-enhancement");
-        app.classList.remove("audio-native-fallback");
-        aplicarGananciaEmisora(true);
-        return true;
-      } catch (error) {
-        audioMejoraDisponible = false;
-        app.classList.remove("has-audio-enhancement");
-        app.classList.add("audio-native-fallback");
-        console.warn(
-          "No se pudo amplificar Radio La Red. Se reproducirá con su volumen original.",
-          error
-        );
-        return false;
-      } finally {
-        audioPreparando = null;
-      }
-    })();
-
-    return audioPreparando;
-  };
+  radioPlayer.removeAttribute("crossorigin");
 
   const pintarEcualizadorEnReposo = () => {
     equalizerBars.forEach((bar, index) => {
@@ -555,6 +468,17 @@ function inicializarRadioLaRed() {
     app.classList.toggle("is-playing", reproduciendo);
   };
 
+  const asegurarAudioAudible = ({ restaurarVolumen = false } = {}) => {
+    radioPlayer.defaultMuted = false;
+    radioPlayer.muted = false;
+
+    if (restaurarVolumen || !Number.isFinite(radioPlayer.volume)) {
+      radioPlayer.volume = 1;
+      localStorage.setItem(CLAVE_VOLUMEN_RADIO, "1");
+      if (volumeControl) volumeControl.value = "1";
+    }
+  };
+
   const actualizarEmisoraUI = (id) => {
     const radio = radios[id];
     if (!radio) return;
@@ -563,10 +487,8 @@ function inicializarRadioLaRed() {
 
     if (currentName) currentName.textContent = radio.nombre;
     if (streamQuality) {
-      const detalleAudio = Number(radio.ganancia) > 1 ? "Audio reforzado" : "Nivel original";
-      streamQuality.textContent = [radio.formato, radio.calidad, detalleAudio].filter(Boolean).join(" · ") || "Señal en vivo";
+      streamQuality.textContent = [radio.formato, radio.calidad, "Audio nativo estable"].filter(Boolean).join(" · ");
     }
-    aplicarGananciaEmisora();
     if (directLink) {
       directLink.href = radio.url;
       directLink.setAttribute("aria-label", `Abrir señal directa de ${radio.nombre}`);
@@ -617,11 +539,12 @@ function inicializarRadioLaRed() {
     const radio = radios[radioActual];
     if (!radio) return false;
 
-    const necesitaFuente = forzar || fuentePreparadaPara !== radioActual || !radioPlayer.getAttribute("src");
+    const srcActual = radioPlayer.getAttribute("src") || "";
+    const necesitaFuente = forzar || fuentePreparadaPara !== radioActual || !srcActual;
     if (!necesitaFuente) return false;
 
-    radioPlayer.pause();
-    radioPlayer.crossOrigin = "anonymous";
+    if (!radioPlayer.paused) radioPlayer.pause();
+    radioPlayer.removeAttribute("crossorigin");
     radioPlayer.src = construirUrlStream(radio.url, forzar);
     fuentePreparadaPara = radioActual;
     radioPlayer.load();
@@ -633,11 +556,11 @@ function inicializarRadioLaRed() {
       const rangos = radioPlayer.seekable;
       if (!rangos?.length) return;
       const bordeEnVivo = rangos.end(rangos.length - 1);
-      if (Number.isFinite(bordeEnVivo) && Math.abs(bordeEnVivo - radioPlayer.currentTime) > 1.25) {
-        radioPlayer.currentTime = Math.max(0, bordeEnVivo - 0.12);
+      if (Number.isFinite(bordeEnVivo) && Math.abs(bordeEnVivo - radioPlayer.currentTime) > 1.5) {
+        radioPlayer.currentTime = Math.max(0, bordeEnVivo - 0.15);
       }
     } catch {
-      // Algunos streams Icecast no exponen rangos seekable.
+      // Muchos streams Icecast no permiten buscar dentro de la señal.
     }
   };
 
@@ -657,12 +580,12 @@ function inicializarRadioLaRed() {
     limpiarReconexion();
     if (!reconexion) intentosReconexion = 0;
 
+    asegurarAudioAudible();
     const fuenteNueva = prepararFuente(reconexion);
-    saltarAlDirecto();
 
     establecerEstado(
       "connecting",
-      fuenteNueva ? `Conectando con ${radio.corto}...` : `Reanudando ${radio.corto}...`
+      fuenteNueva ? `Conectando con ${radio.corto}...` : `Iniciando ${radio.corto}...`
     );
 
     limpiarTemporizadorConexion();
@@ -680,9 +603,9 @@ function inicializarRadioLaRed() {
       actualizarBotonPlay(false);
       if (error?.name === "NotAllowedError") {
         reproduccionSolicitada = false;
-        establecerEstado("paused", `Toca el logo o el botón de reproducción para escuchar ${radio.corto}.`);
+        establecerEstado("paused", `Toca nuevamente para escuchar ${radio.corto}.`);
       } else if (error?.name !== "AbortError") {
-        programarReconexion();
+        programarReconexion("No se pudo iniciar la señal.");
       }
     }
   };
@@ -690,11 +613,9 @@ function inicializarRadioLaRed() {
   const pausar = () => {
     reproduccionSolicitada = false;
     limpiarReconexion();
-
-    // No se elimina src: así el siguiente Play no vuelve a conectarse desde cero.
     radioPlayer.pause();
     actualizarBotonPlay(false);
-    establecerEstado("paused", `${radios[radioActual].corto} en pausa. Toca el logo para continuar.`);
+    establecerEstado("paused", `${radios[radioActual].corto} en pausa. Toca reproducir para continuar.`);
   };
 
   const alternarReproduccion = () => {
@@ -706,8 +627,7 @@ function inicializarRadioLaRed() {
   radioPlayer.clickTvPause = () => pausar();
 
   const programarReconexion = (motivo = "") => {
-    if (!reproduccionSolicitada || !navigator.onLine) return;
-    if (reconexionTimer) return;
+    if (!reproduccionSolicitada || !navigator.onLine || reconexionTimer) return;
     limpiarTemporizadorConexion();
 
     if (intentosReconexion >= maxIntentos) {
@@ -716,7 +636,7 @@ function inicializarRadioLaRed() {
       return;
     }
 
-    const espera = Math.min(1200 * (2 ** intentosReconexion), 10000);
+    const espera = Math.min(1000 * (2 ** intentosReconexion), 8000);
     intentosReconexion += 1;
     const detalle = motivo ? `${motivo} ` : "Señal interrumpida. ";
     establecerEstado("connecting", `${detalle}Reconectando (${intentosReconexion}/${maxIntentos})...`);
@@ -727,20 +647,15 @@ function inicializarRadioLaRed() {
   };
 
   botones.forEach((btn) => {
-    const precalentar = () => {
-      const nueva = btn.dataset.radio;
-      if (nueva === radioActual) prepararFuente(false);
-    };
     btn.addEventListener("pointerdown", () => {
-      mejorarAudioRadio();
-      precalentar();
+      const nueva = btn.dataset.radio;
+      if (nueva === radioActual && !radioPlayer.getAttribute("src")) prepararFuente(false);
     }, { passive: true });
 
     btn.addEventListener("click", async () => {
       const nueva = btn.dataset.radio;
       if (!radios[nueva]) return;
 
-      // Tocar el logo/tarjeta de la emisora activa también inicia la radio.
       if (nueva === radioActual) {
         if (radioPlayer.paused || !reproduccionSolicitada) await reproducir();
         return;
@@ -750,6 +665,7 @@ function inicializarRadioLaRed() {
       reproduccionSolicitada = false;
       reiniciarFuente();
       actualizarEmisoraUI(nueva);
+      prepararFuente(false);
       establecerEstado("connecting", `Cambiando a ${radios[nueva].corto}...`);
       await reproducir();
     });
@@ -757,8 +673,7 @@ function inicializarRadioLaRed() {
 
   [playButton, artButton].filter(Boolean).forEach((control) => {
     control.addEventListener("pointerdown", () => {
-      mejorarAudioRadio();
-      prepararFuente(false);
+      if (!radioPlayer.getAttribute("src")) prepararFuente(false);
     }, { passive: true });
     control.addEventListener("click", alternarReproduccion);
   });
@@ -770,44 +685,51 @@ function inicializarRadioLaRed() {
     reproducir({ reconexion: true });
   });
 
+  // Esta migración elimina cualquier silencio heredado de la versión con Web Audio.
+  const claveReparacionAudio = "clicktv_radio_audio_reparado_v26";
+  const repararAudioAnterior = !localStorage.getItem(claveReparacionAudio);
   const volumenGuardado = Number(localStorage.getItem(CLAVE_VOLUMEN_RADIO));
-  const volumenInicial = Number.isFinite(volumenGuardado) ? Math.min(1, Math.max(0, volumenGuardado)) : 0.85;
+  const volumenInicial = repararAudioAnterior
+    ? 1
+    : (Number.isFinite(volumenGuardado) ? Math.min(1, Math.max(0, volumenGuardado)) : 1);
+
   radioPlayer.volume = volumenInicial;
+  asegurarAudioAudible({ restaurarVolumen: repararAudioAnterior });
+  localStorage.setItem(claveReparacionAudio, "1");
+
   if (volumeControl) {
-    volumeControl.value = String(volumenInicial);
+    volumeControl.value = String(radioPlayer.volume);
     volumeControl.addEventListener("input", () => {
       const valor = Math.min(1, Math.max(0, Number(volumeControl.value)));
+      radioPlayer.muted = false;
       radioPlayer.volume = valor;
       localStorage.setItem(CLAVE_VOLUMEN_RADIO, String(valor));
     });
   }
 
-  radioPlayer.addEventListener("play", () => {
-    mejorarAudioRadio();
-  });
-
   radioPlayer.addEventListener("loadstart", () => {
     if (reproduccionSolicitada) establecerEstado("connecting", "Cargando señal en vivo...");
   });
-  radioPlayer.addEventListener("waiting", () => {
-    if (reproduccionSolicitada) establecerEstado("connecting", "Sincronizando señal en vivo...");
+  radioPlayer.addEventListener("loadedmetadata", () => {
+    if (!reproduccionSolicitada) establecerEstado("idle", `${radios[radioActual].corto} preparada. Toca reproducir.`);
   });
   radioPlayer.addEventListener("canplay", () => {
+    limpiarTemporizadorConexion();
     if (!reproduccionSolicitada && radioPlayer.paused) {
-      establecerEstado("idle", `${radios[radioActual].corto} lista. Toca el logo para escuchar.`);
+      establecerEstado("idle", `${radios[radioActual].corto} lista. Toca reproducir.`);
     }
+  });
+  radioPlayer.addEventListener("waiting", () => {
+    if (reproduccionSolicitada) establecerEstado("connecting", "Sincronizando señal en vivo...");
   });
   radioPlayer.addEventListener("playing", () => {
     limpiarReconexion();
     intentosReconexion = 0;
     if (retryButton) retryButton.hidden = true;
+    asegurarAudioAudible();
     saltarAlDirecto();
     actualizarBotonPlay(true);
-    const audioOptimizado = audioPreparado && gananciaEmisoraActual() > 1;
-    establecerEstado(
-      "live",
-      `${radios[radioActual].nombre} transmitiendo en vivo${audioOptimizado ? " con volumen optimizado" : ""}.`
-    );
+    establecerEstado("live", `${radios[radioActual].nombre} transmitiendo en vivo.`);
   });
   radioPlayer.addEventListener("pause", () => {
     if (!reproduccionSolicitada) actualizarBotonPlay(false);
@@ -833,24 +755,24 @@ function inicializarRadioLaRed() {
     reproducir({ reconexion: true });
   });
 
-  window.addEventListener("pagehide", () => {
-    if (audioContext && audioContext.state !== "closed") {
-      audioContext.close().catch(() => {});
-    }
-  }, { once: true });
-
   document.addEventListener("visibilitychange", () => {
     if (document.hidden) detenerEcualizador();
     else if (!radioPlayer.paused && reproduccionSolicitada) iniciarEcualizador();
   });
 
   actualizarEmisoraUI(radioActual);
-  establecerEstado("idle", `${radios[radioActual].corto} lista. Presiona reproducir para escuchar en vivo.`);
 
-  // La fuente se prepara en pointerdown/click para respetar el gesto del usuario
-  // y evitar abrir una conexión Icecast infinita durante la carga inicial.
+  // La Red ya viene en el atributo src del HTML, por lo que el navegador puede
+  // abrir la conexión mientras el resto de la página termina de cargar.
+  const srcInicial = radioPlayer.getAttribute("src") || "";
+  if (radioActual === "lared" && srcInicial.includes("icecast.radiolared.com.ec/radiolared")) {
+    fuentePreparadaPara = "lared";
+  } else {
+    prepararFuente(false);
+  }
+
+  establecerEstado("idle", `${radios[radioActual].corto} preparándose en segundo plano. Toca reproducir cuando quieras.`);
 }
-
 function configurarMediaSessionRadio(radioPlayer, radio = {}) {
   if (!("mediaSession" in navigator)) return;
 

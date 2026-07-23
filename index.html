@@ -40,8 +40,10 @@
 
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%2300FF66'/%3E%3Ctext x='50' y='60' text-anchor='middle' font-size='42'%3E%E2%9A%BD%3C/text%3E%3C/svg%3E">
   <link rel="preconnect" href="https://www.paypal.com">
-  <link rel="preconnect" href="https://icecast.radiolared.com.ec" crossorigin>
-  <link rel="preconnect" href="https://streamingecuador.net" crossorigin>
+  <link rel="dns-prefetch" href="//icecast.radiolared.com.ec">
+  <link rel="preconnect" href="https://icecast.radiolared.com.ec">
+  <link rel="dns-prefetch" href="//streamingecuador.net">
+  <link rel="preconnect" href="https://streamingecuador.net">
   <link rel="preload" href="click-tv-logo-premium.png" as="image" type="image/png">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="responsive.css">
@@ -243,7 +245,7 @@
 
               <label class="radio-volume" for="radio-volume">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4Zm11.5-.9v7.8a5 5 0 0 0 0-7.8Zm0-3v2.1a7 7 0 0 1 0 9.6v2.1a9 9 0 0 0 0-13.8Z"/></svg>
-                <input id="radio-volume" type="range" min="0" max="1" step="0.01" value="0.85" aria-label="Volumen de la radio">
+                <input id="radio-volume" type="range" min="0" max="1" step="0.01" value="1" aria-label="Volumen de la radio">
               </label>
             </div>
 
@@ -255,7 +257,7 @@
               </div>
             </div>
 
-            <audio id="radio-player" preload="auto" crossorigin="anonymous" playsinline aria-label="Reproductor de radio en vivo con volumen optimizado">
+            <audio id="radio-player" preload="auto" playsinline src="https://icecast.radiolared.com.ec/radiolared" aria-label="Reproductor de radio en vivo">
               Tu navegador no permite reproducir esta radio.
             </audio>
           </div>

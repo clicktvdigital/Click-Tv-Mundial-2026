@@ -1,3 +1,4 @@
+/* v2.6: radio nativa estable, sin Web Audio/CORS silencioso. */
 /* Catálogo multicanal Click TV Streaming */
 (function () {
   const escapar = (texto = "") => String(texto).replace(/[&<>'"]/g, (c) => ({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[c]));
