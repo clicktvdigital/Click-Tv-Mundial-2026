@@ -35,31 +35,55 @@ let ubicacionCliente = {
 // INICIALIZACIÓN
 // ---------------------------------------------------------------------------
 document.addEventListener("DOMContentLoaded", () => {
-  cargarCarritoDesdeStorage();
-  cargarMonedaDesdeStorage();
-  inicializarFiltros();
-  renderCatalogo();
-  renderCarrito();
-  cargarResenas();
-  renderActividadReciente();
-  renderMundial();
-  inicializarUI();
-  inicializarPagosRapidos();
-  inicializarCalculadoraAhorro();
-  inicializarUbicacion();
-  actualizarTasasCambio();
-  actualizarUsuariosConectados();
-  actualizarContadorCarrito();
-  inicializarFondoDinamico();
-  inicializarAnimacionesScroll();
-  inicializarTiltPremium();
-  inicializarAccesibilidadGlobal();
+  // Cada módulo se inicia de forma independiente. Si uno falla, el menú,
+  // la radio y el resto de la interfaz continúan funcionando.
+  const iniciarSeguro = (nombre, tarea) => {
+    try {
+      tarea();
+    } catch (error) {
+      console.error(`[Click TV] Error al iniciar ${nombre}:`, error);
+    }
+  };
 
-  setInterval(renderActividadReciente, 4500);
-  setInterval(rotarResenas, 10000);
-  setInterval(actualizarUsuariosConectados, 6500);
-  setInterval(() => renderMundial(true), 30000);
+  iniciarSeguro("carrito", cargarCarritoDesdeStorage);
+  iniciarSeguro("moneda", cargarMonedaDesdeStorage);
+  iniciarSeguro("filtros", inicializarFiltros);
+  iniciarSeguro("catálogo", renderCatalogo);
+  iniciarSeguro("carrito visual", renderCarrito);
+  iniciarSeguro("reseñas", cargarResenas);
+  iniciarSeguro("actividad", renderActividadReciente);
+  iniciarSeguro("partidos", renderMundial);
+  iniciarSeguro("interfaz", inicializarUI);
+  iniciarSeguro("pagos rápidos", inicializarPagosRapidos);
+  iniciarSeguro("calculadora de ahorro", inicializarCalculadoraAhorro);
+  iniciarSeguro("ubicación", inicializarUbicacion);
+  iniciarSeguro("tasas de cambio", actualizarTasasCambio);
+  iniciarSeguro("usuarios conectados", actualizarUsuariosConectados);
+  iniciarSeguro("contador del carrito", actualizarContadorCarrito);
+  iniciarSeguro("fondo dinámico", inicializarFondoDinamico);
+  iniciarSeguro("animaciones", inicializarAnimacionesScroll);
+  iniciarSeguro("efecto premium", inicializarTiltPremium);
+  iniciarSeguro("accesibilidad", inicializarAccesibilidadGlobal);
+
+  setInterval(() => iniciarSeguro("actividad periódica", renderActividadReciente), 4500);
+  setInterval(() => iniciarSeguro("rotación de reseñas", rotarResenas), 10000);
+  setInterval(() => iniciarSeguro("usuarios conectados", actualizarUsuariosConectados), 6500);
+  setInterval(() => iniciarSeguro("partidos periódicos", () => renderMundial(true)), 30000);
 });
+
+
+function inicializarFiltros() {
+  // Los botones del catálogo se gestionan también desde catalogo.js.
+  // Aquí se conectan los enlaces del menú que llevan a una categoría concreta.
+  document.querySelectorAll("[data-ir-categoria]").forEach((enlace) => {
+    enlace.addEventListener("click", () => {
+      const categoria = enlace.dataset.irCategoria || "todos";
+      if (typeof window.seleccionarCategoriaCatalogo === "function") {
+        window.seleccionarCategoriaCatalogo(categoria);
+      }
+    });
+  });
+}
 
 function abrirMenuMovil() {
   const menu = document.getElementById("nav-menu");
@@ -2799,11 +2823,7 @@ function inicializarAccesibilidadGlobal() {
     if (evento.key !== "Escape") return;
     cerrarCarrito();
     cerrarModalUbicacion();
-    const menu = document.getElementById("nav-menu");
-    const boton = document.getElementById("btn-menu-movil");
-    menu?.classList.remove("abierto");
-    boton?.classList.remove("is-open");
-    boton?.setAttribute("aria-expanded", "false");
+    cerrarMenuMovil();
   });
 
   document.querySelectorAll('a[target="_blank"]').forEach((enlace) => {
