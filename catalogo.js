@@ -22,7 +22,7 @@
       return `<div class="product-plan">
         <div class="product-plan__info"><strong>${escapar(plan.tipo)}</strong><span>${precio}</span></div>
         <div class="product-plan__actions">
-          <button class="btn btn--primary btn--small" type="button" onclick="agregarPlanAlCarrito('${producto.id}',${i})">🛒 Añadir al carrito</button>
+          <button class="btn btn--primary btn--small" type="button" onclick="agregarPlanCatalogo('${producto.id}',${i},'compra')">🛒 Añadir al carrito</button>
           <button class="btn btn--outline btn--small" type="button" onclick="contactarPlanWhatsApp('${producto.id}',${i},'compra')">🟢 Comprar por WhatsApp</button>
           <button class="btn btn--outline btn--small" type="button" onclick="contactarPlanTelegram('${producto.id}',${i},'compra')">✈️ Comprar por Telegram</button>
           <button class="btn btn--outline btn--small" type="button" onclick="contactarPlanSignal('${producto.id}',${i},'compra')">🔵 Comprar por Signal</button>
@@ -56,13 +56,26 @@ Por favor, indíqueme disponibilidad y forma de pago.`;
   window.contactarPlanWhatsApp = (p,i,o='compra') => window.open(`${CONFIG.whatsappLink}?text=${encodeURIComponent(mensaje(p,i,o))}`, '_blank', 'noopener,noreferrer');
   window.contactarPlanTelegram = (p,i,o='compra') => abrirTelegramConMensaje(mensaje(p,i,o));
   window.contactarPlanSignal = (p,i,o='compra') => abrirSignalConMensaje(mensaje(p,i,o));
-  window.marcarPlanRenovacion = (p,i) => {
-    const data=obtener(p,i); if (!data) return;
-    agregarAlCarrito(data.producto, {...data.plan, operacion:'renovacion'});
-    const item = carrito.find(x => x.productoId===p && x.plan===data.plan.tipo);
-    if (item) { item.operacion='renovacion'; guardarCarritoEnStorage(); renderCarrito(); actualizarContadorCarrito(); }
-    mostrarToast('Servicio marcado como renovación. Elige WhatsApp, Telegram o Signal.', 'exito');
+
+  window.agregarPlanCatalogo = function (productoId, planIndex, operacion = 'compra') {
+    const data = obtener(productoId, planIndex);
+    if (!data) {
+      if (typeof mostrarToast === 'function') mostrarToast('Producto no disponible.', 'error');
+      return;
+    }
+
+    if (typeof agregarAlCarrito !== 'function') {
+      if (typeof mostrarToast === 'function') mostrarToast('El carrito todavía no está disponible. Recarga la página.', 'error');
+      return;
+    }
+
+    agregarAlCarrito(data.producto, {
+      ...data.plan,
+      operacion: operacion === 'renovacion' ? 'renovacion' : 'compra'
+    });
   };
+
+  window.marcarPlanRenovacion = (p,i) => agregarPlanCatalogo(p,i,'renovacion');
 
   document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('[data-categoria]').forEach(btn => btn.addEventListener('click', () => seleccionarCategoriaCatalogo(btn.dataset.categoria)));

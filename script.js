@@ -163,12 +163,16 @@ function inicializarUI() {
     });
 
     document.addEventListener("keydown", (evento) => {
-      if (evento.key === "Escape") cerrarMenuMovil();
+      if (evento.key === "Escape") {
+        cerrarMenuMovil();
+        cerrarCarrito();
+      }
     });
   }
 
   // Carrito
   document.getElementById("btn-abrir-carrito")?.addEventListener("click", abrirCarrito);
+  document.getElementById("btn-carrito-flotante")?.addEventListener("click", abrirCarrito);
   document.getElementById("btn-cerrar-carrito")?.addEventListener("click", cerrarCarrito);
   document.getElementById("btn-continuar-comprando")?.addEventListener("click", cerrarCarrito);
   document.getElementById("carrito-overlay")?.addEventListener("click", cerrarCarrito);
@@ -1067,21 +1071,40 @@ function guardarCarritoEnStorage() {
 // ---------------------------------------------------------------------------
 // CARRITO — ACCIONES
 // ---------------------------------------------------------------------------
+function obtenerPlanProducto(productoId, planIndex) {
+  if (typeof PRODUCTOS === "undefined" || !Array.isArray(PRODUCTOS)) return null;
+
+  const producto = PRODUCTOS.find((item) => String(item.id) === String(productoId));
+  const indice = Number(planIndex);
+  const plan = producto?.planes?.[indice];
+
+  return producto && plan ? { producto, plan } : null;
+}
+
 function agregarPlanAlCarrito(productoId, planIndex) {
   const data = obtenerPlanProducto(productoId, planIndex);
   if (!data) return mostrarToast("Producto no disponible.", "error");
-  agregarAlCarrito(data.producto, data.plan);
+  agregarAlCarrito(data.producto, { ...data.plan, operacion: "compra" });
 }
 
 function agregarAlCarrito(producto, plan) {
+  if (!producto || !plan) {
+    mostrarToast("Producto no disponible.", "error");
+    return;
+  }
+
+  const operacion = plan.operacion === "renovacion" ? "renovacion" : "compra";
   const itemId = `${producto.id}-${normalizarTexto(plan.tipo)}`;
   const existente = carrito.find((item) => item.itemId === itemId);
 
   if (existente) {
     existente.cantidad += 1;
+    existente.precio = Number(plan.precio);
     existente.consultar = existente.consultar || Boolean(plan.consultar);
     existente.ivaIncluido = existente.ivaIncluido || Boolean(plan.ivaIncluido);
     existente.bloquearDescuento = existente.bloquearDescuento || Boolean(plan.bloquearDescuento);
+    existente.dispositivos = plan.dispositivos || existente.dispositivos || null;
+    existente.operacion = operacion;
   } else {
     carrito.push({
       itemId,
@@ -1095,7 +1118,7 @@ function agregarAlCarrito(producto, plan) {
       ivaIncluido: Boolean(plan.ivaIncluido),
       bloquearDescuento: Boolean(plan.bloquearDescuento),
       dispositivos: plan.dispositivos || null,
-      operacion: "compra"
+      operacion
     });
   }
 
@@ -1103,7 +1126,11 @@ function agregarAlCarrito(producto, plan) {
   renderCarrito();
   actualizarContadorCarrito();
   abrirCarrito();
-  mostrarToast(`${producto.nombre} agregado al carrito 🛒`, "exito");
+
+  const mensaje = operacion === "renovacion"
+    ? `${producto.nombre} marcado para renovación 🔄`
+    : `${producto.nombre} agregado al carrito 🛒`;
+  mostrarToast(mensaje, "exito");
 }
 
 function eliminarDelCarrito(itemId) {
@@ -1152,19 +1179,14 @@ function comprarAhora(productoId, planIndex) {
   window.open(`${CONFIG.whatsappLink}?text=${mensaje}`, "_blank", "noopener,noreferrer");
 }
 
-function renovarServicio(productoId, planIndex, agregarAlCarrito = false) {
+function renovarServicio(productoId, planIndex, agregarComoRenovacion = false) {
   const data = obtenerPlanProducto(productoId, planIndex);
   if (!data) return mostrarToast("Servicio no disponible.", "error");
 
   const { producto, plan } = data;
 
-  if (agregarAlCarrito) {
-    agregarAlCarrito(producto, plan);
-    const itemId = `${producto.id}-${normalizarTexto(plan.tipo)}`;
-    const item = carrito.find((elemento) => elemento.itemId === itemId);
-    if (item) item.operacion = "renovacion";
-    guardarCarritoEnStorage();
-    renderCarrito();
+  if (agregarComoRenovacion) {
+    agregarAlCarrito(producto, { ...plan, operacion: "renovacion" });
     return;
   }
 
@@ -1299,32 +1321,72 @@ function obtenerCuponManualActivo() {
 }
 
 function actualizarContadorCarrito() {
-  const contador = document.getElementById("contador-carrito");
-  if (!contador) return;
-  const totalItems = carrito.reduce((acc, item) => acc + Number(item.cantidad), 0);
-  const anterior = Number(contador.textContent || 0);
-  contador.textContent = totalItems;
-  contador.style.display = totalItems > 0 ? "inline-flex" : "none";
-  if (anterior !== totalItems) {
-    contador.classList.remove("is-bumping");
-    requestAnimationFrame(() => contador.classList.add("is-bumping"));
-    setTimeout(() => contador.classList.remove("is-bumping"), 420);
-  }
+  const contadores = [
+    document.getElementById("contador-carrito"),
+    document.getElementById("contador-carrito-flotante")
+  ].filter(Boolean);
+  const botones = [
+    document.getElementById("btn-abrir-carrito"),
+    document.getElementById("btn-carrito-flotante")
+  ].filter(Boolean);
+
+  const totalItems = carrito.reduce((acc, item) => acc + Number(item.cantidad || 0), 0);
+
+  contadores.forEach((contador) => {
+    const anterior = Number(contador.textContent || 0);
+    contador.textContent = totalItems;
+    contador.hidden = totalItems <= 0;
+    contador.style.display = totalItems > 0 ? "inline-flex" : "none";
+
+    if (anterior !== totalItems) {
+      contador.classList.remove("is-bumping");
+      requestAnimationFrame(() => contador.classList.add("is-bumping"));
+      setTimeout(() => contador.classList.remove("is-bumping"), 420);
+    }
+  });
+
+  botones.forEach((boton) => {
+    boton.setAttribute("aria-label", `Abrir carrito, ${totalItems} ${totalItems === 1 ? "producto" : "productos"}`);
+  });
 }
 
 function abrirCarrito() {
-  document.getElementById("panel-carrito")?.classList.add("abierto");
-  document.getElementById("carrito-overlay")?.classList.add("visible");
-  document.getElementById("btn-abrir-carrito")?.setAttribute("aria-expanded", "true");
-  document.body.classList.add("cart-open");
+  const panel = document.getElementById("panel-carrito");
+  const overlay = document.getElementById("carrito-overlay");
+  if (!panel) return;
+
+  cerrarMenuMovil();
   renderCarrito();
+  panel.classList.add("abierto");
+  panel.setAttribute("aria-hidden", "false");
+  panel.scrollTop = 0;
+  overlay?.classList.add("visible");
+  overlay?.setAttribute("aria-hidden", "false");
+  document.getElementById("btn-abrir-carrito")?.setAttribute("aria-expanded", "true");
+  document.getElementById("btn-carrito-flotante")?.setAttribute("aria-expanded", "true");
+  document.body.classList.add("cart-open");
+  requestAnimationFrame(() => document.getElementById("btn-cerrar-carrito")?.focus({ preventScroll: true }));
 }
 
 function cerrarCarrito() {
-  document.getElementById("panel-carrito")?.classList.remove("abierto");
-  document.getElementById("carrito-overlay")?.classList.remove("visible");
+  const panel = document.getElementById("panel-carrito");
+  const overlay = document.getElementById("carrito-overlay");
+  const estabaAbierto = panel?.classList.contains("abierto");
+
+  panel?.classList.remove("abierto");
+  panel?.setAttribute("aria-hidden", "true");
+  overlay?.classList.remove("visible");
+  overlay?.setAttribute("aria-hidden", "true");
   document.getElementById("btn-abrir-carrito")?.setAttribute("aria-expanded", "false");
+  document.getElementById("btn-carrito-flotante")?.setAttribute("aria-expanded", "false");
   document.body.classList.remove("cart-open");
+
+  if (estabaAbierto) {
+    const destino = window.matchMedia("(max-width: 720px)").matches
+      ? document.getElementById("btn-carrito-flotante")
+      : document.getElementById("btn-abrir-carrito");
+    destino?.focus({ preventScroll: true });
+  }
 }
 
 function vaciarCarrito() {

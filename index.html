@@ -161,8 +161,8 @@
 
       <a class="mobile-reviews-shortcut" href="#resenas" aria-label="Ver reseñas">⭐ <span>Reseñas</span></a>
 
-      <button id="btn-abrir-carrito" class="cart-btn" type="button" aria-label="Abrir carrito" aria-controls="panel-carrito" aria-expanded="false">
-        🛒 <span id="contador-carrito">0</span>
+      <button id="btn-abrir-carrito" class="cart-btn" type="button" aria-label="Abrir carrito, 0 productos" aria-controls="panel-carrito" aria-expanded="false">
+        🛒 <span id="contador-carrito" aria-live="polite">0</span>
       </button>
     </nav>
   </header>
@@ -542,8 +542,8 @@
     </section>
   </main>
 
-  <div id="carrito-overlay" class="carrito-overlay"></div>
-  <aside id="panel-carrito" class="panel-carrito" aria-label="Carrito de compras">
+  <div id="carrito-overlay" class="carrito-overlay" aria-hidden="true"></div>
+  <aside id="panel-carrito" class="panel-carrito" aria-label="Carrito de compras" aria-hidden="true" tabindex="-1">
     <div class="panel-carrito__header">
       <h2>🛒 Tu carrito</h2>
       <button id="btn-cerrar-carrito" class="icon-btn" aria-label="Cerrar carrito">✕</button>
@@ -700,6 +700,11 @@
       </span>
       <span class="float-btn__label">Soporte</span>
     </a>
+    <button id="btn-carrito-flotante" class="float-btn float-btn--cart" type="button" aria-label="Abrir carrito, 0 productos" aria-controls="panel-carrito" aria-expanded="false" title="Carrito">
+      <span class="float-btn__icon" aria-hidden="true">🛒</span>
+      <span id="contador-carrito-flotante" class="float-cart-count" aria-live="polite">0</span>
+      <span class="float-btn__label">Carrito</span>
+    </button>
     <button id="btn-menu-flotante" class="float-btn float-btn--menu" type="button" aria-label="Abrir menú" title="Menú">
       <span class="float-btn__icon" aria-hidden="true">☰</span>
       <span class="float-btn__label">Menú</span>

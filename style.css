@@ -3264,3 +3264,87 @@ body.menu-movil-abierto { overflow:hidden; }
 @media (max-width: 560px) {
   .product-plan__actions { grid-template-columns:1fr; }
 }
+
+
+/* ========================================================================== 
+   RELEASE 2.3 — CARRITO FLOTANTE, APERTURA AUTOMÁTICA Y UI ROBUSTA
+   ========================================================================== */
+.panel-carrito {
+  max-width: 100vw;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+}
+
+.panel-carrito__header {
+  position: sticky;
+  top: -18px;
+  z-index: 20;
+  margin: -18px -18px 0;
+  padding: 18px;
+  background: linear-gradient(180deg, rgba(6,10,7,.995) 78%, rgba(6,10,7,.92));
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  backdrop-filter: blur(18px);
+}
+
+.panel-carrito .btn,
+.panel-carrito button,
+.panel-carrito a {
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.panel-carrito .carrito-item__info,
+.panel-carrito .cart-payment__head > div,
+.panel-carrito .cart-contact-options,
+.panel-carrito .cart-actions {
+  min-width: 0;
+}
+
+.float-btn--cart {
+  color: #031107;
+  border-color: rgba(116,255,56,.5);
+  background: linear-gradient(135deg, #9aff68, #39db59 55%, #00aa4b);
+  box-shadow: 0 12px 28px rgba(0,255,102,.25);
+}
+
+.float-btn--cart .float-btn__icon {
+  background: rgba(255,255,255,.34);
+  font-size: 1.45rem;
+}
+
+.float-cart-count {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  z-index: 4;
+  min-width: 23px;
+  height: 23px;
+  padding: 0 6px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #071008;
+  border-radius: 999px;
+  color: #fff;
+  background: #ff3b4f;
+  box-shadow: 0 5px 14px rgba(0,0,0,.38);
+  font-size: .72rem;
+  font-weight: 950;
+  line-height: 1;
+}
+
+#contador-carrito-flotante.is-bumping {
+  animation: cartBump .42s cubic-bezier(.2,.8,.2,1);
+}
+
+body.cart-open .floating-actions,
+body.menu-movil-abierto .floating-actions {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(14px);
+}
+
+.floating-actions {
+  transition: opacity .2s ease, transform .2s ease;
+}

@@ -4,6 +4,7 @@
    ========================================================================== */
 
 const CONFIG = {
+  versionProyecto: "2.3.0-carrito-movil",
   whatsappNumero: "593939166222",
   whatsappLocal: "0939166222",
   whatsappLink: "https://wa.me/593939166222",
