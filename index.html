@@ -40,7 +40,7 @@
 
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%2300FF66'/%3E%3Ctext x='50' y='60' text-anchor='middle' font-size='42'%3E%E2%9A%BD%3C/text%3E%3C/svg%3E">
   <link rel="preconnect" href="https://www.paypal.com">
-  <link rel="preconnect" href="https://icecast.ticsecuador.com.ec" crossorigin>
+  <link rel="preconnect" href="https://icecast.radiolared.com.ec" crossorigin>
   <link rel="preconnect" href="https://streamingecuador.net" crossorigin>
   <link rel="preload" href="click-tv-logo-premium.png" as="image" type="image/png">
   <link rel="stylesheet" href="style.css">
@@ -211,6 +211,7 @@
                 <div class="radio-now-playing__copy">
                   <span class="radio-kicker">Radio deportiva de Quito</span>
                   <strong id="radio-current-name">La Red 102.1 FM Quito</strong>
+                  <span id="radio-stream-quality" class="radio-stream-quality">MP3 · 128 kbps</span>
                   <span id="radio-connection" class="radio-connection is-idle"><i></i>Lista para conectar</span>
                 </div>
               </div>
@@ -248,10 +249,13 @@
 
             <div class="radio-status-row">
               <p id="radio-status" class="radio-status" role="status" aria-live="polite">Selecciona una emisora y presiona reproducir.</p>
-              <button id="radio-retry" class="radio-retry" type="button" hidden>Reconectar</button>
+              <div class="radio-status-actions">
+                <a id="radio-direct-link" class="radio-direct-link" href="https://icecast.radiolared.com.ec/radiolared" target="_blank" rel="noopener noreferrer" aria-label="Abrir señal directa de La Red">↗ Señal directa</a>
+                <button id="radio-retry" class="radio-retry" type="button" hidden>Reconectar</button>
+              </div>
             </div>
 
-            <audio id="radio-player" preload="auto" playsinline>
+            <audio id="radio-player" preload="none" playsinline aria-label="Reproductor de radio en vivo">
               Tu navegador no permite reproducir esta radio.
             </audio>
           </div>

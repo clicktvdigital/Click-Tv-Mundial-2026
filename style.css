@@ -3348,3 +3348,55 @@ body.menu-movil-abierto .floating-actions {
 .floating-actions {
   transition: opacity .2s ease, transform .2s ease;
 }
+
+
+/* Radio La Red v2.4: calidad, respaldo directo y estados de conexión */
+.radio-stream-quality {
+  width: fit-content;
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 8px;
+  border: 1px solid rgba(116,255,56,.22);
+  border-radius: 999px;
+  background: rgba(116,255,56,.08);
+  color: #caffb8;
+  font-size: .74rem;
+  font-weight: 800;
+  letter-spacing: .02em;
+}
+
+.radio-status-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  flex: 0 0 auto;
+}
+
+.radio-direct-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  padding: 8px 12px;
+  border: 1px solid rgba(255,255,255,.13);
+  border-radius: 12px;
+  background: rgba(255,255,255,.055);
+  color: #eaffdf;
+  font-size: .82rem;
+  font-weight: 800;
+  transition: transform .2s ease, border-color .2s ease, background .2s ease;
+}
+
+.radio-direct-link:hover,
+.radio-direct-link:focus-visible {
+  transform: translateY(-1px);
+  border-color: rgba(116,255,56,.4);
+  background: rgba(116,255,56,.1);
+  outline: none;
+}
+
+.radio-app.has-error .radio-direct-link {
+  border-color: rgba(255,154,154,.35);
+  background: rgba(255,77,77,.09);
+}

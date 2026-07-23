@@ -4,7 +4,7 @@
    ========================================================================== */
 
 const CONFIG = {
-  versionProyecto: "2.3.0-carrito-movil",
+  versionProyecto: "2.4.0-radio-la-red",
   whatsappNumero: "593939166222",
   whatsappLocal: "0939166222",
   whatsappLink: "https://wa.me/593939166222",
@@ -33,14 +33,16 @@ const CONFIG = {
   footballDataApiToken: "467c885c07fa49baa40ac78cf636f8b0",
   fifaCalendarioUrl: "https://www.fifa.com/es/tournaments/mens/worldcup/canadamexicousa2026/scores-fixtures",
 
-  radioStreamUrl: "https://icecast.ticsecuador.com.ec/radiolared#.mp3",
+  radioStreamUrl: "https://icecast.radiolared.com.ec/radiolared",
   machRadioStreamUrl: "https://streamingecuador.net:9170/stream",
   radioStations: {
     lared: {
       nombre: "La Red 102.1 FM Quito",
       corto: "La Red",
       frecuencia: "102.1 FM · Quito",
-      url: "https://icecast.ticsecuador.com.ec/radiolared#.mp3",
+      url: "https://icecast.radiolared.com.ec/radiolared",
+      formato: "MP3",
+      calidad: "128 kbps",
       logo: "radio-la-red.png"
     },
     mach: {
