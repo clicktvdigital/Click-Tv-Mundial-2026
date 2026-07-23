@@ -43,6 +43,8 @@ const CONFIG = {
       url: "https://icecast.radiolared.com.ec/radiolared",
       formato: "MP3",
       calidad: "128 kbps",
+      ganancia: 1.4,
+      audioMejorado: true,
       logo: "radio-la-red.png"
     },
     mach: {
@@ -50,6 +52,8 @@ const CONFIG = {
       corto: "Mach Deportes",
       frecuencia: "91.7 FM · Quito",
       url: "https://streamingecuador.net:9170/stream",
+      ganancia: 1,
+      audioMejorado: false,
       logo: "radio-mach-deportes.png"
     }
   },

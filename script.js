@@ -369,6 +369,8 @@ function inicializarRadioLaRed() {
       url: "https://icecast.radiolared.com.ec/radiolared",
       formato: "MP3",
       calidad: "128 kbps",
+      ganancia: 1.4,
+      audioMejorado: true,
       logo: "radio-la-red.png"
     },
     mach: {
@@ -376,6 +378,8 @@ function inicializarRadioLaRed() {
       corto: "Mach Deportes",
       frecuencia: "91.7 FM · Quito",
       url: "https://streamingecuador.net:9170/stream",
+      ganancia: 1,
+      audioMejorado: false,
       logo: "radio-mach-deportes.png"
     }
   };
@@ -394,11 +398,96 @@ function inicializarRadioLaRed() {
   let equalizerFrame = 0;
   let equalizerActivo = false;
 
-  // Los streams en vivo son infinitos: la conexión se inicia únicamente cuando
-  // el usuario toca la carátula o Play, evitando consumo y bloqueos al cargar la página.
-  radioPlayer.preload = "none";
+  // Cadena de audio para elevar únicamente el nivel de Radio La Red.
+  // Se crea una sola vez y siempre dentro de un gesto del usuario.
+  let audioContext = null;
+  let audioSource = null;
+  let gainNode = null;
+  let compressor = null;
+  let audioPreparado = false;
+  let audioPreparando = null;
+  let audioMejoraDisponible = Boolean(window.AudioContext || window.webkitAudioContext);
+
+  // El preconnect del HTML y preload=auto reducen el retraso del primer toque.
+  // crossorigin se define antes de asignar src para permitir Web Audio cuando
+  // el servidor Icecast autoriza CORS.
+  radioPlayer.preload = "auto";
   radioPlayer.autoplay = false;
   radioPlayer.playsInline = true;
+  radioPlayer.crossOrigin = "anonymous";
+
+  const gananciaEmisoraActual = () => {
+    const radio = radios[radioActual] || {};
+    const ganancia = Number(radio.ganancia);
+    return Number.isFinite(ganancia) ? Math.min(1.5, Math.max(1, ganancia)) : 1;
+  };
+
+  const aplicarGananciaEmisora = (inmediata = false) => {
+    if (!gainNode || !audioContext) return;
+    const ahora = audioContext.currentTime;
+    const destino = gananciaEmisoraActual();
+    gainNode.gain.cancelScheduledValues(ahora);
+    if (inmediata) gainNode.gain.setValueAtTime(destino, ahora);
+    else gainNode.gain.setTargetAtTime(destino, ahora, 0.035);
+    app.dataset.audioGain = String(destino);
+  };
+
+  const mejorarAudioRadio = async () => {
+    if (!audioMejoraDisponible) return false;
+
+    if (audioPreparado && audioContext) {
+      if (audioContext.state === "suspended") await audioContext.resume();
+      aplicarGananciaEmisora();
+      return true;
+    }
+
+    if (audioPreparando) return audioPreparando;
+
+    audioPreparando = (async () => {
+      try {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        audioContext = new AudioContextClass();
+        audioSource = audioContext.createMediaElementSource(radioPlayer);
+        gainNode = audioContext.createGain();
+        compressor = audioContext.createDynamicsCompressor();
+
+        // Amplificación exclusiva de La Red; las demás emisoras permanecen en 1.0.
+        gainNode.gain.value = gananciaEmisoraActual();
+
+        // Control de picos para conservar claridad con la ganancia elevada.
+        compressor.threshold.value = -4;
+        compressor.knee.value = 8;
+        compressor.ratio.value = 10;
+        compressor.attack.value = 0.003;
+        compressor.release.value = 0.25;
+
+        audioSource
+          .connect(gainNode)
+          .connect(compressor)
+          .connect(audioContext.destination);
+
+        await audioContext.resume();
+        audioPreparado = true;
+        app.classList.add("has-audio-enhancement");
+        app.classList.remove("audio-native-fallback");
+        aplicarGananciaEmisora(true);
+        return true;
+      } catch (error) {
+        audioMejoraDisponible = false;
+        app.classList.remove("has-audio-enhancement");
+        app.classList.add("audio-native-fallback");
+        console.warn(
+          "No se pudo amplificar Radio La Red. Se reproducirá con su volumen original.",
+          error
+        );
+        return false;
+      } finally {
+        audioPreparando = null;
+      }
+    })();
+
+    return audioPreparando;
+  };
 
   const pintarEcualizadorEnReposo = () => {
     equalizerBars.forEach((bar, index) => {
@@ -474,8 +563,10 @@ function inicializarRadioLaRed() {
 
     if (currentName) currentName.textContent = radio.nombre;
     if (streamQuality) {
-      streamQuality.textContent = [radio.formato, radio.calidad].filter(Boolean).join(" · ") || "Señal en vivo";
+      const detalleAudio = Number(radio.ganancia) > 1 ? "Audio reforzado" : "Nivel original";
+      streamQuality.textContent = [radio.formato, radio.calidad, detalleAudio].filter(Boolean).join(" · ") || "Señal en vivo";
     }
+    aplicarGananciaEmisora();
     if (directLink) {
       directLink.href = radio.url;
       directLink.setAttribute("aria-label", `Abrir señal directa de ${radio.nombre}`);
@@ -530,6 +621,7 @@ function inicializarRadioLaRed() {
     if (!necesitaFuente) return false;
 
     radioPlayer.pause();
+    radioPlayer.crossOrigin = "anonymous";
     radioPlayer.src = construirUrlStream(radio.url, forzar);
     fuentePreparadaPara = radioActual;
     radioPlayer.load();
@@ -639,7 +731,10 @@ function inicializarRadioLaRed() {
       const nueva = btn.dataset.radio;
       if (nueva === radioActual) prepararFuente(false);
     };
-    btn.addEventListener("pointerdown", precalentar, { passive: true });
+    btn.addEventListener("pointerdown", () => {
+      mejorarAudioRadio();
+      precalentar();
+    }, { passive: true });
 
     btn.addEventListener("click", async () => {
       const nueva = btn.dataset.radio;
@@ -661,7 +756,10 @@ function inicializarRadioLaRed() {
   });
 
   [playButton, artButton].filter(Boolean).forEach((control) => {
-    control.addEventListener("pointerdown", () => prepararFuente(false), { passive: true });
+    control.addEventListener("pointerdown", () => {
+      mejorarAudioRadio();
+      prepararFuente(false);
+    }, { passive: true });
     control.addEventListener("click", alternarReproduccion);
   });
 
@@ -684,6 +782,10 @@ function inicializarRadioLaRed() {
     });
   }
 
+  radioPlayer.addEventListener("play", () => {
+    mejorarAudioRadio();
+  });
+
   radioPlayer.addEventListener("loadstart", () => {
     if (reproduccionSolicitada) establecerEstado("connecting", "Cargando señal en vivo...");
   });
@@ -701,7 +803,11 @@ function inicializarRadioLaRed() {
     if (retryButton) retryButton.hidden = true;
     saltarAlDirecto();
     actualizarBotonPlay(true);
-    establecerEstado("live", `${radios[radioActual].nombre} transmitiendo en vivo.`);
+    const audioOptimizado = audioPreparado && gananciaEmisoraActual() > 1;
+    establecerEstado(
+      "live",
+      `${radios[radioActual].nombre} transmitiendo en vivo${audioOptimizado ? " con volumen optimizado" : ""}.`
+    );
   });
   radioPlayer.addEventListener("pause", () => {
     if (!reproduccionSolicitada) actualizarBotonPlay(false);
@@ -726,6 +832,12 @@ function inicializarRadioLaRed() {
     reiniciarFuente();
     reproducir({ reconexion: true });
   });
+
+  window.addEventListener("pagehide", () => {
+    if (audioContext && audioContext.state !== "closed") {
+      audioContext.close().catch(() => {});
+    }
+  }, { once: true });
 
   document.addEventListener("visibilitychange", () => {
     if (document.hidden) detenerEcualizador();
