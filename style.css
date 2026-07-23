@@ -1062,52 +1062,10 @@ textarea {
   font: inherit;
 }
 
-.reviews-heading {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 16px;
-}
-
-.reviews-heading h3 {
-  margin: 0 0 6px;
-}
-
-.reviews-heading p {
-  margin: 0;
-  color: var(--muted);
-  line-height: 1.45;
-  font-size: .9rem;
-}
-
-.reviews-counter {
-  flex: 0 0 auto;
-  padding: 7px 10px;
-  border: 1px solid rgba(0,255,102,.2);
-  border-radius: 999px;
-  background: rgba(0,255,102,.08);
-  color: var(--green-3);
-  font-size: .75rem;
-  font-weight: 850;
-}
-
 .resenas-slider {
   position: relative;
-  display: grid;
-  gap: 12px;
   min-height: 0;
   overflow: hidden;
-}
-
-.resenas-slider.is-changing .resena-card {
-  animation: reviewSlideIn .58s cubic-bezier(.2,.8,.2,1) both;
-  animation-delay: calc(var(--review-order, 0) * 70ms);
-}
-
-@keyframes reviewSlideIn {
-  from { opacity: 0; transform: translateX(22px) scale(.985); }
-  to { opacity: 1; transform: translateX(0) scale(1); }
 }
 
 .savings-section {
@@ -1217,56 +1175,30 @@ textarea {
 .resena-card {
   position: relative;
   inset: auto;
-  display: block;
-  padding: 18px;
-  opacity: 1;
-  transform: none;
+  width: 100%;
   min-height: 0;
-  transition: border-color .25s ease, background .25s ease, transform .25s ease;
+  padding: 22px;
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity .28s ease;
 }
 
-.resena-card:hover,
-.resena-card:focus-visible {
-  transform: translateY(-2px);
-  border-color: rgba(0,255,102,.34);
-  background: linear-gradient(180deg, rgba(0,255,102,.1), rgba(255,255,255,.05));
-  outline: none;
+.resena-card.activa {
+  animation: resenaEntrada .35s ease both;
 }
 
-.resena-card__top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
+.resena-card.saliendo {
+  opacity: 0;
 }
 
-.resena-card h3 {
-  margin: 10px 0 4px;
-  font-size: 1rem;
+@keyframes resenaEntrada {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
-.resena-card p {
-  margin-top: 7px;
-  margin-bottom: 0;
-}
-
-.resena-comentario {
-  color: #eef4ef;
-  line-height: 1.5;
-  font-size: .92rem;
-}
-
-.verified-badge {
-  padding: 5px 8px;
-  border-radius: 999px;
-  background: rgba(0,255,102,.12);
-  color: var(--green-3);
-  font-size: .7rem;
-  font-weight: 900;
-  white-space: nowrap;
-}
-
-.reviews-empty {
+.resenas-vacias {
+  margin: 0;
+  padding: 18px;
   color: var(--muted);
 }
 
@@ -1700,6 +1632,7 @@ textarea {
 
 .float-btn--wa { background: linear-gradient(135deg, #00ff66, #00b84d); color: #001a09; }
 .float-btn--tg { background: linear-gradient(135deg, #2aabee, #1378b8); }
+.float-btn--signal { background: linear-gradient(135deg, #3a76f0, #2457c5); color: #fff; }
 .float-btn--group { background: linear-gradient(135deg, #00e676, #008f46); color: #001a09; }
 .float-btn--support { background: rgba(255,255,255,.1); }
 .float-btn--top { opacity: 0; pointer-events: none; }
@@ -2746,7 +2679,10 @@ body.cart-open { overflow: hidden; }
 .cart-renew-whatsapp { color: #071108; background: #74ff38; }
 
 /* Reviews */
-.resena-card .estrellas { animation: starsGlow .75s ease both; }
+.resena-card { transition: opacity .28s ease; }
+.resena-card.activa { transform: none; }
+.resena-card:not(.activa) { transform: none; pointer-events: auto; }
+.resena-card.activa .estrellas { animation: starsGlow .75s ease both; }
 @keyframes starsGlow { 50% { letter-spacing: 5px; text-shadow: 0 0 18px rgba(116,255,56,.7); } }
 
 /* Floating app bar */

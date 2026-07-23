@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
   inicializarAccesibilidadGlobal();
 
   setInterval(renderActividadReciente, 4500);
-  setInterval(rotarResenas, 4800);
+  setInterval(rotarResenas, 30000);
   setInterval(actualizarUsuariosConectados, 6500);
   setInterval(() => renderMundial(true), 30000);
 });
@@ -161,12 +161,14 @@ function inicializarBotonesFlotantes() {
   const wa = document.getElementById("btn-whatsapp");
   const grupo = document.getElementById("btn-whatsapp-grupo");
   const tg = document.getElementById("btn-telegram");
+  const signal = document.getElementById("btn-signal");
   const soporte = document.getElementById("btn-soporte");
   const catalogo = document.getElementById("btn-catalogo-flotante");
 
   if (wa) configurarLinkExterno(wa, CONFIG.whatsappLink);
   if (grupo) configurarLinkExterno(grupo, CONFIG.whatsappGrupo);
   if (tg) configurarLinkExterno(tg, CONFIG.telegramLink);
+  if (signal) configurarLinkExterno(signal, CONFIG.signalLink);
   if (catalogo) catalogo.href = "#streaming";
 
   if (soporte) {
@@ -2349,54 +2351,29 @@ function obtenerTodasLasResenas() {
 }
 
 function cargarResenas() {
-  indiceResena = 0;
-  pintarVentanaResenas(false);
-  renderResenasCarrito();
-}
-
-function crearResena(resena, posicion = 0) {
-  const estrellas = Math.max(1, Math.min(5, Number(resena.estrellas) || 5));
-  return `
-    <article class="resena-card" style="--review-order:${posicion}" tabindex="0">
-      <div class="resena-card__top">
-        <div class="estrellas" aria-label="${estrellas} de 5 estrellas">${"★".repeat(estrellas)}</div>
-        <span class="verified-badge">✓ Verificada</span>
-      </div>
-      <h3>${escaparHTML(resena.nombre)}</h3>
-      <p class="resena-pais">${escaparHTML(resena.pais)}</p>
-      <p class="resena-comentario">${escaparHTML(resena.comentario)}</p>
-    </article>
-  `;
-}
-
-function pintarVentanaResenas(animar = true) {
   const contenedor = document.getElementById("resenas-slider");
   if (!contenedor) return;
 
   const resenas = obtenerTodasLasResenas();
   if (!resenas.length) {
-    contenedor.innerHTML = '<p class="reviews-empty">Todavía no hay reseñas disponibles.</p>';
+    contenedor.innerHTML = '<p class="resenas-vacias">Pronto aparecerán nuevas reseñas verificadas.</p>';
     return;
   }
 
-  const cantidadVisible = Math.min(5, resenas.length);
-  const ventana = Array.from({ length: cantidadVisible }, (_, posicion) => {
-    const indice = (indiceResena + posicion) % resenas.length;
-    return crearResena(resenas[indice], posicion);
-  });
+  indiceResena = indiceResena % resenas.length;
+  contenedor.innerHTML = crearResena(resenas[indiceResena]);
+  renderResenasCarrito();
+}
 
-  if (animar) contenedor.classList.remove("is-changing");
-  contenedor.innerHTML = ventana.join("");
-
-  const contador = document.getElementById("resenas-contador");
-  if (contador) {
-    const inicio = (indiceResena % resenas.length) + 1;
-    contador.textContent = `${cantidadVisible} visibles · inicia en ${inicio}/${resenas.length}`;
-  }
-
-  if (animar) {
-    requestAnimationFrame(() => contenedor.classList.add("is-changing"));
-  }
+function crearResena(resena) {
+  return `
+    <article class="resena-card activa" aria-live="polite">
+      <div class="estrellas">${"★".repeat(Number(resena.estrellas) || 5)}</div>
+      <h3>${escaparHTML(resena.nombre)}</h3>
+      <p class="resena-pais">${escaparHTML(resena.pais)}</p>
+      <p>${escaparHTML(resena.comentario)}</p>
+    </article>
+  `;
 }
 
 function renderResenasCarrito() {
@@ -2474,10 +2451,22 @@ function enviarContactoInternacional(evento) {
 }
 
 function rotarResenas() {
+  const contenedor = document.getElementById("resenas-slider");
   const resenas = obtenerTodasLasResenas();
-  if (!resenas.length) return;
+  if (!contenedor || !resenas.length) return;
+
   indiceResena = (indiceResena + 1) % resenas.length;
-  pintarVentanaResenas(true);
+  const tarjetaActual = contenedor.querySelector(".resena-card");
+
+  if (!tarjetaActual) {
+    contenedor.innerHTML = crearResena(resenas[indiceResena]);
+    return;
+  }
+
+  tarjetaActual.classList.add("saliendo");
+  window.setTimeout(() => {
+    contenedor.innerHTML = crearResena(resenas[indiceResena]);
+  }, 280);
 }
 
 function renderActividadReciente() {

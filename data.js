@@ -12,8 +12,9 @@ const CONFIG = {
   telegramUsuario: "streamid",
   telegramLink: "https://t.me/streamid",
   telegramReferenciaWeb: "https://web.telegram.org/k/#@streamid",
+  signalLink: "https://signal.me/#eu/dbuzKUYd0bhoGCmHIPAZAhBiHqomTyVnotlsGU5c4QhFcL5OfY1MRooGbYHEg7ve",
 
-  catalogoUrl: "https://click-tv-streaming.vercel.app/#streaming",
+  catalogoUrl: "https://click-tv-mundial.vercel.app/#streaming",
 
   correoEmpresa: "clicktvdigital@gmail.com",
   correoValidacion: "clicktvprivado@gmail.com",

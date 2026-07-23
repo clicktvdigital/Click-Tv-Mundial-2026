@@ -183,23 +183,6 @@
     padding: 16px;
   }
 
-  .reviews-heading {
-    display: grid;
-    gap: 10px;
-  }
-
-  .reviews-counter {
-    justify-self: start;
-  }
-
-  .resena-card {
-    padding: 16px;
-  }
-
-  .resena-card__top {
-    align-items: flex-start;
-  }
-
   .product-card__top {
     align-items: center;
   }
