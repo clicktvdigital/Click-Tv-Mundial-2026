@@ -1062,9 +1062,52 @@ textarea {
   font: inherit;
 }
 
+.reviews-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.reviews-heading h3 {
+  margin: 0 0 6px;
+}
+
+.reviews-heading p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.45;
+  font-size: .9rem;
+}
+
+.reviews-counter {
+  flex: 0 0 auto;
+  padding: 7px 10px;
+  border: 1px solid rgba(0,255,102,.2);
+  border-radius: 999px;
+  background: rgba(0,255,102,.08);
+  color: var(--green-3);
+  font-size: .75rem;
+  font-weight: 850;
+}
+
 .resenas-slider {
   position: relative;
-  min-height: 210px;
+  display: grid;
+  gap: 12px;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.resenas-slider.is-changing .resena-card {
+  animation: reviewSlideIn .58s cubic-bezier(.2,.8,.2,1) both;
+  animation-delay: calc(var(--review-order, 0) * 70ms);
+}
+
+@keyframes reviewSlideIn {
+  from { opacity: 0; transform: translateX(22px) scale(.985); }
+  to { opacity: 1; transform: translateX(0) scale(1); }
 }
 
 .savings-section {
@@ -1172,17 +1215,59 @@ textarea {
 }
 
 .resena-card {
-  position: absolute;
-  inset: 0;
-  padding: 22px;
-  opacity: 0;
-  transform: translateY(10px);
-  transition: .35s ease;
+  position: relative;
+  inset: auto;
+  display: block;
+  padding: 18px;
+  opacity: 1;
+  transform: none;
+  min-height: 0;
+  transition: border-color .25s ease, background .25s ease, transform .25s ease;
 }
 
-.resena-card.activa {
-  opacity: 1;
-  transform: translateY(0);
+.resena-card:hover,
+.resena-card:focus-visible {
+  transform: translateY(-2px);
+  border-color: rgba(0,255,102,.34);
+  background: linear-gradient(180deg, rgba(0,255,102,.1), rgba(255,255,255,.05));
+  outline: none;
+}
+
+.resena-card__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.resena-card h3 {
+  margin: 10px 0 4px;
+  font-size: 1rem;
+}
+
+.resena-card p {
+  margin-top: 7px;
+  margin-bottom: 0;
+}
+
+.resena-comentario {
+  color: #eef4ef;
+  line-height: 1.5;
+  font-size: .92rem;
+}
+
+.verified-badge {
+  padding: 5px 8px;
+  border-radius: 999px;
+  background: rgba(0,255,102,.12);
+  color: var(--green-3);
+  font-size: .7rem;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.reviews-empty {
+  color: var(--muted);
 }
 
 .estrellas {
@@ -2661,10 +2746,7 @@ body.cart-open { overflow: hidden; }
 .cart-renew-whatsapp { color: #071108; background: #74ff38; }
 
 /* Reviews */
-.resena-card { transition: opacity .5s ease, transform .5s cubic-bezier(.2,.8,.2,1); }
-.resena-card.activa { transform: translateY(0) scale(1); }
-.resena-card:not(.activa) { transform: translateY(12px) scale(.985); pointer-events: none; }
-.resena-card.activa .estrellas { animation: starsGlow .75s ease both; }
+.resena-card .estrellas { animation: starsGlow .75s ease both; }
 @keyframes starsGlow { 50% { letter-spacing: 5px; text-shadow: 0 0 18px rgba(116,255,56,.7); } }
 
 /* Floating app bar */

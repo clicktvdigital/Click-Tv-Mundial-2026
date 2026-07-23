@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
   inicializarAccesibilidadGlobal();
 
   setInterval(renderActividadReciente, 4500);
-  setInterval(rotarResenas, 6000);
+  setInterval(rotarResenas, 4800);
   setInterval(actualizarUsuariosConectados, 6500);
   setInterval(() => renderMundial(true), 30000);
 });
@@ -2349,22 +2349,54 @@ function obtenerTodasLasResenas() {
 }
 
 function cargarResenas() {
-  const contenedor = document.getElementById("resenas-slider");
-  if (!contenedor) return;
-  contenedor.innerHTML = obtenerTodasLasResenas().map((r, i) => crearResena(r, i)).join("");
-  rotarResenas();
+  indiceResena = 0;
+  pintarVentanaResenas(false);
   renderResenasCarrito();
 }
 
-function crearResena(resena, index) {
+function crearResena(resena, posicion = 0) {
+  const estrellas = Math.max(1, Math.min(5, Number(resena.estrellas) || 5));
   return `
-    <article class="resena-card ${index === 0 ? "activa" : ""}">
-      <div class="estrellas">${"★".repeat(Number(resena.estrellas) || 5)}</div>
+    <article class="resena-card" style="--review-order:${posicion}" tabindex="0">
+      <div class="resena-card__top">
+        <div class="estrellas" aria-label="${estrellas} de 5 estrellas">${"★".repeat(estrellas)}</div>
+        <span class="verified-badge">✓ Verificada</span>
+      </div>
       <h3>${escaparHTML(resena.nombre)}</h3>
       <p class="resena-pais">${escaparHTML(resena.pais)}</p>
-      <p>${escaparHTML(resena.comentario)}</p>
+      <p class="resena-comentario">${escaparHTML(resena.comentario)}</p>
     </article>
   `;
+}
+
+function pintarVentanaResenas(animar = true) {
+  const contenedor = document.getElementById("resenas-slider");
+  if (!contenedor) return;
+
+  const resenas = obtenerTodasLasResenas();
+  if (!resenas.length) {
+    contenedor.innerHTML = '<p class="reviews-empty">Todavía no hay reseñas disponibles.</p>';
+    return;
+  }
+
+  const cantidadVisible = Math.min(5, resenas.length);
+  const ventana = Array.from({ length: cantidadVisible }, (_, posicion) => {
+    const indice = (indiceResena + posicion) % resenas.length;
+    return crearResena(resenas[indice], posicion);
+  });
+
+  if (animar) contenedor.classList.remove("is-changing");
+  contenedor.innerHTML = ventana.join("");
+
+  const contador = document.getElementById("resenas-contador");
+  if (contador) {
+    const inicio = (indiceResena % resenas.length) + 1;
+    contador.textContent = `${cantidadVisible} visibles · inicia en ${inicio}/${resenas.length}`;
+  }
+
+  if (animar) {
+    requestAnimationFrame(() => contenedor.classList.add("is-changing"));
+  }
 }
 
 function renderResenasCarrito() {
@@ -2442,11 +2474,10 @@ function enviarContactoInternacional(evento) {
 }
 
 function rotarResenas() {
-  const cards = document.querySelectorAll(".resena-card");
-  if (!cards.length) return;
-  cards.forEach((card) => card.classList.remove("activa"));
-  cards[indiceResena % cards.length].classList.add("activa");
-  indiceResena++;
+  const resenas = obtenerTodasLasResenas();
+  if (!resenas.length) return;
+  indiceResena = (indiceResena + 1) % resenas.length;
+  pintarVentanaResenas(true);
 }
 
 function renderActividadReciente() {
