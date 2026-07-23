@@ -140,7 +140,11 @@
 
       <div id="menu-overlay" class="menu-overlay" aria-hidden="true"></div>
       <div id="nav-menu" class="nav-menu">
-        <button id="btn-cerrar-menu" class="nav-menu__close" type="button" aria-label="Cerrar menú">✕ <span>Cerrar menú</span></button>
+        <div class="nav-menu__toolbar" role="group" aria-label="Controles del menú">
+          <button id="btn-menu-subir" class="nav-menu__control" type="button" aria-label="Subir dentro del menú">↑ <span>Subir</span></button>
+          <button id="btn-cerrar-menu" class="nav-menu__close" type="button" aria-label="Cerrar menú">✕ <span>Cerrar menú</span></button>
+          <button id="btn-menu-bajar" class="nav-menu__control" type="button" aria-label="Bajar dentro del menú">↓ <span>Bajar</span></button>
+        </div>
         <a class="nav-link" href="#inicio">🏠 Inicio</a>
         <a class="nav-link" href="#mundial">⚽ Partidos en vivo</a>
         <a class="nav-link" href="#streaming">🎬 Streaming</a>

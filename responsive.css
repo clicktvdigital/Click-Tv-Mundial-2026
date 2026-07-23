@@ -686,3 +686,61 @@
     grid-column: 1 / -1;
   }
 }
+
+/* Menú móvil real de viewport: funciona aunque se abra desde el final de la página. */
+@media (max-width: 920px) {
+  body > .menu-overlay {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 2147483000 !important;
+  }
+
+  body > .nav-menu {
+    position: fixed !important;
+    top: max(12px, env(safe-area-inset-top)) !important;
+    right: 10px !important;
+    bottom: max(10px, env(safe-area-inset-bottom)) !important;
+    left: 10px !important;
+    width: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    height: auto !important;
+    z-index: 2147483001 !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
+    padding-top: 10px !important;
+  }
+
+  .nav-menu__toolbar {
+    position: sticky;
+    top: -10px;
+    z-index: 5;
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1fr 1.35fr 1fr;
+    gap: 8px;
+    padding: 6px 0 10px;
+    background: linear-gradient(180deg, rgba(5,5,5,.99) 72%, rgba(5,5,5,0));
+  }
+
+  .nav-menu__close,
+  .nav-menu__control {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-height: 44px;
+    border: 1px solid rgba(255,255,255,.15);
+    border-radius: 13px;
+    background: rgba(255,255,255,.08);
+    color: #fff;
+    font-weight: 800;
+    cursor: pointer;
+  }
+
+  .nav-menu__control {
+    border-color: rgba(116,255,56,.28);
+    background: rgba(116,255,56,.09);
+  }
+}

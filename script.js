@@ -85,17 +85,42 @@ function inicializarFiltros() {
   });
 }
 
+let marcadorMenuMovil = null;
+
+function prepararMenuMovilEnViewport() {
+  const menu = document.getElementById("nav-menu");
+  const overlay = document.getElementById("menu-overlay");
+  const esMovil = window.matchMedia("(max-width: 920px)").matches;
+  if (!menu || !overlay) return;
+
+  if (esMovil && menu.parentElement !== document.body) {
+    marcadorMenuMovil = document.createComment("ubicacion-original-nav-menu");
+    menu.parentNode.insertBefore(marcadorMenuMovil, menu);
+    document.body.appendChild(overlay);
+    document.body.appendChild(menu);
+  } else if (!esMovil && marcadorMenuMovil?.parentNode) {
+    marcadorMenuMovil.parentNode.insertBefore(overlay, marcadorMenuMovil);
+    marcadorMenuMovil.parentNode.insertBefore(menu, marcadorMenuMovil.nextSibling);
+    marcadorMenuMovil.remove();
+    marcadorMenuMovil = null;
+    cerrarMenuMovil();
+  }
+}
+
 function abrirMenuMovil() {
+  prepararMenuMovilEnViewport();
   const menu = document.getElementById("nav-menu");
   const boton = document.getElementById("btn-menu-movil");
   const overlay = document.getElementById("menu-overlay");
   if (!menu) return;
   menu.classList.add("abierto");
+  menu.scrollTop = 0;
   overlay?.classList.add("visible");
   overlay?.setAttribute("aria-hidden", "false");
   boton?.setAttribute("aria-expanded", "true");
   boton?.classList.add("is-open");
   document.body.classList.add("menu-movil-abierto");
+  document.getElementById("btn-cerrar-menu")?.focus({ preventScroll: true });
 }
 
 function cerrarMenuMovil() {
@@ -124,6 +149,14 @@ function inicializarUI() {
     document.getElementById("btn-cerrar-menu")?.addEventListener("click", cerrarMenuMovil);
     document.getElementById("menu-overlay")?.addEventListener("click", cerrarMenuMovil);
     document.getElementById("btn-menu-flotante")?.addEventListener("click", abrirMenuMovil);
+    document.getElementById("btn-menu-subir")?.addEventListener("click", () => {
+      navMenu.scrollBy({ top: -Math.max(220, navMenu.clientHeight * 0.72), behavior: "smooth" });
+    });
+    document.getElementById("btn-menu-bajar")?.addEventListener("click", () => {
+      navMenu.scrollBy({ top: Math.max(220, navMenu.clientHeight * 0.72), behavior: "smooth" });
+    });
+    prepararMenuMovilEnViewport();
+    window.addEventListener("resize", prepararMenuMovilEnViewport, { passive: true });
 
     navMenu.querySelectorAll("a.nav-link").forEach((enlace) => {
       enlace.addEventListener("click", cerrarMenuMovil);
