@@ -3234,3 +3234,8 @@ body.cart-open { overflow: hidden; }
 .cart-renew-channel--wa { background: linear-gradient(135deg, #22c55e, #07883d); }
 .cart-renew-channel--signal { background: linear-gradient(135deg, #477fff, #2857c8); }
 .cart-renew-channel--telegram { background: linear-gradient(135deg, #35b9f3, #147fbd); }
+
+
+/* Estado de fuentes de fútbol */
+.football-source-status{display:inline-flex;align-items:center;gap:.45rem;margin-top:.8rem;padding:.65rem 1rem;border:1px solid rgba(54,255,138,.22);border-radius:999px;background:rgba(54,255,138,.08);color:#c9ffdc;font-size:.9rem;font-weight:700}
+.match-group{display:inline-flex;align-items:center;max-width:100%;padding:.35rem .65rem;border-radius:999px;background:rgba(255,255,255,.08);font-weight:800;letter-spacing:.02em}

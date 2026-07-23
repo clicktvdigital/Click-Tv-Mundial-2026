@@ -140,7 +140,7 @@
 
       <div id="nav-menu" class="nav-menu">
         <a class="nav-link" href="#inicio">🏠 Inicio</a>
-        <a class="nav-link" href="#mundial">⚽ Mundial 2026</a>
+        <a class="nav-link" href="#mundial">⚽ Partidos en vivo</a>
         <a class="nav-link" href="#streaming">🎬 Streaming</a>
         <a class="nav-link" href="#iptv">📺 IPTV</a>
         <a class="nav-link" href="#musica">🎵 Música</a>
@@ -312,9 +312,10 @@
     <section id="mundial" class="section section--dark">
       <div class="container">
         <div class="section-head">
-          <span class="eyebrow">⚽ Mundial 2026</span>
+          <span class="eyebrow">⚽ Fútbol en vivo</span>
           <h2>Partidos y calendario</h2>
-          <p>Mostramos información disponible desde la API configurada. Si no hay datos, puedes revisar el calendario oficial FIFA.</p>
+          <p>La sección busca primero partidos del Mundial y, cuando no hay encuentros disponibles, muestra automáticamente Copa Libertadores, competiciones CONMEBOL y LigaPro Ecuabet de Ecuador.</p>
+          <div class="football-source-status" id="football-source-status" aria-live="polite">Actualizando calendario...</div>
         </div>
         <div id="mundial-grid" class="mundial-grid"></div>
       </div>

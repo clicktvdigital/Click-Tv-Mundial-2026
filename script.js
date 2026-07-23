@@ -1642,23 +1642,25 @@ async function renderMundial(silencioso = false) {
   if (!box) return;
 
   if (!silencioso) {
-    box.innerHTML = `<div class="loading-card">⚽ Cargando información del Mundial 2026...</div>`;
+    box.innerHTML = `<div class="loading-card">⚽ Buscando partidos del Mundial, Libertadores y LigaPro Ecuador...</div>`;
   }
 
   try {
-    const partidosAPI = await obtenerPartidosFootballData();
+    const respuestaPartidos = await obtenerPartidosFootballData();
+    const partidosAPI = Array.isArray(respuestaPartidos) ? respuestaPartidos : (respuestaPartidos.matches || respuestaPartidos.partidos || []);
     const partidosApiNormalizados = normalizarPartidos(partidosAPI).filter(tieneEquiposReales);
+    actualizarFuentePartidos(respuestaPartidos);
     const partidosLocales = Array.isArray(MUNDIAL_2026) ? normalizarPartidosLocales(MUNDIAL_2026).filter(tieneEquiposReales) : [];
     const partidos = combinarPartidosMundial(partidosApiNormalizados, partidosLocales);
     const html = renderizarBloquesMundial(partidos);
     iniciarCronometroMundial();
     box.innerHTML = html || `
       <div class="loading-card">
-        ⚽ No hay partidos disponibles actualmente.
-        <br>Sincronizando Mundial 2026...
+        ⚽ No hay partidos disponibles actualmente en las competiciones consultadas.
+        <br>Volveremos a consultar automáticamente en 30 segundos.
       </div>`;
   } catch (error) {
-    console.warn("No se pudo cargar Football-Data; se usa el calendario local:", error);
+    console.warn("No se pudo cargar la API de fútbol; se usa el calendario local:", error);
     box.innerHTML = renderizarRespaldoMundial();
     iniciarCronometroMundial();
   }
@@ -1667,20 +1669,21 @@ async function renderMundial(silencioso = false) {
 async function obtenerPartidosFootballData() {
   const params = new URLSearchParams({
     dateFrom: fechaConsultaMundial(-2),
-    dateTo: fechaConsultaMundial(8)
+    dateTo: fechaConsultaMundial(12)
   });
 
   let data = null;
 
-  // Vercel: intenta primero el proxy serverless para evitar exponer el token en red.
+  // En Vercel se usa el agregador serverless para Mundial, Libertadores y LigaPro.
   try {
-    const respuestaProxy = await fetch(`/api/mundial?${params.toString()}`);
+    const endpoint = CONFIG.partidosApiUrl || "/api/partidos";
+    const respuestaProxy = await fetch(`${endpoint}?${params.toString()}`, { cache: "no-store" });
     if (respuestaProxy.ok) data = await respuestaProxy.json();
-  } catch {
-    // En GitHub Pages el endpoint /api no existe; se usa el respaldo directo.
+  } catch (error) {
+    console.warn("El agregador de partidos no respondió:", error);
   }
 
-  // GitHub Pages / despliegue estático: respaldo directo con la configuración existente.
+  // Respaldo directo: conserva el Mundial si el endpoint serverless no está disponible.
   if (!data) {
     const url = new URL(CONFIG.footballDataApiUrl);
     url.search = params.toString();
@@ -1691,10 +1694,19 @@ async function obtenerPartidosFootballData() {
     data = await respuestaDirecta.json();
   }
 
-  const matches = Array.isArray(data)
-    ? data
-    : (data.matches || data.partidos || []);
-  return enriquecerPartidosConDetalle(matches);
+  const matches = Array.isArray(data) ? data : (data.matches || data.partidos || []);
+  const enriquecidos = await enriquecerPartidosConDetalle(matches);
+  return Array.isArray(data) ? enriquecidos : { ...data, matches: enriquecidos };
+}
+
+function actualizarFuentePartidos(respuesta = {}) {
+  const estado = document.getElementById("football-source-status");
+  if (!estado) return;
+  const fuentes = Array.isArray(respuesta.fuentes) ? respuesta.fuentes.filter(Boolean) : [];
+  const total = Number(respuesta.total || respuesta.matches?.length || 0);
+  estado.textContent = total
+    ? `✅ ${total} partido${total === 1 ? "" : "s"} encontrados · ${fuentes.join(" · ") || "Calendario actualizado"}`
+    : "ℹ️ Sin encuentros cercanos; actualización automática cada 30 segundos.";
 }
 
 async function enriquecerPartidosConDetalle(matches) {
@@ -1719,7 +1731,7 @@ async function enriquecerPartidosConDetalle(matches) {
 
 function debeCargarDetallePartido(match) {
   const status = String(match.status || "").toUpperCase();
-  return Boolean(match.id) && ["LIVE", "IN_PLAY", "PAUSED", "FINISHED"].includes(status);
+  return Boolean(match.id) && /^\d+$/.test(String(match.id)) && ["LIVE", "IN_PLAY", "PAUSED", "FINISHED"].includes(status);
 }
 
 function ordenarPartidosPorPrioridadDetalle(a, b) {

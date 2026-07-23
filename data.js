@@ -28,6 +28,7 @@ const CONFIG = {
   paypalClientIdLive: "ASzNgRtmM63xQ0hRG9Lx47JyJKmva9nu4ij8ZsbAJRrAD1b1b0okUxnBtneq2xUmK6q9JuIHlXFR2T_-",
 
   footballDataApiUrl: "https://api.football-data.org/v4/competitions/WC/matches",
+  partidosApiUrl: "/api/partidos",
   footballDataApiToken: "467c885c07fa49baa40ac78cf636f8b0",
   fifaCalendarioUrl: "https://www.fifa.com/es/tournaments/mens/worldcup/canadamexicousa2026/scores-fixtures",
 
