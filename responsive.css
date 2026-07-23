@@ -555,3 +555,48 @@
     grid-template-columns: 1fr;
   }
 }
+
+
+/* Menú móvil desplazable: evita que Reseñas quede fuera de pantalla */
+@media (max-width: 920px) {
+  .nav-menu {
+    max-height: calc(100dvh - 126px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+  }
+
+  .nav-link--reviews {
+    position: sticky;
+    bottom: 0;
+    z-index: 2;
+    grid-column: 1 / -1;
+    text-align: center;
+    background: linear-gradient(135deg, rgba(0,255,102,.25), rgba(0,230,118,.14));
+    border-color: rgba(0,255,102,.45);
+  }
+
+  .mobile-reviews-shortcut {
+    display: inline-flex;
+  }
+}
+
+@media (max-width: 520px) {
+  .navbar {
+    gap: 8px;
+  }
+
+  .mobile-reviews-shortcut span {
+    display: none;
+  }
+
+  .mobile-reviews-shortcut {
+    width: 42px;
+    min-width: 42px;
+    padding: 0;
+  }
+
+  .nav-menu {
+    grid-template-columns: 1fr;
+  }
+}

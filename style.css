@@ -3127,3 +3127,42 @@ body.cart-open { overflow: hidden; }
   text-align: center;
   line-height: 1.45;
 }
+
+
+/* Acceso destacado y siempre visible a la sección de reseñas */
+.nav-link--reviews {
+  color: var(--green-3);
+  background: rgba(0,255,102,.1);
+  border: 1px solid rgba(0,255,102,.2);
+  font-weight: 900;
+}
+
+.mobile-reviews-shortcut {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 42px;
+  padding: 9px 12px;
+  border-radius: 999px;
+  color: #001a09;
+  background: linear-gradient(135deg, var(--green), var(--green-2));
+  font-weight: 900;
+  box-shadow: 0 12px 28px rgba(0,255,102,.18);
+}
+
+#resenas {
+  scroll-margin-top: 120px;
+}
+
+.reviews-showcase .resenas-slider {
+  min-height: 0 !important;
+  height: auto !important;
+}
+
+.reviews-showcase .resena-card {
+  position: static !important;
+  min-height: 0 !important;
+  height: auto !important;
+  margin: 0 !important;
+}
