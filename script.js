@@ -113,7 +113,7 @@ function inicializarUI() {
   const btnScrollTop = document.getElementById("btn-scroll-top");
 
   window.addEventListener("scroll", () => {
-    if (window.scrollY > 400) {
+    if (window.scrollY > 180) {
       btnScrollTop?.classList.add("visible");
     } else {
       btnScrollTop?.classList.remove("visible");
@@ -1344,6 +1344,12 @@ function procesarPago(metodo, ejecutar = false) {
     case "whatsapp":
       enviarPedidoWhatsApp();
       break;
+    case "signal":
+      enviarPedidoSignal();
+      break;
+    case "telegram":
+      enviarPedidoTelegram();
+      break;
     case "deuna":
       window.open(CONFIG.deunaUrl, "_blank", "noopener,noreferrer");
       break;
@@ -1368,7 +1374,9 @@ function obtenerNombreMetodoPago(metodo) {
     deuna: "DEUNA",
     payphone: "PayPhone",
     paypalme: "PayPal",
-    whatsapp: "WhatsApp"
+    whatsapp: "WhatsApp",
+    signal: "Signal",
+    telegram: "Telegram"
   };
   return nombres[metodo] || "Método de pago";
 }
@@ -1390,9 +1398,9 @@ function actualizarDetallePagoCarrito() {
       <button class="btn btn--outline btn--full" onclick="copiarTexto('${CONFIG.bancoPichincha}', 'Banco Pichincha copiado')">Copiar Pichincha</button>
       <p>Banco Guayaquil: <b>${CONFIG.bancoGuayaquil}</b></p>
       <button class="btn btn--outline btn--full" onclick="copiarTexto('${CONFIG.bancoGuayaquil}', 'Banco Guayaquil copiado')">Copiar Guayaquil</button>
-      <button class="btn btn--ghost btn--full" onclick="enviarComprobanteWhatsApp()">Enviar comprobante por WhatsApp</button>
-      <a class="btn btn--outline btn--full" href="${CONFIG.signalLink}" target="_blank" rel="noopener noreferrer">Enviar por Signal</a>
-      <a class="btn btn--outline btn--full" href="${CONFIG.telegramLink}" target="_blank" rel="noopener noreferrer">Enviar por Telegram</a>
+      <button class="btn btn--primary btn--full" onclick="enviarComprobanteWhatsApp()">📲 Enviar comprobante por WhatsApp</button>
+      <button class="btn btn--outline btn--full" onclick="enviarComprobanteSignal()">🔵 Enviar comprobante por Signal</button>
+      <button class="btn btn--outline btn--full" onclick="enviarComprobanteTelegram()">💬 Enviar comprobante por Telegram</button>
       <p>Luego envía tu comprobante por WhatsApp, Signal o Telegram para validar tu pedido.</p>
     `,
     deuna: `
@@ -1400,26 +1408,45 @@ function actualizarDetallePagoCarrito() {
       <p>Total referencial: <b>${total}</b></p>
       <p>Paga desde el enlace oficial y luego envía el comprobante por WhatsApp, Signal o Telegram.</p>
       <a class="btn btn--primary btn--full" href="${CONFIG.deunaUrl}" target="_blank" rel="noopener noreferrer">Pagar con DEUNA</a>
+      <button class="btn btn--outline btn--full" onclick="enviarComprobanteWhatsApp()">📲 Comprobante por WhatsApp</button>
+      <button class="btn btn--outline btn--full" onclick="enviarComprobanteSignal()">🔵 Comprobante por Signal</button>
+      <button class="btn btn--outline btn--full" onclick="enviarComprobanteTelegram()">💬 Comprobante por Telegram</button>
     `,
     payphone: `
       <strong>PayPhone</strong>
       <p>Total referencial: <b>${total}</b></p>
       <p>Abre el enlace de PayPhone y confirma el pago.</p>
       <a class="btn btn--primary btn--full" href="${CONFIG.payphoneUrl}" target="_blank" rel="noopener noreferrer">Pagar con PayPhone</a>
+      <button class="btn btn--outline btn--full" onclick="enviarComprobanteWhatsApp()">📲 Comprobante por WhatsApp</button>
+      <button class="btn btn--outline btn--full" onclick="enviarComprobanteSignal()">🔵 Comprobante por Signal</button>
+      <button class="btn btn--outline btn--full" onclick="enviarComprobanteTelegram()">💬 Comprobante por Telegram</button>
     `,
     paypalme: `
       <strong>PayPal</strong>
       <p>Total con comisión PayPal estimada: <b>${totalPaypal}</b></p>
       <p>Usa el botón PayPal que aparece debajo o paga con PayPal.Me.</p>
       <a class="btn btn--primary btn--full" href="${CONFIG.paypalUrl}" target="_blank" rel="noopener noreferrer">Pagar con PayPal.Me</a>
+      <button class="btn btn--outline btn--full" onclick="enviarComprobanteWhatsApp()">📲 Comprobante por WhatsApp</button>
+      <button class="btn btn--outline btn--full" onclick="enviarComprobanteSignal()">🔵 Comprobante por Signal</button>
+      <button class="btn btn--outline btn--full" onclick="enviarComprobanteTelegram()">💬 Comprobante por Telegram</button>
     `,
     whatsapp: `
       <strong>Pedido por WhatsApp</strong>
       <p>Total a confirmar: <b>${total}</b></p>
-      <p>Envía el resumen por WhatsApp o utiliza Signal o Telegram como alternativa.</p>
-      <button class="btn btn--primary btn--full" onclick="enviarPedidoWhatsApp()">Enviar pedido por WhatsApp</button>
-      <a class="btn btn--outline btn--full" href="${CONFIG.signalLink}" target="_blank" rel="noopener noreferrer">Continuar por Signal</a>
-      <a class="btn btn--outline btn--full" href="${CONFIG.telegramLink}" target="_blank" rel="noopener noreferrer">Continuar por Telegram</a>
+      <p>Enviaremos el resumen completo del carrito por WhatsApp.</p>
+      <button class="btn btn--primary btn--full" onclick="enviarPedidoWhatsApp()">📲 Enviar pedido por WhatsApp</button>
+    `,
+    signal: `
+      <strong>Pedido por Signal</strong>
+      <p>Total a confirmar: <b>${total}</b></p>
+      <p>Copiaremos el resumen del carrito y abriremos Signal para que puedas pegarlo.</p>
+      <button class="btn btn--primary btn--full" onclick="enviarPedidoSignal()">🔵 Copiar pedido y abrir Signal</button>
+    `,
+    telegram: `
+      <strong>Pedido por Telegram</strong>
+      <p>Total a confirmar: <b>${total}</b></p>
+      <p>Copiaremos el resumen del carrito y abriremos el chat oficial de Telegram.</p>
+      <button class="btn btn--primary btn--full" onclick="enviarPedidoTelegram()">💬 Copiar pedido y abrir Telegram</button>
     `
   };
 
@@ -1450,6 +1477,43 @@ function enviarPedidoWhatsApp() {
 function enviarComprobanteWhatsApp() {
   const mensaje = encodeURIComponent("Hola, ya realicé el pago y deseo enviar mi comprobante para validar mi pedido.");
   window.open(`${CONFIG.whatsappLink}?text=${mensaje}`, "_blank", "noopener,noreferrer");
+}
+
+async function copiarResumenParaCanal(tipo = "pedido") {
+  const encabezado = tipo === "comprobante"
+    ? "Hola, ya realicé el pago y deseo enviar mi comprobante para validar este pedido."
+    : "Hola, deseo realizar el siguiente pedido:";
+  const mensaje = `${encabezado}
+
+${generarResumenPedido()}`;
+  try {
+    await navigator.clipboard.writeText(mensaje);
+    mostrarToast("Resumen copiado. Pégalo en el chat junto con tu comprobante.", "exito");
+  } catch (error) {
+    mostrarToast("Abriendo el canal. Adjunta el comprobante y escribe el resumen del pedido.", "info");
+  }
+}
+
+async function enviarComprobanteSignal() {
+  await copiarResumenParaCanal("comprobante");
+  window.open(CONFIG.signalLink, "_blank", "noopener,noreferrer");
+}
+
+async function enviarComprobanteTelegram() {
+  await copiarResumenParaCanal("comprobante");
+  window.open(CONFIG.telegramLink, "_blank", "noopener,noreferrer");
+}
+
+async function enviarPedidoSignal() {
+  if (carrito.length === 0) return mostrarToast("Tu carrito está vacío.", "error");
+  await copiarResumenParaCanal("pedido");
+  window.open(CONFIG.signalLink, "_blank", "noopener,noreferrer");
+}
+
+async function enviarPedidoTelegram() {
+  if (carrito.length === 0) return mostrarToast("Tu carrito está vacío.", "error");
+  await copiarResumenParaCanal("pedido");
+  window.open(CONFIG.telegramLink, "_blank", "noopener,noreferrer");
 }
 
 function cargarPayPalSDK() {

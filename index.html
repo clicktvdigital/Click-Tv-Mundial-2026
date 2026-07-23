@@ -585,10 +585,24 @@
         <button class="btn-pago" data-metodo="deuna">💰 DEUNA</button>
         <button class="btn-pago" data-metodo="payphone">💳 PayPhone</button>
         <button class="btn-pago" data-metodo="paypalme">🅿️ PayPal</button>
-        <button class="btn-pago btn-pago--wide" data-metodo="whatsapp">📲 Enviar por WhatsApp</button>
+        <button class="btn-pago" data-metodo="whatsapp">📲 WhatsApp</button>
+        <button class="btn-pago" data-metodo="signal">🔵 Signal</button>
+        <button class="btn-pago" data-metodo="telegram">💬 Telegram</button>
       </div>
 
       <div id="carrito-pago-detalle" class="cart-payment__detail"></div>
+
+      <div class="cart-receipt-channels" aria-label="Canales para enviar comprobantes">
+        <strong>📎 Envía tu comprobante por el canal que esté disponible</strong>
+        <p>Incluye la captura del pago y, de ser posible, una captura del resumen del carrito.</p>
+        <div class="cart-receipt-channels__buttons">
+          <button type="button" class="btn btn--primary btn--full" onclick="enviarComprobanteWhatsApp()">📲 Comprobante por WhatsApp</button>
+          <button type="button" class="btn btn--outline btn--full" onclick="enviarComprobanteSignal()">🔵 Comprobante por Signal</button>
+          <button type="button" class="btn btn--outline btn--full" onclick="enviarComprobanteTelegram()">💬 Comprobante por Telegram</button>
+        </div>
+        <small>Al usar Signal o Telegram copiaremos el resumen del pedido para que puedas pegarlo junto con el comprobante.</small>
+      </div>
+
       <div id="paypal-cart-box" class="paypal-cart-box">
         <p class="paypal-total">Total PayPal estimado: <strong id="paypal-total">$0.00 USD</strong></p>
         <div id="paypal-button-container-carrito"></div>
@@ -658,6 +672,12 @@
       </span>
       <span class="float-btn__label">Soporte</span>
     </a>
+    <button id="btn-scroll-top" class="float-btn float-btn--top" type="button" aria-label="Volver al inicio" title="Volver al inicio">
+      <span class="float-btn__icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M12 4.5 4.8 11.7l1.7 1.7 4.3-4.3V20h2.4V9.1l4.3 4.3 1.7-1.7L12 4.5Z"/></svg>
+      </span>
+      <span class="float-btn__label">Inicio</span>
+    </button>
     <a id="btn-catalogo-flotante" class="float-btn float-btn--catalog" href="#streaming" aria-label="Abrir catálogo" title="Catálogo">
       <span class="float-btn__icon" aria-hidden="true">
         <svg viewBox="0 0 48 48"><path d="M8 7h5l2 6h26l-3.1 15.4A5 5 0 0 1 33 32H18.1a5 5 0 0 1-4.9-4L9.8 11H8V7Zm8 10 2 10a1 1 0 0 0 1 .8h14a1 1 0 0 0 1-.8l2-10H16Zm4 18a4 4 0 1 1 0 8 4 4 0 0 1 0-8Zm14 0a4 4 0 1 1 0 8 4 4 0 0 1 0-8Z"/></svg>
@@ -666,9 +686,6 @@
     </a>
   </nav>
 
-  <button id="btn-scroll-top" class="scroll-top-btn" type="button" aria-label="Volver arriba" title="Volver arriba">
-    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.2 5.6 11.6l1.5 1.5 3.85-3.85V20h2.1V9.25l3.85 3.85 1.5-1.5L12 5.2Z"/></svg>
-  </button>
 
   <div id="toast-contenedor" class="toast-contenedor"></div>
 

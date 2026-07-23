@@ -3178,3 +3178,33 @@ body.cart-open { overflow: hidden; }
 .cart-contact-options p, .cart-contact-options small { margin:0; opacity:.82; }
 .cart-contact-options__buttons { display:grid; grid-template-columns:1fr; gap:8px; }
 .cart-contact-options__buttons .btn { justify-content:center; }
+
+
+/* Canales de comprobantes dentro del carrito */
+.cart-receipt-channels {
+  margin-top: 14px;
+  padding: 16px;
+  border: 1px solid rgba(116,255,56,.2);
+  border-radius: 18px;
+  background: rgba(116,255,56,.055);
+}
+.cart-receipt-channels > strong { display:block; margin-bottom:6px; }
+.cart-receipt-channels > p { margin:0 0 12px; color:var(--muted); line-height:1.45; }
+.cart-receipt-channels__buttons { display:grid; gap:9px; }
+.cart-receipt-channels small { display:block; margin-top:10px; color:var(--muted); line-height:1.4; }
+
+/* El botón Inicio forma parte de la barra flotante y aparece al desplazarse. */
+.floating-actions .float-btn--top {
+  border: 1px solid rgba(116,255,56,.35);
+  background: linear-gradient(135deg, rgba(116,255,56,.22), rgba(0,184,77,.28));
+  color:#eaffdf;
+  opacity:0;
+  transform:scale(.88);
+  pointer-events:none;
+  transition:opacity .22s ease, transform .22s ease;
+}
+.floating-actions .float-btn--top.visible {
+  opacity:1;
+  transform:scale(1);
+  pointer-events:auto;
+}
