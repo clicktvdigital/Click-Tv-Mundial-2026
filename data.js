@@ -9,12 +9,12 @@ const CONFIG = {
   whatsappLink: "https://wa.me/593939166222",
   whatsappGrupo: "https://chat.whatsapp.com/Jj1d8iwCAL3EokVWwu5t1D",
 
-  telegramUsuario: "streamid",
-  telegramLink: "https://t.me/streamid",
-  telegramReferenciaWeb: "https://web.telegram.org/k/#@streamid",
+  telegramUsuario: "ClickTvDigital",
+  telegramLink: "https://t.me/ClickTvDigital",
+  telegramReferenciaWeb: "https://web.telegram.org/k/#@ClickTvDigital",
   signalLink: "https://signal.me/#eu/dbuzKUYd0bhoGCmHIPAZAhBiHqomTyVnotlsGU5c4QhFcL5OfY1MRooGbYHEg7ve",
 
-  catalogoUrl: "https://click-tv-mundial.vercel.app/#streaming",
+  catalogoUrl: "https://click-tv-streaming.vercel.app/#streaming",
 
   correoEmpresa: "clicktvdigital@gmail.com",
   correoValidacion: "clicktvprivado@gmail.com",

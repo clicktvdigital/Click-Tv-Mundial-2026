@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
   inicializarAccesibilidadGlobal();
 
   setInterval(renderActividadReciente, 4500);
-  setInterval(rotarResenas, 30000);
+  setInterval(rotarResenas, 10000);
   setInterval(actualizarUsuariosConectados, 6500);
   setInterval(() => renderMundial(true), 30000);
 });
@@ -604,7 +604,7 @@ function buscarServicioMaestro(consulta) {
 
   if (!producto) {
     document.getElementById("streaming")?.scrollIntoView({ behavior: "smooth", block: "start" });
-    mostrarToast("No encontré ese servicio. Revisa el catálogo o consulta por WhatsApp.", "info");
+    mostrarToast("No encontré ese servicio. Revisa el catálogo o consulta por WhatsApp, Signal o Telegram.", "info");
     return;
   }
 
@@ -1355,7 +1355,7 @@ function procesarPago(metodo, ejecutar = false) {
       mostrarToast("Usa el botón de PayPal dentro del carrito o PayPal.Me.", "info");
       break;
     case "transferencia":
-      mostrarToast("Copia los datos bancarios y envía el comprobante por WhatsApp.", "info");
+      mostrarToast("Copia los datos bancarios y envía el comprobante por WhatsApp, Signal o Telegram.", "info");
       break;
     default:
       mostrarToast("Método de pago no disponible.", "error");
@@ -1391,12 +1391,14 @@ function actualizarDetallePagoCarrito() {
       <p>Banco Guayaquil: <b>${CONFIG.bancoGuayaquil}</b></p>
       <button class="btn btn--outline btn--full" onclick="copiarTexto('${CONFIG.bancoGuayaquil}', 'Banco Guayaquil copiado')">Copiar Guayaquil</button>
       <button class="btn btn--ghost btn--full" onclick="enviarComprobanteWhatsApp()">Enviar comprobante por WhatsApp</button>
-      <p>Luego envía tu comprobante por WhatsApp para validar tu pedido.</p>
+      <a class="btn btn--outline btn--full" href="${CONFIG.signalLink}" target="_blank" rel="noopener noreferrer">Enviar por Signal</a>
+      <a class="btn btn--outline btn--full" href="${CONFIG.telegramLink}" target="_blank" rel="noopener noreferrer">Enviar por Telegram</a>
+      <p>Luego envía tu comprobante por WhatsApp, Signal o Telegram para validar tu pedido.</p>
     `,
     deuna: `
       <strong>DEUNA</strong>
       <p>Total referencial: <b>${total}</b></p>
-      <p>Paga desde el enlace oficial y luego envía el comprobante por WhatsApp.</p>
+      <p>Paga desde el enlace oficial y luego envía el comprobante por WhatsApp, Signal o Telegram.</p>
       <a class="btn btn--primary btn--full" href="${CONFIG.deunaUrl}" target="_blank" rel="noopener noreferrer">Pagar con DEUNA</a>
     `,
     payphone: `
@@ -1414,8 +1416,10 @@ function actualizarDetallePagoCarrito() {
     whatsapp: `
       <strong>Pedido por WhatsApp</strong>
       <p>Total a confirmar: <b>${total}</b></p>
-      <p>Envía el resumen del carrito por WhatsApp para recibir atención directa.</p>
+      <p>Envía el resumen por WhatsApp o utiliza Signal o Telegram como alternativa.</p>
       <button class="btn btn--primary btn--full" onclick="enviarPedidoWhatsApp()">Enviar pedido por WhatsApp</button>
+      <a class="btn btn--outline btn--full" href="${CONFIG.signalLink}" target="_blank" rel="noopener noreferrer">Continuar por Signal</a>
+      <a class="btn btn--outline btn--full" href="${CONFIG.telegramLink}" target="_blank" rel="noopener noreferrer">Continuar por Telegram</a>
     `
   };
 
@@ -2377,7 +2381,7 @@ function reiniciarProgresoResena() {
   if (!progreso) return;
   progreso.style.animation = "none";
   void progreso.offsetWidth;
-  progreso.style.animation = "reviewProgress 30s linear forwards";
+  progreso.style.animation = "reviewProgress 10s linear forwards";
 }
 
 function crearResena(resena) {

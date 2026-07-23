@@ -3166,3 +3166,15 @@ body.cart-open { overflow: hidden; }
   height: auto !important;
   margin: 0 !important;
 }
+
+
+/* Canales de contacto visibles en toda la experiencia */
+.section--compact { padding-top: 18px; padding-bottom: 18px; }
+.contact-channel-bar { display:flex; align-items:center; justify-content:space-between; gap:18px; padding:18px 20px; }
+.contact-channel-bar > div:first-child { display:grid; gap:4px; }
+.contact-channel-bar span { color:var(--muted, #b9c1d4); font-size:.94rem; }
+.contact-channel-actions { display:flex; flex-wrap:wrap; gap:10px; justify-content:flex-end; }
+.cart-contact-options { margin:16px 0; padding:16px; display:grid; gap:8px; }
+.cart-contact-options p, .cart-contact-options small { margin:0; opacity:.82; }
+.cart-contact-options__buttons { display:grid; grid-template-columns:1fr; gap:8px; }
+.cart-contact-options__buttons .btn { justify-content:center; }

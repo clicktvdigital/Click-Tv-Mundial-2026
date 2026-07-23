@@ -600,3 +600,10 @@
     grid-template-columns: 1fr;
   }
 }
+
+
+@media (max-width: 720px) {
+  .contact-channel-bar { align-items:stretch; flex-direction:column; }
+  .contact-channel-actions { display:grid; grid-template-columns:1fr; width:100%; }
+  .contact-channel-actions .btn { width:100%; justify-content:center; }
+}
