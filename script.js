@@ -1052,6 +1052,7 @@ function normalizarCarritoDesdeCatalogo() {
     return {
       ...item,
       precio: Number(plan.precio),
+      consultar: Boolean(plan.consultar),
       ivaIncluido: Boolean(plan.ivaIncluido),
       bloquearDescuento: Boolean(plan.bloquearDescuento),
       operacion: item.operacion === "renovacion" ? "renovacion" : "compra"
@@ -1073,16 +1074,12 @@ function agregarPlanAlCarrito(productoId, planIndex) {
 }
 
 function agregarAlCarrito(producto, plan) {
-  if (plan.consultar) {
-    comprarAhora(producto.id, producto.planes.indexOf(plan));
-    return;
-  }
-
   const itemId = `${producto.id}-${normalizarTexto(plan.tipo)}`;
   const existente = carrito.find((item) => item.itemId === itemId);
 
   if (existente) {
     existente.cantidad += 1;
+    existente.consultar = existente.consultar || Boolean(plan.consultar);
     existente.ivaIncluido = existente.ivaIncluido || Boolean(plan.ivaIncluido);
     existente.bloquearDescuento = existente.bloquearDescuento || Boolean(plan.bloquearDescuento);
   } else {
@@ -1093,6 +1090,7 @@ function agregarAlCarrito(producto, plan) {
       icono: producto.icono,
       plan: plan.tipo,
       precio: Number(plan.precio),
+      consultar: Boolean(plan.consultar),
       cantidad: 1,
       ivaIncluido: Boolean(plan.ivaIncluido),
       bloquearDescuento: Boolean(plan.bloquearDescuento),
@@ -1160,7 +1158,7 @@ function renovarServicio(productoId, planIndex, agregarAlCarrito = false) {
 
   const { producto, plan } = data;
 
-  if (agregarAlCarrito && !plan.consultar) {
+  if (agregarAlCarrito) {
     agregarAlCarrito(producto, plan);
     const itemId = `${producto.id}-${normalizarTexto(plan.tipo)}`;
     const item = carrito.find((elemento) => elemento.itemId === itemId);
@@ -1223,7 +1221,7 @@ function renderCarrito() {
             <p class="carrito-item__nombre">${item.nombre}</p>
             <span class="operation-badge ${item.operacion === "renovacion" ? "is-renewal" : ""}">${item.operacion === "renovacion" ? "Renovación" : "Compra nueva"}</span>
           </div>
-          <p class="carrito-item__plan">${item.plan} · ${formatearPrecio(item.precio)}${item.ivaIncluido ? " · Precio final" : ""}${item.bloquearDescuento ? " · Sin cupón" : ""}</p>
+          <p class="carrito-item__plan">${item.plan} · ${item.consultar ? "Precio por confirmar" : formatearPrecio(item.precio)}${item.ivaIncluido ? " · Precio final" : ""}${item.bloquearDescuento ? " · Sin cupón" : ""}</p>
           ${item.dispositivos ? `
             <label class="mini-label">Dispositivos
               <input type="number" min="1" max="10" value="${item.dispositivos}" onchange="modificarDispositivos('${item.itemId}', this.value)">
@@ -1254,7 +1252,8 @@ function renderCarrito() {
   actualizarTexto("carrito-subtotal", formatearPrecio(totales.subtotal));
   actualizarTexto("carrito-descuento", `- ${formatearPrecio(totales.descuento)}`);
   actualizarTexto("carrito-iva", formatearPrecio(totales.iva));
-  actualizarTexto("carrito-total", formatearPrecio(totales.total));
+  const contienePreciosPorConfirmar = carrito.some((item) => item.consultar);
+  actualizarTexto("carrito-total", `${formatearPrecio(totales.total)}${contienePreciosPorConfirmar ? " + valores por confirmar" : ""}`);
   actualizarTexto("paypal-total", `$${totales.totalPaypal.toFixed(2)} USD`);
   actualizarDetallePagoCarrito();
 
@@ -1615,7 +1614,8 @@ function actualizarDetallePagoCarrito() {
 function generarResumenPedido() {
   const resumen = carrito.map((item) => {
     const operacion = item.operacion === "renovacion" ? "RENOVACIÓN" : "COMPRA NUEVA";
-    return `• ${operacion}: ${item.nombre} (${item.plan}) x${item.cantidad}`;
+    const precioLinea = item.consultar ? " · PRECIO POR CONFIRMAR" : ` · $${Number(item.precio).toFixed(2)} USD c/u`;
+    return `• ${operacion}: ${item.nombre} (${item.plan}) x${item.cantidad}${precioLinea}`;
   }).join("\n");
   const totales = calcularTotales();
   const ivaEtiqueta = Math.round(CONFIG.ivaPorcentaje * 100);
