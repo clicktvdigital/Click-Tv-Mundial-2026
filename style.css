@@ -2990,3 +2990,140 @@ body.cart-open { overflow: hidden; }
 
   .radio-station::after { display: none; }
 }
+
+
+/* ========================================================================== 
+   SECCIÓN PÚBLICA DE RESEÑAS
+   ========================================================================== */
+.contact-review-preview {
+  align-self: center;
+  height: auto;
+  padding: 24px;
+}
+
+.contact-review-preview p,
+.review-submit > p,
+.reviews-head p {
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.reviews-section {
+  scroll-margin-top: 118px;
+  background:
+    radial-gradient(circle at 78% 18%, rgba(0,255,102,.12), transparent 28%),
+    rgba(0,0,0,.12);
+}
+
+.reviews-head {
+  margin-inline: auto;
+  text-align: center;
+}
+
+.reviews-layout {
+  display: grid;
+  grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.reviews-showcase,
+.review-submit {
+  padding: 24px;
+}
+
+.reviews-showcase__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.reviews-showcase__top h3,
+.review-submit h3 {
+  margin: 10px 0 0;
+}
+
+.verified-pill,
+.review-counter {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(0,255,102,.12);
+  color: var(--green-3);
+  font-size: .78rem;
+  font-weight: 900;
+}
+
+.review-counter {
+  flex: 0 0 auto;
+  color: var(--white);
+  background: rgba(255,255,255,.08);
+}
+
+.reviews-showcase .resenas-slider {
+  min-height: 220px;
+  overflow: visible;
+}
+
+.reviews-showcase .resena-card {
+  display: flex;
+  min-height: 220px;
+  flex-direction: column;
+  justify-content: center;
+  padding: 24px;
+  border: 1px solid rgba(0,255,102,.14);
+  background: linear-gradient(180deg, rgba(0,255,102,.08), rgba(255,255,255,.035));
+  box-shadow: none;
+}
+
+.reviews-showcase .resena-card h3 {
+  margin: 12px 0 2px;
+}
+
+.reviews-showcase .resena-card p:last-child {
+  margin-bottom: 0;
+  color: var(--white);
+  line-height: 1.65;
+}
+
+.review-progress {
+  height: 4px;
+  margin-top: 16px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(255,255,255,.08);
+}
+
+.review-progress span {
+  display: block;
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--green), var(--green-3));
+}
+
+@keyframes reviewProgress {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+.review-submit .review-form {
+  margin-top: 18px;
+}
+
+.review-submit input,
+.review-submit select,
+.review-submit textarea {
+  width: 100%;
+}
+
+.review-privacy {
+  display: block;
+  color: var(--muted);
+  text-align: center;
+  line-height: 1.45;
+}

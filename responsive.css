@@ -528,3 +528,30 @@
   .float-btn svg { width: 29px; height: 29px; }
   .float-btn__label { font-size: .56rem; }
 }
+
+
+@media (max-width: 920px) {
+  .reviews-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .reviews-showcase,
+  .review-submit {
+    padding: 18px;
+  }
+
+  .reviews-showcase__top {
+    align-items: center;
+  }
+
+  .reviews-showcase .resenas-slider,
+  .reviews-showcase .resena-card {
+    min-height: 240px;
+  }
+
+  .review-submit .form-grid {
+    grid-template-columns: 1fr;
+  }
+}

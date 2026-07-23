@@ -86,7 +86,7 @@ function inicializarUI() {
   document.getElementById("btn-finalizar-compra")?.addEventListener("click", finalizarCompra);
   document.getElementById("btn-enviar-comprobante")?.addEventListener("click", enviarComprobanteWhatsApp);
   document.getElementById("btn-enviar-pedido")?.addEventListener("click", enviarPedidoWhatsApp);
-  document.getElementById("form-resena-carrito")?.addEventListener("submit", registrarResenaCarrito);
+  document.getElementById("form-resena-publica")?.addEventListener("submit", registrarResenaCarrito);
   document.getElementById("form-contacto-internacional")?.addEventListener("submit", enviarContactoInternacional);
 
   // Botones de pago
@@ -2362,7 +2362,22 @@ function cargarResenas() {
 
   indiceResena = indiceResena % resenas.length;
   contenedor.innerHTML = crearResena(resenas[indiceResena]);
+  actualizarEstadoResenas(resenas.length);
+  reiniciarProgresoResena();
   renderResenasCarrito();
+}
+
+function actualizarEstadoResenas(total) {
+  const contador = document.getElementById("resena-contador");
+  if (contador) contador.textContent = `${indiceResena + 1} de ${total}`;
+}
+
+function reiniciarProgresoResena() {
+  const progreso = document.getElementById("resena-progreso");
+  if (!progreso) return;
+  progreso.style.animation = "none";
+  void progreso.offsetWidth;
+  progreso.style.animation = "reviewProgress 30s linear forwards";
 }
 
 function crearResena(resena) {
@@ -2466,6 +2481,8 @@ function rotarResenas() {
   tarjetaActual.classList.add("saliendo");
   window.setTimeout(() => {
     contenedor.innerHTML = crearResena(resenas[indiceResena]);
+    actualizarEstadoResenas(resenas.length);
+    reiniciarProgresoResena();
   }, 280);
 }
 
