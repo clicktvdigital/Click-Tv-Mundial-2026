@@ -1048,13 +1048,29 @@ function marcarRenovacionCarrito(itemId) {
   mostrarToast(item.operacion === "renovacion" ? "Producto marcado para renovación." : "Producto marcado como compra nueva.", "info");
 }
 
+function obtenerMensajeRenovacion(item) {
+  return `Hola Click TV Streaming, deseo renovar mi servicio:\n\nServicio: ${item.nombre}\nPlan: ${item.plan}\nCantidad: ${item.cantidad || 1}\nDeseo realizar la renovación.`;
+}
+
 function renovarItemWhatsApp(itemId) {
   const item = carrito.find((elemento) => elemento.itemId === itemId);
   if (!item) return;
-  const mensaje = encodeURIComponent(
-    `Hola Click TV, deseo renovar mi servicio:\n\nServicio: ${item.nombre}\nPlan: ${item.plan}\nDeseo realizar renovación.`
-  );
+  const mensaje = encodeURIComponent(obtenerMensajeRenovacion(item));
   window.open(`${CONFIG.whatsappLink}?text=${mensaje}`, "_blank", "noopener,noreferrer");
+}
+
+async function renovarItemSignal(itemId) {
+  const item = carrito.find((elemento) => elemento.itemId === itemId);
+  if (!item) return;
+  await copiarTexto(obtenerMensajeRenovacion(item), "Mensaje de renovación copiado");
+  window.open(CONFIG.signalLink, "_blank", "noopener,noreferrer");
+}
+
+async function renovarItemTelegram(itemId) {
+  const item = carrito.find((elemento) => elemento.itemId === itemId);
+  if (!item) return;
+  await copiarTexto(obtenerMensajeRenovacion(item), "Mensaje de renovación copiado");
+  window.open(CONFIG.telegramLink, "_blank", "noopener,noreferrer");
 }
 
 function renderCarrito() {
@@ -1085,8 +1101,12 @@ function renderCarrito() {
               <button type="button" onclick="cambiarCantidad('${item.itemId}', 1)" aria-label="Aumentar cantidad">+</button>
             </div>
             <div class="carrito-item__renew-actions">
-              <button type="button" class="cart-renew-toggle" onclick="marcarRenovacionCarrito('${item.itemId}')">${item.operacion === "renovacion" ? "Cambiar a compra" : "🔄 Renovar"}</button>
-              <button type="button" class="cart-renew-whatsapp" onclick="renovarItemWhatsApp('${item.itemId}')">WhatsApp</button>
+              <button type="button" class="cart-renew-toggle" onclick="marcarRenovacionCarrito('${item.itemId}')">${item.operacion === "renovacion" ? "Cambiar a compra" : "🔄 Marcar renovación"}</button>
+              <div class="cart-renew-channels" aria-label="Renovar por canal de contacto">
+                <button type="button" class="cart-renew-channel cart-renew-channel--wa" onclick="renovarItemWhatsApp('${item.itemId}')">🟢 WhatsApp</button>
+                <button type="button" class="cart-renew-channel cart-renew-channel--signal" onclick="renovarItemSignal('${item.itemId}')">🔵 Signal</button>
+                <button type="button" class="cart-renew-channel cart-renew-channel--telegram" onclick="renovarItemTelegram('${item.itemId}')">✈️ Telegram</button>
+              </div>
             </div>
           </div>
         </div>

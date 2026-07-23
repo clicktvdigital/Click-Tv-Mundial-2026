@@ -607,3 +607,33 @@
   .contact-channel-actions { display:grid; grid-template-columns:1fr; width:100%; }
   .contact-channel-actions .btn { width:100%; justify-content:center; }
 }
+
+/* Menú hamburguesa fácil de desplazar con el dedo */
+@media (max-width: 920px) {
+  .nav-menu {
+    top: 92px;
+    bottom: 12px;
+    max-height: none;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+    touch-action: pan-y;
+    align-content: start;
+    padding: 14px 14px calc(28px + env(safe-area-inset-bottom));
+    scroll-padding-block: 14px 84px;
+  }
+  .nav-menu::-webkit-scrollbar { width: 7px; }
+  .nav-menu::-webkit-scrollbar-track { background: rgba(255,255,255,.035); border-radius: 999px; }
+  .nav-menu::-webkit-scrollbar-thumb { background: rgba(116,255,56,.42); border-radius: 999px; }
+  .nav-link--reviews { position: static; }
+}
+@media (max-width: 520px) {
+  .nav-menu { top: 84px; left: 10px; right: 10px; bottom: 8px; }
+  .cart-renew-channels { grid-template-columns: 1fr; }
+}
+/* Inicio queda inmediatamente a la derecha de Catálogo en la barra móvil. */
+@media (max-width: 720px) {
+  .floating-actions .float-btn--catalog { order: 90; }
+  .floating-actions .float-btn--top { order: 91; }
+}

@@ -3208,3 +3208,29 @@ body.cart-open { overflow: hidden; }
   transform:scale(1);
   pointer-events:auto;
 }
+
+/* Mejoras finales: renovación multicanal dentro del carrito */
+.cart-renew-actions { align-items: stretch; }
+.cart-renew-channels {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  width: 100%;
+}
+.cart-renew-channel {
+  min-height: 36px;
+  padding: 7px 8px;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 10px;
+  color: #fff;
+  font: inherit;
+  font-size: .72rem;
+  font-weight: 850;
+  cursor: pointer;
+  transition: transform .18s ease, filter .18s ease;
+}
+.cart-renew-channel:hover,
+.cart-renew-channel:focus-visible { transform: translateY(-1px); filter: brightness(1.08); }
+.cart-renew-channel--wa { background: linear-gradient(135deg, #22c55e, #07883d); }
+.cart-renew-channel--signal { background: linear-gradient(135deg, #477fff, #2857c8); }
+.cart-renew-channel--telegram { background: linear-gradient(135deg, #35b9f3, #147fbd); }
