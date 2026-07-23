@@ -186,8 +186,8 @@
           <p>Atención directa: <strong>WhatsApp 0939166222 🇪🇨 · Signal · Telegram</strong></p>
           <div class="quick-links">
             <a class="btn btn--primary" href="https://wa.me/593939166222" target="_blank" rel="noopener noreferrer">📲 Pedidos inmediatos</a>
-            <a class="btn btn--outline" href="https://t.me/ClickTvDigital" target="_blank" rel="noopener noreferrer">💬 Telegram</a>
-            <a class="btn btn--outline" href="https://signal.me/#eu/dbuzKUYd0bhoGCmHIPAZAhBiHqomTyVnotlsGU5c4QhFcL5OfY1MRooGbYHEg7ve" target="_blank" rel="noopener noreferrer">🔵 Signal</a>
+            <button class="btn btn--outline" type="button" onclick="contactarTelegramGeneral()">💬 Enviar por Telegram</button>
+            <button class="btn btn--outline" type="button" onclick="contactarSignalGeneral()">🔵 Enviar por Signal</button>
             <a class="btn btn--ghost" href="https://chat.whatsapp.com/Jj1d8iwCAL3EokVWwu5t1D" target="_blank" rel="noopener noreferrer">👥 Grupo WhatsApp</a>
           </div>
 
@@ -329,9 +329,9 @@
             <span>También atendemos pedidos, consultas, soporte y comprobantes por Signal y Telegram.</span>
           </div>
           <div class="contact-channel-actions">
-            <a class="btn btn--primary" href="https://wa.me/593939166222" target="_blank" rel="noopener noreferrer">📲 WhatsApp</a>
-            <a class="btn btn--outline" href="https://signal.me/#eu/dbuzKUYd0bhoGCmHIPAZAhBiHqomTyVnotlsGU5c4QhFcL5OfY1MRooGbYHEg7ve" target="_blank" rel="noopener noreferrer">🔵 Signal</a>
-            <a class="btn btn--outline" href="https://t.me/ClickTvDigital" target="_blank" rel="noopener noreferrer">💬 Telegram</a>
+            <button class="btn btn--primary" type="button" onclick="contactarWhatsAppGeneral()">📲 Enviar por WhatsApp</button>
+            <button class="btn btn--outline" type="button" onclick="contactarSignalGeneral()">🔵 Enviar por Signal</button>
+            <button class="btn btn--outline" type="button" onclick="contactarTelegramGeneral()">💬 Enviar por Telegram</button>
           </div>
         </div>
       </div>
@@ -438,8 +438,8 @@
           </form>
           <div class="contact-actions">
             <a id="link-renovar-servicio" class="btn btn--primary" href="https://wa.me/593939166222" target="_blank" rel="noopener noreferrer">🔁 Renovar servicio</a>
-            <a class="btn btn--outline" href="https://t.me/ClickTvDigital" target="_blank" rel="noopener noreferrer">💬 Telegram</a>
-            <a class="btn btn--outline" href="https://signal.me/#eu/dbuzKUYd0bhoGCmHIPAZAhBiHqomTyVnotlsGU5c4QhFcL5OfY1MRooGbYHEg7ve" target="_blank" rel="noopener noreferrer">🔵 Signal</a>
+            <button class="btn btn--outline" type="button" onclick="contactarTelegramGeneral()">💬 Enviar por Telegram</button>
+            <button class="btn btn--outline" type="button" onclick="contactarSignalGeneral()">🔵 Enviar por Signal</button>
           </div>
         </div>
         <div class="glass-card contact-review-preview">
@@ -586,7 +586,7 @@
         <button class="btn-pago" data-metodo="deuna">💰 DEUNA</button>
         <button class="btn-pago" data-metodo="payphone">💳 PayPhone</button>
         <button class="btn-pago" data-metodo="paypalme">🅿️ PayPal</button>
-        <button class="btn-pago" data-metodo="whatsapp">📲 WhatsApp</button>
+        <button class="btn-pago" data-metodo="whatsapp">📲 Enviar por WhatsApp</button>
         <button class="btn-pago" data-metodo="signal">🔵 Signal</button>
         <button class="btn-pago" data-metodo="telegram">💬 Telegram</button>
       </div>
@@ -601,7 +601,7 @@
           <button type="button" class="btn btn--outline btn--full" onclick="enviarComprobanteSignal()">🔵 Comprobante por Signal</button>
           <button type="button" class="btn btn--outline btn--full" onclick="enviarComprobanteTelegram()">💬 Comprobante por Telegram</button>
         </div>
-        <small>Al usar Signal o Telegram copiaremos el resumen del pedido para que puedas pegarlo junto con el comprobante.</small>
+        <small>Telegram abrirá el mensaje preparado. En Signal se abrirá el menú Compartir para enviarlo ya escrito, sin copiar manualmente.</small>
       </div>
 
       <div id="paypal-cart-box" class="paypal-cart-box">
@@ -615,11 +615,11 @@
       <strong>¿Por dónde deseas finalizar o pedir ayuda?</strong>
       <p>Usa cualquiera de nuestros tres canales oficiales.</p>
       <div class="cart-contact-options__buttons">
-        <button type="button" class="btn btn--primary btn--full" onclick="enviarPedidoWhatsApp()">📲 WhatsApp</button>
-        <a class="btn btn--outline btn--full" href="https://signal.me/#eu/dbuzKUYd0bhoGCmHIPAZAhBiHqomTyVnotlsGU5c4QhFcL5OfY1MRooGbYHEg7ve" target="_blank" rel="noopener noreferrer">🔵 Signal</a>
-        <a class="btn btn--outline btn--full" href="https://t.me/ClickTvDigital" target="_blank" rel="noopener noreferrer">💬 Telegram</a>
+        <button type="button" class="btn btn--primary btn--full" onclick="enviarPedidoWhatsApp()">📲 Enviar por WhatsApp</button>
+        <button type="button" class="btn btn--outline btn--full" onclick="enviarPedidoSignal()">🔵 Enviar por Signal</button>
+        <button type="button" class="btn btn--outline btn--full" onclick="enviarPedidoTelegram()">💬 Enviar por Telegram</button>
       </div>
-      <small>En Signal o Telegram, envía una captura del resumen del carrito para agilizar la atención.</small>
+      <small>El resumen del carrito se prepara automáticamente para WhatsApp, Telegram y Signal.</small>
     </div>
 
     <div class="cart-reviews">
@@ -635,8 +635,8 @@
     <div class="cart-actions">
       <button id="btn-finalizar-compra" class="btn btn--primary btn--full">💳 Finalizar compra</button>
       <button id="btn-enviar-pedido" class="btn btn--outline btn--full">📲 Enviar pedido por WhatsApp</button>
-      <a class="btn btn--outline btn--full" href="https://signal.me/#eu/dbuzKUYd0bhoGCmHIPAZAhBiHqomTyVnotlsGU5c4QhFcL5OfY1MRooGbYHEg7ve" target="_blank" rel="noopener noreferrer">🔵 Contactar por Signal</a>
-      <a class="btn btn--outline btn--full" href="https://t.me/ClickTvDigital" target="_blank" rel="noopener noreferrer">💬 Contactar por Telegram</a>
+      <a class="btn btn--outline btn--full" href="https://signal.me/#eu/dbuzKUYd0bhoGCmHIPAZAhBiHqomTyVnotlsGU5c4QhFcL5OfY1MRooGbYHEg7ve" target="_blank" rel="noopener noreferrer">🔵 Enviar por Signal</a>
+      <a class="btn btn--outline btn--full" href="https://t.me/ClickTvDigital" target="_blank" rel="noopener noreferrer">💬 Enviar por Telegram</a>
       <button id="btn-continuar-comprando" class="btn btn--ghost btn--full">Seguir comprando</button>
     </div>
   </aside>

@@ -155,6 +155,48 @@ function configurarLinkExterno(elemento, url) {
   elemento.rel = "noopener noreferrer";
 }
 
+function abrirTelegramConMensaje(mensaje) {
+  const texto = encodeURIComponent(mensaje);
+  const usuario = "ClickTvDigital";
+  window.open(`https://t.me/${usuario}?text=${texto}`, "_blank", "noopener,noreferrer");
+}
+
+async function abrirSignalConMensaje(mensaje) {
+  // Signal no ofrece un enlace web oficial que abra un chat concreto con texto
+  // precargado. En móviles usamos Compartir para que el texto llegue ya escrito
+  // al seleccionar Signal, sin obligar al cliente a copiar y pegar.
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title: "Click TV Streaming",
+        text: mensaje
+      });
+      return;
+    } catch (error) {
+      if (error?.name === "AbortError") return;
+    }
+  }
+
+  await copiarTexto(mensaje, "Mensaje listo para Signal");
+  window.open(CONFIG.signalLink, "_blank", "noopener,noreferrer");
+}
+
+function mensajeContactoGeneral() {
+  return "Hola Click TV Streaming, deseo información sobre sus planes, disponibilidad y formas de pago.";
+}
+
+function contactarWhatsAppGeneral() {
+  window.open(`${CONFIG.whatsappLink}?text=${encodeURIComponent(mensajeContactoGeneral())}`, "_blank", "noopener,noreferrer");
+}
+
+function contactarTelegramGeneral() {
+  abrirTelegramConMensaje(mensajeContactoGeneral());
+}
+
+function contactarSignalGeneral() {
+  abrirSignalConMensaje(mensajeContactoGeneral());
+}
+
 function inicializarBotonesFlotantes() {
   if (typeof CONFIG === "undefined") return;
 
@@ -165,10 +207,10 @@ function inicializarBotonesFlotantes() {
   const soporte = document.getElementById("btn-soporte");
   const catalogo = document.getElementById("btn-catalogo-flotante");
 
-  if (wa) configurarLinkExterno(wa, CONFIG.whatsappLink);
+  if (wa) { wa.href = "#"; wa.addEventListener("click", (e) => { e.preventDefault(); contactarWhatsAppGeneral(); }); }
   if (grupo) configurarLinkExterno(grupo, CONFIG.whatsappGrupo);
-  if (tg) configurarLinkExterno(tg, CONFIG.telegramLink);
-  if (signal) configurarLinkExterno(signal, CONFIG.signalLink);
+  if (tg) { tg.href = "#"; tg.addEventListener("click", (e) => { e.preventDefault(); contactarTelegramGeneral(); }); }
+  if (signal) { signal.href = "#"; signal.addEventListener("click", (e) => { e.preventDefault(); contactarSignalGeneral(); }); }
   if (catalogo) catalogo.href = "#streaming";
 
   if (soporte) {
@@ -1062,15 +1104,13 @@ function renovarItemWhatsApp(itemId) {
 async function renovarItemSignal(itemId) {
   const item = carrito.find((elemento) => elemento.itemId === itemId);
   if (!item) return;
-  await copiarTexto(obtenerMensajeRenovacion(item), "Mensaje de renovación copiado");
-  window.open(CONFIG.signalLink, "_blank", "noopener,noreferrer");
+  await abrirSignalConMensaje(obtenerMensajeRenovacion(item));
 }
 
 async function renovarItemTelegram(itemId) {
   const item = carrito.find((elemento) => elemento.itemId === itemId);
   if (!item) return;
-  await copiarTexto(obtenerMensajeRenovacion(item), "Mensaje de renovación copiado");
-  window.open(CONFIG.telegramLink, "_blank", "noopener,noreferrer");
+  abrirTelegramConMensaje(obtenerMensajeRenovacion(item));
 }
 
 function renderCarrito() {
@@ -1103,9 +1143,9 @@ function renderCarrito() {
             <div class="carrito-item__renew-actions">
               <button type="button" class="cart-renew-toggle" onclick="marcarRenovacionCarrito('${item.itemId}')">${item.operacion === "renovacion" ? "Cambiar a compra" : "🔄 Marcar renovación"}</button>
               <div class="cart-renew-channels" aria-label="Renovar por canal de contacto">
-                <button type="button" class="cart-renew-channel cart-renew-channel--wa" onclick="renovarItemWhatsApp('${item.itemId}')">🟢 WhatsApp</button>
-                <button type="button" class="cart-renew-channel cart-renew-channel--signal" onclick="renovarItemSignal('${item.itemId}')">🔵 Signal</button>
-                <button type="button" class="cart-renew-channel cart-renew-channel--telegram" onclick="renovarItemTelegram('${item.itemId}')">✈️ Telegram</button>
+                <button type="button" class="cart-renew-channel cart-renew-channel--wa" onclick="renovarItemWhatsApp('${item.itemId}')">🟢 Enviar por WhatsApp</button>
+                <button type="button" class="cart-renew-channel cart-renew-channel--signal" onclick="renovarItemSignal('${item.itemId}')">🔵 Enviar por Signal</button>
+                <button type="button" class="cart-renew-channel cart-renew-channel--telegram" onclick="renovarItemTelegram('${item.itemId}')">✈️ Enviar por Telegram</button>
               </div>
             </div>
           </div>
@@ -1514,26 +1554,31 @@ ${generarResumenPedido()}`;
   }
 }
 
-async function enviarComprobanteSignal() {
-  await copiarResumenParaCanal("comprobante");
-  window.open(CONFIG.signalLink, "_blank", "noopener,noreferrer");
+function generarMensajeParaCanal(tipo = "pedido") {
+  const encabezado = tipo === "comprobante"
+    ? "Hola, ya realicé el pago y deseo enviar mi comprobante para validar este pedido."
+    : "Hola, deseo realizar el siguiente pedido:";
+  return `${encabezado}
+
+${generarResumenPedido()}`;
 }
 
-async function enviarComprobanteTelegram() {
-  await copiarResumenParaCanal("comprobante");
-  window.open(CONFIG.telegramLink, "_blank", "noopener,noreferrer");
+async function enviarComprobanteSignal() {
+  await abrirSignalConMensaje(generarMensajeParaCanal("comprobante"));
+}
+
+function enviarComprobanteTelegram() {
+  abrirTelegramConMensaje(generarMensajeParaCanal("comprobante"));
 }
 
 async function enviarPedidoSignal() {
   if (carrito.length === 0) return mostrarToast("Tu carrito está vacío.", "error");
-  await copiarResumenParaCanal("pedido");
-  window.open(CONFIG.signalLink, "_blank", "noopener,noreferrer");
+  await abrirSignalConMensaje(generarMensajeParaCanal("pedido"));
 }
 
-async function enviarPedidoTelegram() {
+function enviarPedidoTelegram() {
   if (carrito.length === 0) return mostrarToast("Tu carrito está vacío.", "error");
-  await copiarResumenParaCanal("pedido");
-  window.open(CONFIG.telegramLink, "_blank", "noopener,noreferrer");
+  abrirTelegramConMensaje(generarMensajeParaCanal("pedido"));
 }
 
 function cargarPayPalSDK() {
