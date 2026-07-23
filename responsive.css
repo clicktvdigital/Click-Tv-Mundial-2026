@@ -637,3 +637,52 @@
   .floating-actions .float-btn--catalog { order: 90; }
   .floating-actions .float-btn--top { order: 91; }
 }
+
+/* Corrección final: recuperar el tamaño amplio del menú sin perder el scroll táctil. */
+@media (max-width: 920px) {
+  .nav-menu {
+    top: 106px;
+    left: 16px;
+    right: 16px;
+    bottom: auto;
+    width: auto;
+    min-height: 360px;
+    max-height: calc(100dvh - 122px);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-content: start;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+    touch-action: pan-y;
+    padding: 18px 16px calc(24px + env(safe-area-inset-bottom));
+    scroll-padding-block: 16px 30px;
+  }
+}
+
+@media (max-width: 520px) {
+  .nav-menu {
+    top: 92px;
+    left: 12px;
+    right: 12px;
+    bottom: auto;
+    min-height: 390px;
+    max-height: calc(100dvh - 108px);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 9px;
+    padding: 16px 13px calc(24px + env(safe-area-inset-bottom));
+  }
+
+  .nav-menu .nav-link {
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    line-height: 1.2;
+  }
+
+  .nav-link--reviews {
+    grid-column: 1 / -1;
+  }
+}
