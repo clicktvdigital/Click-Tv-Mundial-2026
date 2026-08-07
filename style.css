@@ -2880,7 +2880,8 @@ body.cart-open { overflow: hidden; }
 
 .float-btn--support {
   color: #fff;
-  background: linear-gradient(145deg, #313b38, #151a18);
+  border-color: rgba(116,255,56,.42);
+  background: linear-gradient(145deg, #19bf5a, #087b3b);
 }
 
 .float-btn--catalog {

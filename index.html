@@ -191,9 +191,10 @@
 
         <div class="hero__panel glass-card reveal">
           <h2>📺 Acceso rápido</h2>
-          <p>Atención directa: <strong>WhatsApp 0939166222 🇪🇨 · Signal · Telegram</strong></p>
+          <p>Atención directa: <strong>Ventas 0939166222 · Soporte y respaldo 0990056986 🇪🇨</strong></p>
           <div class="quick-links">
             <a class="btn btn--primary" href="https://wa.me/593939166222" target="_blank" rel="noopener noreferrer">📲 Pedidos inmediatos</a>
+            <button class="btn btn--outline" type="button" onclick="contactarWhatsAppSoporte()">🛠️ Soporte técnico por WhatsApp</button>
             <button class="btn btn--outline" type="button" onclick="contactarTelegramGeneral()">💬 Enviar por Telegram</button>
             <button class="btn btn--outline" type="button" onclick="contactarSignalGeneral()">🔵 Enviar por Signal</button>
             <a class="btn btn--ghost" href="https://chat.whatsapp.com/Jj1d8iwCAL3EokVWwu5t1D" target="_blank" rel="noopener noreferrer">👥 Grupo WhatsApp</a>
@@ -337,11 +338,12 @@
       <div class="container">
         <div class="contact-channel-bar glass-card">
           <div>
-            <strong>¿No puedes contactarnos por WhatsApp?</strong>
-            <span>También atendemos pedidos, consultas, soporte y comprobantes por Signal y Telegram.</span>
+            <strong>¿No funciona el WhatsApp principal?</strong>
+            <span>Usa el WhatsApp alternativo 0990056986 para soporte, pedidos y comprobantes. También atendemos por Signal y Telegram.</span>
           </div>
           <div class="contact-channel-actions">
             <button class="btn btn--primary" type="button" onclick="contactarWhatsAppGeneral()">📲 Enviar por WhatsApp</button>
+            <button class="btn btn--outline" type="button" onclick="contactarWhatsAppSoporte()">🛠️ WhatsApp alternativo</button>
             <button class="btn btn--outline" type="button" onclick="contactarSignalGeneral()">🔵 Enviar por Signal</button>
             <button class="btn btn--outline" type="button" onclick="contactarTelegramGeneral()">💬 Enviar por Telegram</button>
           </div>
@@ -559,7 +561,7 @@
 
     <div class="cart-trust">
       <strong>Compra con confianza</strong>
-      <p>Antes de pagar, revisa tu resumen. Si tienes dudas, contáctanos por WhatsApp, Signal o Telegram y confirmamos disponibilidad.</p>
+      <p>Antes de pagar, revisa tu resumen. Si el WhatsApp principal no responde, usa el alternativo 0990056986 para compras o soporte.</p>
       <div>
         <span>⚡ Activación rápida</span>
         <span>🛡️ Validación de pago</span>
@@ -589,7 +591,7 @@
         <span>💳</span>
         <div>
           <h3>Elige tu método de pago</h3>
-          <p>Selecciona una opción y continúa con el pago o envía tu pedido por WhatsApp, Signal o Telegram.</p>
+          <p>Selecciona una opción y continúa con el pago o envía tu pedido por el WhatsApp principal, el alternativo, Signal o Telegram.</p>
         </div>
       </div>
 
@@ -599,6 +601,7 @@
         <button class="btn-pago" data-metodo="payphone">💳 PayPhone</button>
         <button class="btn-pago" data-metodo="paypalme">🅿️ PayPal</button>
         <button class="btn-pago" data-metodo="whatsapp">📲 Enviar por WhatsApp</button>
+        <button class="btn-pago" data-metodo="whatsapp_alternativo">🛠️ WhatsApp alternativo</button>
         <button class="btn-pago" data-metodo="signal">🔵 Signal</button>
         <button class="btn-pago" data-metodo="telegram">💬 Telegram</button>
       </div>
@@ -610,6 +613,7 @@
         <p>Incluye la captura del pago y, de ser posible, una captura del resumen del carrito.</p>
         <div class="cart-receipt-channels__buttons">
           <button type="button" class="btn btn--primary btn--full" onclick="enviarComprobanteWhatsApp()">📲 Comprobante por WhatsApp</button>
+          <button type="button" class="btn btn--outline btn--full" onclick="enviarComprobanteWhatsAppAlternativo()">🛠️ Comprobante por WhatsApp alternativo</button>
           <button type="button" class="btn btn--outline btn--full" onclick="enviarComprobanteSignal()">🔵 Comprobante por Signal</button>
           <button type="button" class="btn btn--outline btn--full" onclick="enviarComprobanteTelegram()">💬 Comprobante por Telegram</button>
         </div>
@@ -625,9 +629,10 @@
 
     <div class="cart-contact-options glass-card">
       <strong>¿Por dónde deseas finalizar o pedir ayuda?</strong>
-      <p>Usa cualquiera de nuestros tres canales oficiales.</p>
+      <p>Si el WhatsApp principal no funciona, envía el mismo pedido al número alternativo.</p>
       <div class="cart-contact-options__buttons">
         <button type="button" class="btn btn--primary btn--full" onclick="enviarPedidoWhatsApp()">📲 Enviar por WhatsApp</button>
+        <button type="button" class="btn btn--outline btn--full" onclick="enviarPedidoWhatsAppAlternativo()">🛠️ Enviar por WhatsApp alternativo</button>
         <button type="button" class="btn btn--outline btn--full" onclick="enviarPedidoSignal()">🔵 Enviar por Signal</button>
         <button type="button" class="btn btn--outline btn--full" onclick="enviarPedidoTelegram()">💬 Enviar por Telegram</button>
       </div>
@@ -668,6 +673,7 @@
     <div class="cart-actions">
       <button id="btn-finalizar-compra" class="btn btn--primary btn--full">💳 Finalizar compra</button>
       <button id="btn-enviar-pedido" class="btn btn--outline btn--full">📲 Enviar pedido por WhatsApp</button>
+      <button id="btn-enviar-pedido-alternativo" class="btn btn--outline btn--full">🛠️ WhatsApp alternativo para compras</button>
       <a class="btn btn--outline btn--full" href="https://signal.me/#eu/dbuzKUYd0bhoGCmHIPAZAhBiHqomTyVnotlsGU5c4QhFcL5OfY1MRooGbYHEg7ve" target="_blank" rel="noopener noreferrer">🔵 Enviar por Signal</a>
       <a class="btn btn--outline btn--full" href="https://t.me/ClickTvDigital" target="_blank" rel="noopener noreferrer">💬 Enviar por Telegram</a>
       <button id="btn-continuar-comprando" class="btn btn--ghost btn--full">Seguir comprando</button>
@@ -700,7 +706,7 @@
       </span>
       <span class="float-btn__label">Signal</span>
     </a>
-    <a id="btn-soporte" class="float-btn float-btn--support" href="https://wa.me/593939166222" target="_blank" rel="noopener noreferrer" aria-label="Soporte técnico" title="Soporte técnico">
+    <a id="btn-soporte" class="float-btn float-btn--support" href="https://wa.me/593990056986" target="_blank" rel="noopener noreferrer" aria-label="Soporte técnico por WhatsApp alternativo" title="Soporte técnico: 0990056986">
       <span class="float-btn__icon" aria-hidden="true">
         <svg viewBox="0 0 48 48"><path d="M24 5C13.5 5 5 13.3 5 23.5v10.2A6.3 6.3 0 0 0 11.4 40H16V24h-7v-.5C9 15.4 15.7 9 24 9s15 6.4 15 14.5v.5h-7v16h4.4A6.5 6.5 0 0 0 43 33.7V23.5C43 13.3 34.5 5 24 5ZM9 28h3v8h-.6A2.4 2.4 0 0 1 9 33.7V28Zm30 5.7a2.4 2.4 0 0 1-2.6 2.3H36v-8h3v5.7ZM21 38h7a2 2 0 1 1 0 4h-7a2 2 0 1 1 0-4Z"/></svg>
       </span>

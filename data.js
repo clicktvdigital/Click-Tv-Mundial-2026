@@ -4,10 +4,13 @@
    ========================================================================== */
 
 const CONFIG = {
-  versionProyecto: "2.4.0-radio-la-red",
+  versionProyecto: "2.4.1-whatsapp-respaldo",
   whatsappNumero: "593939166222",
   whatsappLocal: "0939166222",
   whatsappLink: "https://wa.me/593939166222",
+  whatsappAlternativoNumero: "593990056986",
+  whatsappAlternativoLocal: "0990056986",
+  whatsappAlternativoLink: "https://wa.me/593990056986",
   whatsappGrupo: "https://chat.whatsapp.com/Jj1d8iwCAL3EokVWwu5t1D",
 
   telegramUsuario: "ClickTvDigital",

@@ -185,6 +185,7 @@ function inicializarUI() {
   document.getElementById("btn-finalizar-compra")?.addEventListener("click", finalizarCompra);
   document.getElementById("btn-enviar-comprobante")?.addEventListener("click", enviarComprobanteWhatsApp);
   document.getElementById("btn-enviar-pedido")?.addEventListener("click", enviarPedidoWhatsApp);
+  document.getElementById("btn-enviar-pedido-alternativo")?.addEventListener("click", enviarPedidoWhatsAppAlternativo);
   document.querySelectorAll("[data-review-form]").forEach((form) => form.addEventListener("submit", registrarResenaCarrito));
   document.getElementById("form-contacto-internacional")?.addEventListener("submit", enviarContactoInternacional);
 
@@ -288,6 +289,11 @@ function contactarWhatsAppGeneral() {
   window.open(`${CONFIG.whatsappLink}?text=${encodeURIComponent(mensajeContactoGeneral())}`, "_blank", "noopener,noreferrer");
 }
 
+function contactarWhatsAppSoporte() {
+  const mensaje = "Hola, necesito soporte técnico con mi servicio Click TV. Escribo al WhatsApp alternativo.";
+  window.open(`${CONFIG.whatsappAlternativoLink}?text=${encodeURIComponent(mensaje)}`, "_blank", "noopener,noreferrer");
+}
+
 function contactarTelegramGeneral() {
   abrirTelegramConMensaje(mensajeContactoGeneral());
 }
@@ -314,7 +320,7 @@ function inicializarBotonesFlotantes() {
 
   if (soporte) {
     const msg = encodeURIComponent("Hola, necesito soporte técnico con mi servicio Click TV.");
-    configurarLinkExterno(soporte, `${CONFIG.whatsappLink}?text=${msg}`);
+    configurarLinkExterno(soporte, `${CONFIG.whatsappAlternativoLink}?text=${msg}`);
   }
 }
 
@@ -1663,6 +1669,9 @@ function procesarPago(metodo, ejecutar = false) {
     case "whatsapp":
       enviarPedidoWhatsApp();
       break;
+    case "whatsapp_alternativo":
+      enviarPedidoWhatsAppAlternativo();
+      break;
     case "signal":
       enviarPedidoSignal();
       break;
@@ -1694,6 +1703,7 @@ function obtenerNombreMetodoPago(metodo) {
     payphone: "PayPhone",
     paypalme: "PayPal",
     whatsapp: "WhatsApp",
+    whatsapp_alternativo: "WhatsApp alternativo",
     signal: "Signal",
     telegram: "Telegram"
   };
@@ -1755,6 +1765,12 @@ function actualizarDetallePagoCarrito() {
       <p>Enviaremos el resumen completo del carrito por WhatsApp.</p>
       <button class="btn btn--primary btn--full" onclick="enviarPedidoWhatsApp()">📲 Enviar pedido por WhatsApp</button>
     `,
+    whatsapp_alternativo: `
+      <strong>Pedido por WhatsApp alternativo</strong>
+      <p>Total a confirmar: <b>${total}</b></p>
+      <p>Usa este canal de respaldo si el WhatsApp principal no está disponible.</p>
+      <button class="btn btn--primary btn--full" onclick="enviarPedidoWhatsAppAlternativo()">🛠️ Enviar al 0990056986</button>
+    `,
     signal: `
       <strong>Pedido por Signal</strong>
       <p>Total a confirmar: <b>${total}</b></p>
@@ -1794,9 +1810,20 @@ function enviarPedidoWhatsApp() {
   window.open(`${CONFIG.whatsappLink}?text=${mensaje}`, "_blank", "noopener,noreferrer");
 }
 
+function enviarPedidoWhatsAppAlternativo() {
+  if (carrito.length === 0) return mostrarToast("Tu carrito está vacío.", "error");
+  const mensaje = encodeURIComponent(`${generarResumenPedido()}\n\nEnviado al WhatsApp alternativo de compras.`);
+  window.open(`${CONFIG.whatsappAlternativoLink}?text=${mensaje}`, "_blank", "noopener,noreferrer");
+}
+
 function enviarComprobanteWhatsApp() {
   const mensaje = encodeURIComponent("Hola, ya realicé el pago y deseo enviar mi comprobante para validar mi pedido.");
   window.open(`${CONFIG.whatsappLink}?text=${mensaje}`, "_blank", "noopener,noreferrer");
+}
+
+function enviarComprobanteWhatsAppAlternativo() {
+  const mensaje = encodeURIComponent("Hola, ya realicé el pago y deseo enviar mi comprobante para validar mi pedido por el WhatsApp alternativo.");
+  window.open(`${CONFIG.whatsappAlternativoLink}?text=${mensaje}`, "_blank", "noopener,noreferrer");
 }
 
 async function copiarResumenParaCanal(tipo = "pedido") {
